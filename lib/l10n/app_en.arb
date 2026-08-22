@@ -6004,6 +6004,88 @@
       }
     }
   },
+  "homePageAudioAttachmentUnsupported": "The current model does not support audio attachments. Switch to a model that supports audio input or remove the audio file and try again.",
+  "reasoningBudgetSheetOff": "Off",
+  "reasoningBudgetSheetAuto": "Auto",
+  "reasoningBudgetSheetLight": "Light Reasoning",
+  "reasoningBudgetSheetMedium": "Medium Reasoning",
+  "reasoningBudgetSheetHeavy": "Heavy Reasoning",
+  "reasoningBudgetSheetXhigh": "Extreme Reasoning",
+  "reasoningBudgetSheetMax": "Maximum Reasoning",
+  "reasoningBudgetSheetCurrentLevel": "Current Level: {level}",
+  "@reasoningBudgetSheetCurrentLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "reasoningBudgetSheetOffSubtitle": "Turn off reasoning, answer directly",
+  "reasoningBudgetSheetAutoSubtitle": "Let the model decide reasoning level automatically",
+  "reasoningBudgetSheetLightSubtitle": "Use light reasoning to answer questions",
+  "reasoningBudgetSheetMediumSubtitle": "Use moderate reasoning to answer questions",
+  "reasoningBudgetSheetHeavySubtitle": "Use heavy reasoning for complex questions",
+  "reasoningBudgetSheetXhighSubtitle": "Use maximum reasoning depth for the toughest problems",
+  "reasoningBudgetSheetCustomLabel": "Custom Reasoning Budget",
+  "reasoningBudgetSheetCustomHint": "e.g. 2048 (-1 auto, 0 off)",
+  "modelDetailSheetModelIdDisabledHint": "{modelId}",
+  "@modelDetailSheetModelIdDisabledHint": {
+    "placeholders": {
+      "modelId": {
+        "type": "String"
+      }
+    }
+  },
+  "modelDetailSheetSearchTool": "Search",
+  "modelDetailSheetSearchToolDescription": "Enable Google Search integration",
+  "modelDetailSheetModelIdExistsError": "Model ID already exists",
+  "reasoningBudgetSliderLow": "Low",
+  "reasoningBudgetSliderMedium": "Medium",
+  "reasoningBudgetSliderHigh": "High",
+  "reasoningBudgetSliderXhigh": "XHigh",
+  "reasoningBudgetSliderMax": "Max",
+  "displaySettingsPageMarkdownBlockquoteSameSizeTitle": "Blockquote same size as body",
+  "displaySettingsPageMarkdownBlockquoteSameSizeSubtitle": "Keep Markdown blockquote (>) text the same size as body text",
+  "modelDetailSheetBuiltinToolsUnsupportedHint": "Current provider does not support these built-in tools.",
+  "modelDetailSheetOpenrouterWebFetchTool": "Web Fetch",
+  "displaySettingsPageUiFontSizeTitle": "UI Font Size",
+  "displaySettingsPageInputFontSizeTitle": "Input Box Font Size",
+  "assistantEditSkillsTab": "Skills",
+  "assistantEditSkillsEmptyMessage": "No skills bound yet. Tap manage skills below.",
+  "assistantEditManageSkillsButton": "Manage skills",
+  "skillsAddTooltip": "Add skill",
+  "skillsEmptyMessage": "No skills yet. Import or add one.",
+  "skillsImportButton": "Import",
+  "skillsDeleteAction": "Delete",
+  "skillsMultiSelect": "Multi-select",
+  "skillsSelectAll": "Select all",
+  "skillsSelectNone": "Deselect all",
+  "skillsDeleteSelected": "Delete ({count})",
+  "skillsDeleteSelectedConfirm": "Delete {count} selected skills? This cannot be undone.",
+  "skillsDeleteConfirmMessage": "Delete skill \"{name}\"? This cannot be undone.",
+  "skillsSaveButton": "Save",
+  "skillsNameLabel": "Name",
+  "skillsDescriptionLabel": "Description",
+  "skillsTriggerKeywordsLabel": "Trigger keywords",
+  "skillsTriggerKeywordsHint": "Comma-separated; auto-activates this skill when matched",
+  "skillsContentHint": "Skill content (prompt injected into the conversation)",
+  "skillsNoValidImported": "No valid skills to import",
+  "skillsImportFailed": "Import failed: {error}",
+  "@skillsImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsImportedCount": "Imported {count} skills",
+  "@skillsImportedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markdownNoteLabel": "Note",
   "markdownTipLabel": "Tip",
   "markdownImportantLabel": "Important",
@@ -7448,6 +7530,14 @@
       },
       "total": {
         "type": "int"
+      }
+    }
+  },
+  "skillsTriggersLine": "Trigger keywords: {keywords}",
+  "@skillsTriggersLine": {
+    "placeholders": {
+      "keywords": {
+        "type": "String"
       }
     }
   }

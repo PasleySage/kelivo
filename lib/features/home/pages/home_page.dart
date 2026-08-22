@@ -1247,7 +1247,10 @@ class _HomePageState extends State<HomePage>
       hasMoreAfter: _controller.chatController.hasMoreAfter,
       onLoadMoreAfter: _controller.loadMoreAfter,
       onUserScrollIntent: _controller.scrollCtrl.handleUserScrollIntent,
-      chatFontScale: settings.chatFontScale,
+      // The message list multiplies the ambient scaler (which already
+      // includes uiFontScale from main.dart) by this value; divide the UI
+      // scale out so the chat font scale stays absolute.
+      chatFontScale: settings.chatFontScale / settings.uiFontScale,
       collapseThinking: settings.autoCollapseThinking,
       collapseThinkingSteps: settings.collapseThinkingSteps,
       showThinkingCards: settings.showThinkingCards,
@@ -1288,10 +1291,14 @@ class _HomePageState extends State<HomePage>
       onForkConversation: _controller.isTemporaryConversation
           ? null
           : (message) => _controller.forkConversation(message),
-      onSelectMessages: (index, messages) => _controller.startMessageSelection(
-        messageIndex: index,
-        messageList: messages,
-      ),
+      onShareMessage: (index, messages) =>
+          _controller.shareMessage(index, messages),
+      onSelectMessages: (index, messages) =>
+          _controller.startMessageSelection(
+            messageIndex: index,
+            messageList: messages,
+            mode: ChatSelectionMode.delete,
+          ),
       onSpeakMessage: (message) => _controller.speakMessage(message),
       onSuggestionTap: (suggestion) => _controller.sendSuggestion(suggestion),
       onRecoveredAskUserAnswer: (message, part, result) =>

@@ -34,6 +34,7 @@ import 'core/providers/mcp_provider.dart';
 import 'core/providers/tts_provider.dart';
 import 'core/providers/asr_provider.dart';
 import 'core/providers/assistant_provider.dart';
+import 'core/providers/skill_provider.dart';
 import 'core/providers/tag_provider.dart';
 import 'core/providers/update_provider.dart';
 import 'core/providers/quick_phrase_provider.dart';
@@ -797,6 +798,7 @@ class MyApp extends StatelessWidget {
             chatService: ctx.read<ChatService>(),
           ),
         ),
+        ChangeNotifierProvider(create: (_) => SkillProvider()),
         ChangeNotifierProvider(
           create: (ctx) {
             final assistants = ctx.read<AssistantProvider>();
@@ -1267,10 +1269,25 @@ class MyApp extends StatelessWidget {
                     });
                   }
 
-                  final appWithOverlays = FloatingIpadPadding(
-                    child: LocalSnapshotScheduler(
-                      child: AppOverlays(
-                        child: child ?? const SizedBox.shrink(),
+                  final mq = MediaQuery.of(ctx);
+                  // App-wide base font scaling from the UI font size setting.
+                  // The chat and input font scales stack on top of this for
+                  // messages and the composer respectively.
+                  final fontScale = settings.uiFontScale;
+                  final scaledMq = fontScale == 1.0
+                      ? mq
+                      : mq.copyWith(
+                          textScaler: TextScaler.linear(
+                            mq.textScaler.scale(1) * fontScale,
+                          ),
+                        );
+                  final appWithOverlays = MediaQuery(
+                    data: scaledMq,
+                    child: FloatingIpadPadding(
+                      child: LocalSnapshotScheduler(
+                        child: AppOverlays(
+                          child: child ?? const SizedBox.shrink(),
+                        ),
                       ),
                     ),
                   );

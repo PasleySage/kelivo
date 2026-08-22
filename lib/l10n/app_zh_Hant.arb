@@ -4788,6 +4788,74 @@
       }
     }
   },
+  "homePageAudioAttachmentUnsupported": "目前模型不支援音訊附件，請切換到支援音訊輸入的模型或移除音訊檔案後再試。",
+  "reasoningBudgetSheetOff": "關閉",
+  "reasoningBudgetSheetAuto": "自動",
+  "reasoningBudgetSheetLight": "輕度推理",
+  "reasoningBudgetSheetMedium": "中度推理",
+  "reasoningBudgetSheetHeavy": "重度推理",
+  "reasoningBudgetSheetXhigh": "極限推理",
+  "reasoningBudgetSheetMax": "全力推理",
+  "reasoningBudgetSheetCurrentLevel": "目前檔位：{level}",
+  "reasoningBudgetSheetOffSubtitle": "關閉推理功能，直接回答",
+  "reasoningBudgetSheetAutoSubtitle": "由模型自動決定推理級別",
+  "reasoningBudgetSheetLightSubtitle": "使用少量推理來回答問題",
+  "reasoningBudgetSheetMediumSubtitle": "使用較多推理來回答問題",
+  "reasoningBudgetSheetHeavySubtitle": "使用大量推理來回答問題，適合複雜問題",
+  "reasoningBudgetSheetXhighSubtitle": "使用最大推理深度，適合最複雜的問題",
+  "reasoningBudgetSheetCustomLabel": "自訂推理預算",
+  "reasoningBudgetSheetCustomHint": "例如：2048 (-1 自動，0 關閉)",
+  "modelDetailSheetModelIdDisabledHint": "{modelId}",
+  "modelDetailSheetSearchTool": "搜尋",
+  "modelDetailSheetSearchToolDescription": "啟用 Google 搜尋整合",
+  "modelDetailSheetModelIdExistsError": "模型 ID 已存在",
+  "reasoningBudgetSliderLow": "Low",
+  "reasoningBudgetSliderMedium": "Medium",
+  "reasoningBudgetSliderHigh": "High",
+  "reasoningBudgetSliderXhigh": "XHigh",
+  "reasoningBudgetSliderMax": "Max",
+  "modelDetailSheetBuiltinToolsUnsupportedHint": "目前供應商不支援這些內建工具。",
+  "modelDetailSheetOpenrouterWebFetchTool": "網頁擷取",
+  "displaySettingsPageUiFontSizeTitle": "介面字體大小",
+  "displaySettingsPageInputFontSizeTitle": "輸入框字體大小",
+  "displaySettingsPageMarkdownBlockquoteSameSizeTitle": "引用文字與正文同大",
+  "displaySettingsPageMarkdownBlockquoteSameSizeSubtitle": "開啟後 Markdown 引用（>）內的文字不再被額外放大",
+  "assistantEditSkillsTab": "技能",
+  "assistantEditSkillsEmptyMessage": "還沒有綁定技能。點擊下方管理技能。",
+  "assistantEditManageSkillsButton": "管理技能",
+  "skillsAddTooltip": "新增技能",
+  "skillsEmptyMessage": "還沒有技能，匯入或新增一個吧。",
+  "skillsImportButton": "匯入",
+  "skillsDeleteAction": "刪除",
+  "skillsMultiSelect": "多選",
+  "skillsSelectAll": "全選",
+  "skillsSelectNone": "取消全選",
+  "skillsDeleteSelected": "刪除（{count}）",
+  "skillsDeleteSelectedConfirm": "確定要刪除選中的 {count} 個技能嗎？此操作無法復原。",
+  "skillsDeleteConfirmMessage": "確定要刪除技能「{name}」嗎？此操作無法復原。",
+  "skillsSaveButton": "儲存",
+  "skillsNameLabel": "名稱",
+  "skillsDescriptionLabel": "描述",
+  "skillsTriggerKeywordsLabel": "觸發關鍵字",
+  "skillsTriggerKeywordsHint": "用逗號分隔，命中後自動啟用該技能",
+  "skillsContentHint": "技能內容（注入到對話的提示詞）",
+  "skillsNoValidImported": "沒有可匯入的技能",
+  "skillsImportFailed": "匯入失敗：{error}",
+  "@skillsImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsImportedCount": "已匯入 {count} 個技能",
+  "@skillsImportedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "recoveryInvalidCopy": "{name}：驗證未通過，原始檔案已保留。",
   "@recoveryInvalidCopy": {
     "placeholders": {
@@ -5771,5 +5839,12 @@
   "recoveryCopyPreview": "副本預覽",
   "recoveryRestoreRetryBody": "這次還原尚未完成，選取的副本已保留。可以重新檢查本機副本，或重新開啟 Kelivo 繼續。",
   "recoverySpaceAmount": "上次檢查：可用空間 {available}，安全準備資料至少需要預留 {required}。",
-  "recoveryCopiesNeedUpdate": "部分副本來自更新版本的 Kelivo，請升級 App 後再還原。這些副本仍然保留。"
+  "recoveryCopiesNeedUpdate": "部分副本來自更新版本的 Kelivo，請升級 App 後再還原。這些副本仍然保留。",  "skillsTriggersLine": "觸發關鍵字：{keywords}",
+  "@skillsTriggersLine": {
+    "placeholders": {
+      "keywords": {
+        "type": "String"
+      }
+    }
+  }
 }
