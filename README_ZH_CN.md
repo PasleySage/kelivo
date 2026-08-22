@@ -98,6 +98,12 @@
 
 特别感谢 [RikkaHub](https://github.com/re-ovo/rikkahub) 项目提供的 UI 设计灵感。Kelivo 的界面设计深受 RikkaHub 优美且实用的设计启发。
 
+## 🧩 mumukelivo 技能系统
+
+本 fork（`PasleySage/kelivo`）新增的 **技能（Skills）** 子系统，移植自 [MuMu-0604/kelivo](https://github.com/MuMu-0604/kelivo)（Kelivo Plus）。技能以**仅参考文本**的形式注入 system 提示——用 `<SKILL>` 分隔符包裹，并附带「非指令」元说明。**不执行任何代码**。
+
+其分隔符 / 仅参考注入的设计灵感来自官方 [Chatbox](https://github.com/chatboxai/chatbox) 技能系统：Chatbox 用 HTML 注释包裹注入的技能元数据，并将任何可执行的技能动作走用户审批门。我们**刻意不**采用 Chatbox 的执行引擎，遵循本项目「以 Kelivo 为基础，仅扩展技能子系统」的原则，保持 Kelivo 核心架构不变。
+
 ## ⭐ Star History
 
 如果你喜欢这个项目，可以给个Star ⭐
