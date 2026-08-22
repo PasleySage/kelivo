@@ -615,8 +615,12 @@
   "backupPageForwardCompatBody": "這份備份由更新版本的 Kelivo 建立（資料格式 {backupVersion}，目前版本支援 {currentVersion}），且未聲明舊版本能否讀取。\n\n你可以繼續匯入：目前版本不認識的內容會被略過，備份檔案本身不會被修改。但如果新版本改變了既有資料的儲存方式，部分內容可能會被錯誤匯入。\n\n更穩妥的做法是先升級 Kelivo。",
   "@backupPageForwardCompatBody": {
     "placeholders": {
-      "backupVersion": { "type": "int" },
-      "currentVersion": { "type": "int" }
+      "backupVersion": {
+        "type": "int"
+      },
+      "currentVersion": {
+        "type": "int"
+      }
     }
   },
   "backupPageForwardCompatContinue": "仍然匯入",
@@ -1150,8 +1154,12 @@
   "backgroundTaskFailed": "{task}失敗：{error}",
   "@backgroundTaskFailed": {
     "placeholders": {
-      "task": {"type": "String"},
-      "error": {"type": "String"}
+      "task": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
     }
   },
   "defaultModelPageOcrModelSubtitle": "用於對圖片執行文字辨識的模型",
@@ -1451,14 +1459,12 @@
   "searchServiceEditorMultiKeyTitle": "多 Key 輪詢",
   "searchServiceEditorMultiKeyNone": "未設定",
   "searchApiKeysPageDescription": "列表中的 Key 依序輪詢使用，第一個為主 Key；不查額度，以防觸發服務商風控。",
-
   "searchApiKeysPagePrimaryBadge": "主",
   "searchApiKeysPageBatchHint": "可一次貼上多個 Key：每行一個，或以逗號分隔",
   "searchApiKeysPageBatchResult": "已新增 {added} 個，略過 {skipped} 個重複",
   "searchApiKeysPageAdd": "新增",
   "searchApiKeysPageEmpty": "尚未設定任何 Key。",
   "searchServiceEditorMultiKeyCount": "共 {count} 個 Key",
-
   "searchServiceEditorUsageTitle": "帳戶用量",
   "searchServiceEditorUsageNotQueried": "尚未查詢用量。",
   "searchServiceEditorUsageQuery": "查詢用量",
@@ -1466,26 +1472,36 @@
   "searchServiceEditorUsageRemaining": "剩餘 {remaining} 額度",
   "@searchServiceEditorUsageRemaining": {
     "placeholders": {
-      "remaining": { "type": "String" }
+      "remaining": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorUsageBalance": "餘額 {balance}",
   "@searchServiceEditorUsageBalance": {
     "placeholders": {
-      "balance": { "type": "String" }
+      "balance": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorUsageUsed": "已使用 {used} / {limit} 額度",
   "@searchServiceEditorUsageUsed": {
     "placeholders": {
-      "used": { "type": "String" },
-      "limit": { "type": "String" }
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorUsageFailed": "用量查詢失敗：{message}",
   "@searchServiceEditorUsageFailed": {
     "placeholders": {
-      "message": { "type": "String" }
+      "message": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorTestTitle": "測試搜尋",
@@ -1496,7 +1512,9 @@
   "searchServiceEditorTestFailed": "搜尋失敗：{message}",
   "@searchServiceEditorTestFailed": {
     "placeholders": {
-      "message": { "type": "String" }
+      "message": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorResultOpenTooltip": "開啟結果",
@@ -1505,7 +1523,9 @@
   "searchServiceEditorDeleteMessage": "確定刪除 {provider} 嗎？此操作無法復原。",
   "@searchServiceEditorDeleteMessage": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "searchServiceEditorDeleteConfirm": "刪除",
@@ -2064,14 +2084,14 @@
   "assistantEditLocalToolAskUserSubtitle": "允許助手提出簡短問題，並在你回答後繼續生成。",
   "assistantEditLocalToolCalculateTitle": "計算機",
   "assistantEditLocalToolCalculateSubtitle": "計算數學表達式，支援加減乘除冪運算 sqrt sin cos 等。",
-   "assistantEditLocalToolScreenTimeTitle": "螢幕使用時間",
-   "assistantEditLocalToolScreenTimeSubtitle": "查詢本裝置的應用使用時長，需要授予使用情況存取權限。",
-   "chatMessageWidgetScreenTimeTotal": "總螢幕使用時間",
-   "chatMessageWidgetScreenTimePermissionRequired": "未授予使用記錄存取權限，請在系統設定中開啟後重試。",
-   "assistantEditLocalToolCalendarQueryTitle": "查詢日曆",
-   "assistantEditLocalToolCalendarQuerySubtitle": "讀取本裝置上的日曆行程，需要授予日曆權限。",
-   "assistantEditLocalToolCalendarCreateTitle": "建立行程",
-   "assistantEditLocalToolCalendarCreateSubtitle": "在你確認後於本裝置建立日曆行程，需要授予日曆權限。",
+  "assistantEditLocalToolScreenTimeTitle": "螢幕使用時間",
+  "assistantEditLocalToolScreenTimeSubtitle": "查詢本裝置的應用使用時長，需要授予使用情況存取權限。",
+  "chatMessageWidgetScreenTimeTotal": "總螢幕使用時間",
+  "chatMessageWidgetScreenTimePermissionRequired": "未授予使用記錄存取權限，請在系統設定中開啟後重試。",
+  "assistantEditLocalToolCalendarQueryTitle": "查詢日曆",
+  "assistantEditLocalToolCalendarQuerySubtitle": "讀取本裝置上的日曆行程，需要授予日曆權限。",
+  "assistantEditLocalToolCalendarCreateTitle": "建立行程",
+  "assistantEditLocalToolCalendarCreateSubtitle": "在你確認後於本裝置建立日曆行程，需要授予日曆權限。",
   "assistantEditLocalToolLocationTitle": "目前位置",
   "assistantEditLocalToolLocationSubtitle": "讀取本裝置的一次性位置，需要授予定位權限。",
   "assistantEditLocalToolWeatherTitle": "天氣",
@@ -2415,7 +2435,9 @@
   "memorySettingsInjectionMaxItemsOption": "{n}",
   "@memorySettingsInjectionMaxItemsOption": {
     "placeholders": {
-      "n": {"type": "int"}
+      "n": {
+        "type": "int"
+      }
     }
   },
   "memorySettingsInjectionMaxItemsCustomButton": "自訂",
@@ -2466,7 +2488,9 @@
   "memoryEntryScopeAssistantNamed": "{name}",
   "@memoryEntryScopeAssistantNamed": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "memoryEntrySourceManual": "手動",
@@ -2478,7 +2502,9 @@
   "memoryEntryUpdatedAt": "更新於 {date}",
   "@memoryEntryUpdatedAt": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "memoryEntryActionEdit": "編輯",
@@ -2493,7 +2519,9 @@
   "memoryEntryBatchDeleteConfirmTitle": "刪除 {count} 條記憶？",
   "@memoryEntryBatchDeleteConfirmTitle": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "memoryEntryBatchDeleteConfirmContent": "所選記憶將被永久刪除。",
@@ -2520,7 +2548,9 @@
   "memoryOrphanBanner": "有 {count} 條孤兒助手記憶（助手已刪除）",
   "@memoryOrphanBanner": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "memoryOrphanCleanupButton": "清理",
@@ -2528,7 +2558,9 @@
   "memoryOrphanConfirmContent": "將永久刪除 {count} 條所屬助手已不存在的記憶。",
   "@memoryOrphanConfirmContent": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "memoryOrganizeButton": "整理記憶",
@@ -2538,26 +2570,34 @@
   "memoryOrganizeStatusLast": "上次整理：{when}",
   "@memoryOrganizeStatusLast": {
     "placeholders": {
-      "when": {"type": "String"}
+      "when": {
+        "type": "String"
+      }
     }
   },
   "memoryOrganizeStatusExtracted": "擷取 {count} 條",
   "@memoryOrganizeStatusExtracted": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "memoryOrganizeStatusSkipped": "無需記憶",
   "memoryOrganizeStatusFailed": "失敗：{reason}",
   "@memoryOrganizeStatusFailed": {
     "placeholders": {
-      "reason": {"type": "String"}
+      "reason": {
+        "type": "String"
+      }
     }
   },
   "memoryOrganizeStatusSkippedReason": "已跳過：{reason}",
   "@memoryOrganizeStatusSkippedReason": {
     "placeholders": {
-      "reason": {"type": "String"}
+      "reason": {
+        "type": "String"
+      }
     }
   },
   "memoryOutcomeTemporaryConversation": "臨時對話不會寫入記憶",
@@ -2589,19 +2629,25 @@
   "memoryOrganizeMinutesAgo": "{n} 分鐘前",
   "@memoryOrganizeMinutesAgo": {
     "placeholders": {
-      "n": {"type": "int"}
+      "n": {
+        "type": "int"
+      }
     }
   },
   "memoryOrganizeHoursAgo": "{n} 小時前",
   "@memoryOrganizeHoursAgo": {
     "placeholders": {
-      "n": {"type": "int"}
+      "n": {
+        "type": "int"
+      }
     }
   },
   "memoryOrganizeDaysAgo": "{n} 天前",
   "@memoryOrganizeDaysAgo": {
     "placeholders": {
-      "n": {"type": "int"}
+      "n": {
+        "type": "int"
+      }
     }
   },
   "memoryModelMissingNotice": "需要先在 設定 → 記憶 中選擇記憶處理模型。",
@@ -2634,7 +2680,9 @@
   "legacyMemoryAssistantHeader": "助手：{name}",
   "@legacyMemoryAssistantHeader": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "legacyMemorySearchHint": "搜尋舊版記憶",
@@ -2643,7 +2691,9 @@
   "legacyMemoryMigrationSubtitle": "使用模型整理並分類 {count} 條舊版記憶，原資料不會改變。",
   "@legacyMemoryMigrationSubtitle": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "legacyMemoryMigrationModel": "遷移模型",
@@ -2661,16 +2711,24 @@
   "legacyMemoryMigrationProgress": "{current} / {total}",
   "@legacyMemoryMigrationProgress": {
     "placeholders": {
-      "current": {"type": "int"},
-      "total": {"type": "int"}
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "legacyMemoryMigrationComplete": "遷移完成",
   "legacyMemoryMigrationResult": "已遷移 {created} 條 · 略過已有 {skipped} 條",
   "@legacyMemoryMigrationResult": {
     "placeholders": {
-      "created": {"type": "int"},
-      "skipped": {"type": "int"}
+      "created": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
     }
   },
   "legacyMemoryMigrationFailed": "遷移已停止。可以重試，已儲存的記憶會自動略過。",
@@ -2685,9 +2743,15 @@
   "legacyMemoryMigrationPartial": "已遷移 {created} · 略過 {skipped} · 失敗 {failed}",
   "@legacyMemoryMigrationPartial": {
     "placeholders": {
-      "created": {"type": "int"},
-      "skipped": {"type": "int"},
-      "failed": {"type": "int"}
+      "created": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
     }
   },
   "legacyMemoryMigrationContinue": "繼續遷移",
@@ -2697,7 +2761,9 @@
   "legacyMemoryMigrationErrorOther": "遷移失敗：{message}",
   "@legacyMemoryMigrationErrorOther": {
     "placeholders": {
-      "message": {"type": "String"}
+      "message": {
+        "type": "String"
+      }
     }
   },
   "legacyMemoryModeTitle": "使用舊版記憶",
@@ -2742,7 +2808,9 @@
   "assistantEditOrganizeFrequencyOption": "每 {n} 輪",
   "@assistantEditOrganizeFrequencyOption": {
     "placeholders": {
-      "n": {"type": "int"}
+      "n": {
+        "type": "int"
+      }
     }
   },
   "assistantEditOrganizeFrequencyCustomButton": "自訂",
@@ -2980,7 +3048,13 @@
   "migrationChatsExportDegradedNote": "chats.json 匯出因出錯而被跳過。備份 ZIP 仍包含原始 Hive 檔案，完整聊天記錄未遺失。",
   "timelineJumpToLatest": "跳到最新",
   "largeContentShowMore": "再顯示 {count} 項",
-  "@largeContentShowMore": {"placeholders": {"count": {"type": "int"}}},
+  "@largeContentShowMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "largeContentCollapse": "收起",
   "imageSettingsPageTitle": "圖片處理",
   "imageSettingsPageEditSectionTitle": "編輯",
@@ -3069,13 +3143,43 @@
   "memoryTraceAfter": "變更後",
   "memoryTraceEmptyValue": "（空）",
   "memoryTraceStepsCount": "{count} 個步驟",
-  "@memoryTraceStepsCount": {"placeholders": {"count": {"type": "int"}}},
+  "@memoryTraceStepsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "memoryTraceMutationsCount": "{count} 項變更",
-  "@memoryTraceMutationsCount": {"placeholders": {"count": {"type": "int"}}},
+  "@memoryTraceMutationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "memoryTraceRepeatCount": "重複 {count} 次",
-  "@memoryTraceRepeatCount": {"placeholders": {"count": {"type": "int"}}},
+  "@memoryTraceRepeatCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "memoryTraceWindowValue": "{size} 則訊息 · #{start}–#{end}",
-  "@memoryTraceWindowValue": {"placeholders": {"size": {"type": "int"}, "start": {"type": "int"}, "end": {"type": "int"}}},
+  "@memoryTraceWindowValue": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      },
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
   "memoryTraceShowMore": "展開全文",
   "memoryTraceShowLess": "收合",
   "messageStyleSettingsPageTitle": "訊息樣式",
@@ -4095,5 +4199,55 @@
   "scheduledTasksChatBusy": "此聊天正在產生回答，本次任務已略過。",
   "scheduledTasksDesktopEmpty": "尚無排程任務",
   "scheduledTasksDesktopReliability": "僅在 Kelivo 執行時運作，最小化或常駐系統匣時也會繼續。結束或電腦休眠期間錯過的任務不會補執行，也不會自動啟動應用程式。",
-  "scheduledTasksDesktopExecutionDetail": "結果儲存在對話中，可從任務的執行記錄開啟。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。"
+  "scheduledTasksDesktopExecutionDetail": "結果儲存在對話中，可從任務的執行記錄開啟。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。",
+  "modelDetailSheetBuiltinToolsUnsupportedHint": "目前供應商不支援這些內建工具。",
+  "modelDetailSheetOpenrouterWebFetchTool": "網頁擷取",
+  "displaySettingsPageUiFontSizeTitle": "介面字體大小",
+  "displaySettingsPageInputFontSizeTitle": "輸入框字體大小",
+  "displaySettingsPageMarkdownBlockquoteSameSizeTitle": "引用文字與正文同大",
+  "displaySettingsPageMarkdownBlockquoteSameSizeSubtitle": "開啟後 Markdown 引用（>）內的文字不再被額外放大",
+  "assistantEditSkillsTab": "技能",
+  "assistantEditSkillsEmptyMessage": "還沒有綁定技能。點擊下方管理技能。",
+  "assistantEditManageSkillsButton": "管理技能",
+  "skillsAddTooltip": "新增技能",
+  "skillsEmptyMessage": "還沒有技能，匯入或新增一個吧。",
+  "skillsImportButton": "匯入",
+  "skillsDeleteAction": "刪除",
+  "skillsMultiSelect": "多選",
+  "skillsSelectAll": "全選",
+  "skillsSelectNone": "取消全選",
+  "skillsDeleteSelected": "刪除（{count}）",
+  "skillsDeleteSelectedConfirm": "確定要刪除選中的 {count} 個技能嗎？此操作無法復原。",
+  "skillsDeleteConfirmMessage": "確定要刪除技能「{name}」嗎？此操作無法復原。",
+  "skillsSaveButton": "儲存",
+  "skillsNameLabel": "名稱",
+  "skillsDescriptionLabel": "描述",
+  "skillsTriggerKeywordsLabel": "觸發關鍵字",
+  "skillsTriggerKeywordsHint": "用逗號分隔，命中後自動啟用該技能",
+  "skillsContentHint": "技能內容（注入到對話的提示詞）",
+  "skillsNoValidImported": "沒有可匯入的技能",
+  "skillsImportFailed": "匯入失敗：{error}",
+  "@skillsImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsImportedCount": "已匯入 {count} 個技能",
+  "@skillsImportedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "skillsTriggersLine": "觸發關鍵字：{keywords}",
+  "@skillsTriggersLine": {
+    "placeholders": {
+      "keywords": {
+        "type": "String"
+      }
+    }
+  }
 }

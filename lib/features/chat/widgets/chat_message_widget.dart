@@ -3756,6 +3756,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.message.role == 'system') return const SizedBox.shrink();
     final isUser = widget.message.role == 'user';
     final palette = computeChatSurfaceForegroundPalette(
       context,

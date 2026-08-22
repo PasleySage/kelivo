@@ -8,6 +8,7 @@ const String assistantEditTabSkills = 'skills';
 const String assistantEditTabQuickPhrase = 'quickPhrase';
 const String assistantEditTabCustom = 'custom';
 const String assistantEditTabRegex = 'regex';
+const String assistantEditTabSkills = 'skills';
 
 const List<String> defaultAssistantEditTabIds = [
   assistantEditTabBasic,
@@ -47,7 +48,15 @@ List<String> visibleAssistantEditTabIds({
     savedOrder: savedOrder,
     defaultOrder: defaultOrder,
   );
-  final visible = ordered.where((id) => !hiddenIds.contains(id)).toList();
+  final knownIds = savedOrder.toSet();
+  final visible = ordered.where((id) {
+    // New tabs that did not exist in the user's saved order should never be
+    // hidden by stale hidden-id data (e.g. restored from a backup that did not
+    // yet know about them). Only ids the user has actually configured can be
+    // hidden.
+    if (!knownIds.contains(id)) return true;
+    return !hiddenIds.contains(id);
+  }).toList();
   return List.unmodifiable(visible.isNotEmpty ? visible : [ordered.first]);
 }
 

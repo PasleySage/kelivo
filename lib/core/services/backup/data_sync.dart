@@ -289,6 +289,13 @@ class DataSync {
     'workspaces',
     'sessions',
   ];
+  /// File-name prefix for backups created by this build (skill-enabled
+  /// kelivomeow), so its zips are distinguishable from stock Kelivo's
+  /// `kelivo_backup_*` at a glance. Restore does not depend on the file name,
+  /// so old stock backups keep working; the legacy prefix is still matched for
+  /// temp-file cleanup and mtime fallback parsing.
+  static const _backupNamePrefix = 'kelivo_backup_skill_';
+  static const _legacyBackupNamePrefix = 'kelivo_backup_';
   // A 16 MiB metadata cap keeps manifest parsing and entry metadata bounded.
   static const _maxManifestBytes = 16 * 1024 * 1024;
   // Settings are parsed as one JSON object, so keep their decoded input bound.
@@ -620,11 +627,11 @@ class DataSync {
     final tmp = await _ensureTempDir();
     await _cleanupPreviousBackupTempFiles(tmp);
     final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
-    final workDir = Directory(p.join(tmp.path, 'kelivo_backup_$timestamp'));
+    final workDir = Directory(p.join(tmp.path, '$_backupNamePrefix$timestamp'));
     await workDir.create(recursive: true);
     registerLiveTempPath(workDir.path);
 
-    final outPath = p.join(workDir.path, 'kelivo_backup_$timestamp.zip');
+    final outPath = p.join(workDir.path, '$_backupNamePrefix$timestamp.zip');
     final outFile = File(outPath);
     if (await outFile.exists()) await outFile.delete();
 
@@ -921,9 +928,16 @@ class DataSync {
   /// Parses the creation time out of a `kelivo_backup_<iso-with-dashes>` name
   /// (see [prepareBackupFile], which replaces ':' with '-'). Returns null for
   /// names that do not carry a timestamp.
+
   static DateTime? _backupTempTimestampFromName(String name) {
-    const prefix = 'kelivo_backup_';
-    if (!name.startsWith(prefix)) return null;
+    String? prefix;
+    if (name.startsWith(_backupNamePrefix)) {
+      prefix = _backupNamePrefix;
+    } else if (name.startsWith(_legacyBackupNamePrefix)) {
+      prefix = _legacyBackupNamePrefix;
+    } else {
+      return null;
+    }
     var core = name.substring(prefix.length);
     if (core.endsWith('.zip')) {
       core = core.substring(0, core.length - 4);
@@ -959,10 +973,12 @@ class DataSync {
       await for (final ent in tmp.list(followLinks: false)) {
         if (_isLiveTempPath(ent.path)) continue;
         final name = p.basename(ent.path);
-        if (ent is Directory && name.startsWith('kelivo_backup_')) {
+        final isBackupName = name.startsWith(_backupNamePrefix) ||
+            name.startsWith(_legacyBackupNamePrefix);
+        if (ent is Directory && isBackupName) {
           if (await isStale(ent, name)) await _deleteDirectoryQuietly(ent);
         } else if (ent is File &&
-            ((name.startsWith('kelivo_backup_') && name.endsWith('.zip')) ||
+            ((isBackupName && name.endsWith('.zip')) ||
                 name == '_bk_settings.json' ||
                 name == '_bk_chats.json' ||
                 name == '_bk_manifest.json' ||
@@ -1025,6 +1041,7 @@ class DataSync {
     required Map<String, List<String>> businessEntityRowIds,
     required Map<String, String> assetRootPaths,
     BackupIsolateContext? ctx,
+    required String skillsDirPath,
   }) {
     if (includeChats != (databasePath != null && snapshotInfo != null)) {
       throw StateError('backup_database_component');
@@ -1656,10 +1673,12 @@ class DataSync {
           ? disp.first.trim()
           : Uri.parse(href).pathSegments.last;
 
-      // If mtime is null, try to extract from filename (format: kelivo_backup_2025-01-19T12-34-56.123456.zip)
+      // If mtime is null, try to extract from filename. Both this build's
+      // (kelivo_backup_skill_...) and stock Kelivo's (kelivo_backup_...)
+      // formats are matched so remote lists keep working for either.
       if (mtime == null) {
         final match = RegExp(
-          r'kelivo_backup_(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d+)\.zip',
+          r'(?:kelivo_backup_skill_|kelivo_backup_)(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.\d+)\.zip',
         ).firstMatch(name);
         if (match != null) {
           try {
@@ -2395,6 +2414,10 @@ class DataSync {
     }
     final appData = await AppDirectories.getAppDataDirectory();
     return Directory(p.join(appData.path, name));
+  }
+
+  Future<Directory> _getSkillsDir() async {
+    return await AppDirectories.getSkillsDirectory();
   }
 
   Future<void> _copyRestoredFile(File source, File target) async {

@@ -579,6 +579,26 @@ void main() {
   });
 
   group('MessageBuilderService.buildApiMessages', () {
+    test('preserves system role messages from conversation history', () {
+      final service = MessageBuilderService(
+        chatService: _FakeChatService(const {}),
+        contextProvider: _FakeBuildContext(),
+      );
+      final apiMessages = service.buildApiMessages(
+        messages: [
+          _message(id: 's1', role: 'system', content: 'You are 瑟琳.'),
+          _message(id: 'u1', role: 'user', content: 'hello'),
+        ],
+        versionSelections: const {},
+        currentConversation: Conversation(title: 'test'),
+      );
+
+      expect(apiMessages, hasLength(2));
+      expect(apiMessages.first['role'], 'system');
+      expect(apiMessages.first['content'], 'You are 瑟琳.');
+      expect(apiMessages.last['role'], 'user');
+    });
+
     test('有工具调用时会把 reasoning_content 回填到 assistant tool 消息', () {
       final service = MessageBuilderService(
         chatService: _FakeChatService({

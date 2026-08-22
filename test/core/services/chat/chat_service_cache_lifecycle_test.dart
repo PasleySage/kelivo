@@ -425,6 +425,35 @@ void main() {
       expect(await service.generateTitleSource('missing'), isEmpty);
       expect(await service.generateTitleSource(conversation.id), isEmpty);
     });
+
+    test('excludes system-role messages (skill injection) from the source',
+        () async {
+      final service = createService();
+      await service.init();
+      final conversation = await service.createConversation(title: 'Chat');
+      await service.addMessage(
+        conversationId: conversation.id,
+        role: 'system',
+        content: '<SKILL name="shalom-novel">immense roleplay content</SKILL>',
+      );
+      await service.addMessage(
+        conversationId: conversation.id,
+        role: 'user',
+        content: 'hi',
+      );
+      await service.addMessage(
+        conversationId: conversation.id,
+        role: 'assistant',
+        content: 'hello there',
+      );
+      await service.loadMessages(conversation.id);
+
+      final source = await service.generateTitleSource(conversation.id);
+
+      expect(source, 'User: hi\n\nAssistant: hello there');
+      expect(source, isNot(contains('SKILL')));
+      expect(source, isNot(contains('shalom')));
+    });
   });
 
   group('getMessageIds', () {

@@ -1350,6 +1350,10 @@ class ChatService extends ChangeNotifier {
 
     final joined = source
         .where((message) => message.content.isNotEmpty)
+        // System-role messages carry injected skill/system prompts, not user
+        // speech; including them would pollute the title source with skill
+        // content and inflate the title request (observed in request logs).
+        .where((message) => message.role != 'system')
         .map(
           (message) =>
               '${message.role == 'assistant' ? 'Assistant' : 'User'}: '

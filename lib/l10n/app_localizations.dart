@@ -62,8 +62,7 @@ import 'app_localizations_zh.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,20 +82,19 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('zh'),
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
-    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
   ];
 
   /// No description provided for @helloWorld.
@@ -4346,13 +4343,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Summarize {summarized} chars, keep {kept} chars verbatim → about {minTokens}–{maxTokens} tokens (original about {totalTokens} tokens)'**
-  String compressContextEstimatePreview(
-    int summarized,
-    int kept,
-    int minTokens,
-    int maxTokens,
-    int totalTokens,
-  );
+  String compressContextEstimatePreview(int summarized, int kept, int minTokens, int maxTokens, int totalTokens);
 
   /// No description provided for @bottomToolsSheetLearningMode.
   ///
@@ -6254,10 +6245,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Variables: previous summary: {previousSummaryVar}, new messages: {userMessagesVar}'**
-  String defaultModelPageSummaryVars(
-    String previousSummaryVar,
-    String userMessagesVar,
-  );
+  String defaultModelPageSummaryVars(String previousSummaryVar, String userMessagesVar);
 
   /// No description provided for @defaultModelPageSuggestionVars.
   ///
@@ -17117,11 +17105,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{downloaded} / {total} MB ({percent}%)'**
-  String workspaceEnvDownloadProgress(
-    String downloaded,
-    String total,
-    int percent,
-  );
+  String workspaceEnvDownloadProgress(String downloaded, String total, int percent);
 
   /// No description provided for @workspaceEnvMirrorsFailed.
   ///
@@ -18471,11 +18455,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{downloaded} / {total} · {phase}'**
-  String workspaceEnvDownloadLine(
-    String downloaded,
-    String total,
-    String phase,
-  );
+  String workspaceEnvDownloadLine(String downloaded, String total, String phase);
 
   /// No description provided for @workspaceEnvNativeUnsandboxed.
   ///
@@ -20774,10 +20754,183 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Results are saved in chats. Open them from the task’s run history. Runs stop after 10 minutes or when user input or tool approval is needed.'**
   String get scheduledTasksDesktopExecutionDetail;
+
+  /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blockquote same size as body'**
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle;
+
+  /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Markdown blockquote (>) text the same size as body text'**
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle;
+
+  /// No description provided for @modelDetailSheetBuiltinToolsUnsupportedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Current provider does not support these built-in tools.'**
+  String get modelDetailSheetBuiltinToolsUnsupportedHint;
+
+  /// No description provided for @modelDetailSheetOpenrouterWebFetchTool.
+  ///
+  /// In en, this message translates to:
+  /// **'Web Fetch'**
+  String get modelDetailSheetOpenrouterWebFetchTool;
+
+  /// No description provided for @displaySettingsPageUiFontSizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'UI Font Size'**
+  String get displaySettingsPageUiFontSizeTitle;
+
+  /// No description provided for @displaySettingsPageInputFontSizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Input Box Font Size'**
+  String get displaySettingsPageInputFontSizeTitle;
+
+  /// No description provided for @assistantEditSkillsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get assistantEditSkillsTab;
+
+  /// No description provided for @assistantEditSkillsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No skills bound yet. Tap manage skills below.'**
+  String get assistantEditSkillsEmptyMessage;
+
+  /// No description provided for @assistantEditManageSkillsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage skills'**
+  String get assistantEditManageSkillsButton;
+
+  /// No description provided for @skillsAddTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add skill'**
+  String get skillsAddTooltip;
+
+  /// No description provided for @skillsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No skills yet. Import or add one.'**
+  String get skillsEmptyMessage;
+
+  /// No description provided for @skillsImportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get skillsImportButton;
+
+  /// No description provided for @skillsDeleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get skillsDeleteAction;
+
+  /// No description provided for @skillsMultiSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-select'**
+  String get skillsMultiSelect;
+
+  /// No description provided for @skillsSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get skillsSelectAll;
+
+  /// No description provided for @skillsSelectNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect all'**
+  String get skillsSelectNone;
+
+  /// No description provided for @skillsDeleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ({count})'**
+  String skillsDeleteSelected(Object count);
+
+  /// No description provided for @skillsDeleteSelectedConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {count} selected skills? This cannot be undone.'**
+  String skillsDeleteSelectedConfirm(Object count);
+
+  /// No description provided for @skillsDeleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete skill \"{name}\"? This cannot be undone.'**
+  String skillsDeleteConfirmMessage(Object name);
+
+  /// No description provided for @skillsSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get skillsSaveButton;
+
+  /// No description provided for @skillsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get skillsNameLabel;
+
+  /// No description provided for @skillsDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get skillsDescriptionLabel;
+
+  /// No description provided for @skillsTriggerKeywordsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Trigger keywords'**
+  String get skillsTriggerKeywordsLabel;
+
+  /// No description provided for @skillsTriggerKeywordsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Comma-separated; auto-activates this skill when matched'**
+  String get skillsTriggerKeywordsHint;
+
+  /// No description provided for @skillsContentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Skill content (prompt injected into the conversation)'**
+  String get skillsContentHint;
+
+  /// No description provided for @skillsNoValidImported.
+  ///
+  /// In en, this message translates to:
+  /// **'No valid skills to import'**
+  String get skillsNoValidImported;
+
+  /// No description provided for @skillsImportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed: {error}'**
+  String skillsImportFailed(String error);
+
+  /// No description provided for @skillsImportedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported {count} skills'**
+  String skillsImportedCount(int count);
+
+  /// No description provided for @skillsTriggersLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Trigger keywords: {keywords}'**
+  String skillsTriggersLine(String keywords);
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -20786,40 +20939,35 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'zh'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
   // Lookup logic when language+script codes are specified.
   switch (locale.languageCode) {
-    case 'zh':
-      {
-        switch (locale.scriptCode) {
-          case 'Hans':
-            return AppLocalizationsZhHans();
-          case 'Hant':
-            return AppLocalizationsZhHant();
-        }
-        break;
-      }
+    case 'zh': {
+  switch (locale.scriptCode) {
+    case 'Hans': return AppLocalizationsZhHans();
+case 'Hant': return AppLocalizationsZhHant();
+   }
+  break;
+   }
   }
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'zh':
-      return AppLocalizationsZh();
+    case 'en': return AppLocalizationsEn();
+    case 'zh': return AppLocalizationsZh();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

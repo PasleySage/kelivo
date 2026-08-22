@@ -351,7 +351,11 @@ class MessageBuilderService {
           !_hasUsableAttachmentPart(m)) {
         continue;
       }
-      final role = m.role == 'assistant' ? 'assistant' : 'user';
+      final role = switch (m.role) {
+        'assistant' => 'assistant',
+        'system' => 'system',
+        _ => 'user',
+      };
       final message = <String, dynamic>{'role': role, 'content': content};
       if (role == 'user') {
         message[internalRevisionIdKey] = m.id;

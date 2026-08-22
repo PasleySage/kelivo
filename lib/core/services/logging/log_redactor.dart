@@ -76,7 +76,7 @@ class LogRedactor {
     r'("([^"]+)"\s*:\s*")([^"]*)(")',
   );
   static final RegExp _knownPrefixRe = RegExp(
-    r'(?<![A-Za-z0-9_\-])(?:sk-ant-|sk-|AIza|xai-|gsk_|hf_|AKIA)[A-Za-z0-9_\-]+',
+    r'(?<![A-Za-z0-9_\-])(?:sk-ant-|sk-|sk_live_|sk_test_|rk_live_|AIza|xai-|gsk_|hf_|ghp_|gho_|ghu_|ghs_|github_pat_|glpat-|xox[baprs]-|AKIA)[A-Za-z0-9_\-]+',
   );
   static final RegExp _camelCaseRe = RegExp(r'(?<=[a-z0-9])(?=[A-Z])');
   static final RegExp _nameSepRe = RegExp(r'[-_.\s]+');

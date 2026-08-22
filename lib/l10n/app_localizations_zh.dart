@@ -142,8 +142,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get storageSpaceSubDisplacedDatabases => '自动重建前保留的数据库';
 
   @override
-  String get storageSpaceClearDisplacedDatabasesConfirmMessage =>
-      '确定删除这些保留的旧数据库吗？它们是 Kelivo 重建数据库时留下的，可能是那些聊天记录和设置仅存的一份。删除后无法恢复。';
+  String get storageSpaceClearDisplacedDatabasesConfirmMessage => '确定删除这些保留的旧数据库吗？它们是 Kelivo 重建数据库时留下的，可能是那些聊天记录和设置仅存的一份。删除后无法恢复。';
 
   @override
   String get storageSpaceRestoreTracesHint => '恢复完成后保留的旧数据快照。清理不会影响当前应用数据。';
@@ -155,8 +154,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get storageSpaceClearDisplacedDatabasesButton => '删除保留的旧数据库';
 
   @override
-  String get storageSpaceClearRestoreTracesConfirmMessage =>
-      '确定清理已完成恢复留下的旧数据快照吗？当前数据库、设置和文件不会受到影响。';
+  String get storageSpaceClearRestoreTracesConfirmMessage => '确定清理已完成恢复留下的旧数据快照吗？当前数据库、设置和文件不会受到影响。';
 
   @override
   String get storageSpaceSubCompletedRestoreRuns => '已完成的恢复快照';
@@ -177,8 +175,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get storageSpaceSafeToClearHint => '可安全清理，不影响聊天记录。';
 
   @override
-  String get storageSpaceLegacyChatDataHint =>
-      '这是迁移到 SQLite 前保留的 Hive 旧文件。清理后不会删除当前聊天记录。';
+  String get storageSpaceLegacyChatDataHint => '这是迁移到 SQLite 前保留的 Hive 旧文件。清理后不会删除当前聊天记录。';
 
   @override
   String get storageSpaceNotSafeToClearHint => '可能影响聊天记录，请谨慎删除。';
@@ -278,8 +275,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get storageSpaceClearLegacyChatDataConfirmMessage =>
-      '确定清理保留的旧聊天文件吗？当前 SQLite 聊天记录不会受到影响。';
+  String get storageSpaceClearLegacyChatDataConfirmMessage => '确定清理保留的旧聊天文件吗？当前 SQLite 聊天记录不会受到影响。';
 
   @override
   String get storageSpaceViewLogsButton => '查看日志';
@@ -698,8 +694,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePagePleaseSelectModel => '请先选择模型';
 
   @override
-  String get homePageAudioAttachmentUnsupported =>
-      '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
+  String get homePageAudioAttachmentUnsupported => '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
 
   @override
   String get homePagePleaseSetupTranslateModel => '请先设置翻译模型';
@@ -925,8 +920,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditContextMessagesTitle => '上下文消息数量';
 
   @override
-  String get assistantEditContextMessagesDescription =>
-      '多少历史消息会被当作上下文发送给模型，超过数量会忽略，只保留最近 N 条';
+  String get assistantEditContextMessagesDescription => '多少历史消息会被当作上下文发送给模型，超过数量会忽略，只保留最近 N 条';
 
   @override
   String get assistantEditStreamOutputTitle => '流式输出';
@@ -1061,8 +1055,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditImageUrlDialogTitle => '输入图片链接';
 
   @override
-  String get assistantEditImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get assistantEditImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get assistantEditImageUrlDialogCancel => '取消';
@@ -1259,22 +1252,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditPreviewTitle => '预览';
 
   @override
-  String get assistantEditPromptTimeVarWarning =>
-      '在系统提示词中使用时间变量会让每一轮请求的开头都不同，Prompt 缓存无法命中，费用和首字延迟都会上升。需要让模型知道当前时间时，请改用下方的「追加当前时间」开关。';
+  String get assistantEditPromptTimeVarWarning => '在系统提示词中使用时间变量会让每一轮请求的开头都不同，Prompt 缓存无法命中，费用和首字延迟都会上升。需要让模型知道当前时间时，请改用下方的「追加当前时间」开关。';
 
   @override
   String get assistantEditPromptIso8601Title => '使用 ISO 8601 格式';
 
   @override
-  String get assistantEditPromptIso8601Subtitle =>
-      '包含时区偏移，例如 2026-08-08T14:30:05+08:00';
+  String get assistantEditPromptIso8601Subtitle => '包含时区偏移，例如 2026-08-08T14:30:05+08:00';
 
   @override
   String get assistantEditPromptAppendTimeTitle => '追加当前时间';
 
   @override
-  String get assistantEditPromptAppendTimeSubtitle =>
-      '在每条用户消息末尾追加发送时刻。时间在请求末尾，不影响 Prompt 缓存。';
+  String get assistantEditPromptAppendTimeSubtitle => '在每条用户消息末尾追加发送时刻。时间在请求末尾，不影响 Prompt 缓存。';
 
   @override
   String get assistantEditPromptAppendTimeInfoTitle => '追加时间格式';
@@ -1533,15 +1523,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backupRestoreFailureTitle => '恢复需要处理';
 
   @override
-  String get backupRestoreFailureContent =>
-      'Kelivo 无法验证完整的原有或新数据，因此未打开聊天数据。请关闭 Kelivo 后重试；若问题反复出现，请保留诊断码以便支持人员排查。';
+  String get backupRestoreFailureContent => 'Kelivo 无法验证完整的原有或新数据，因此未打开聊天数据。请关闭 Kelivo 后重试；若问题反复出现，请保留诊断码以便支持人员排查。';
 
   @override
   String get backupRestoreBusinessLeaseUnavailableTitle => 'Kelivo 已在运行';
 
   @override
-  String get backupRestoreBusinessLeaseUnavailableContent =>
-      'Kelivo 的数据仍被另一个应用进程占用。请关闭其他 Kelivo 窗口后重新启动；当前进程尚未打开聊天数据。';
+  String get backupRestoreBusinessLeaseUnavailableContent => 'Kelivo 的数据仍被另一个应用进程占用。请关闭其他 Kelivo 窗口后重新启动；当前进程尚未打开聊天数据。';
 
   @override
   String get restoreProgressTitle => '正在恢复备份';
@@ -1612,8 +1600,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupRecoveryResetDialogTitle => '重置全部数据？';
 
   @override
-  String get startupRecoveryResetDialogContent =>
-      '这将永久删除本设备上 Kelivo 的数据库并重新开始。如果之后可能还需要这些数据，请先导出一份副本。此操作无法撤销。';
+  String get startupRecoveryResetDialogContent => '这将永久删除本设备上 Kelivo 的数据库并重新开始。如果之后可能还需要这些数据，请先导出一份副本。此操作无法撤销。';
 
   @override
   String get startupRecoveryResetDialogConfirm => '重置并重启';
@@ -1688,8 +1675,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupRecoverySectionDataTitle => '你的数据';
 
   @override
-  String get startupRecoverySectionDataBody =>
-      '目前没有任何数据被删除。在尝试下面的操作前，先把副本保存到安全的地方。';
+  String get startupRecoverySectionDataBody => '目前没有任何数据被删除。在尝试下面的操作前，先把副本保存到安全的地方。';
 
   @override
   String startupRecoveryExportSavedTo(String path) {
@@ -1700,8 +1686,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupRecoverySectionRepairTitle => '诊断与修复';
 
   @override
-  String get startupRecoverySectionRepairBody =>
-      '完整性检查只读取数据库。修复会清理上次更新中断留下的元数据并重新启动，不会删除聊天记录。';
+  String get startupRecoverySectionRepairBody => '完整性检查只读取数据库。修复会清理上次更新中断留下的元数据并重新启动，不会删除聊天记录。';
 
   @override
   String get startupRecoveryIntegrityButton => '检查数据库完整性';
@@ -1724,8 +1709,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupRecoveryDangerZone => '危险操作';
 
   @override
-  String get startupRecoveryDangerBody =>
-      '重置会永久删除本设备上 Kelivo 的数据库。请先导出数据副本——重置同时会销毁排查根本问题所需的证据。';
+  String get startupRecoveryDangerBody => '重置会永久删除本设备上 Kelivo 的数据库。请先导出数据副本——重置同时会销毁排查根本问题所需的证据。';
 
   @override
   String get startupRecoveryResetAcknowledge => '我已导出副本，或不需要这些数据。';
@@ -1734,19 +1718,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupDatabaseUpdateRequiredTitle => '请更新 Kelivo 以继续';
 
   @override
-  String get startupDatabaseUpdateRequiredContent =>
-      '本设备上的聊天数据库由更新版本的 Kelivo 创建，当前版本无法打开。数据未被改动。请安装最新版 Kelivo 后重新打开。';
+  String get startupDatabaseUpdateRequiredContent => '本设备上的聊天数据库由更新版本的 Kelivo 创建，当前版本无法打开。数据未被改动。请安装最新版 Kelivo 后重新打开。';
 
   @override
   String get startupDatabaseUpdateRequiredDowngradeTitle => '若要改用旧版';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeIntro =>
-      '当前版本打不开本机这份数据库。若你必须留在旧版，请按下面的步骤处理；在备份完成之前，不要删除或覆盖这里的数据。';
+  String get startupDatabaseUpdateRequiredDowngradeIntro => '当前版本打不开本机这份数据库。若你必须留在旧版，请按下面的步骤处理；在备份完成之前，不要删除或覆盖这里的数据。';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep1 =>
-      '先安装并打开最新版 Kelivo，在「设置 → 数据备份」导出一份备份文件。';
+  String get startupDatabaseUpdateRequiredDowngradeStep1 => '先安装并打开最新版 Kelivo，在「设置 → 数据备份」导出一份备份文件。';
 
   @override
   String startupDatabaseUpdateRequiredDowngradeStep2(String url) {
@@ -1754,8 +1735,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep3 =>
-      '确认本机数据已经另外备份好之后，再安装旧版，并导入转换后的备份。';
+  String get startupDatabaseUpdateRequiredDowngradeStep3 => '确认本机数据已经另外备份好之后，再安装旧版，并导入转换后的备份。';
 
   @override
   String get startupDatabaseUpdateRequiredOpenTool => '打开转换工具';
@@ -1780,8 +1760,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backupPageSelectImportMode => '选择导入模式';
 
   @override
-  String get backupPageSelectImportModeDescription =>
-      '请选择恢复方式。聊天和文件开关决定本次恢复的组件。';
+  String get backupPageSelectImportModeDescription => '请选择恢复方式。聊天和文件开关决定本次恢复的组件。';
 
   @override
   String get backupPageOverwriteMode => '完全覆盖';
@@ -1793,8 +1772,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backupPageMergeMode => '合并';
 
   @override
-  String get backupPageMergeModeDescription =>
-      '保留本地数据并加入备份数据；相同会话会跳过，冲突会话会重新分配 ID。';
+  String get backupPageMergeModeDescription => '保留本地数据并加入备份数据；相同会话会跳过，冲突会话会重新分配 ID。';
 
   @override
   String get backupPageRestore => '恢复';
@@ -1814,8 +1792,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backupPageForwardCompatCancel => '取消';
 
   @override
-  String get backupPageSchemaTooNewMessage =>
-      '这份备份由更新版本的 Kelivo 创建，当前版本无法读取。请先升级 Kelivo 后重试。';
+  String get backupPageSchemaTooNewMessage => '这份备份由更新版本的 Kelivo 创建，当前版本无法读取。请先升级 Kelivo 后重试。';
 
   @override
   String get backupPageBackupUploaded => '已上传备份';
@@ -2086,8 +2063,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatHistoryPageDeleteAllDialogTitle => '删除未置顶对话';
 
   @override
-  String get chatHistoryPageDeleteAllDialogContent =>
-      '确定要删除所有未置顶的对话吗？已置顶的将会保留。';
+  String get chatHistoryPageDeleteAllDialogContent => '确定要删除所有未置顶的对话吗？已置顶的将会保留。';
 
   @override
   String get chatHistoryPageCancel => '取消';
@@ -2228,13 +2204,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get compressContextKeepAllMessages => '保留条数覆盖全部消息，无内容可压缩';
 
   @override
-  String compressContextEstimatePreview(
-    int summarized,
-    int kept,
-    int minTokens,
-    int maxTokens,
-    int totalTokens,
-  ) {
+  String compressContextEstimatePreview(int summarized, int kept, int minTokens, int maxTokens, int totalTokens) {
     return '总结 $summarized 字符，原样保留 $kept 字符 → 压缩后约 $minTokens–$maxTokens tokens（原文约 $totalTokens tokens）';
   }
 
@@ -2410,12 +2380,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatMessageWidgetRegenerateConfirmTitle => '确认重新生成';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmContent =>
-      '重新生成只会更新当前消息，不会删除下面的消息。确定要继续吗？';
+  String get chatMessageWidgetRegenerateConfirmContent => '重新生成只会更新当前消息，不会删除下面的消息。确定要继续吗？';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent =>
-      '重新生成将会删除此消息下面的所有消息，且无法撤销。确定要继续吗？';
+  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent => '重新生成将会删除此消息下面的所有消息，且无法撤销。确定要继续吗？';
 
   @override
   String get chatMessageWidgetRegenerateConfirmCancel => '取消';
@@ -2570,8 +2538,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageEnableDollarLatexTitle => '启用 \$...\$ 渲染';
 
   @override
-  String get displaySettingsPageEnableDollarLatexSubtitle =>
-      '将 \$...\$ 之间的内容按行内数学公式渲染';
+  String get displaySettingsPageEnableDollarLatexSubtitle => '将 \$...\$ 之间的内容按行内数学公式渲染';
 
   @override
   String get displaySettingsPageEnableMathTitle => '启用数学公式渲染';
@@ -2583,12 +2550,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageEnableUserMarkdownTitle => '用户消息 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableReasoningMarkdownTitle =>
-      '思维链 Markdown 渲染';
+  String get displaySettingsPageEnableReasoningMarkdownTitle => '思维链 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableAssistantMarkdownTitle =>
-      '助手消息 Markdown 渲染';
+  String get displaySettingsPageEnableAssistantMarkdownTitle => '助手消息 Markdown 渲染';
 
   @override
   String get displaySettingsPageMobileCodeBlockWrapTitle => '移动端代码块自动换行';
@@ -2606,12 +2571,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageCollapseLongUserMessagesTitle => '折叠过长消息';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesSubtitle =>
-      '超过阈值的用户消息折叠显示，点击可展开';
+  String get displaySettingsPageCollapseLongUserMessagesSubtitle => '超过阈值的用户消息折叠显示，点击可展开';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesCharsTitle =>
-      '超过多少字符折叠';
+  String get displaySettingsPageCollapseLongUserMessagesCharsTitle => '超过多少字符折叠';
 
   @override
   String get displaySettingsPageCollapseLongUserMessagesCharsUnit => '字符';
@@ -2662,8 +2625,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get messageExportThinkingContentLabel => '思考内容';
 
   @override
-  String get messageExportSheetDateTimeWithSecondsPattern =>
-      'yyyy年M月d日 HH:mm:ss';
+  String get messageExportSheetDateTimeWithSecondsPattern => 'yyyy年M月d日 HH:mm:ss';
 
   @override
   String get exportDisclaimerAiGenerated => '内容由 AI 生成，请仔细甄别';
@@ -2891,8 +2853,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sideDrawerImageUrlDialogTitle => '输入图片链接';
 
   @override
-  String get sideDrawerImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get sideDrawerImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get sideDrawerQQAvatarDialogTitle => '使用QQ头像';
@@ -3157,8 +3118,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get defaultModelPageTitleModelTitle => '标题总结模型';
 
   @override
-  String get defaultModelPageTitleModelSubtitle =>
-      '用于总结对话标题，默认跟随当前对话模型，也可指定其他模型。';
+  String get defaultModelPageTitleModelSubtitle => '用于总结对话标题，默认跟随当前对话模型，也可指定其他模型。';
 
   @override
   String get titleModelThinkingTitle => '是否开启思考';
@@ -3173,15 +3133,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get defaultModelPageSuggestionModelTitle => '聊天建议模型';
 
   @override
-  String get defaultModelPageSuggestionModelSubtitle =>
-      '用于在助手回复后生成聊天建议，可跟随当前对话模型或指定其他模型。默认未启用。';
+  String get defaultModelPageSuggestionModelSubtitle => '用于在助手回复后生成聊天建议，可跟随当前对话模型或指定其他模型。默认未启用。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyTitle => '摘要更新频率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyDescription =>
-      '累计达到所选条数的新消息后，会更新历史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyDescription => '累计达到所选条数的新消息后，会更新历史聊天摘要。';
 
   @override
   String assistantEditRecentChatsSummaryFrequencyOption(int count) {
@@ -3195,26 +3153,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditRecentChatsSummaryFrequencyCustomTitle => '自定义摘要频率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomDescription =>
-      '输入累计多少条新消息后再更新历史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyCustomDescription => '输入累计多少条新消息后再更新历史聊天摘要。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyCustomLabel => '新消息条数';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomHint =>
-      '请输入大于 0 的整数';
+  String get assistantEditRecentChatsSummaryFrequencyCustomHint => '请输入大于 0 的整数';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid =>
-      '请输入大于 0 的整数';
+  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid => '请输入大于 0 的整数';
 
   @override
   String get defaultModelPageTranslateModelTitle => '翻译模型';
 
   @override
-  String get defaultModelPageTranslateModelSubtitle =>
-      '用于翻译消息内容的模型，推荐使用快速且准确的模型';
+  String get defaultModelPageTranslateModelSubtitle => '用于翻译消息内容的模型，推荐使用快速且准确的模型';
 
   @override
   String get defaultModelPageOcrModelTitle => 'OCR 模型';
@@ -3228,8 +3182,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get defaultModelPageOcrModelSubtitle => '用于对图片执行文字识别的模型';
 
   @override
-  String get defaultModelPageOcrModelRequiresImageInput =>
-      '请选择标记为支持图片输入的模型用于 OCR';
+  String get defaultModelPageOcrModelRequiresImageInput => '请选择标记为支持图片输入的模型用于 OCR';
 
   @override
   String get defaultModelPagePromptLabel => '提示词';
@@ -3264,10 +3217,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String defaultModelPageSummaryVars(
-    String previousSummaryVar,
-    String userMessagesVar,
-  ) {
+  String defaultModelPageSummaryVars(String previousSummaryVar, String userMessagesVar) {
     return '变量：旧摘要：$previousSummaryVar，新消息：$userMessagesVar';
   }
 
@@ -3418,41 +3368,34 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelDetailSheetYoutubeTool => 'YouTube';
 
   @override
-  String get modelDetailSheetYoutubeToolDescription =>
-      '启用 YouTube 链接读取（自动识别提示词中的链接）';
+  String get modelDetailSheetYoutubeToolDescription => '启用 YouTube 链接读取（自动识别提示词中的链接）';
 
   @override
-  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint =>
-      '需要启用 OpenAI Responses API。';
+  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint => '需要启用 OpenAI Responses API。';
 
   @override
   String get modelDetailSheetWebFetchTool => '网页抓取';
 
   @override
-  String get modelDetailSheetOpenrouterWebFetchToolDescription =>
-      '启用 OpenRouter 网页抓取服务端工具';
+  String get modelDetailSheetOpenrouterWebFetchToolDescription => '启用 OpenRouter 网页抓取服务端工具';
 
   @override
-  String get modelDetailSheetClaudeWebFetchToolDescription =>
-      '允许 Claude 抓取对话中出现的网页与 PDF';
+  String get modelDetailSheetClaudeWebFetchToolDescription => '允许 Claude 抓取对话中出现的网页与 PDF';
 
   @override
-  String get modelDetailSheetClaudeCodeExecutionToolDescription =>
-      '允许 Claude 在 Anthropic 沙箱中运行 Python 与 Bash';
+  String get modelDetailSheetClaudeCodeExecutionToolDescription => '允许 Claude 在 Anthropic 沙箱中运行 Python 与 Bash';
 
   @override
   String get modelDetailSheetOpenrouterShellTool => 'Shell';
 
   @override
-  String get modelDetailSheetOpenrouterShellToolDescription =>
-      '在托管的隔离沙箱中运行 Shell 命令';
+  String get modelDetailSheetOpenrouterShellToolDescription => '在托管的隔离沙箱中运行 Shell 命令';
 
   @override
   String get modelDetailSheetOpenaiCodeInterpreterTool => '代码解释器';
 
   @override
-  String get modelDetailSheetOpenaiCodeInterpreterToolDescription =>
-      '启用代码解释器工具（容器自动，内存上限 4g）';
+  String get modelDetailSheetOpenaiCodeInterpreterToolDescription => '启用代码解释器工具（容器自动，内存上限 4g）';
 
   @override
   String get modelDetailSheetOpenaiImageGenerationTool => '图像生成';
@@ -3536,8 +3479,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get providerDetailPageCustomRequestTitle => '自定义请求';
 
   @override
-  String get providerDetailPageCustomRequestDescription =>
-      '应用于此供应商的所有模型。模型配置优先于此处，此处配置优先于助手配置。';
+  String get providerDetailPageCustomRequestDescription => '应用于此供应商的所有模型。模型配置优先于此处，此处配置优先于助手配置。';
 
   @override
   String get providerDetailPageNetworkTab => '网络代理';
@@ -3570,23 +3512,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get providerDetailPageAihubmixAppCodeLabel => '应用 Code（享 10% 优惠）';
 
   @override
-  String get providerDetailPageAihubmixAppCodeHelp =>
-      '为请求附加 APP-Code，可享 10% 优惠，仅对 AIhubmix 生效。';
+  String get providerDetailPageAihubmixAppCodeHelp => '为请求附加 APP-Code，可享 10% 优惠，仅对 AIhubmix 生效。';
 
   @override
-  String get providerDetailPageClaudePromptCachingTitle =>
-      'Claude Prompt Caching';
+  String get providerDetailPageClaudePromptCachingTitle => 'Claude Prompt Caching';
 
   @override
-  String get providerDetailPageClaudePromptCachingHelp =>
-      '通过 Claude 官方或 OpenRouter 调用 Claude 时附加 cache_control。';
+  String get providerDetailPageClaudePromptCachingHelp => '通过 Claude 官方或 OpenRouter 调用 Claude 时附加 cache_control。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtlTitle => '缓存 TTL';
 
   @override
-  String get providerDetailPageClaudePromptCachingTtlHelp =>
-      '5 分钟为默认值。1 小时写入成本更高，但长对话中可减少重复重建缓存。';
+  String get providerDetailPageClaudePromptCachingTtlHelp => '5 分钟为默认值。1 小时写入成本更高，但长对话中可减少重复重建缓存。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtl5m => '5 分钟';
@@ -3854,8 +3792,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addProviderSheetVertexAiProjectIdLabel => '项目ID';
 
   @override
-  String get addProviderSheetVertexAiServiceAccountJsonLabel =>
-      '服务账号 JSON（粘贴或导入）';
+  String get addProviderSheetVertexAiServiceAccountJsonLabel => '服务账号 JSON（粘贴或导入）';
 
   @override
   String get addProviderSheetImportJsonButton => '导入 JSON';
@@ -3886,8 +3823,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get importProviderSheetDescription =>
-      '粘贴分享字符串（可多行，每行一个）或 ChatBox JSON';
+  String get importProviderSheetDescription => '粘贴分享字符串（可多行，每行一个）或 ChatBox JSON';
 
   @override
   String get importProviderSheetInputHint => 'ai-provider:v1:...';
@@ -4132,8 +4068,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchServiceEditorMultiKeyNone => '未配置';
 
   @override
-  String get searchApiKeysPageDescription =>
-      '列表中的 Key 按顺序轮询使用，第一个为主 Key；不查额度，以防触发服务商风控。';
+  String get searchApiKeysPageDescription => '列表中的 Key 按顺序轮询使用，第一个为主 Key；不查额度，以防触发服务商风控。';
 
   @override
   String get searchApiKeysPagePrimaryBadge => '主';
@@ -4251,8 +4186,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchSettingsSheetClaudeDynamicSearchTitle => '动态过滤';
 
   @override
-  String get searchSettingsSheetClaudeDynamicSearchDescription =>
-      '筛选搜索结果，节省 token';
+  String get searchSettingsSheetClaudeDynamicSearchDescription => '筛选搜索结果，节省 token';
 
   @override
   String get searchSettingsSheetWebSearchTitle => '网络搜索';
@@ -4358,8 +4292,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowUserNameTimestampTitle => '显示用户名称和时间戳';
 
   @override
-  String get displaySettingsPageShowUserNameTimestampSubtitle =>
-      '是否在聊天消息中显示用户名称和时间戳';
+  String get displaySettingsPageShowUserNameTimestampSubtitle => '是否在聊天消息中显示用户名称和时间戳';
 
   @override
   String get displaySettingsPageShowUserNameTitle => '显示用户名称';
@@ -4371,15 +4304,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowUserMessageActionsTitle => '显示用户消息操作按钮';
 
   @override
-  String get displaySettingsPageShowUserMessageActionsSubtitle =>
-      '在用户消息下方显示复制、重发与更多按钮';
+  String get displaySettingsPageShowUserMessageActionsSubtitle => '在用户消息下方显示复制、重发与更多按钮';
 
   @override
   String get displaySettingsPageShowModelNameTimestampTitle => '显示模型名称和时间戳';
 
   @override
-  String get displaySettingsPageShowModelNameTimestampSubtitle =>
-      '是否在聊天消息中显示模型名称和时间戳';
+  String get displaySettingsPageShowModelNameTimestampSubtitle => '是否在聊天消息中显示模型名称和时间戳';
 
   @override
   String get displaySettingsPageShowModelNameTitle => '显示模型名称';
@@ -4391,8 +4322,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowProviderInChatMessageTitle => '模型名称后显示供应商';
 
   @override
-  String get displaySettingsPageShowProviderInChatMessageSubtitle =>
-      '在聊天消息的模型名称后面显示供应商名称（如 模型 | 供应商）';
+  String get displaySettingsPageShowProviderInChatMessageSubtitle => '在聊天消息的模型名称后面显示供应商名称（如 模型 | 供应商）';
 
   @override
   String get displaySettingsPageChatModelIconTitle => '聊天列表模型图标';
@@ -4410,8 +4340,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowThinkingCardsTitle => '显示思考卡片';
 
   @override
-  String get displaySettingsPageShowThinkingCardsSubtitle =>
-      '关闭后，聊天中不再显示思考过程卡片';
+  String get displaySettingsPageShowThinkingCardsSubtitle => '关闭后，聊天中不再显示思考过程卡片';
 
   @override
   String get displaySettingsPageShowToolCardsTitle => '显示工具卡片';
@@ -4423,15 +4352,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageAutoCollapseThinkingTitle => '自动折叠思考';
 
   @override
-  String get displaySettingsPageAutoCollapseThinkingSubtitle =>
-      '思考完成后自动折叠，保持界面简洁';
+  String get displaySettingsPageAutoCollapseThinkingSubtitle => '思考完成后自动折叠，保持界面简洁';
 
   @override
   String get displaySettingsPageCollapseThinkingStepsTitle => '折叠思考步骤';
 
   @override
-  String get displaySettingsPageCollapseThinkingStepsSubtitle =>
-      '默认只显示最新步骤，展开后查看全部';
+  String get displaySettingsPageCollapseThinkingStepsSubtitle => '默认只显示最新步骤，展开后查看全部';
 
   @override
   String get displaySettingsPageShowToolResultSummaryTitle => '显示工具结果摘要';
@@ -4440,15 +4367,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageInsertSuggestionOnlyTitle => '点击建议时仅填入输入框';
 
   @override
-  String get displaySettingsPageShowToolResultSummarySubtitle =>
-      '在工具步骤下方显示摘要文本';
+  String get displaySettingsPageShowToolResultSummarySubtitle => '在工具步骤下方显示摘要文本';
 
   @override
   String get displaySettingsPageHideToolResultImagesTitle => '隐藏工具结果中的图片';
 
   @override
-  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle =>
-      '重新生成时删除下面的消息';
+  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle => '重新生成时删除下面的消息';
 
   @override
   String get displaySettingsPageShowRegenerateConfirmDialogTitle => '重新生成前弹出确认';
@@ -4457,12 +4382,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageForkKeepMessageVersionsTitle => '创建分支时保留消息版本';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle =>
-      '编辑助手时保留思考与工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle => '编辑助手时保留思考与工具卡片';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle =>
-      '关闭后，当前编辑版本只保留助手正文；切回上一版本仍可查看思考与工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle => '关闭后，当前编辑版本只保留助手正文；切回上一版本仍可查看思考与工具卡片';
 
   @override
   String chainOfThoughtExpandSteps(Object count) {
@@ -4482,20 +4405,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageEnableImageCropperTitle => '启用图片裁剪';
 
   @override
-  String get displaySettingsPageEnableImageCropperSubtitle =>
-      '从相册或相机选择图片后，允许裁剪图片';
+  String get displaySettingsPageEnableImageCropperSubtitle => '从相册或相机选择图片后，允许裁剪图片';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle =>
-      '点选助手时不自动关闭侧边栏';
+  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle => '点选助手时不自动关闭侧边栏';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle =>
-      '点选话题时不自动关闭侧边栏';
+  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle => '点选话题时不自动关闭侧边栏';
 
   @override
-  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle =>
-      '关闭侧边栏时不折叠助手列表';
+  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle => '关闭侧边栏时不折叠助手列表';
 
   @override
   String get displaySettingsPageShowUpdatesTitle => '显示更新';
@@ -4504,12 +4423,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowUpdatesSubtitle => '显示应用更新通知';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationTitle =>
-      '生成时保持屏幕常亮';
+  String get displaySettingsPageKeepScreenOnDuringGenerationTitle => '生成时保持屏幕常亮';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle =>
-      '防止生成中途锁屏导致中断，会增加耗电';
+  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle => '防止生成中途锁屏导致中断，会增加耗电';
 
   @override
   String get displaySettingsPageMessageNavButtonsTitle => '消息导航按钮';
@@ -4527,8 +4444,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageMessageNavButtonsModeHover => '鼠标悬停时显示';
 
   @override
-  String get displaySettingsPageMessageNavButtonsModeScrollAndHover =>
-      '滚动和鼠标悬停时显示';
+  String get displaySettingsPageMessageNavButtonsModeScrollAndHover => '滚动和鼠标悬停时显示';
 
   @override
   String get displaySettingsPageMessageNavButtonsModeNever => '永不显示';
@@ -4705,15 +4621,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get themeAdvancedSettingsPageUseLayeredSurfacesTitle => '新版分层配色（实验）';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle =>
-      '页面更深、卡片更亮，两者都保留主题色相；关闭可恢复旧外观';
+  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle => '页面更深、卡片更亮，两者都保留主题色相；关闭可恢复旧外观';
 
   @override
   String get themeAdvancedSettingsPageUseLayeredSheetTilesTitle => '弹窗内瓦片分层';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle =>
-      '默认瓦片与弹窗同色';
+  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle => '默认瓦片与弹窗同色';
 
   @override
   String get themeSettingsPageColorPalettesSection => '配色方案';
@@ -5183,29 +5097,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ttsSettingsTextSelectionQuotedOnlyTitle => '仅引号内文字';
 
   @override
-  String get ttsSettingsTextSelectionQuotedOnlyDescription =>
-      '播放 “”、‘’、\"\"、\'\'、「」或『』内的文字。';
+  String get ttsSettingsTextSelectionQuotedOnlyDescription => '播放 “”、‘’、\"\"、\'\'、「」或『』内的文字。';
 
   @override
   String get ttsSettingsTextSelectionOutsideParenthesesTitle => '括号外文字';
 
   @override
-  String get ttsSettingsTextSelectionOutsideParenthesesDescription =>
-      '跳过 () 和 （） 内的文字。';
+  String get ttsSettingsTextSelectionOutsideParenthesesDescription => '跳过 () 和 （） 内的文字。';
 
   @override
   String get ttsSettingsTextSelectionItalicOnlyTitle => '仅斜体文字';
 
   @override
-  String get ttsSettingsTextSelectionItalicOnlyDescription =>
-      '播放 Markdown 或 HTML 斜体文字。';
+  String get ttsSettingsTextSelectionItalicOnlyDescription => '播放 Markdown 或 HTML 斜体文字。';
 
   @override
   String get ttsSettingsTextSelectionNonItalicTitle => '仅正体文字';
 
   @override
-  String get ttsSettingsTextSelectionNonItalicDescription =>
-      '跳过 Markdown 或 HTML 斜体文字。';
+  String get ttsSettingsTextSelectionNonItalicDescription => '跳过 Markdown 或 HTML 斜体文字。';
 
   @override
   String get ttsFloatingPlayerLabel => '语音播放器';
@@ -5328,12 +5238,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsShare => 'Kelivo - 开源AI助手';
 
   @override
-  String get searchProviderBingLocalDescription =>
-      '使用网络抓取工具获取必应搜索结果。无需 API 密钥，但可能不够稳定。';
+  String get searchProviderBingLocalDescription => '使用网络抓取工具获取必应搜索结果。无需 API 密钥，但可能不够稳定。';
 
   @override
-  String get searchProviderDuckDuckGoDescription =>
-      '基于 DDGS 的 DuckDuckGo 隐私搜索，无需 API 密钥，支持设置地区。';
+  String get searchProviderDuckDuckGoDescription => '基于 DDGS 的 DuckDuckGo 隐私搜索，无需 API 密钥，支持设置地区。';
 
   @override
   String get searchProviderBraveDescription => 'Brave 独立搜索引擎。注重隐私，无跟踪或画像。';
@@ -5342,8 +5250,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchProviderExaDescription => '具备语义理解的神经搜索引擎。适合研究与查找特定内容。';
 
   @override
-  String get searchProviderLinkUpDescription =>
-      '提供来源可追溯答案的搜索 API，同时提供搜索结果与 AI 摘要。';
+  String get searchProviderLinkUpDescription => '提供来源可追溯答案的搜索 API，同时提供搜索结果与 AI 摘要。';
 
   @override
   String get searchProviderMetasoDescription => '秘塔中文搜索引擎。面向中文内容优化并提供 AI 能力。';
@@ -5352,16 +5259,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchProviderSearXNGDescription => '注重隐私的元搜索引擎。需自建实例，无跟踪。';
 
   @override
-  String get searchProviderTavilyDescription =>
-      '为大型语言模型（LLMs）优化的 AI 搜索 API，提供高质量、相关的搜索结果。';
+  String get searchProviderTavilyDescription => '为大型语言模型（LLMs）优化的 AI 搜索 API，提供高质量、相关的搜索结果。';
 
   @override
-  String get searchProviderZhipuDescription =>
-      '智谱 AI 旗下中文 AI 搜索服务，针对中文内容与查询进行了优化。';
+  String get searchProviderZhipuDescription => '智谱 AI 旗下中文 AI 搜索服务，针对中文内容与查询进行了优化。';
 
   @override
-  String get searchProviderOllamaDescription =>
-      'Ollama 网络搜索 API。为模型补充最新信息，减少幻觉并提升准确性。';
+  String get searchProviderOllamaDescription => 'Ollama 网络搜索 API。为模型补充最新信息，减少幻觉并提升准确性。';
 
   @override
   String get searchProviderJinaDescription => '适合开发者和企业用于 AI 搜索应用。支持多语言与多模态。';
@@ -5403,15 +5307,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchServiceNamePerplexity => 'Perplexity';
 
   @override
-  String get searchProviderPerplexityDescription =>
-      'Perplexity 搜索 API。提供排序的网页结果，支持区域与域名过滤。';
+  String get searchProviderPerplexityDescription => 'Perplexity 搜索 API。提供排序的网页结果，支持区域与域名过滤。';
 
   @override
   String get searchServiceNameBocha => '博查';
 
   @override
-  String get searchProviderBochaDescription =>
-      '博查 AI 全网网页搜索，支持时间范围与摘要，更适合 AI 使用。';
+  String get searchProviderBochaDescription => '博查 AI 全网网页搜索，支持时间范围与摘要，更适合 AI 使用。';
 
   @override
   String get searchServiceNameDoubao => '豆包';
@@ -5423,57 +5325,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchServiceNameSerper => 'Serper';
 
   @override
-  String get searchProviderSerperDescription =>
-      'Serper Google 搜索 API。响应快速，支持国家/地区、语言、时间和页码过滤。';
+  String get searchProviderSerperDescription => 'Serper Google 搜索 API。响应快速，支持国家/地区、语言、时间和页码过滤。';
 
   @override
   String get searchServiceNameQuerit => 'Querit';
 
   @override
-  String get searchProviderQueritDescription =>
-      '面向 LLM 应用的 Querit 搜索 API。返回实时网页结果，并支持站点、时间、国家和语言过滤。';
+  String get searchProviderQueritDescription => '面向 LLM 应用的 Querit 搜索 API。返回实时网页结果，并支持站点、时间、国家和语言过滤。';
 
   @override
   String get searchServiceNameGrok => 'Grok';
 
   @override
-  String get searchProviderGrokDescription =>
-      '通过 xAI Responses API 使用 Grok 搜索。调用网页和 X 搜索工具，并返回带引用的来源。';
+  String get searchProviderGrokDescription => '通过 xAI Responses API 使用 Grok 搜索。调用网页和 X 搜索工具，并返回带引用的来源。';
 
   @override
   String get searchServiceNameStepFun => 'StepFun';
 
   @override
-  String get searchProviderStepFunDescription =>
-      '通过 StepFun POST /v1/search 进行网页搜索。';
+  String get searchProviderStepFunDescription => '通过 StepFun POST /v1/search 进行网页搜索。';
 
   @override
   String get searchServiceNameFirecrawl => 'Firecrawl';
 
   @override
-  String get searchProviderFirecrawlDescription =>
-      'Firecrawl Search API v2。API Key 可选。此处不支持 Scrape。';
+  String get searchProviderFirecrawlDescription => 'Firecrawl Search API v2。API Key 可选。此处不支持 Scrape。';
 
   @override
   String get searchServiceNameTinyFish => 'TinyFish';
 
   @override
-  String get searchProviderTinyFishDescription =>
-      'TinyFish Search API，支持地区与语言参数。需要 API Key。此处不支持 Fetch/Scrape。';
+  String get searchProviderTinyFishDescription => 'TinyFish Search API，支持地区与语言参数。需要 API Key。此处不支持 Fetch/Scrape。';
 
   @override
   String get searchServiceNameAnySearch => 'AnySearch';
 
   @override
-  String get searchProviderAnySearchDescription =>
-      '面向 AI 智能体的统一搜索服务，可在网页与专业数据源间自动路由。API Key 可选。';
+  String get searchProviderAnySearchDescription => '面向 AI 智能体的统一搜索服务，可在网页与专业数据源间自动路由。API Key 可选。';
 
   @override
   String get searchServiceNameParallel => 'Parallel';
 
   @override
-  String get searchProviderParallelDescription =>
-      'Parallel 搜索 API。返回面向 LLM 优化的网页摘录，支持 turbo、fast、basic 和 advanced 模式。';
+  String get searchProviderParallelDescription => 'Parallel 搜索 API。返回面向 LLM 优化的网页摘录，支持 turbo、fast、basic 和 advanced 模式。';
 
   @override
   String get searchServicesDialogSearchMode => '搜索模式';
@@ -5482,8 +5376,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchServiceNameYou => 'You.com';
 
   @override
-  String get searchProviderYouDescription =>
-      'You.com 搜索 API。返回网页与新闻结果，支持 Highlights 或 Snippets。';
+  String get searchProviderYouDescription => 'You.com 搜索 API。返回网页与新闻结果，支持 Highlights 或 Snippets。';
 
   @override
   String get searchServicesDialogContentMode => '内容模式';
@@ -5504,8 +5397,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get searchServicesDialogMaximumTokens => '最大 token 数';
 
   @override
-  String get searchServicesDialogMaximumTokensInvalid =>
-      '最大 token 数必须介于 1024 和 32768 之间。';
+  String get searchServicesDialogMaximumTokensInvalid => '最大 token 数必须介于 1024 和 32768 之间。';
 
   @override
   String get searchServiceNameKelivo => 'Kelivo';
@@ -5696,22 +5588,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditLocalToolTimeInfoTitle => '时间信息';
 
   @override
-  String get assistantEditLocalToolTimeInfoSubtitle =>
-      '读取设备日期、星期、时间、时区、UTC 偏移和时间戳。';
+  String get assistantEditLocalToolTimeInfoSubtitle => '读取设备日期、星期、时间、时区、UTC 偏移和时间戳。';
 
   @override
   String get assistantEditLocalToolClipboardTitle => '剪切板';
 
   @override
-  String get assistantEditLocalToolClipboardSubtitle =>
-      '在明确需要时读取或写入设备剪切板中的纯文本。';
+  String get assistantEditLocalToolClipboardSubtitle => '在明确需要时读取或写入设备剪切板中的纯文本。';
 
   @override
   String get assistantEditLocalToolTextToSpeechTitle => '文字转语音';
 
   @override
-  String get assistantEditLocalToolTextToSpeechSubtitle =>
-      '允许助手使用已配置的语音播放朗读文本。';
+  String get assistantEditLocalToolTextToSpeechSubtitle => '允许助手使用已配置的语音播放朗读文本。';
 
   @override
   String get assistantEditLocalToolAskUserTitle => '询问用户';
@@ -5723,36 +5612,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditLocalToolCalculateTitle => '计算器';
 
   @override
-  String get assistantEditLocalToolCalculateSubtitle =>
-      '计算数学表达式，支持加减乘除幂运算 sqrt sin cos 等。';
+  String get assistantEditLocalToolCalculateSubtitle => '计算数学表达式，支持加减乘除幂运算 sqrt sin cos 等。';
 
   @override
   String get assistantEditLocalToolScreenTimeTitle => '屏幕使用时间';
 
   @override
-  String get assistantEditLocalToolScreenTimeSubtitle =>
-      '查询本设备的应用使用时长，需要授予使用情况访问权限。';
+  String get assistantEditLocalToolScreenTimeSubtitle => '查询本设备的应用使用时长，需要授予使用情况访问权限。';
 
   @override
   String get chatMessageWidgetScreenTimeTotal => '总屏幕时间';
 
   @override
-  String get chatMessageWidgetScreenTimePermissionRequired =>
-      '未授予使用情况访问权限，请在系统设置中开启后重试。';
+  String get chatMessageWidgetScreenTimePermissionRequired => '未授予使用情况访问权限，请在系统设置中开启后重试。';
 
   @override
   String get assistantEditLocalToolCalendarQueryTitle => '查询日历';
 
   @override
-  String get assistantEditLocalToolCalendarQuerySubtitle =>
-      '读取本设备上的日历日程，需要授予日历权限。';
+  String get assistantEditLocalToolCalendarQuerySubtitle => '读取本设备上的日历日程，需要授予日历权限。';
 
   @override
   String get assistantEditLocalToolCalendarCreateTitle => '创建日程';
 
   @override
-  String get assistantEditLocalToolCalendarCreateSubtitle =>
-      '在你确认后于本设备创建日历日程，需要授予日历权限。';
+  String get assistantEditLocalToolCalendarCreateSubtitle => '在你确认后于本设备创建日历日程，需要授予日历权限。';
 
   @override
   String get assistantEditLocalToolLocationTitle => '当前位置';
@@ -5764,15 +5648,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditLocalToolWeatherTitle => '天气';
 
   @override
-  String get assistantEditLocalToolWeatherSubtitle =>
-      '获取当前位置或指定地点的 Apple 天气，结果中会展示 WeatherKit 数据来源。';
+  String get assistantEditLocalToolWeatherSubtitle => '获取当前位置或指定地点的 Apple 天气，结果中会展示 WeatherKit 数据来源。';
 
   @override
   String get assistantEditLocalToolHealthTitle => '健康摘要';
 
   @override
-  String get assistantEditLocalToolHealthSubtitle =>
-      '读取本设备的健康活动摘要，需要授予健康数据读取权限。';
+  String get assistantEditLocalToolHealthSubtitle => '读取本设备的健康活动摘要，需要授予健康数据读取权限。';
 
   @override
   String assistantEditLocalToolHealthSelectedCount(int selected, int total) {
@@ -5783,8 +5665,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get healthDataSettingsTitle => '健康数据';
 
   @override
-  String get healthDataSettingsDescription =>
-      '当前助手在日常对话中可使用的 HealthKit 信号。开关表示 Kelivo 可以尝试读取该范围，实际授权仍由 iOS 管理。';
+  String get healthDataSettingsDescription => '当前助手在日常对话中可使用的 HealthKit 信号。开关表示 Kelivo 可以尝试读取该范围，实际授权仍由 iOS 管理。';
 
   @override
   String healthDataSettingsBadge(int selected, int total) {
@@ -5924,22 +5805,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditLocalToolRemindersQueryTitle => '查询提醒';
 
   @override
-  String get assistantEditLocalToolRemindersQuerySubtitle =>
-      '读取本设备上的提醒事项，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersQuerySubtitle => '读取本设备上的提醒事项，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditLocalToolRemindersCreateTitle => '创建提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCreateSubtitle =>
-      '在你确认后于本设备创建提醒事项，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersCreateSubtitle => '在你确认后于本设备创建提醒事项，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditLocalToolRemindersCompleteTitle => '完成提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCompleteSubtitle =>
-      '在你确认后将提醒事项标记为完成，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersCompleteSubtitle => '在你确认后将提醒事项标记为完成，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditMemorySwitchDescription => '允许助手主动存储并在对话间引用用户相关信息';
@@ -5948,8 +5826,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditRecentChatsSwitchTitle => '参考历史聊天记录';
 
   @override
-  String get assistantEditRecentChatsSwitchDescription =>
-      '在新对话中引用最近的对话标题以增强上下文';
+  String get assistantEditRecentChatsSwitchDescription => '在新对话中引用最近的对话标题以增强上下文';
 
   @override
   String get assistantEditAddMemoryButton => '添加记忆';
@@ -6011,8 +5888,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get providersPageMultiSelectTooltip => '多选';
 
   @override
-  String get providersPageDeleteSelectedConfirmContent =>
-      '确定要删除选中的供应商吗？该操作不可撤销。';
+  String get providersPageDeleteSelectedConfirmContent => '确定要删除选中的供应商吗？该操作不可撤销。';
 
   @override
   String get providersPageDeleteSelectedSnackbar => '已删除选中的供应商';
@@ -6104,8 +5980,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get networkProxyBypassLabel => '代理绕过';
 
   @override
-  String get networkProxyBypassHint =>
-      '用逗号分隔的主机或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
+  String get networkProxyBypassHint => '用逗号分隔的主机或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
 
   @override
   String get networkProxyOptionalHint => '可选';
@@ -6268,15 +6143,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get flutterLogSettingTitle => '应用日志打印';
 
   @override
-  String get flutterLogSettingSubtitle =>
-      '开启后会将 Flutter 错误与 print 输出写入 logs/flutter_logs.txt';
+  String get flutterLogSettingSubtitle => '开启后会将 Flutter 错误与 print 输出写入 logs/flutter_logs.txt';
 
   @override
   String get contextLogSettingTitle => '上下文日志';
 
   @override
-  String get contextLogSettingSubtitle =>
-      '开启后会将每次实际发送给模型的完整上下文写入 logs/context_logs.txt';
+  String get contextLogSettingSubtitle => '开启后会将每次实际发送给模型的完整上下文写入 logs/context_logs.txt';
 
   @override
   String get contextLogViewerTitle => '上下文';
@@ -6430,15 +6303,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get logSettingsSaveOutput => '保存响应输出';
 
   @override
-  String get logSettingsSaveOutputSubtitle =>
-      '记录流式输出的每个分片（可能影响生成性能）。HTTP 报错响应仍会写入。';
+  String get logSettingsSaveOutputSubtitle => '记录流式输出的每个分片（可能影响生成性能）。HTTP 报错响应仍会写入。';
 
   @override
   String get logSettingsElidePayloads => '省略大载荷';
 
   @override
-  String get logSettingsElidePayloadsSubtitle =>
-      '把内联的 base64 图片和文件替换成占位符，日志更小、查看器更快。';
+  String get logSettingsElidePayloadsSubtitle => '把内联的 base64 图片和文件替换成占位符，日志更小、查看器更快。';
 
   @override
   String get logSettingsAutoDelete => '自动删除';
@@ -6521,43 +6392,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memoryAboutQuickstartTitle => '三步上手';
 
   @override
-  String get memoryAboutQuickstartBody =>
-      '① 在「设置 → 记忆」里选择处理模型。\n② 在助手的「记忆」页打开长期记忆和自动整理。\n③ 聊几轮，或点「整理记忆」，再到「全部记忆」查看结果。';
+  String get memoryAboutQuickstartBody => '① 在「设置 → 记忆」里选择处理模型。\n② 在助手的「记忆」页打开长期记忆和自动整理。\n③ 聊几轮，或点「整理记忆」，再到「全部记忆」查看结果。';
 
   @override
   String get memoryAboutTypesTitle => '记忆类型';
 
   @override
-  String get memoryAboutTypesBody =>
-      '身份：用户的稳定信息，例如称呼、职业、语言、长期偏好。写成完整的第三人称陈述。\n\n工作流：用户习惯怎么做事，例如工具、格式、审阅方式。\n\n语气：用户希望助手怎么说话，例如语气、篇幅、语言风格。\n\n指令：助手应长期遵守的规则，而不是本次对话里的一次性任务。';
+  String get memoryAboutTypesBody => '身份：用户的稳定信息，例如称呼、职业、语言、长期偏好。写成完整的第三人称陈述。\n\n工作流：用户习惯怎么做事，例如工具、格式、审阅方式。\n\n语气：用户希望助手怎么说话，例如语气、篇幅、语言风格。\n\n指令：助手应长期遵守的规则，而不是本次对话里的一次性任务。';
 
   @override
   String get memoryAboutScopeTitle => '全局与助手范围';
 
   @override
-  String get memoryAboutScopeBody =>
-      '全局记忆会对所有助手注入。助手范围的记忆只对该助手可见。跨助手都该知道的事实用全局；只属于某一个助手的规则或上下文用助手范围。';
+  String get memoryAboutScopeBody => '全局记忆会对所有助手注入。助手范围的记忆只对该助手可见。跨助手都该知道的事实用全局；只属于某一个助手的规则或上下文用助手范围。';
 
   @override
   String get memoryAboutInjectionTitle => '记忆如何注入';
 
   @override
-  String get memoryAboutInjectionBody =>
-      '开对话时，每类会把最近的若干条放进模型上下文。某类超过注入上限时，块会标上 mode=\"summary\"，并用 total / shown 标明总数与展示条数，其余由模型用 memory_search_profile 按需查询。可在「设置 → 记忆」调大上限，更全面但更费 token。';
+  String get memoryAboutInjectionBody => '开对话时，每类会把最近的若干条放进模型上下文。某类超过注入上限时，块会标上 mode=\"summary\"，并用 total / shown 标明总数与展示条数，其余由模型用 memory_search_profile 按需查询。可在「设置 → 记忆」调大上限，更全面但更费 token。';
 
   @override
   String get memoryAboutPipelineTitle => '后台整理';
 
   @override
-  String get memoryAboutPipelineBody =>
-      '开启自动整理后，对话结束会走：判断是否值得记 → 提取候选 → 去重合并 → 必要时把身份类记忆提炼进用户画像。也可以在助手「记忆」页点「整理记忆」。因此处理模型会被较频繁调用。';
+  String get memoryAboutPipelineBody => '开启自动整理后，对话结束会走：判断是否值得记 → 提取候选 → 去重合并 → 必要时把身份类记忆提炼进用户画像。也可以在助手「记忆」页点「整理记忆」。因此处理模型会被较频繁调用。';
 
   @override
   String get memoryAboutCacheTitle => '保持缓存良好';
 
   @override
-  String get memoryAboutCacheBody =>
-      '注入前缀会保持稳定，未改动时可复用 Prompt 缓存，从而降低费用与延迟。避免无意义的大批量改动或重排。日常增删改单条通常影响有限。';
+  String get memoryAboutCacheBody => '注入前缀会保持稳定，未改动时可复用 Prompt 缓存，从而降低费用与延迟。避免无意义的大批量改动或重排。日常增删改单条通常影响有限。';
 
   @override
   String get memoryAboutFaqTitle => '常见问题';
@@ -6566,8 +6431,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memoryAboutFaqWhyNotRememberedTitle => '为什么没记住？';
 
   @override
-  String get memoryAboutFaqWhyNotRememberedBody =>
-      '整理会被跳过，常见原因包括：新消息不足，暂不整理；没有新消息需要整理；尚未选择记忆处理模型。临时对话不会写入记忆。也可以按助手关闭记忆或自动整理。';
+  String get memoryAboutFaqWhyNotRememberedBody => '整理会被跳过，常见原因包括：新消息不足，暂不整理；没有新消息需要整理；尚未选择记忆处理模型。临时对话不会写入记忆。也可以按助手关闭记忆或自动整理。';
 
   @override
   String get memorySettingsThinkingTitle => '启用思考';
@@ -6582,8 +6446,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memorySettingsInjectionMaxItemsTitle => '每类注入条数';
 
   @override
-  String get memorySettingsInjectionMaxItemsSubtitle =>
-      '某一类型的记忆超过该条数时，只注入最近的若干条，其余由模型用 memory_search_profile 按需查询。调大更全面但更费 token。若你改过规则提示词，请一并更新或恢复默认。';
+  String get memorySettingsInjectionMaxItemsSubtitle => '某一类型的记忆超过该条数时，只注入最近的若干条，其余由模型用 memory_search_profile 按需查询。调大更全面但更费 token。若你改过规则提示词，请一并更新或恢复默认。';
 
   @override
   String memorySettingsInjectionMaxItemsOption(int n) {
@@ -6597,8 +6460,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memorySettingsInjectionMaxItemsCustomTitle => '自定义注入条数';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomDescription =>
-      '请输入 1 到 100 之间的整数。';
+  String get memorySettingsInjectionMaxItemsCustomDescription => '请输入 1 到 100 之间的整数。';
 
   @override
   String get memorySettingsInjectionMaxItemsCustomLabel => '条数';
@@ -6607,8 +6469,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memorySettingsInjectionMaxItemsCustomHint => '1–100';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomInvalid =>
-      '请输入 1 到 100 之间的整数';
+  String get memorySettingsInjectionMaxItemsCustomInvalid => '请输入 1 到 100 之间的整数';
 
   @override
   String get memorySettingsPromptLangSection => '提示词语言';
@@ -6659,8 +6520,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get memoryPromptEditSmartAddTitle => 'Smart Add';
 
   @override
-  String get memoryPromptEditSmartAddSubtitle =>
-      'NEW / MERGE / CONFLICT / SKIP 去重判定';
+  String get memoryPromptEditSmartAddSubtitle => 'NEW / MERGE / CONFLICT / SKIP 去重判定';
 
   @override
   String get memoryPromptEditDistillTitle => 'Profile Distiller';
@@ -7163,12 +7023,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get legacyMemoryMigrationContentOrganize => '模型整理';
 
   @override
-  String get legacyMemoryMigrationContentPreserveDescription =>
-      '模型只负责分类，写入时保留旧记忆原文。';
+  String get legacyMemoryMigrationContentPreserveDescription => '模型只负责分类，写入时保留旧记忆原文。';
 
   @override
-  String get legacyMemoryMigrationContentOrganizeDescription =>
-      '模型会分类并改写内容，使用可编辑的迁移提示词。';
+  String get legacyMemoryMigrationContentOrganizeDescription => '模型会分类并改写内容，使用可编辑的迁移提示词。';
 
   @override
   String get legacyMemoryMigrationBatchSize => '批大小';
@@ -7282,15 +7140,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditWriteScopeToolDefaultGlobal => '模型自选（默认全局）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultGlobalSubtitle =>
-      '模型可选择全局或本助手，缺省写入全局';
+  String get assistantEditWriteScopeToolDefaultGlobalSubtitle => '模型可选择全局或本助手，缺省写入全局';
 
   @override
   String get assistantEditWriteScopeToolDefaultAssistant => '模型自选（默认本助手）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultAssistantSubtitle =>
-      '模型可选择全局或本助手，缺省写入本助手';
+  String get assistantEditWriteScopeToolDefaultAssistantSubtitle => '模型可选择全局或本助手，缺省写入本助手';
 
   @override
   String get assistantEditDedupeModeTitle => '去重方式';
@@ -7302,15 +7158,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditDedupeModeBatched => '合并';
 
   @override
-  String get assistantEditDedupeModeBatchedSubtitle =>
-      '一次请求判断本轮全部候选。更快更省；条目多时精度较差。';
+  String get assistantEditDedupeModeBatchedSubtitle => '一次请求判断本轮全部候选。更快更省；条目多时精度较差。';
 
   @override
   String get assistantEditDedupeModePerItem => '逐条';
 
   @override
-  String get assistantEditDedupeModePerItemSubtitle =>
-      '每条候选单独请求判断。更准确，但会增加处理模型调用。';
+  String get assistantEditDedupeModePerItemSubtitle => '每条候选单独请求判断。更准确，但会增加处理模型调用。';
 
   @override
   String get assistantEditOrganizeFrequencyTitle => '整理频率';
@@ -7330,8 +7184,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get assistantEditOrganizeFrequencyCustomTitle => '自定义整理频率';
 
   @override
-  String get assistantEditOrganizeFrequencyCustomDescription =>
-      '请输入 1 到 20 之间的整数。';
+  String get assistantEditOrganizeFrequencyCustomDescription => '请输入 1 到 20 之间的整数。';
 
   @override
   String get assistantEditOrganizeFrequencyCustomLabel => '轮数';
@@ -7586,12 +7439,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get debugPageCreateManyMessagesConversationButton => '创建 1024 条消息的对话';
 
   @override
-  String get debugPageCreateDailyMixedMarkdownConversationButton =>
-      '创建 3000 条日常混合 Markdown 消息';
+  String get debugPageCreateDailyMixedMarkdownConversationButton => '创建 3000 条日常混合 Markdown 消息';
 
   @override
-  String get debugPageCreateLongReasoningConversationButton =>
-      '创建长思考链对话（128 条）';
+  String get debugPageCreateLongReasoningConversationButton => '创建长思考链对话（128 条）';
 
   @override
   String get debugPageCreatingButton => '创建中...';
@@ -7603,8 +7454,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get debugPageCreatingManyMessagesConversation => '正在创建 1024 条消息的对话...';
 
   @override
-  String get debugPageCreatingDailyMixedMarkdownConversation =>
-      '正在创建 3000 条日常混合 Markdown 对话...';
+  String get debugPageCreatingDailyMixedMarkdownConversation => '正在创建 3000 条日常混合 Markdown 对话...';
 
   @override
   String get debugPageCreatingLongReasoningConversation => '正在创建长思考链调试对话...';
@@ -7643,8 +7493,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get debugPageOversizedConversationSeedText =>
-      '这是一段用于复现超大对话渲染卡顿的长调试文本。它包含重复的 Markdown 风格文本、标点、中文内容和普通词语，方便测试聊天渲染、存储和滚动性能。';
+  String get debugPageOversizedConversationSeedText => '这是一段用于复现超大对话渲染卡顿的长调试文本。它包含重复的 Markdown 风格文本、标点、中文内容和普通词语，方便测试聊天渲染、存储和滚动性能。';
 
   @override
   String debugPageManyMessagesSeedText(String role, int index) {
@@ -7655,15 +7504,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationIntroTitle => '升级聊天记录存储';
 
   @override
-  String get migrationIntroSubtitle =>
-      'Kelivo 将聊天记录迁移到更快的 SQLite 数据库。升级会在应用打开前完成，避免新旧数据同时写入。';
+  String get migrationIntroSubtitle => 'Kelivo 将聊天记录迁移到更快的 SQLite 数据库。升级会在应用打开前完成，避免新旧数据同时写入。';
 
   @override
   String get migrationBackupNote => '迁移开始前，会先导出包含设置、聊天记录和本地文件的 ZIP 备份。';
 
   @override
-  String get migrationPerformanceNote =>
-      '迁移后，启动、历史加载和搜索都会使用 SQLite 索引，长对话会更流畅。';
+  String get migrationPerformanceNote => '迁移后，启动、历史加载和搜索都会使用 SQLite 索引，长对话会更流畅。';
 
   @override
   String get migrationSourceDatabaseLabel => 'Hive';
@@ -7684,8 +7531,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationSkipChatsJsonOption => '跳过 chats.json';
 
   @override
-  String get migrationSkipChatsJsonDescription =>
-      '仍会备份原始 Hive、设置和本地文件，超大聊天记录建议选择。';
+  String get migrationSkipChatsJsonDescription => '仍会备份原始 Hive、设置和本地文件，超大聊天记录建议选择。';
 
   @override
   String get migrationSkipBackupOption => '跳过本次备份';
@@ -7697,15 +7543,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationBackingUpTitle => '正在备份';
 
   @override
-  String get migrationBackingUpSubtitle =>
-      '正在导出设置、聊天记录、上传文件、图片和字体。请保持 Kelivo 开启，等待备份完成。';
+  String get migrationBackingUpSubtitle => '正在导出设置、聊天记录、上传文件、图片和字体。请保持 Kelivo 开启，等待备份完成。';
 
   @override
   String get migrationMigratingTitle => '正在迁移到 SQLite';
 
   @override
-  String get migrationMigratingSubtitle =>
-      '正在分批写入会话和消息，避免超大聊天记录占满内存。请保持 Kelivo 在前台，等待迁移完成。';
+  String get migrationMigratingSubtitle => '正在分批写入会话和消息，避免超大聊天记录占满内存。请保持 Kelivo 在前台，等待迁移完成。';
 
   @override
   String migrationBackingUpDetail(String fileName) {
@@ -7763,8 +7607,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationCompleteTitle => '升级完成';
 
   @override
-  String get migrationCompleteSubtitle =>
-      '你的聊天记录已迁移到 SQLite。请重启 Kelivo 进入升级后的应用。';
+  String get migrationCompleteSubtitle => '你的聊天记录已迁移到 SQLite。请重启 Kelivo 进入升级后的应用。';
 
   @override
   String get migrationConversationCount => '对话';
@@ -7788,8 +7631,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationFailedTitle => '迁移失败';
 
   @override
-  String get migrationFailedSubtitle =>
-      '原始 Hive 数据仍然保留；如果备份已经完成，备份文件也不会被修改。查看下方原因后可以重试。';
+  String get migrationFailedSubtitle => '原始 Hive 数据仍然保留；如果备份已经完成，备份文件也不会被修改。查看下方原因后可以重试。';
 
   @override
   String get migrationUnknownError => '未知迁移错误。';
@@ -7807,8 +7649,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationSkipDialogTitle => '跳过迁移？';
 
   @override
-  String get migrationSkipDialogMessage =>
-      'Kelivo 将以空的聊天数据库启动。旧的聊天记录会保留在磁盘上（重命名为 .retired 后缀），但不会被迁移，也不会在应用中显示。之后如需找回，请使用已保存的备份 ZIP。';
+  String get migrationSkipDialogMessage => 'Kelivo 将以空的聊天数据库启动。旧的聊天记录会保留在磁盘上（重命名为 .retired 后缀），但不会被迁移，也不会在应用中显示。之后如需找回，请使用已保存的备份 ZIP。';
 
   @override
   String get migrationSkipDialogCancel => '取消';
@@ -7817,8 +7658,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get migrationSkipDialogConfirm => '跳过并全新开始';
 
   @override
-  String get migrationChatsExportDegradedNote =>
-      'chats.json 导出因出错而被跳过。备份 ZIP 仍包含原始 Hive 文件，完整聊天记录未丢失。';
+  String get migrationChatsExportDegradedNote => 'chats.json 导出因出错而被跳过。备份 ZIP 仍包含原始 Hive 文件，完整聊天记录未丢失。';
 
   @override
   String get timelineJumpToLatest => '跳到最新';
@@ -7877,23 +7717,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get imageSettingsPageCompressTransparentTitle => '压缩透明及动态图片';
 
   @override
-  String get imageSettingsPageCompressTransparentSubtitle =>
-      '开启后将压缩透明 PNG、GIF 等格式；透明区域填充为白色，动图仅保留第一帧。';
+  String get imageSettingsPageCompressTransparentSubtitle => '开启后将压缩透明 PNG、GIF 等格式；透明区域填充为白色，动图仅保留第一帧。';
 
   @override
-  String get imageSettingsPageFooter =>
-      '压缩在添加图片时进行，已保存或已发送的图片不受影响；压缩后图片以 JPEG 格式随消息发送。';
+  String get imageSettingsPageFooter => '压缩在添加图片时进行，已保存或已发送的图片不受影响；压缩后图片以 JPEG 格式随消息发送。';
 
   @override
   String get imageSettingsPageSendSectionTitle => '发送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksTitle =>
-      '将 Markdown 图片链接作为图片发送';
+  String get imageSettingsPageMarkdownImageLinksTitle => '将 Markdown 图片链接作为图片发送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksSubtitle =>
-      '开启后，消息文本中的 ![alt](url) 会作为图片发送给视觉模型；关闭后仅作为普通文本发送。手动添加的图片附件不受影响。';
+  String get imageSettingsPageMarkdownImageLinksSubtitle => '开启后，消息文本中的 ![alt](url) 会作为图片发送给视觉模型；关闭后仅作为普通文本发送。手动添加的图片附件不受影响。';
 
   @override
   String get memoryTraceSettingsTitle => '流程追踪';
@@ -8147,15 +7983,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get messageStyleSettingsPageAssistantFitContent => '助手气泡贴合内容';
 
   @override
-  String get messageStyleSettingsPageAssistantFitContentSubtitle =>
-      '助手气泡按文字宽度收缩，不再占满整行';
+  String get messageStyleSettingsPageAssistantFitContentSubtitle => '助手气泡按文字宽度收缩，不再占满整行';
 
   @override
   String get messageStyleSettingsPageAssistantSplitParagraphs => '分段显示为多个气泡';
 
   @override
-  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle =>
-      '助手回复遇到空行时拆分，每段单独一个气泡';
+  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle => '助手回复遇到空行时拆分，每段单独一个气泡';
 
   @override
   String get messageStyleSettingsPageStyleFrostedSubtitle => '半透明毛玻璃';
@@ -8206,8 +8040,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get messageStyleSettingsPageRoleAssistant => '助手';
 
   @override
-  String get messageStyleSettingsPageRoleAssistantHint =>
-      '助手设定同时作用于思考、工具调用和翻译卡片。';
+  String get messageStyleSettingsPageRoleAssistantHint => '助手设定同时作用于思考、工具调用和翻译卡片。';
 
   @override
   String get localSnapshotSectionTitle => '本地副本';
@@ -8321,8 +8154,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get localSnapshotCopiesEmptyHint => '数据有变化时会自动存一份，恢复数据前也一定会先存一份。';
 
   @override
-  String get localSnapshotCopiesScopeNote =>
-      '本地副本只存在这台设备上。它防的是应用内数据被损坏或误删，防不了设备丢失或卸载应用——那要靠 WebDAV / S3 备份。';
+  String get localSnapshotCopiesScopeNote => '本地副本只存在这台设备上。它防的是应用内数据被损坏或误删，防不了设备丢失或卸载应用——那要靠 WebDAV / S3 备份。';
 
   @override
   String get localSnapshotOriginAutomatic => '自动备份';
@@ -8387,8 +8219,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get localSnapshotDeleteTitle => '删除这份副本？';
 
   @override
-  String get localSnapshotDeleteMessage =>
-      '这份副本会从设备上永久删除。它里面有、而当前数据库里没有的数据将无法找回。';
+  String get localSnapshotDeleteMessage => '这份副本会从设备上永久删除。它里面有、而当前数据库里没有的数据将无法找回。';
 
   @override
   String get localSnapshotDeleteLastWarning => '这是唯一一份还有内容的副本。';
@@ -8459,8 +8290,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get toolSchemaSettingsResetAllTitle => '全部恢复默认？';
 
   @override
-  String get toolSchemaSettingsResetAllMessage =>
-      '将把所有内置工具的描述恢复为应用默认文案，自定义措辞会丢失。';
+  String get toolSchemaSettingsResetAllMessage => '将把所有内置工具的描述恢复为应用默认文案，自定义措辞会丢失。';
 
   @override
   String get toolSchemaSettingsResetAllConfirm => '恢复';
@@ -8471,8 +8301,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get toolSchemaSettingsMemoryLangNote =>
-      '记忆工具的默认描述会随记忆提示语言在中/英之间切换。自定义描述按工具名只存一份，切换语言后不会跟着变。';
+  String get toolSchemaSettingsMemoryLangNote => '记忆工具的默认描述会随记忆提示语言在中/英之间切换。自定义描述按工具名只存一份，切换语言后不会跟着变。';
 
   @override
   String get toolSchemaSettingsDescriptionLabel => '描述';
@@ -8971,8 +8800,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvInstall => '安装';
 
   @override
-  String get workspaceEnvInstallSubtitleAndroid =>
-      '可选择 Ubuntu、Alpine、Debian，也可导入本地 rootfs 镜像。';
+  String get workspaceEnvInstallSubtitleAndroid => '可选择 Ubuntu、Alpine、Debian，也可导入本地 rootfs 镜像。';
 
   @override
   String get workspaceEnvInstallSubtitleIos => '已内置，无需下载';
@@ -9057,8 +8885,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvErrorUnsupportedAbi => '当前设备架构不受支持。';
 
   @override
-  String get workspaceEnvErrorArchitectureMismatch =>
-      '已安装的沙盒架构与当前应用不匹配，请重新安装沙盒后使用。原沙盒文件已保留。';
+  String get workspaceEnvErrorArchitectureMismatch => '已安装的沙盒架构与当前应用不匹配，请重新安装沙盒后使用。原沙盒文件已保留。';
 
   @override
   String get workspaceEnvErrorProotMissing => '缺少 PRoot 可执行文件。';
@@ -9105,8 +8932,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvChipRestart => '需要重启';
 
   @override
-  String get workspaceEnvNativeExplanation =>
-      '在桌面端，Kelivo 使用系统终端，而不是 Linux 沙箱。';
+  String get workspaceEnvNativeExplanation => '在桌面端，Kelivo 使用系统终端，而不是 Linux 沙箱。';
 
   @override
   String workspaceEnvNativeShellPath(String path) {
@@ -9117,11 +8943,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvNativeShellApproval => '除非此会话允许全部工具，否则 shell 工具需要批准。';
 
   @override
-  String workspaceEnvDownloadProgress(
-    String downloaded,
-    String total,
-    int percent,
-  ) {
+  String workspaceEnvDownloadProgress(String downloaded, String total, int percent) {
     return '$downloaded / $total MB ($percent%)';
   }
 
@@ -9153,12 +8975,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get skillsEmptyTitle => '还没有技能';
 
   @override
-  String get skillsEmptyBody =>
-      '技能是包含 SKILL.md 的文件夹。可粘贴 Markdown、导入 .md/.zip，或从 GitHub 安装。';
+  String get skillsEmptyBody => '技能是包含 SKILL.md 的文件夹。可粘贴 Markdown、导入 .md/.zip，或从 GitHub 安装。';
 
   @override
-  String get skillsEmptyFormat =>
-      '---\nname: my-skill\ndescription: 这个技能做什么\n---\n\n# 说明';
+  String get skillsEmptyFormat => '---\nname: my-skill\ndescription: 这个技能做什么\n---\n\n# 说明';
 
   @override
   String get skillsImport => '导入';
@@ -9182,8 +9002,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get skillsImportGitHubLabel => 'GitHub 链接';
 
   @override
-  String get skillsImportGitHubHint =>
-      'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
+  String get skillsImportGitHubHint => 'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
 
   @override
   String get skillsImportConfirm => '导入';
@@ -9352,8 +9171,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEntryUnbindConfirmTitle => '解除绑定？';
 
   @override
-  String get workspaceEntryChangeConfirmBody =>
-      '此对话已使用过工作区工具，之前消息中的文件链接可能不再可用。';
+  String get workspaceEntryChangeConfirmBody => '此对话已使用过工作区工具，之前消息中的文件链接可能不再可用。';
 
   @override
   String get workspaceEntryCwd => '工作目录';
@@ -9633,8 +9451,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get skillsImportGitHubRepoLabel => '仓库地址';
 
   @override
-  String get skillsImportGitHubUrlHint =>
-      'https://github.com/owner/repo 或 owner/repo[/path]';
+  String get skillsImportGitHubUrlHint => 'https://github.com/owner/repo 或 owner/repo[/path]';
 
   @override
   String get skillsImportGitHubHelp => '支持仓库根目录或子目录下的 SKILL.md';
@@ -9769,8 +9586,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvInfoSection => '信息';
 
   @override
-  String get workspaceEnvInfoBody =>
-      '环境是沙盒使用的 Linux 根文件系统。工作区单独存放，重置环境不会删除工作区文件。数据保存在本机已解压的 rootfs 中。';
+  String get workspaceEnvInfoBody => '环境是沙盒使用的 Linux 根文件系统。工作区单独存放，重置环境不会删除工作区文件。数据保存在本机已解压的 rootfs 中。';
 
   @override
   String get workspaceEnvRepairDetail => '重新校验并修补文件';
@@ -9784,8 +9600,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get workspaceEnvResetConfirmMessage =>
-      '这将删除整个 Linux 环境及其中安装的软件包。工作区文件不受影响。';
+  String get workspaceEnvResetConfirmMessage => '这将删除整个 Linux 环境及其中安装的软件包。工作区文件不受影响。';
 
   @override
   String get workspaceEnvRestartDoneBanner => '重置已完成，请重启应用以完成安装。';
@@ -9845,17 +9660,12 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String workspaceEnvDownloadLine(
-    String downloaded,
-    String total,
-    String phase,
-  ) {
+  String workspaceEnvDownloadLine(String downloaded, String total, String phase) {
     return '$downloaded / $total · $phase';
   }
 
   @override
-  String get workspaceEnvNativeUnsandboxed =>
-      '命令在本机直接运行（无沙盒），除非允许本会话全部工具，否则需要批准。';
+  String get workspaceEnvNativeUnsandboxed => '命令在本机直接运行（无沙盒），除非允许本会话全部工具，否则需要批准。';
 
   @override
   String get workspaceEnvRootfsTitle => '/';
@@ -10053,8 +9863,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvDependencySources => '软件包源';
 
   @override
-  String get workspaceEnvDependencySourcesDetail =>
-      '预设使用所选 apt/apk 源安装；pip 和 npm 源用于后续安装的软件包。';
+  String get workspaceEnvDependencySourcesDetail => '预设使用所选 apt/apk 源安装；pip 和 npm 源用于后续安装的软件包。';
 
   @override
   String get workspaceEnvDownloadSource => '沙盒下载源';
@@ -10069,12 +9878,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvDownloadCustom => '自定义链接';
 
   @override
-  String get workspaceEnvDownloadCustomHint =>
-      'https://example.com/ubuntu-base/releases/24.04/release/';
+  String get workspaceEnvDownloadCustomHint => 'https://example.com/ubuntu-base/releases/24.04/release/';
 
   @override
-  String get workspaceEnvDownloadCustomDetail =>
-      '填写镜像目录或完整下载链接，镜像需匹配所选系统、版本及设备架构。';
+  String get workspaceEnvDownloadCustomDetail => '填写镜像目录或完整下载链接，镜像需匹配所选系统、版本及设备架构。';
 
   @override
   String get workspaceEnvDownloadInvalidUrl => '请输入有效的 HTTP 或 HTTPS 链接。';
@@ -10125,15 +9932,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvVariablesEmpty => '还没有环境变量。可以添加工具需要的 API 密钥等配置。';
 
   @override
-  String get workspaceEnvVariablesScope =>
-      '所有工作区共用。修改会用于新的 Agent 命令和应用内终端会话，已有终端需重新打开。外部系统终端使用其自身的环境变量。';
+  String get workspaceEnvVariablesScope => '所有工作区共用。修改会用于新的 Agent 命令和应用内终端会话，已有终端需重新打开。外部系统终端使用其自身的环境变量。';
 
   @override
   String get workspaceEnvPrivacyMode => '隐私模式';
 
   @override
-  String get workspaceEnvPrivacyDetail =>
-      '命令仍能使用真实值。工作区工具输出发给模型前，匹配到的至少 5 个字符的变量值会替换为 [REDACTED]，本地日志保留原文。较短的值不做遮蔽，以免误替换常见开关和数字。';
+  String get workspaceEnvPrivacyDetail => '命令仍能使用真实值。工作区工具输出发给模型前，匹配到的至少 5 个字符的变量值会替换为 [REDACTED]，本地日志保留原文。较短的值不做遮蔽，以免误替换常见开关和数字。';
 
   @override
   String get workspaceEnvVariableAdd => '添加变量';
@@ -10151,8 +9956,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvVariableNote => '备注（可选）';
 
   @override
-  String get workspaceEnvVariableNameHint =>
-      '名称使用字母、数字和下划线，不能以数字开头，区分大小写。命令中可通过 \$NAME 使用变量。';
+  String get workspaceEnvVariableNameHint => '名称使用字母、数字和下划线，不能以数字开头，区分大小写。命令中可通过 \$NAME 使用变量。';
 
   @override
   String get workspaceEnvVariableInvalidName => '请输入有效的变量名称。';
@@ -10173,8 +9977,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get incomingShareReplaceDraft => '输入框中有尚未发送的内容。是否替换为分享的内容，并开始新对话？';
 
   @override
-  String get incomingShareFailed =>
-      '部分分享内容未能导入，请检查文件访问权限和可用存储空间。一次最多分享 32 个文件。';
+  String get incomingShareFailed => '部分分享内容未能导入，请检查文件访问权限和可用存储空间。一次最多分享 32 个文件。';
 
   @override
   String get incomingShareImporting => '正在导入';
@@ -10209,26 +10012,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceExternalMount => '挂载外部文件夹';
 
   @override
-  String get workspaceExternalMountSubtitle =>
-      '所选文件夹挂载到 /mounts/<name>，供各工作区的 AI 工具、Shell 和文件浏览器访问。最多挂载 10 个文件夹。';
+  String get workspaceExternalMountSubtitle => '所选文件夹挂载到 /mounts/<name>，供各工作区的 AI 工具、Shell 和文件浏览器访问。最多挂载 10 个文件夹。';
 
   @override
   String get workspaceExternalStorageTitle => '允许访问文件';
 
   @override
-  String get workspaceExternalStorageMessage =>
-      '工作区和 Shell 需要直接读写外部文件夹，请在 Android 系统设置中允许 Kelivo 访问文件。Android 11 及以上需开启“所有文件访问权限”，然后选择要挂载的本地文件夹。';
+  String get workspaceExternalStorageMessage => '工作区和 Shell 需要直接读写外部文件夹，请在 Android 系统设置中允许 Kelivo 访问文件。Android 11 及以上需开启“所有文件访问权限”，然后选择要挂载的本地文件夹。';
 
   @override
   String get workspaceExternalGrantAccess => '前往授权';
 
   @override
-  String get workspaceExternalLocalOnly =>
-      'Android 仅支持挂载本地文件夹，此文件提供方没有可供 Shell 访问的本地目录。';
+  String get workspaceExternalLocalOnly => 'Android 仅支持挂载本地文件夹，此文件提供方没有可供 Shell 访问的本地目录。';
 
   @override
-  String get workspaceExternalUnavailable =>
-      '外部文件夹不可用。请检查存储连接和访问权限，重新选择文件夹以恢复访问。';
+  String get workspaceExternalUnavailable => '外部文件夹不可用。请检查存储连接和访问权限，重新选择文件夹以恢复访问。';
 
   @override
   String get workspaceExternalReconnect => '重新选择文件夹';
@@ -10252,8 +10051,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceMountAllowWrite => '允许写入';
 
   @override
-  String get workspaceMountPermissionsHint =>
-      '关闭后，AI 文件工具和文件浏览器会拒绝修改此文件夹。Shell 会检查部分常用文件命令，但任意脚本不保证受限。保存挂载变更时会停止正在运行的命令和终端会话。';
+  String get workspaceMountPermissionsHint => '关闭后，AI 文件工具和文件浏览器会拒绝修改此文件夹。Shell 会检查部分常用文件命令，但任意脚本不保证受限。保存挂载变更时会停止正在运行的命令和终端会话。';
 
   @override
   String get workspaceMountBrowse => '浏览文件';
@@ -10268,8 +10066,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceMountInactive => '不可用，请重新选择文件夹';
 
   @override
-  String get workspaceMountInvalidName =>
-      '名称最多 64 个字符，不能包含斜杠、冒号或控制字符，也不能为 . 或 ..。';
+  String get workspaceMountInvalidName => '名称最多 64 个字符，不能包含斜杠、冒号或控制字符，也不能为 . 或 ..。';
 
   @override
   String get workspaceMountDuplicate => '已存在同名挂载。';
@@ -10281,8 +10078,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceMountOverlap => '此文件夹与已有挂载相同或互相包含。请选择其他文件夹，以避免权限冲突。';
 
   @override
-  String get workspaceMountTargetOccupied =>
-      '/mounts 下的同名位置已有本地文件。请更换挂载名称，或先移走这些文件。原有文件未被删除。';
+  String get workspaceMountTargetOccupied => '/mounts 下的同名位置已有本地文件。请更换挂载名称，或先移走这些文件。原有文件未被删除。';
 
   @override
   String get workspaceEnvSystemImage => '系统镜像';
@@ -10300,22 +10096,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvChooseImage => '选择 rootfs 镜像文件';
 
   @override
-  String get workspaceEnvLocalImageHint =>
-      '支持根文件系统压缩包（.tar.gz、.tar.xz、.tar），不支持 ISO 或磁盘镜像。镜像需匹配设备 CPU 架构并包含 /bin/sh，解压后自动识别系统和版本。';
+  String get workspaceEnvLocalImageHint => '支持根文件系统压缩包（.tar.gz、.tar.xz、.tar），不支持 ISO 或磁盘镜像。镜像需匹配设备 CPU 架构并包含 /bin/sh，解压后自动识别系统和版本。';
 
   @override
   String get workspaceEnvImportImage => '导入镜像';
 
   @override
-  String get workspaceEnvInvalidImage =>
-      '请选择适用于此设备的 rootfs 镜像，需包含可执行的 /bin/sh，且 CPU 架构匹配。';
+  String get workspaceEnvInvalidImage => '请选择适用于此设备的 rootfs 镜像，需包含可执行的 /bin/sh，且 CPU 架构匹配。';
 
   @override
   String get workspaceEnvReplaceSystem => '更换系统';
 
   @override
-  String get workspaceEnvReplaceSystemHint =>
-      '更换会替换当前环境内的软件包和文件，并停止运行中的命令与终端会话。工作区、聊天文件和外部文件夹会保留。新镜像准备失败时保留原有环境。';
+  String get workspaceEnvReplaceSystemHint => '更换会替换当前环境内的软件包和文件，并停止运行中的命令与终端会话。工作区、聊天文件和外部文件夹会保留。新镜像准备失败时保留原有环境。';
 
   @override
   String get workspaceEnvProotOptions => 'PRoot 配置';
@@ -10327,15 +10120,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceEnvShellAutomatic => '自动选择';
 
   @override
-  String get workspaceEnvShellHint =>
-      '留空时优先使用 /bin/bash，否则使用 /bin/sh。自定义 Shell 需填写环境内的绝对路径。';
+  String get workspaceEnvShellHint => '留空时优先使用 /bin/bash，否则使用 /bin/sh。自定义 Shell 需填写环境内的绝对路径。';
 
   @override
   String get workspaceEnvProotArguments => '额外 PRoot 参数';
 
   @override
-  String get workspaceEnvProotArgumentsHint =>
-      '每行填写一个参数，无需 Shell 引号。例如将 -k 和 5.10.0 分别放在两行，或使用 --kernel-release=5.10.0。配置对之后启动的命令和终端会话生效。';
+  String get workspaceEnvProotArgumentsHint => '每行填写一个参数，无需 Shell 引号。例如将 -k 和 5.10.0 分别放在两行，或使用 --kernel-release=5.10.0。配置对之后启动的命令和终端会话生效。';
 
   @override
   String get workspaceEnvProotInvalid => '请填写有效的 Shell 绝对路径，并将 PRoot 参数逐行填写。';
@@ -10356,8 +10147,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get displaySettingsPageShowProducedFilesTitle => '显示回复底部文件卡片';
 
   @override
-  String get displaySettingsPageShowProducedFilesSubtitle =>
-      '在回复底部显示工具创建或修改的文件。';
+  String get displaySettingsPageShowProducedFilesSubtitle => '在回复底部显示工具创建或修改的文件。';
 
   @override
   String get reasoningBudgetSliderLow => 'Low';
@@ -10378,8 +10168,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get defaultModelPagePerChatModelTitle => '每个对话独立模型';
 
   @override
-  String get defaultModelPagePerChatModelSubtitle =>
-      '开启后，在对话中切换模型只影响当前对话；关闭后会直接修改当前助手的模型，使用该助手的所有对话都会跟随。';
+  String get defaultModelPagePerChatModelSubtitle => '开启后，在对话中切换模型只影响当前对话；关闭后会直接修改当前助手的模型，使用该助手的所有对话都会跟随。';
 
   @override
   String get googleFontsTitle => 'Google Fonts';
@@ -10391,8 +10180,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get googleFontsSearchHint => '搜索字体或语言';
 
   @override
-  String get googleFontsHint =>
-      '下载常规字重字体后预览并应用，已安装字体可离线使用。目录来自 Expo Google Fonts，字体从 Google Fonts 下载。';
+  String get googleFontsHint => '下载常规字重字体后预览并应用，已安装字体可离线使用。目录来自 Expo Google Fonts，字体从 Google Fonts 下载。';
 
   @override
   String get googleFontsNoResults => '没有匹配的字体';
@@ -10410,8 +10198,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get googleFontsLicense => '字体许可证';
 
   @override
-  String get assistantEditLocationPermissionSettingsMessage =>
-      '定位权限已被禁止。请在系统设置中允许定位访问，然后重新开启此工具。';
+  String get assistantEditLocationPermissionSettingsMessage => '定位权限已被禁止。请在系统设置中允许定位访问，然后重新开启此工具。';
 
   @override
   String get healthDataSettingsCategoryReproductive => '生殖健康';
@@ -10420,8 +10207,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get healthDataSettingsTypeMenstrualFlowTitle => '经期记录';
 
   @override
-  String get healthDataSettingsTypeMenstrualFlowSubtitle =>
-      '最近 90 天记录的经量与周期开始日期';
+  String get healthDataSettingsTypeMenstrualFlowSubtitle => '最近 90 天记录的经量与周期开始日期';
 
   @override
   String get assistantEditGradientBackgroundTitle => '渐变背景';
@@ -10493,8 +10279,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundAndroidEnabled => '后台生成';
 
   @override
-  String get backgroundAndroidEnabledDetail =>
-      '在锁屏、切到后台或划掉最近任务后继续当前生成。任务运行期间会显示系统常驻通知。';
+  String get backgroundAndroidEnabledDetail => '在锁屏、切到后台或划掉最近任务后继续当前生成。任务运行期间会显示系统常驻通知。';
 
   @override
   String get backgroundIosEnabled => '增强后台运行';
@@ -10506,8 +10291,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundNotifications => '任务通知';
 
   @override
-  String get backgroundNotificationsDetail =>
-      '在当前查看的会话之外完成或失败时通知。此开关不控制 Android 必需的常驻通知。';
+  String get backgroundNotificationsDetail => '在当前查看的会话之外完成或失败时通知。此开关不控制 Android 必需的常驻通知。';
 
   @override
   String get backgroundPrivacy => '任务状态隐私';
@@ -10531,22 +10315,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundLiveUpdates => '实时通知 / 灵动岛';
 
   @override
-  String get backgroundLiveUpdatesDetail =>
-      '在支持的设备上使用 Android 16 实时通知。系统成功展示实时通知时优先于悬浮窗。';
+  String get backgroundLiveUpdatesDetail => '在支持的设备上使用 Android 16 实时通知。系统成功展示实时通知时优先于悬浮窗。';
 
   @override
   String get backgroundLocation => '定位辅助保活';
 
   @override
-  String get backgroundLocationDetail =>
-      '在后台任务期间使用低精度定位辅助运行，不保存坐标或发送给 AI 服务。需要开启增强后台运行并授权定位。';
+  String get backgroundLocationDetail => '在后台任务期间使用低精度定位辅助运行，不保存坐标或发送给 AI 服务。需要开启增强后台运行并授权定位。';
 
   @override
   String get backgroundSilentAudio => '静音音频保活';
 
   @override
-  String get backgroundSilentAudioDetail =>
-      '后台任务运行时播放静音音频，并让位于录音和朗读。需要开启增强后台运行，无需麦克风权限。';
+  String get backgroundSilentAudioDetail => '后台任务运行时播放静音音频，并让位于录音和朗读。需要开启增强后台运行，无需麦克风权限。';
 
   @override
   String get backgroundSpeech => '后台朗读';
@@ -10570,8 +10351,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundFinishUntilForeground => '回到应用时收起';
 
   @override
-  String get backgroundFinishVisibilityDetail =>
-      '用于 Android 悬浮窗和 iOS 锁屏完成卡片。回到应用时清理完成状态，最长保留 15 分钟；取消任务立即收起。';
+  String get backgroundFinishVisibilityDetail => '用于 Android 悬浮窗和 iOS 锁屏完成卡片。回到应用时清理完成状态，最长保留 15 分钟；取消任务立即收起。';
 
   @override
   String get backgroundOverlayIcon => '悬浮窗图标';
@@ -10601,8 +10381,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundAutostart => '自启动与后台运行';
 
   @override
-  String get backgroundAutostartDetail =>
-      '请手动检查设备的自启动和后台限制。Android 无法可靠查询这些厂商设置的授权状态。';
+  String get backgroundAutostartDetail => '请手动检查设备的自启动和后台限制。Android 无法可靠查询这些厂商设置的授权状态。';
 
   @override
   String get backgroundLocationPermission => '定位权限';
@@ -10662,12 +10441,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backgroundUnsupported => '当前设备不支持或系统设置未允许';
 
   @override
-  String get backgroundIosLimit =>
-      '后台执行由 iOS 控制，实时活动本身不能保活。强退可能停止生成，实时状态可能要等再次打开应用后才能清理。';
+  String get backgroundIosLimit => '后台执行由 iOS 控制，实时活动本身不能保活。强退可能停止生成，实时状态可能要等再次打开应用后才能清理。';
 
   @override
-  String get backgroundAndroidLimit =>
-      '如任务中断，请检查通知、电池及厂商后台设置。系统强行停止或终止进程仍可能中断生成。';
+  String get backgroundAndroidLimit => '如任务中断，请检查通知、电池及厂商后台设置。系统强行停止或终止进程仍可能中断生成。';
 
   @override
   String get backgroundStale => '状态暂未更新，请打开应用查看。';
@@ -10769,8 +10546,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mcpImportJson => '导入 JSON';
 
   @override
-  String get mcpImportJsonHint =>
-      '粘贴 Claude Desktop 或 Cursor 的 MCP 配置，预览后添加服务器，不覆盖现有配置。';
+  String get mcpImportJsonHint => '粘贴 Claude Desktop 或 Cursor 的 MCP 配置，预览后添加服务器，不覆盖现有配置。';
 
   @override
   String get mcpImportPaste => '从剪贴板粘贴';
@@ -10785,8 +10561,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get startupRecoverySnapshotTitle => '从数据库快照恢复';
 
   @override
-  String get startupRecoverySnapshotBody =>
-      '即使数据库无法打开，也可以选择本机快照恢复聊天和设置。请勿卸载 Kelivo，卸载会一并删除这些快照。';
+  String get startupRecoverySnapshotBody => '即使数据库无法打开，也可以选择本机快照恢复聊天和设置。请勿卸载 Kelivo，卸载会一并删除这些快照。';
 
   @override
   String get startupRecoverySnapshotEmpty => '未在本机找到数据库快照。请先导出数据，再尝试其他恢复操作。';
@@ -10868,19 +10643,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get scheduledTasksPermission => '闹钟和提醒';
 
   @override
-  String get scheduledTasksPermissionDetail =>
-      '允许设置闹钟，才能按指定时间执行。未授权时，已启用的任务会等待授权。';
+  String get scheduledTasksPermissionDetail => '允许设置闹钟，才能按指定时间执行。未授权时，已启用的任务会等待授权。';
 
   @override
   String get scheduledTasksPermissionAction => '去授权';
 
   @override
-  String get scheduledTasksReliability =>
-      '建议在电池设置中允许 Kelivo 后台运行。强行停止后需重新打开应用。错过的任务不会补跑，执行时间跟随设备时区。';
+  String get scheduledTasksReliability => '建议在电池设置中允许 Kelivo 后台运行。强行停止后需重新打开应用。错过的任务不会补跑，执行时间跟随设备时区。';
 
   @override
-  String get scheduledTasksExecutionDetail =>
-      '结果保存在对话中，完成后会发送回复预览通知，点击可打开对话。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+  String get scheduledTasksExecutionDetail => '结果保存在对话中，完成后会发送回复预览通知，点击可打开对话。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
 
   @override
   String get scheduledTasksRunNow => '立即运行';
@@ -11002,8 +10774,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get scheduledTasksEndDate => '结束日期';
 
   @override
-  String get scheduledTasksActiveWindowDetail =>
-      '仅在此日期范围内执行，包含结束当天。未设置的日期不作限制。';
+  String get scheduledTasksActiveWindowDetail => '仅在此日期范围内执行，包含结束当天。未设置的日期不作限制。';
 
   @override
   String get scheduledTasksDate => '日期';
@@ -11027,8 +10798,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get scheduledTasksDateRangeInvalid => '结束日期不能早于开始日期。';
 
   @override
-  String get scheduledTasksRegenerateDetail =>
-      '使用原有上下文，为所选问题生成新的回答，保留已有回答和后续消息。';
+  String get scheduledTasksRegenerateDetail => '使用原有上下文，为所选问题生成新的回答，保留已有回答和后续消息。';
 
   @override
   String get scheduledTasksSaving => '正在保存…';
@@ -11052,17 +10822,114 @@ class AppLocalizationsZh extends AppLocalizations {
   String get scheduledTasksDesktopEmpty => '暂无定时任务';
 
   @override
-  String get scheduledTasksDesktopReliability =>
-      '仅在 Kelivo 运行时执行，最小化或驻留托盘时也会继续。退出或电脑休眠期间错过的任务不会补运行，也不会自动启动应用。';
+  String get scheduledTasksDesktopReliability => '仅在 Kelivo 运行时执行，最小化或驻留托盘时也会继续。退出或电脑休眠期间错过的任务不会补运行，也不会自动启动应用。';
 
   @override
-  String get scheduledTasksDesktopExecutionDetail =>
-      '结果保存在对话中，可从任务的运行记录打开。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+  String get scheduledTasksDesktopExecutionDetail => '结果保存在对话中，可从任务的运行记录打开。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字与正文同大';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle => '开启后 Markdown 引用（>）内的文字不再被额外放大';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint => '当前供应商不支持这些内置工具。';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => '网页抓取';
+
+  @override
+  String get displaySettingsPageUiFontSizeTitle => '界面字体大小';
+
+  @override
+  String get displaySettingsPageInputFontSizeTitle => '输入框字体大小';
+
+  @override
+  String get assistantEditSkillsTab => '技能';
+
+  @override
+  String get assistantEditSkillsEmptyMessage => '还没有绑定技能。点击下方管理技能。';
+
+  @override
+  String get assistantEditManageSkillsButton => '管理技能';
+
+  @override
+  String get skillsAddTooltip => '新增技能';
+
+  @override
+  String get skillsEmptyMessage => '还没有技能，导入或新增一个吧。';
+
+  @override
+  String get skillsImportButton => '导入';
+
+  @override
+  String get skillsDeleteAction => '删除';
+
+  @override
+  String get skillsMultiSelect => '多选';
+
+  @override
+  String get skillsSelectAll => '全选';
+
+  @override
+  String get skillsSelectNone => '取消全选';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return '删除（$count）';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return '确定要删除选中的 $count 个技能吗？此操作不可撤销。';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return '确定要删除技能「$name」吗？此操作不可撤销。';
+  }
+
+  @override
+  String get skillsSaveButton => '保存';
+
+  @override
+  String get skillsNameLabel => '名称';
+
+  @override
+  String get skillsDescriptionLabel => '描述';
+
+  @override
+  String get skillsTriggerKeywordsLabel => '触发关键词';
+
+  @override
+  String get skillsTriggerKeywordsHint => '用逗号分隔，命中后自动启用该技能';
+
+  @override
+  String get skillsContentHint => '技能内容（注入到对话的提示词）';
+
+  @override
+  String get skillsNoValidImported => '没有可导入的技能';
+
+  @override
+  String skillsImportFailed(String error) {
+    return '导入失败：$error';
+  }
+
+  @override
+  String skillsImportedCount(int count) {
+    return '已导入 $count 个技能';
+  }
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '触发关键词：$keywords';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hans`).
 class AppLocalizationsZhHans extends AppLocalizationsZh {
-  AppLocalizationsZhHans() : super('zh_Hans');
+  AppLocalizationsZhHans(): super('zh_Hans');
 
   @override
   String get helloWorld => '你好，世界！';
@@ -11198,8 +11065,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get storageSpaceSubDisplacedDatabases => '自动重建前保留的数据库';
 
   @override
-  String get storageSpaceClearDisplacedDatabasesConfirmMessage =>
-      '确定删除这些保留的旧数据库吗？它们是 Kelivo 重建数据库时留下的，可能是那些聊天记录和设置仅存的一份。删除后无法恢复。';
+  String get storageSpaceClearDisplacedDatabasesConfirmMessage => '确定删除这些保留的旧数据库吗？它们是 Kelivo 重建数据库时留下的，可能是那些聊天记录和设置仅存的一份。删除后无法恢复。';
 
   @override
   String get storageSpaceRestoreTracesHint => '恢复完成后保留的旧数据快照。清理不会影响当前应用数据。';
@@ -11211,8 +11077,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get storageSpaceClearDisplacedDatabasesButton => '删除保留的旧数据库';
 
   @override
-  String get storageSpaceClearRestoreTracesConfirmMessage =>
-      '确定清理已完成恢复留下的旧数据快照吗？当前数据库、设置和文件不会受到影响。';
+  String get storageSpaceClearRestoreTracesConfirmMessage => '确定清理已完成恢复留下的旧数据快照吗？当前数据库、设置和文件不会受到影响。';
 
   @override
   String get storageSpaceSubCompletedRestoreRuns => '已完成的恢复快照';
@@ -11233,8 +11098,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get storageSpaceSafeToClearHint => '可安全清理，不影响聊天记录。';
 
   @override
-  String get storageSpaceLegacyChatDataHint =>
-      '这是迁移到 SQLite 前保留的 Hive 旧文件。清理后不会删除当前聊天记录。';
+  String get storageSpaceLegacyChatDataHint => '这是迁移到 SQLite 前保留的 Hive 旧文件。清理后不会删除当前聊天记录。';
 
   @override
   String get storageSpaceNotSafeToClearHint => '可能影响聊天记录，请谨慎删除。';
@@ -11334,8 +11198,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get storageSpaceClearLegacyChatDataConfirmMessage =>
-      '确定清理保留的旧聊天文件吗？当前 SQLite 聊天记录不会受到影响。';
+  String get storageSpaceClearLegacyChatDataConfirmMessage => '确定清理保留的旧聊天文件吗？当前 SQLite 聊天记录不会受到影响。';
 
   @override
   String get storageSpaceViewLogsButton => '查看日志';
@@ -11754,8 +11617,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get homePagePleaseSelectModel => '请先选择模型';
 
   @override
-  String get homePageAudioAttachmentUnsupported =>
-      '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
+  String get homePageAudioAttachmentUnsupported => '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
 
   @override
   String get homePagePleaseSetupTranslateModel => '请先设置翻译模型';
@@ -11981,8 +11843,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditContextMessagesTitle => '上下文消息数量';
 
   @override
-  String get assistantEditContextMessagesDescription =>
-      '多少历史消息会被当作上下文发送给模型，超过数量会忽略，只保留最近 N 条';
+  String get assistantEditContextMessagesDescription => '多少历史消息会被当作上下文发送给模型，超过数量会忽略，只保留最近 N 条';
 
   @override
   String get assistantEditStreamOutputTitle => '流式输出';
@@ -12117,8 +11978,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditImageUrlDialogTitle => '输入图片链接';
 
   @override
-  String get assistantEditImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get assistantEditImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get assistantEditImageUrlDialogCancel => '取消';
@@ -12315,22 +12175,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditPreviewTitle => '预览';
 
   @override
-  String get assistantEditPromptTimeVarWarning =>
-      '在系统提示词中使用时间变量会让每一轮请求的开头都不同，Prompt 缓存无法命中，费用和首字延迟都会上升。需要让模型知道当前时间时，请改用下方的「追加当前时间」开关。';
+  String get assistantEditPromptTimeVarWarning => '在系统提示词中使用时间变量会让每一轮请求的开头都不同，Prompt 缓存无法命中，费用和首字延迟都会上升。需要让模型知道当前时间时，请改用下方的「追加当前时间」开关。';
 
   @override
   String get assistantEditPromptIso8601Title => '使用 ISO 8601 格式';
 
   @override
-  String get assistantEditPromptIso8601Subtitle =>
-      '包含时区偏移，例如 2026-08-08T14:30:05+08:00';
+  String get assistantEditPromptIso8601Subtitle => '包含时区偏移，例如 2026-08-08T14:30:05+08:00';
 
   @override
   String get assistantEditPromptAppendTimeTitle => '追加当前时间';
 
   @override
-  String get assistantEditPromptAppendTimeSubtitle =>
-      '在每条用户消息末尾追加发送时刻。时间在请求末尾，不影响 Prompt 缓存。';
+  String get assistantEditPromptAppendTimeSubtitle => '在每条用户消息末尾追加发送时刻。时间在请求末尾，不影响 Prompt 缓存。';
 
   @override
   String get assistantEditPromptAppendTimeInfoTitle => '追加时间格式';
@@ -12589,15 +12446,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backupRestoreFailureTitle => '恢复需要处理';
 
   @override
-  String get backupRestoreFailureContent =>
-      'Kelivo 无法验证完整的原有或新数据，因此未打开聊天数据。请关闭 Kelivo 后重试；若问题反复出现，请保留诊断码以便支持人员排查。';
+  String get backupRestoreFailureContent => 'Kelivo 无法验证完整的原有或新数据，因此未打开聊天数据。请关闭 Kelivo 后重试；若问题反复出现，请保留诊断码以便支持人员排查。';
 
   @override
   String get backupRestoreBusinessLeaseUnavailableTitle => 'Kelivo 已在运行';
 
   @override
-  String get backupRestoreBusinessLeaseUnavailableContent =>
-      'Kelivo 的数据仍被另一个应用进程占用。请关闭其他 Kelivo 窗口后重新启动；当前进程尚未打开聊天数据。';
+  String get backupRestoreBusinessLeaseUnavailableContent => 'Kelivo 的数据仍被另一个应用进程占用。请关闭其他 Kelivo 窗口后重新启动；当前进程尚未打开聊天数据。';
 
   @override
   String get restoreProgressTitle => '正在恢复备份';
@@ -12668,8 +12523,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupRecoveryResetDialogTitle => '重置全部数据？';
 
   @override
-  String get startupRecoveryResetDialogContent =>
-      '这将永久删除本设备上 Kelivo 的数据库并重新开始。如果之后可能还需要这些数据，请先导出一份副本。此操作无法撤销。';
+  String get startupRecoveryResetDialogContent => '这将永久删除本设备上 Kelivo 的数据库并重新开始。如果之后可能还需要这些数据，请先导出一份副本。此操作无法撤销。';
 
   @override
   String get startupRecoveryResetDialogConfirm => '重置并重启';
@@ -12744,8 +12598,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupRecoverySectionDataTitle => '你的数据';
 
   @override
-  String get startupRecoverySectionDataBody =>
-      '目前没有任何数据被删除。在尝试下面的操作前，先把副本保存到安全的地方。';
+  String get startupRecoverySectionDataBody => '目前没有任何数据被删除。在尝试下面的操作前，先把副本保存到安全的地方。';
 
   @override
   String startupRecoveryExportSavedTo(String path) {
@@ -12756,8 +12609,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupRecoverySectionRepairTitle => '诊断与修复';
 
   @override
-  String get startupRecoverySectionRepairBody =>
-      '完整性检查只读取数据库。修复会清理上次更新中断留下的元数据并重新启动，不会删除聊天记录。';
+  String get startupRecoverySectionRepairBody => '完整性检查只读取数据库。修复会清理上次更新中断留下的元数据并重新启动，不会删除聊天记录。';
 
   @override
   String get startupRecoveryIntegrityButton => '检查数据库完整性';
@@ -12780,8 +12632,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupRecoveryDangerZone => '危险操作';
 
   @override
-  String get startupRecoveryDangerBody =>
-      '重置会永久删除本设备上 Kelivo 的数据库。请先导出数据副本——重置同时会销毁排查根本问题所需的证据。';
+  String get startupRecoveryDangerBody => '重置会永久删除本设备上 Kelivo 的数据库。请先导出数据副本——重置同时会销毁排查根本问题所需的证据。';
 
   @override
   String get startupRecoveryResetAcknowledge => '我已导出副本，或不需要这些数据。';
@@ -12790,19 +12641,16 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupDatabaseUpdateRequiredTitle => '请更新 Kelivo 以继续';
 
   @override
-  String get startupDatabaseUpdateRequiredContent =>
-      '本设备上的聊天数据库由更新版本的 Kelivo 创建，当前版本无法打开。数据未被改动。请安装最新版 Kelivo 后重新打开。';
+  String get startupDatabaseUpdateRequiredContent => '本设备上的聊天数据库由更新版本的 Kelivo 创建，当前版本无法打开。数据未被改动。请安装最新版 Kelivo 后重新打开。';
 
   @override
   String get startupDatabaseUpdateRequiredDowngradeTitle => '若要改用旧版';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeIntro =>
-      '当前版本打不开本机这份数据库。若你必须留在旧版，请按下面的步骤处理；在备份完成之前，不要删除或覆盖这里的数据。';
+  String get startupDatabaseUpdateRequiredDowngradeIntro => '当前版本打不开本机这份数据库。若你必须留在旧版，请按下面的步骤处理；在备份完成之前，不要删除或覆盖这里的数据。';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep1 =>
-      '先安装并打开最新版 Kelivo，在「设置 → 数据备份」导出一份备份文件。';
+  String get startupDatabaseUpdateRequiredDowngradeStep1 => '先安装并打开最新版 Kelivo，在「设置 → 数据备份」导出一份备份文件。';
 
   @override
   String startupDatabaseUpdateRequiredDowngradeStep2(String url) {
@@ -12810,8 +12658,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep3 =>
-      '确认本机数据已经另外备份好之后，再安装旧版，并导入转换后的备份。';
+  String get startupDatabaseUpdateRequiredDowngradeStep3 => '确认本机数据已经另外备份好之后，再安装旧版，并导入转换后的备份。';
 
   @override
   String get startupDatabaseUpdateRequiredOpenTool => '打开转换工具';
@@ -12836,8 +12683,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backupPageSelectImportMode => '选择导入模式';
 
   @override
-  String get backupPageSelectImportModeDescription =>
-      '请选择恢复方式。聊天和文件开关决定本次恢复的组件。';
+  String get backupPageSelectImportModeDescription => '请选择恢复方式。聊天和文件开关决定本次恢复的组件。';
 
   @override
   String get backupPageOverwriteMode => '完全覆盖';
@@ -12849,8 +12695,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backupPageMergeMode => '合并';
 
   @override
-  String get backupPageMergeModeDescription =>
-      '保留本地数据并加入备份数据；相同会话会跳过，冲突会话会重新分配 ID。';
+  String get backupPageMergeModeDescription => '保留本地数据并加入备份数据；相同会话会跳过，冲突会话会重新分配 ID。';
 
   @override
   String get backupPageRestore => '恢复';
@@ -12870,8 +12715,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backupPageForwardCompatCancel => '取消';
 
   @override
-  String get backupPageSchemaTooNewMessage =>
-      '这份备份由更新版本的 Kelivo 创建，当前版本无法读取。请先升级 Kelivo 后重试。';
+  String get backupPageSchemaTooNewMessage => '这份备份由更新版本的 Kelivo 创建，当前版本无法读取。请先升级 Kelivo 后重试。';
 
   @override
   String get backupPageBackupUploaded => '已上传备份';
@@ -13142,8 +12986,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get chatHistoryPageDeleteAllDialogTitle => '删除未置顶对话';
 
   @override
-  String get chatHistoryPageDeleteAllDialogContent =>
-      '确定要删除所有未置顶的对话吗？已置顶的将会保留。';
+  String get chatHistoryPageDeleteAllDialogContent => '确定要删除所有未置顶的对话吗？已置顶的将会保留。';
 
   @override
   String get chatHistoryPageCancel => '取消';
@@ -13284,13 +13127,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get compressContextKeepAllMessages => '保留条数覆盖全部消息，无内容可压缩';
 
   @override
-  String compressContextEstimatePreview(
-    int summarized,
-    int kept,
-    int minTokens,
-    int maxTokens,
-    int totalTokens,
-  ) {
+  String compressContextEstimatePreview(int summarized, int kept, int minTokens, int maxTokens, int totalTokens) {
     return '总结 $summarized 字符，原样保留 $kept 字符 → 压缩后约 $minTokens–$maxTokens tokens（原文约 $totalTokens tokens）';
   }
 
@@ -13466,12 +13303,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get chatMessageWidgetRegenerateConfirmTitle => '确认重新生成';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmContent =>
-      '重新生成只会更新当前消息，不会删除下面的消息。确定要继续吗？';
+  String get chatMessageWidgetRegenerateConfirmContent => '重新生成只会更新当前消息，不会删除下面的消息。确定要继续吗？';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent =>
-      '重新生成将会删除此消息下面的所有消息，且无法撤销。确定要继续吗？';
+  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent => '重新生成将会删除此消息下面的所有消息，且无法撤销。确定要继续吗？';
 
   @override
   String get chatMessageWidgetRegenerateConfirmCancel => '取消';
@@ -13626,8 +13461,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageEnableDollarLatexTitle => '启用 \$...\$ 渲染';
 
   @override
-  String get displaySettingsPageEnableDollarLatexSubtitle =>
-      '将 \$...\$ 之间的内容按行内数学公式渲染';
+  String get displaySettingsPageEnableDollarLatexSubtitle => '将 \$...\$ 之间的内容按行内数学公式渲染';
 
   @override
   String get displaySettingsPageEnableMathTitle => '启用数学公式渲染';
@@ -13639,12 +13473,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageEnableUserMarkdownTitle => '用户消息 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableReasoningMarkdownTitle =>
-      '思维链 Markdown 渲染';
+  String get displaySettingsPageEnableReasoningMarkdownTitle => '思维链 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableAssistantMarkdownTitle =>
-      '助手消息 Markdown 渲染';
+  String get displaySettingsPageEnableAssistantMarkdownTitle => '助手消息 Markdown 渲染';
 
   @override
   String get displaySettingsPageMobileCodeBlockWrapTitle => '移动端代码块自动换行';
@@ -13662,12 +13494,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageCollapseLongUserMessagesTitle => '折叠过长消息';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesSubtitle =>
-      '超过阈值的用户消息折叠显示，点击可展开';
+  String get displaySettingsPageCollapseLongUserMessagesSubtitle => '超过阈值的用户消息折叠显示，点击可展开';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesCharsTitle =>
-      '超过多少字符折叠';
+  String get displaySettingsPageCollapseLongUserMessagesCharsTitle => '超过多少字符折叠';
 
   @override
   String get displaySettingsPageCollapseLongUserMessagesCharsUnit => '字符';
@@ -13718,8 +13548,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get messageExportThinkingContentLabel => '思考内容';
 
   @override
-  String get messageExportSheetDateTimeWithSecondsPattern =>
-      'yyyy年M月d日 HH:mm:ss';
+  String get messageExportSheetDateTimeWithSecondsPattern => 'yyyy年M月d日 HH:mm:ss';
 
   @override
   String get exportDisclaimerAiGenerated => '内容由 AI 生成，请仔细甄别';
@@ -13947,8 +13776,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get sideDrawerImageUrlDialogTitle => '输入图片链接';
 
   @override
-  String get sideDrawerImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get sideDrawerImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get sideDrawerQQAvatarDialogTitle => '使用QQ头像';
@@ -14213,8 +14041,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get defaultModelPageTitleModelTitle => '标题总结模型';
 
   @override
-  String get defaultModelPageTitleModelSubtitle =>
-      '用于总结对话标题，默认跟随当前对话模型，也可指定其他模型。';
+  String get defaultModelPageTitleModelSubtitle => '用于总结对话标题，默认跟随当前对话模型，也可指定其他模型。';
 
   @override
   String get titleModelThinkingTitle => '是否开启思考';
@@ -14229,15 +14056,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get defaultModelPageSuggestionModelTitle => '聊天建议模型';
 
   @override
-  String get defaultModelPageSuggestionModelSubtitle =>
-      '用于在助手回复后生成聊天建议，可跟随当前对话模型或指定其他模型。默认未启用。';
+  String get defaultModelPageSuggestionModelSubtitle => '用于在助手回复后生成聊天建议，可跟随当前对话模型或指定其他模型。默认未启用。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyTitle => '摘要更新频率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyDescription =>
-      '累计达到所选条数的新消息后，会更新历史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyDescription => '累计达到所选条数的新消息后，会更新历史聊天摘要。';
 
   @override
   String assistantEditRecentChatsSummaryFrequencyOption(int count) {
@@ -14251,26 +14076,22 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditRecentChatsSummaryFrequencyCustomTitle => '自定义摘要频率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomDescription =>
-      '输入累计多少条新消息后再更新历史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyCustomDescription => '输入累计多少条新消息后再更新历史聊天摘要。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyCustomLabel => '新消息条数';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomHint =>
-      '请输入大于 0 的整数';
+  String get assistantEditRecentChatsSummaryFrequencyCustomHint => '请输入大于 0 的整数';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid =>
-      '请输入大于 0 的整数';
+  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid => '请输入大于 0 的整数';
 
   @override
   String get defaultModelPageTranslateModelTitle => '翻译模型';
 
   @override
-  String get defaultModelPageTranslateModelSubtitle =>
-      '用于翻译消息内容的模型，推荐使用快速且准确的模型';
+  String get defaultModelPageTranslateModelSubtitle => '用于翻译消息内容的模型，推荐使用快速且准确的模型';
 
   @override
   String get defaultModelPageOcrModelTitle => 'OCR 模型';
@@ -14284,8 +14105,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get defaultModelPageOcrModelSubtitle => '用于对图片执行文字识别的模型';
 
   @override
-  String get defaultModelPageOcrModelRequiresImageInput =>
-      '请选择标记为支持图片输入的模型用于 OCR';
+  String get defaultModelPageOcrModelRequiresImageInput => '请选择标记为支持图片输入的模型用于 OCR';
 
   @override
   String get defaultModelPagePromptLabel => '提示词';
@@ -14320,10 +14140,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String defaultModelPageSummaryVars(
-    String previousSummaryVar,
-    String userMessagesVar,
-  ) {
+  String defaultModelPageSummaryVars(String previousSummaryVar, String userMessagesVar) {
     return '变量：旧摘要：$previousSummaryVar，新消息：$userMessagesVar';
   }
 
@@ -14474,41 +14291,34 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get modelDetailSheetYoutubeTool => 'YouTube';
 
   @override
-  String get modelDetailSheetYoutubeToolDescription =>
-      '启用 YouTube 链接读取（自动识别提示词中的链接）';
+  String get modelDetailSheetYoutubeToolDescription => '启用 YouTube 链接读取（自动识别提示词中的链接）';
 
   @override
-  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint =>
-      '需要启用 OpenAI Responses API。';
+  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint => '需要启用 OpenAI Responses API。';
 
   @override
   String get modelDetailSheetWebFetchTool => '网页抓取';
 
   @override
-  String get modelDetailSheetOpenrouterWebFetchToolDescription =>
-      '启用 OpenRouter 网页抓取服务端工具';
+  String get modelDetailSheetOpenrouterWebFetchToolDescription => '启用 OpenRouter 网页抓取服务端工具';
 
   @override
-  String get modelDetailSheetClaudeWebFetchToolDescription =>
-      '允许 Claude 抓取对话中出现的网页与 PDF';
+  String get modelDetailSheetClaudeWebFetchToolDescription => '允许 Claude 抓取对话中出现的网页与 PDF';
 
   @override
-  String get modelDetailSheetClaudeCodeExecutionToolDescription =>
-      '允许 Claude 在 Anthropic 沙箱中运行 Python 与 Bash';
+  String get modelDetailSheetClaudeCodeExecutionToolDescription => '允许 Claude 在 Anthropic 沙箱中运行 Python 与 Bash';
 
   @override
   String get modelDetailSheetOpenrouterShellTool => 'Shell';
 
   @override
-  String get modelDetailSheetOpenrouterShellToolDescription =>
-      '在托管的隔离沙箱中运行 Shell 命令';
+  String get modelDetailSheetOpenrouterShellToolDescription => '在托管的隔离沙箱中运行 Shell 命令';
 
   @override
   String get modelDetailSheetOpenaiCodeInterpreterTool => '代码解释器';
 
   @override
-  String get modelDetailSheetOpenaiCodeInterpreterToolDescription =>
-      '启用代码解释器工具（容器自动，内存上限 4g）';
+  String get modelDetailSheetOpenaiCodeInterpreterToolDescription => '启用代码解释器工具（容器自动，内存上限 4g）';
 
   @override
   String get modelDetailSheetOpenaiImageGenerationTool => '图像生成';
@@ -14592,8 +14402,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get providerDetailPageCustomRequestTitle => '自定义请求';
 
   @override
-  String get providerDetailPageCustomRequestDescription =>
-      '应用于此供应商的所有模型。模型配置优先于此处，此处配置优先于助手配置。';
+  String get providerDetailPageCustomRequestDescription => '应用于此供应商的所有模型。模型配置优先于此处，此处配置优先于助手配置。';
 
   @override
   String get providerDetailPageNetworkTab => '网络代理';
@@ -14626,23 +14435,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get providerDetailPageAihubmixAppCodeLabel => '应用 Code（享 10% 优惠）';
 
   @override
-  String get providerDetailPageAihubmixAppCodeHelp =>
-      '为请求附加 APP-Code，可享 10% 优惠，仅对 AIhubmix 生效。';
+  String get providerDetailPageAihubmixAppCodeHelp => '为请求附加 APP-Code，可享 10% 优惠，仅对 AIhubmix 生效。';
 
   @override
-  String get providerDetailPageClaudePromptCachingTitle =>
-      'Claude Prompt Caching';
+  String get providerDetailPageClaudePromptCachingTitle => 'Claude Prompt Caching';
 
   @override
-  String get providerDetailPageClaudePromptCachingHelp =>
-      '通过 Claude 官方或 OpenRouter 调用 Claude 时附加 cache_control。';
+  String get providerDetailPageClaudePromptCachingHelp => '通过 Claude 官方或 OpenRouter 调用 Claude 时附加 cache_control。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtlTitle => '缓存 TTL';
 
   @override
-  String get providerDetailPageClaudePromptCachingTtlHelp =>
-      '5 分钟为默认值。1 小时写入成本更高，但长对话中可减少重复重建缓存。';
+  String get providerDetailPageClaudePromptCachingTtlHelp => '5 分钟为默认值。1 小时写入成本更高，但长对话中可减少重复重建缓存。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtl5m => '5 分钟';
@@ -14910,8 +14715,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get addProviderSheetVertexAiProjectIdLabel => '项目ID';
 
   @override
-  String get addProviderSheetVertexAiServiceAccountJsonLabel =>
-      '服务账号 JSON（粘贴或导入）';
+  String get addProviderSheetVertexAiServiceAccountJsonLabel => '服务账号 JSON（粘贴或导入）';
 
   @override
   String get addProviderSheetImportJsonButton => '导入 JSON';
@@ -14942,8 +14746,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get importProviderSheetDescription =>
-      '粘贴分享字符串（可多行，每行一个）或 ChatBox JSON';
+  String get importProviderSheetDescription => '粘贴分享字符串（可多行，每行一个）或 ChatBox JSON';
 
   @override
   String get importProviderSheetInputHint => 'ai-provider:v1:...';
@@ -15188,8 +14991,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchServiceEditorMultiKeyNone => '未配置';
 
   @override
-  String get searchApiKeysPageDescription =>
-      '列表中的 Key 按顺序轮询使用，第一个为主 Key；不查额度，以防触发服务商风控。';
+  String get searchApiKeysPageDescription => '列表中的 Key 按顺序轮询使用，第一个为主 Key；不查额度，以防触发服务商风控。';
 
   @override
   String get searchApiKeysPagePrimaryBadge => '主';
@@ -15307,8 +15109,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchSettingsSheetClaudeDynamicSearchTitle => '动态过滤';
 
   @override
-  String get searchSettingsSheetClaudeDynamicSearchDescription =>
-      '筛选搜索结果，节省 token';
+  String get searchSettingsSheetClaudeDynamicSearchDescription => '筛选搜索结果，节省 token';
 
   @override
   String get searchSettingsSheetWebSearchTitle => '网络搜索';
@@ -15414,8 +15215,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowUserNameTimestampTitle => '显示用户名称和时间戳';
 
   @override
-  String get displaySettingsPageShowUserNameTimestampSubtitle =>
-      '是否在聊天消息中显示用户名称和时间戳';
+  String get displaySettingsPageShowUserNameTimestampSubtitle => '是否在聊天消息中显示用户名称和时间戳';
 
   @override
   String get displaySettingsPageShowUserNameTitle => '显示用户名称';
@@ -15427,15 +15227,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowUserMessageActionsTitle => '显示用户消息操作按钮';
 
   @override
-  String get displaySettingsPageShowUserMessageActionsSubtitle =>
-      '在用户消息下方显示复制、重发与更多按钮';
+  String get displaySettingsPageShowUserMessageActionsSubtitle => '在用户消息下方显示复制、重发与更多按钮';
 
   @override
   String get displaySettingsPageShowModelNameTimestampTitle => '显示模型名称和时间戳';
 
   @override
-  String get displaySettingsPageShowModelNameTimestampSubtitle =>
-      '是否在聊天消息中显示模型名称和时间戳';
+  String get displaySettingsPageShowModelNameTimestampSubtitle => '是否在聊天消息中显示模型名称和时间戳';
 
   @override
   String get displaySettingsPageShowModelNameTitle => '显示模型名称';
@@ -15447,8 +15245,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowProviderInChatMessageTitle => '模型名称后显示供应商';
 
   @override
-  String get displaySettingsPageShowProviderInChatMessageSubtitle =>
-      '在聊天消息的模型名称后面显示供应商名称（如 模型 | 供应商）';
+  String get displaySettingsPageShowProviderInChatMessageSubtitle => '在聊天消息的模型名称后面显示供应商名称（如 模型 | 供应商）';
 
   @override
   String get displaySettingsPageChatModelIconTitle => '聊天列表模型图标';
@@ -15466,8 +15263,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowThinkingCardsTitle => '显示思考卡片';
 
   @override
-  String get displaySettingsPageShowThinkingCardsSubtitle =>
-      '关闭后，聊天中不再显示思考过程卡片';
+  String get displaySettingsPageShowThinkingCardsSubtitle => '关闭后，聊天中不再显示思考过程卡片';
 
   @override
   String get displaySettingsPageShowToolCardsTitle => '显示工具卡片';
@@ -15479,15 +15275,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageAutoCollapseThinkingTitle => '自动折叠思考';
 
   @override
-  String get displaySettingsPageAutoCollapseThinkingSubtitle =>
-      '思考完成后自动折叠，保持界面简洁';
+  String get displaySettingsPageAutoCollapseThinkingSubtitle => '思考完成后自动折叠，保持界面简洁';
 
   @override
   String get displaySettingsPageCollapseThinkingStepsTitle => '折叠思考步骤';
 
   @override
-  String get displaySettingsPageCollapseThinkingStepsSubtitle =>
-      '默认只显示最新步骤，展开后查看全部';
+  String get displaySettingsPageCollapseThinkingStepsSubtitle => '默认只显示最新步骤，展开后查看全部';
 
   @override
   String get displaySettingsPageShowToolResultSummaryTitle => '显示工具结果摘要';
@@ -15496,15 +15290,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageInsertSuggestionOnlyTitle => '点击建议时仅填入输入框';
 
   @override
-  String get displaySettingsPageShowToolResultSummarySubtitle =>
-      '在工具步骤下方显示摘要文本';
+  String get displaySettingsPageShowToolResultSummarySubtitle => '在工具步骤下方显示摘要文本';
 
   @override
   String get displaySettingsPageHideToolResultImagesTitle => '隐藏工具结果中的图片';
 
   @override
-  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle =>
-      '重新生成时删除下面的消息';
+  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle => '重新生成时删除下面的消息';
 
   @override
   String get displaySettingsPageShowRegenerateConfirmDialogTitle => '重新生成前弹出确认';
@@ -15513,12 +15305,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageForkKeepMessageVersionsTitle => '创建分支时保留消息版本';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle =>
-      '编辑助手时保留思考与工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle => '编辑助手时保留思考与工具卡片';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle =>
-      '关闭后，当前编辑版本只保留助手正文；切回上一版本仍可查看思考与工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle => '关闭后，当前编辑版本只保留助手正文；切回上一版本仍可查看思考与工具卡片';
 
   @override
   String chainOfThoughtExpandSteps(Object count) {
@@ -15538,20 +15328,16 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageEnableImageCropperTitle => '启用图片裁剪';
 
   @override
-  String get displaySettingsPageEnableImageCropperSubtitle =>
-      '从相册或相机选择图片后，允许裁剪图片';
+  String get displaySettingsPageEnableImageCropperSubtitle => '从相册或相机选择图片后，允许裁剪图片';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle =>
-      '点选助手时不自动关闭侧边栏';
+  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle => '点选助手时不自动关闭侧边栏';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle =>
-      '点选话题时不自动关闭侧边栏';
+  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle => '点选话题时不自动关闭侧边栏';
 
   @override
-  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle =>
-      '关闭侧边栏时不折叠助手列表';
+  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle => '关闭侧边栏时不折叠助手列表';
 
   @override
   String get displaySettingsPageShowUpdatesTitle => '显示更新';
@@ -15560,12 +15346,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowUpdatesSubtitle => '显示应用更新通知';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationTitle =>
-      '生成时保持屏幕常亮';
+  String get displaySettingsPageKeepScreenOnDuringGenerationTitle => '生成时保持屏幕常亮';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle =>
-      '防止生成中途锁屏导致中断，会增加耗电';
+  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle => '防止生成中途锁屏导致中断，会增加耗电';
 
   @override
   String get displaySettingsPageMessageNavButtonsTitle => '消息导航按钮';
@@ -15583,8 +15367,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageMessageNavButtonsModeHover => '鼠标悬停时显示';
 
   @override
-  String get displaySettingsPageMessageNavButtonsModeScrollAndHover =>
-      '滚动和鼠标悬停时显示';
+  String get displaySettingsPageMessageNavButtonsModeScrollAndHover => '滚动和鼠标悬停时显示';
 
   @override
   String get displaySettingsPageMessageNavButtonsModeNever => '永不显示';
@@ -15761,15 +15544,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get themeAdvancedSettingsPageUseLayeredSurfacesTitle => '新版分层配色（实验）';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle =>
-      '页面更深、卡片更亮，两者都保留主题色相；关闭可恢复旧外观';
+  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle => '页面更深、卡片更亮，两者都保留主题色相；关闭可恢复旧外观';
 
   @override
   String get themeAdvancedSettingsPageUseLayeredSheetTilesTitle => '弹窗内瓦片分层';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle =>
-      '默认瓦片与弹窗同色';
+  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle => '默认瓦片与弹窗同色';
 
   @override
   String get themeSettingsPageColorPalettesSection => '配色方案';
@@ -16165,29 +15946,25 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get ttsSettingsTextSelectionQuotedOnlyTitle => '仅引号内文字';
 
   @override
-  String get ttsSettingsTextSelectionQuotedOnlyDescription =>
-      '播放 “”、‘’、\"\"、\'\'、「」或『』内的文字。';
+  String get ttsSettingsTextSelectionQuotedOnlyDescription => '播放 “”、‘’、\"\"、\'\'、「」或『』内的文字。';
 
   @override
   String get ttsSettingsTextSelectionOutsideParenthesesTitle => '括号外文字';
 
   @override
-  String get ttsSettingsTextSelectionOutsideParenthesesDescription =>
-      '跳过 () 和 （） 内的文字。';
+  String get ttsSettingsTextSelectionOutsideParenthesesDescription => '跳过 () 和 （） 内的文字。';
 
   @override
   String get ttsSettingsTextSelectionItalicOnlyTitle => '仅斜体文字';
 
   @override
-  String get ttsSettingsTextSelectionItalicOnlyDescription =>
-      '播放 Markdown 或 HTML 斜体文字。';
+  String get ttsSettingsTextSelectionItalicOnlyDescription => '播放 Markdown 或 HTML 斜体文字。';
 
   @override
   String get ttsSettingsTextSelectionNonItalicTitle => '仅正体文字';
 
   @override
-  String get ttsSettingsTextSelectionNonItalicDescription =>
-      '跳过 Markdown 或 HTML 斜体文字。';
+  String get ttsSettingsTextSelectionNonItalicDescription => '跳过 Markdown 或 HTML 斜体文字。';
 
   @override
   String get ttsFloatingPlayerLabel => '语音播放器';
@@ -16310,12 +16087,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get settingsShare => 'Kelivo - 开源AI助手';
 
   @override
-  String get searchProviderBingLocalDescription =>
-      '使用网络抓取工具获取必应搜索结果。无需 API 密钥，但可能不够稳定。';
+  String get searchProviderBingLocalDescription => '使用网络抓取工具获取必应搜索结果。无需 API 密钥，但可能不够稳定。';
 
   @override
-  String get searchProviderDuckDuckGoDescription =>
-      '基于 DDGS 的 DuckDuckGo 隐私搜索，无需 API 密钥，支持设置地区。';
+  String get searchProviderDuckDuckGoDescription => '基于 DDGS 的 DuckDuckGo 隐私搜索，无需 API 密钥，支持设置地区。';
 
   @override
   String get searchProviderBraveDescription => 'Brave 独立搜索引擎。注重隐私，无跟踪或画像。';
@@ -16324,8 +16099,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchProviderExaDescription => '具备语义理解的神经搜索引擎。适合研究与查找特定内容。';
 
   @override
-  String get searchProviderLinkUpDescription =>
-      '提供来源可追溯答案的搜索 API，同时提供搜索结果与 AI 摘要。';
+  String get searchProviderLinkUpDescription => '提供来源可追溯答案的搜索 API，同时提供搜索结果与 AI 摘要。';
 
   @override
   String get searchProviderMetasoDescription => '秘塔中文搜索引擎。面向中文内容优化并提供 AI 能力。';
@@ -16334,16 +16108,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchProviderSearXNGDescription => '注重隐私的元搜索引擎。需自建实例，无跟踪。';
 
   @override
-  String get searchProviderTavilyDescription =>
-      '为大型语言模型（LLMs）优化的 AI 搜索 API，提供高质量、相关的搜索结果。';
+  String get searchProviderTavilyDescription => '为大型语言模型（LLMs）优化的 AI 搜索 API，提供高质量、相关的搜索结果。';
 
   @override
-  String get searchProviderZhipuDescription =>
-      '智谱 AI 旗下中文 AI 搜索服务，针对中文内容与查询进行了优化。';
+  String get searchProviderZhipuDescription => '智谱 AI 旗下中文 AI 搜索服务，针对中文内容与查询进行了优化。';
 
   @override
-  String get searchProviderOllamaDescription =>
-      'Ollama 网络搜索 API。为模型补充最新信息，减少幻觉并提升准确性。';
+  String get searchProviderOllamaDescription => 'Ollama 网络搜索 API。为模型补充最新信息，减少幻觉并提升准确性。';
 
   @override
   String get searchProviderJinaDescription => '适合开发者和企业用于 AI 搜索应用。支持多语言与多模态。';
@@ -16385,15 +16156,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchServiceNamePerplexity => 'Perplexity';
 
   @override
-  String get searchProviderPerplexityDescription =>
-      'Perplexity 搜索 API。提供排序的网页结果，支持区域与域名过滤。';
+  String get searchProviderPerplexityDescription => 'Perplexity 搜索 API。提供排序的网页结果，支持区域与域名过滤。';
 
   @override
   String get searchServiceNameBocha => '博查';
 
   @override
-  String get searchProviderBochaDescription =>
-      '博查 AI 全网网页搜索，支持时间范围与摘要，更适合 AI 使用。';
+  String get searchProviderBochaDescription => '博查 AI 全网网页搜索，支持时间范围与摘要，更适合 AI 使用。';
 
   @override
   String get searchServiceNameDoubao => '豆包';
@@ -16405,57 +16174,49 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchServiceNameSerper => 'Serper';
 
   @override
-  String get searchProviderSerperDescription =>
-      'Serper Google 搜索 API。响应快速，支持国家/地区、语言、时间和页码过滤。';
+  String get searchProviderSerperDescription => 'Serper Google 搜索 API。响应快速，支持国家/地区、语言、时间和页码过滤。';
 
   @override
   String get searchServiceNameQuerit => 'Querit';
 
   @override
-  String get searchProviderQueritDescription =>
-      '面向 LLM 应用的 Querit 搜索 API。返回实时网页结果，并支持站点、时间、国家和语言过滤。';
+  String get searchProviderQueritDescription => '面向 LLM 应用的 Querit 搜索 API。返回实时网页结果，并支持站点、时间、国家和语言过滤。';
 
   @override
   String get searchServiceNameGrok => 'Grok';
 
   @override
-  String get searchProviderGrokDescription =>
-      '通过 xAI Responses API 使用 Grok 搜索。调用网页和 X 搜索工具，并返回带引用的来源。';
+  String get searchProviderGrokDescription => '通过 xAI Responses API 使用 Grok 搜索。调用网页和 X 搜索工具，并返回带引用的来源。';
 
   @override
   String get searchServiceNameStepFun => 'StepFun';
 
   @override
-  String get searchProviderStepFunDescription =>
-      '通过 StepFun POST /v1/search 进行网页搜索。';
+  String get searchProviderStepFunDescription => '通过 StepFun POST /v1/search 进行网页搜索。';
 
   @override
   String get searchServiceNameFirecrawl => 'Firecrawl';
 
   @override
-  String get searchProviderFirecrawlDescription =>
-      'Firecrawl Search API v2。API Key 可选。此处不支持 Scrape。';
+  String get searchProviderFirecrawlDescription => 'Firecrawl Search API v2。API Key 可选。此处不支持 Scrape。';
 
   @override
   String get searchServiceNameTinyFish => 'TinyFish';
 
   @override
-  String get searchProviderTinyFishDescription =>
-      'TinyFish Search API，支持地区与语言参数。需要 API Key。此处不支持 Fetch/Scrape。';
+  String get searchProviderTinyFishDescription => 'TinyFish Search API，支持地区与语言参数。需要 API Key。此处不支持 Fetch/Scrape。';
 
   @override
   String get searchServiceNameAnySearch => 'AnySearch';
 
   @override
-  String get searchProviderAnySearchDescription =>
-      '面向 AI 智能体的统一搜索服务，可在网页与专业数据源间自动路由。API Key 可选。';
+  String get searchProviderAnySearchDescription => '面向 AI 智能体的统一搜索服务，可在网页与专业数据源间自动路由。API Key 可选。';
 
   @override
   String get searchServiceNameParallel => 'Parallel';
 
   @override
-  String get searchProviderParallelDescription =>
-      'Parallel 搜索 API。返回面向 LLM 优化的网页摘录，支持 turbo、fast、basic 和 advanced 模式。';
+  String get searchProviderParallelDescription => 'Parallel 搜索 API。返回面向 LLM 优化的网页摘录，支持 turbo、fast、basic 和 advanced 模式。';
 
   @override
   String get searchServicesDialogSearchMode => '搜索模式';
@@ -16464,8 +16225,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchServiceNameYou => 'You.com';
 
   @override
-  String get searchProviderYouDescription =>
-      'You.com 搜索 API。返回网页与新闻结果，支持 Highlights 或 Snippets。';
+  String get searchProviderYouDescription => 'You.com 搜索 API。返回网页与新闻结果，支持 Highlights 或 Snippets。';
 
   @override
   String get searchServicesDialogContentMode => '内容模式';
@@ -16486,8 +16246,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get searchServicesDialogMaximumTokens => '最大 token 数';
 
   @override
-  String get searchServicesDialogMaximumTokensInvalid =>
-      '最大 token 数必须介于 1024 和 32768 之间。';
+  String get searchServicesDialogMaximumTokensInvalid => '最大 token 数必须介于 1024 和 32768 之间。';
 
   @override
   String get searchServiceNameKelivo => 'Kelivo';
@@ -16678,22 +16437,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditLocalToolTimeInfoTitle => '时间信息';
 
   @override
-  String get assistantEditLocalToolTimeInfoSubtitle =>
-      '读取设备日期、星期、时间、时区、UTC 偏移和时间戳。';
+  String get assistantEditLocalToolTimeInfoSubtitle => '读取设备日期、星期、时间、时区、UTC 偏移和时间戳。';
 
   @override
   String get assistantEditLocalToolClipboardTitle => '剪切板';
 
   @override
-  String get assistantEditLocalToolClipboardSubtitle =>
-      '在明确需要时读取或写入设备剪切板中的纯文本。';
+  String get assistantEditLocalToolClipboardSubtitle => '在明确需要时读取或写入设备剪切板中的纯文本。';
 
   @override
   String get assistantEditLocalToolTextToSpeechTitle => '文字转语音';
 
   @override
-  String get assistantEditLocalToolTextToSpeechSubtitle =>
-      '允许助手使用已配置的语音播放朗读文本。';
+  String get assistantEditLocalToolTextToSpeechSubtitle => '允许助手使用已配置的语音播放朗读文本。';
 
   @override
   String get assistantEditLocalToolAskUserTitle => '询问用户';
@@ -16705,36 +16461,31 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditLocalToolCalculateTitle => '计算器';
 
   @override
-  String get assistantEditLocalToolCalculateSubtitle =>
-      '计算数学表达式，支持加减乘除幂运算 sqrt sin cos 等。';
+  String get assistantEditLocalToolCalculateSubtitle => '计算数学表达式，支持加减乘除幂运算 sqrt sin cos 等。';
 
   @override
   String get assistantEditLocalToolScreenTimeTitle => '屏幕使用时间';
 
   @override
-  String get assistantEditLocalToolScreenTimeSubtitle =>
-      '查询本设备的应用使用时长，需要授予使用情况访问权限。';
+  String get assistantEditLocalToolScreenTimeSubtitle => '查询本设备的应用使用时长，需要授予使用情况访问权限。';
 
   @override
   String get chatMessageWidgetScreenTimeTotal => '总屏幕时间';
 
   @override
-  String get chatMessageWidgetScreenTimePermissionRequired =>
-      '未授予使用情况访问权限，请在系统设置中开启后重试。';
+  String get chatMessageWidgetScreenTimePermissionRequired => '未授予使用情况访问权限，请在系统设置中开启后重试。';
 
   @override
   String get assistantEditLocalToolCalendarQueryTitle => '查询日历';
 
   @override
-  String get assistantEditLocalToolCalendarQuerySubtitle =>
-      '读取本设备上的日历日程，需要授予日历权限。';
+  String get assistantEditLocalToolCalendarQuerySubtitle => '读取本设备上的日历日程，需要授予日历权限。';
 
   @override
   String get assistantEditLocalToolCalendarCreateTitle => '创建日程';
 
   @override
-  String get assistantEditLocalToolCalendarCreateSubtitle =>
-      '在你确认后于本设备创建日历日程，需要授予日历权限。';
+  String get assistantEditLocalToolCalendarCreateSubtitle => '在你确认后于本设备创建日历日程，需要授予日历权限。';
 
   @override
   String get assistantEditLocalToolLocationTitle => '当前位置';
@@ -16746,15 +16497,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditLocalToolWeatherTitle => '天气';
 
   @override
-  String get assistantEditLocalToolWeatherSubtitle =>
-      '获取当前位置或指定地点的 Apple 天气，结果中会展示 WeatherKit 数据来源。';
+  String get assistantEditLocalToolWeatherSubtitle => '获取当前位置或指定地点的 Apple 天气，结果中会展示 WeatherKit 数据来源。';
 
   @override
   String get assistantEditLocalToolHealthTitle => '健康摘要';
 
   @override
-  String get assistantEditLocalToolHealthSubtitle =>
-      '读取本设备的健康活动摘要，需要授予健康数据读取权限。';
+  String get assistantEditLocalToolHealthSubtitle => '读取本设备的健康活动摘要，需要授予健康数据读取权限。';
 
   @override
   String assistantEditLocalToolHealthSelectedCount(int selected, int total) {
@@ -16765,8 +16514,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get healthDataSettingsTitle => '健康数据';
 
   @override
-  String get healthDataSettingsDescription =>
-      '当前助手在日常对话中可使用的 HealthKit 信号。开关表示 Kelivo 可以尝试读取该范围，实际授权仍由 iOS 管理。';
+  String get healthDataSettingsDescription => '当前助手在日常对话中可使用的 HealthKit 信号。开关表示 Kelivo 可以尝试读取该范围，实际授权仍由 iOS 管理。';
 
   @override
   String healthDataSettingsBadge(int selected, int total) {
@@ -16906,22 +16654,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditLocalToolRemindersQueryTitle => '查询提醒';
 
   @override
-  String get assistantEditLocalToolRemindersQuerySubtitle =>
-      '读取本设备上的提醒事项，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersQuerySubtitle => '读取本设备上的提醒事项，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditLocalToolRemindersCreateTitle => '创建提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCreateSubtitle =>
-      '在你确认后于本设备创建提醒事项，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersCreateSubtitle => '在你确认后于本设备创建提醒事项，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditLocalToolRemindersCompleteTitle => '完成提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCompleteSubtitle =>
-      '在你确认后将提醒事项标记为完成，需要授予提醒事项完整访问权限。';
+  String get assistantEditLocalToolRemindersCompleteSubtitle => '在你确认后将提醒事项标记为完成，需要授予提醒事项完整访问权限。';
 
   @override
   String get assistantEditMemorySwitchDescription => '允许助手主动存储并在对话间引用用户相关信息';
@@ -16930,8 +16675,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditRecentChatsSwitchTitle => '参考历史聊天记录';
 
   @override
-  String get assistantEditRecentChatsSwitchDescription =>
-      '在新对话中引用最近的对话标题以增强上下文';
+  String get assistantEditRecentChatsSwitchDescription => '在新对话中引用最近的对话标题以增强上下文';
 
   @override
   String get assistantEditAddMemoryButton => '添加记忆';
@@ -16993,8 +16737,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get providersPageMultiSelectTooltip => '多选';
 
   @override
-  String get providersPageDeleteSelectedConfirmContent =>
-      '确定要删除选中的供应商吗？该操作不可撤销。';
+  String get providersPageDeleteSelectedConfirmContent => '确定要删除选中的供应商吗？该操作不可撤销。';
 
   @override
   String get providersPageDeleteSelectedSnackbar => '已删除选中的供应商';
@@ -17086,8 +16829,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get networkProxyBypassLabel => '代理绕过';
 
   @override
-  String get networkProxyBypassHint =>
-      '用逗号分隔的主机或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
+  String get networkProxyBypassHint => '用逗号分隔的主机或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
 
   @override
   String get networkProxyOptionalHint => '可选';
@@ -17250,15 +16992,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get flutterLogSettingTitle => '应用日志打印';
 
   @override
-  String get flutterLogSettingSubtitle =>
-      '开启后会将 Flutter 错误与 print 输出写入 logs/flutter_logs.txt';
+  String get flutterLogSettingSubtitle => '开启后会将 Flutter 错误与 print 输出写入 logs/flutter_logs.txt';
 
   @override
   String get contextLogSettingTitle => '上下文日志';
 
   @override
-  String get contextLogSettingSubtitle =>
-      '开启后会将每次实际发送给模型的完整上下文写入 logs/context_logs.txt';
+  String get contextLogSettingSubtitle => '开启后会将每次实际发送给模型的完整上下文写入 logs/context_logs.txt';
 
   @override
   String get contextLogViewerTitle => '上下文';
@@ -17412,15 +17152,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get logSettingsSaveOutput => '保存响应输出';
 
   @override
-  String get logSettingsSaveOutputSubtitle =>
-      '记录流式输出的每个分片（可能影响生成性能）。HTTP 报错响应仍会写入。';
+  String get logSettingsSaveOutputSubtitle => '记录流式输出的每个分片（可能影响生成性能）。HTTP 报错响应仍会写入。';
 
   @override
   String get logSettingsElidePayloads => '省略大载荷';
 
   @override
-  String get logSettingsElidePayloadsSubtitle =>
-      '把内联的 base64 图片和文件替换成占位符，日志更小、查看器更快。';
+  String get logSettingsElidePayloadsSubtitle => '把内联的 base64 图片和文件替换成占位符，日志更小、查看器更快。';
 
   @override
   String get logSettingsAutoDelete => '自动删除';
@@ -17503,43 +17241,37 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memoryAboutQuickstartTitle => '三步上手';
 
   @override
-  String get memoryAboutQuickstartBody =>
-      '① 在「设置 → 记忆」里选择处理模型。\n② 在助手的「记忆」页打开长期记忆和自动整理。\n③ 聊几轮，或点「整理记忆」，再到「全部记忆」查看结果。';
+  String get memoryAboutQuickstartBody => '① 在「设置 → 记忆」里选择处理模型。\n② 在助手的「记忆」页打开长期记忆和自动整理。\n③ 聊几轮，或点「整理记忆」，再到「全部记忆」查看结果。';
 
   @override
   String get memoryAboutTypesTitle => '记忆类型';
 
   @override
-  String get memoryAboutTypesBody =>
-      '身份：用户的稳定信息，例如称呼、职业、语言、长期偏好。写成完整的第三人称陈述。\n\n工作流：用户习惯怎么做事，例如工具、格式、审阅方式。\n\n语气：用户希望助手怎么说话，例如语气、篇幅、语言风格。\n\n指令：助手应长期遵守的规则，而不是本次对话里的一次性任务。';
+  String get memoryAboutTypesBody => '身份：用户的稳定信息，例如称呼、职业、语言、长期偏好。写成完整的第三人称陈述。\n\n工作流：用户习惯怎么做事，例如工具、格式、审阅方式。\n\n语气：用户希望助手怎么说话，例如语气、篇幅、语言风格。\n\n指令：助手应长期遵守的规则，而不是本次对话里的一次性任务。';
 
   @override
   String get memoryAboutScopeTitle => '全局与助手范围';
 
   @override
-  String get memoryAboutScopeBody =>
-      '全局记忆会对所有助手注入。助手范围的记忆只对该助手可见。跨助手都该知道的事实用全局；只属于某一个助手的规则或上下文用助手范围。';
+  String get memoryAboutScopeBody => '全局记忆会对所有助手注入。助手范围的记忆只对该助手可见。跨助手都该知道的事实用全局；只属于某一个助手的规则或上下文用助手范围。';
 
   @override
   String get memoryAboutInjectionTitle => '记忆如何注入';
 
   @override
-  String get memoryAboutInjectionBody =>
-      '开对话时，每类会把最近的若干条放进模型上下文。某类超过注入上限时，块会标上 mode=\"summary\"，并用 total / shown 标明总数与展示条数，其余由模型用 memory_search_profile 按需查询。可在「设置 → 记忆」调大上限，更全面但更费 token。';
+  String get memoryAboutInjectionBody => '开对话时，每类会把最近的若干条放进模型上下文。某类超过注入上限时，块会标上 mode=\"summary\"，并用 total / shown 标明总数与展示条数，其余由模型用 memory_search_profile 按需查询。可在「设置 → 记忆」调大上限，更全面但更费 token。';
 
   @override
   String get memoryAboutPipelineTitle => '后台整理';
 
   @override
-  String get memoryAboutPipelineBody =>
-      '开启自动整理后，对话结束会走：判断是否值得记 → 提取候选 → 去重合并 → 必要时把身份类记忆提炼进用户画像。也可以在助手「记忆」页点「整理记忆」。因此处理模型会被较频繁调用。';
+  String get memoryAboutPipelineBody => '开启自动整理后，对话结束会走：判断是否值得记 → 提取候选 → 去重合并 → 必要时把身份类记忆提炼进用户画像。也可以在助手「记忆」页点「整理记忆」。因此处理模型会被较频繁调用。';
 
   @override
   String get memoryAboutCacheTitle => '保持缓存良好';
 
   @override
-  String get memoryAboutCacheBody =>
-      '注入前缀会保持稳定，未改动时可复用 Prompt 缓存，从而降低费用与延迟。避免无意义的大批量改动或重排。日常增删改单条通常影响有限。';
+  String get memoryAboutCacheBody => '注入前缀会保持稳定，未改动时可复用 Prompt 缓存，从而降低费用与延迟。避免无意义的大批量改动或重排。日常增删改单条通常影响有限。';
 
   @override
   String get memoryAboutFaqTitle => '常见问题';
@@ -17548,8 +17280,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memoryAboutFaqWhyNotRememberedTitle => '为什么没记住？';
 
   @override
-  String get memoryAboutFaqWhyNotRememberedBody =>
-      '整理会被跳过，常见原因包括：新消息不足，暂不整理；没有新消息需要整理；尚未选择记忆处理模型。临时对话不会写入记忆。也可以按助手关闭记忆或自动整理。';
+  String get memoryAboutFaqWhyNotRememberedBody => '整理会被跳过，常见原因包括：新消息不足，暂不整理；没有新消息需要整理；尚未选择记忆处理模型。临时对话不会写入记忆。也可以按助手关闭记忆或自动整理。';
 
   @override
   String get memorySettingsThinkingTitle => '启用思考';
@@ -17564,8 +17295,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsTitle => '每类注入条数';
 
   @override
-  String get memorySettingsInjectionMaxItemsSubtitle =>
-      '某一类型的记忆超过该条数时，只注入最近的若干条，其余由模型用 memory_search_profile 按需查询。调大更全面但更费 token。若你改过规则提示词，请一并更新或恢复默认。';
+  String get memorySettingsInjectionMaxItemsSubtitle => '某一类型的记忆超过该条数时，只注入最近的若干条，其余由模型用 memory_search_profile 按需查询。调大更全面但更费 token。若你改过规则提示词，请一并更新或恢复默认。';
 
   @override
   String memorySettingsInjectionMaxItemsOption(int n) {
@@ -17579,8 +17309,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsCustomTitle => '自定义注入条数';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomDescription =>
-      '请输入 1 到 100 之间的整数。';
+  String get memorySettingsInjectionMaxItemsCustomDescription => '请输入 1 到 100 之间的整数。';
 
   @override
   String get memorySettingsInjectionMaxItemsCustomLabel => '条数';
@@ -17589,8 +17318,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsCustomHint => '1–100';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomInvalid =>
-      '请输入 1 到 100 之间的整数';
+  String get memorySettingsInjectionMaxItemsCustomInvalid => '请输入 1 到 100 之间的整数';
 
   @override
   String get memorySettingsPromptLangSection => '提示词语言';
@@ -17641,8 +17369,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get memoryPromptEditSmartAddTitle => 'Smart Add';
 
   @override
-  String get memoryPromptEditSmartAddSubtitle =>
-      'NEW / MERGE / CONFLICT / SKIP 去重判定';
+  String get memoryPromptEditSmartAddSubtitle => 'NEW / MERGE / CONFLICT / SKIP 去重判定';
 
   @override
   String get memoryPromptEditDistillTitle => 'Profile Distiller';
@@ -18145,12 +17872,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get legacyMemoryMigrationContentOrganize => '模型整理';
 
   @override
-  String get legacyMemoryMigrationContentPreserveDescription =>
-      '模型只负责分类，写入时保留旧记忆原文。';
+  String get legacyMemoryMigrationContentPreserveDescription => '模型只负责分类，写入时保留旧记忆原文。';
 
   @override
-  String get legacyMemoryMigrationContentOrganizeDescription =>
-      '模型会分类并改写内容，使用可编辑的迁移提示词。';
+  String get legacyMemoryMigrationContentOrganizeDescription => '模型会分类并改写内容，使用可编辑的迁移提示词。';
 
   @override
   String get legacyMemoryMigrationBatchSize => '批大小';
@@ -18264,15 +17989,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditWriteScopeToolDefaultGlobal => '模型自选（默认全局）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultGlobalSubtitle =>
-      '模型可选择全局或本助手，缺省写入全局';
+  String get assistantEditWriteScopeToolDefaultGlobalSubtitle => '模型可选择全局或本助手，缺省写入全局';
 
   @override
   String get assistantEditWriteScopeToolDefaultAssistant => '模型自选（默认本助手）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultAssistantSubtitle =>
-      '模型可选择全局或本助手，缺省写入本助手';
+  String get assistantEditWriteScopeToolDefaultAssistantSubtitle => '模型可选择全局或本助手，缺省写入本助手';
 
   @override
   String get assistantEditDedupeModeTitle => '去重方式';
@@ -18284,15 +18007,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditDedupeModeBatched => '合并';
 
   @override
-  String get assistantEditDedupeModeBatchedSubtitle =>
-      '一次请求判断本轮全部候选。更快更省；条目多时精度较差。';
+  String get assistantEditDedupeModeBatchedSubtitle => '一次请求判断本轮全部候选。更快更省；条目多时精度较差。';
 
   @override
   String get assistantEditDedupeModePerItem => '逐条';
 
   @override
-  String get assistantEditDedupeModePerItemSubtitle =>
-      '每条候选单独请求判断。更准确，但会增加处理模型调用。';
+  String get assistantEditDedupeModePerItemSubtitle => '每条候选单独请求判断。更准确，但会增加处理模型调用。';
 
   @override
   String get assistantEditOrganizeFrequencyTitle => '整理频率';
@@ -18312,8 +18033,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get assistantEditOrganizeFrequencyCustomTitle => '自定义整理频率';
 
   @override
-  String get assistantEditOrganizeFrequencyCustomDescription =>
-      '请输入 1 到 20 之间的整数。';
+  String get assistantEditOrganizeFrequencyCustomDescription => '请输入 1 到 20 之间的整数。';
 
   @override
   String get assistantEditOrganizeFrequencyCustomLabel => '轮数';
@@ -18568,12 +18288,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get debugPageCreateManyMessagesConversationButton => '创建 1024 条消息的对话';
 
   @override
-  String get debugPageCreateDailyMixedMarkdownConversationButton =>
-      '创建 3000 条日常混合 Markdown 消息';
+  String get debugPageCreateDailyMixedMarkdownConversationButton => '创建 3000 条日常混合 Markdown 消息';
 
   @override
-  String get debugPageCreateLongReasoningConversationButton =>
-      '创建长思考链对话（128 条）';
+  String get debugPageCreateLongReasoningConversationButton => '创建长思考链对话（128 条）';
 
   @override
   String get debugPageCreatingButton => '创建中...';
@@ -18585,8 +18303,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get debugPageCreatingManyMessagesConversation => '正在创建 1024 条消息的对话...';
 
   @override
-  String get debugPageCreatingDailyMixedMarkdownConversation =>
-      '正在创建 3000 条日常混合 Markdown 对话...';
+  String get debugPageCreatingDailyMixedMarkdownConversation => '正在创建 3000 条日常混合 Markdown 对话...';
 
   @override
   String get debugPageCreatingLongReasoningConversation => '正在创建长思考链调试对话...';
@@ -18625,8 +18342,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get debugPageOversizedConversationSeedText =>
-      '这是一段用于复现超大对话渲染卡顿的长调试文本。它包含重复的 Markdown 风格文本、标点、中文内容和普通词语，方便测试聊天渲染、存储和滚动性能。';
+  String get debugPageOversizedConversationSeedText => '这是一段用于复现超大对话渲染卡顿的长调试文本。它包含重复的 Markdown 风格文本、标点、中文内容和普通词语，方便测试聊天渲染、存储和滚动性能。';
 
   @override
   String debugPageManyMessagesSeedText(String role, int index) {
@@ -18637,15 +18353,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationIntroTitle => '升级聊天记录存储';
 
   @override
-  String get migrationIntroSubtitle =>
-      'Kelivo 将聊天记录迁移到更快的 SQLite 数据库。升级会在应用打开前完成，避免新旧数据同时写入。';
+  String get migrationIntroSubtitle => 'Kelivo 将聊天记录迁移到更快的 SQLite 数据库。升级会在应用打开前完成，避免新旧数据同时写入。';
 
   @override
   String get migrationBackupNote => '迁移开始前，会先导出包含设置、聊天记录和本地文件的 ZIP 备份。';
 
   @override
-  String get migrationPerformanceNote =>
-      '迁移后，启动、历史加载和搜索都会使用 SQLite 索引，长对话会更流畅。';
+  String get migrationPerformanceNote => '迁移后，启动、历史加载和搜索都会使用 SQLite 索引，长对话会更流畅。';
 
   @override
   String get migrationSourceDatabaseLabel => 'Hive';
@@ -18666,8 +18380,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationSkipChatsJsonOption => '跳过 chats.json';
 
   @override
-  String get migrationSkipChatsJsonDescription =>
-      '仍会备份原始 Hive、设置和本地文件，超大聊天记录建议选择。';
+  String get migrationSkipChatsJsonDescription => '仍会备份原始 Hive、设置和本地文件，超大聊天记录建议选择。';
 
   @override
   String get migrationSkipBackupOption => '跳过本次备份';
@@ -18679,15 +18392,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationBackingUpTitle => '正在备份';
 
   @override
-  String get migrationBackingUpSubtitle =>
-      '正在导出设置、聊天记录、上传文件、图片和字体。请保持 Kelivo 开启，等待备份完成。';
+  String get migrationBackingUpSubtitle => '正在导出设置、聊天记录、上传文件、图片和字体。请保持 Kelivo 开启，等待备份完成。';
 
   @override
   String get migrationMigratingTitle => '正在迁移到 SQLite';
 
   @override
-  String get migrationMigratingSubtitle =>
-      '正在分批写入会话和消息，避免超大聊天记录占满内存。请保持 Kelivo 在前台，等待迁移完成。';
+  String get migrationMigratingSubtitle => '正在分批写入会话和消息，避免超大聊天记录占满内存。请保持 Kelivo 在前台，等待迁移完成。';
 
   @override
   String migrationBackingUpDetail(String fileName) {
@@ -18745,8 +18456,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationCompleteTitle => '升级完成';
 
   @override
-  String get migrationCompleteSubtitle =>
-      '你的聊天记录已迁移到 SQLite。请重启 Kelivo 进入升级后的应用。';
+  String get migrationCompleteSubtitle => '你的聊天记录已迁移到 SQLite。请重启 Kelivo 进入升级后的应用。';
 
   @override
   String get migrationConversationCount => '对话';
@@ -18770,8 +18480,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationFailedTitle => '迁移失败';
 
   @override
-  String get migrationFailedSubtitle =>
-      '原始 Hive 数据仍然保留；如果备份已经完成，备份文件也不会被修改。查看下方原因后可以重试。';
+  String get migrationFailedSubtitle => '原始 Hive 数据仍然保留；如果备份已经完成，备份文件也不会被修改。查看下方原因后可以重试。';
 
   @override
   String get migrationUnknownError => '未知迁移错误。';
@@ -18789,8 +18498,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationSkipDialogTitle => '跳过迁移？';
 
   @override
-  String get migrationSkipDialogMessage =>
-      'Kelivo 将以空的聊天数据库启动。旧的聊天记录会保留在磁盘上（重命名为 .retired 后缀），但不会被迁移，也不会在应用中显示。之后如需找回，请使用已保存的备份 ZIP。';
+  String get migrationSkipDialogMessage => 'Kelivo 将以空的聊天数据库启动。旧的聊天记录会保留在磁盘上（重命名为 .retired 后缀），但不会被迁移，也不会在应用中显示。之后如需找回，请使用已保存的备份 ZIP。';
 
   @override
   String get migrationSkipDialogCancel => '取消';
@@ -18799,8 +18507,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get migrationSkipDialogConfirm => '跳过并全新开始';
 
   @override
-  String get migrationChatsExportDegradedNote =>
-      'chats.json 导出因出错而被跳过。备份 ZIP 仍包含原始 Hive 文件，完整聊天记录未丢失。';
+  String get migrationChatsExportDegradedNote => 'chats.json 导出因出错而被跳过。备份 ZIP 仍包含原始 Hive 文件，完整聊天记录未丢失。';
 
   @override
   String get timelineJumpToLatest => '跳到最新';
@@ -18859,23 +18566,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get imageSettingsPageCompressTransparentTitle => '压缩透明及动态图片';
 
   @override
-  String get imageSettingsPageCompressTransparentSubtitle =>
-      '开启后将压缩透明 PNG、GIF 等格式；透明区域填充为白色，动图仅保留第一帧。';
+  String get imageSettingsPageCompressTransparentSubtitle => '开启后将压缩透明 PNG、GIF 等格式；透明区域填充为白色，动图仅保留第一帧。';
 
   @override
-  String get imageSettingsPageFooter =>
-      '压缩在添加图片时进行，已保存或已发送的图片不受影响；压缩后图片以 JPEG 格式随消息发送。';
+  String get imageSettingsPageFooter => '压缩在添加图片时进行，已保存或已发送的图片不受影响；压缩后图片以 JPEG 格式随消息发送。';
 
   @override
   String get imageSettingsPageSendSectionTitle => '发送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksTitle =>
-      '将 Markdown 图片链接作为图片发送';
+  String get imageSettingsPageMarkdownImageLinksTitle => '将 Markdown 图片链接作为图片发送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksSubtitle =>
-      '开启后，消息文本中的 ![alt](url) 会作为图片发送给视觉模型；关闭后仅作为普通文本发送。手动添加的图片附件不受影响。';
+  String get imageSettingsPageMarkdownImageLinksSubtitle => '开启后，消息文本中的 ![alt](url) 会作为图片发送给视觉模型；关闭后仅作为普通文本发送。手动添加的图片附件不受影响。';
 
   @override
   String get memoryTraceSettingsTitle => '流程追踪';
@@ -19129,15 +18832,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get messageStyleSettingsPageAssistantFitContent => '助手气泡贴合内容';
 
   @override
-  String get messageStyleSettingsPageAssistantFitContentSubtitle =>
-      '助手气泡按文字宽度收缩，不再占满整行';
+  String get messageStyleSettingsPageAssistantFitContentSubtitle => '助手气泡按文字宽度收缩，不再占满整行';
 
   @override
   String get messageStyleSettingsPageAssistantSplitParagraphs => '分段显示为多个气泡';
 
   @override
-  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle =>
-      '助手回复遇到空行时拆分，每段单独一个气泡';
+  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle => '助手回复遇到空行时拆分，每段单独一个气泡';
 
   @override
   String get messageStyleSettingsPageStyleFrostedSubtitle => '半透明毛玻璃';
@@ -19188,8 +18889,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get messageStyleSettingsPageRoleAssistant => '助手';
 
   @override
-  String get messageStyleSettingsPageRoleAssistantHint =>
-      '助手设定同时作用于思考、工具调用和翻译卡片。';
+  String get messageStyleSettingsPageRoleAssistantHint => '助手设定同时作用于思考、工具调用和翻译卡片。';
 
   @override
   String get localSnapshotSectionTitle => '本地副本';
@@ -19303,8 +19003,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get localSnapshotCopiesEmptyHint => '数据有变化时会自动存一份，恢复数据前也一定会先存一份。';
 
   @override
-  String get localSnapshotCopiesScopeNote =>
-      '本地副本只存在这台设备上。它防的是应用内数据被损坏或误删，防不了设备丢失或卸载应用——那要靠 WebDAV / S3 备份。';
+  String get localSnapshotCopiesScopeNote => '本地副本只存在这台设备上。它防的是应用内数据被损坏或误删，防不了设备丢失或卸载应用——那要靠 WebDAV / S3 备份。';
 
   @override
   String get localSnapshotOriginAutomatic => '自动备份';
@@ -19369,8 +19068,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get localSnapshotDeleteTitle => '删除这份副本？';
 
   @override
-  String get localSnapshotDeleteMessage =>
-      '这份副本会从设备上永久删除。它里面有、而当前数据库里没有的数据将无法找回。';
+  String get localSnapshotDeleteMessage => '这份副本会从设备上永久删除。它里面有、而当前数据库里没有的数据将无法找回。';
 
   @override
   String get localSnapshotDeleteLastWarning => '这是唯一一份还有内容的副本。';
@@ -19441,8 +19139,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get toolSchemaSettingsResetAllTitle => '全部恢复默认？';
 
   @override
-  String get toolSchemaSettingsResetAllMessage =>
-      '将把所有内置工具的描述恢复为应用默认文案，自定义措辞会丢失。';
+  String get toolSchemaSettingsResetAllMessage => '将把所有内置工具的描述恢复为应用默认文案，自定义措辞会丢失。';
 
   @override
   String get toolSchemaSettingsResetAllConfirm => '恢复';
@@ -19453,8 +19150,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get toolSchemaSettingsMemoryLangNote =>
-      '记忆工具的默认描述会随记忆提示语言在中/英之间切换。自定义描述按工具名只存一份，切换语言后不会跟着变。';
+  String get toolSchemaSettingsMemoryLangNote => '记忆工具的默认描述会随记忆提示语言在中/英之间切换。自定义描述按工具名只存一份，切换语言后不会跟着变。';
 
   @override
   String get toolSchemaSettingsDescriptionLabel => '描述';
@@ -19953,8 +19649,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvInstall => '安装';
 
   @override
-  String get workspaceEnvInstallSubtitleAndroid =>
-      '可选择 Ubuntu、Alpine、Debian，也可导入本地 rootfs 镜像。';
+  String get workspaceEnvInstallSubtitleAndroid => '可选择 Ubuntu、Alpine、Debian，也可导入本地 rootfs 镜像。';
 
   @override
   String get workspaceEnvInstallSubtitleIos => '已内置，无需下载';
@@ -20039,8 +19734,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvErrorUnsupportedAbi => '当前设备架构不受支持。';
 
   @override
-  String get workspaceEnvErrorArchitectureMismatch =>
-      '已安装的沙盒架构与当前应用不匹配，请重新安装沙盒后使用。原沙盒文件已保留。';
+  String get workspaceEnvErrorArchitectureMismatch => '已安装的沙盒架构与当前应用不匹配，请重新安装沙盒后使用。原沙盒文件已保留。';
 
   @override
   String get workspaceEnvErrorProotMissing => '缺少 PRoot 可执行文件。';
@@ -20087,8 +19781,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvChipRestart => '需要重启';
 
   @override
-  String get workspaceEnvNativeExplanation =>
-      '在桌面端，Kelivo 使用系统终端，而不是 Linux 沙箱。';
+  String get workspaceEnvNativeExplanation => '在桌面端，Kelivo 使用系统终端，而不是 Linux 沙箱。';
 
   @override
   String workspaceEnvNativeShellPath(String path) {
@@ -20099,11 +19792,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvNativeShellApproval => '除非此会话允许全部工具，否则 shell 工具需要批准。';
 
   @override
-  String workspaceEnvDownloadProgress(
-    String downloaded,
-    String total,
-    int percent,
-  ) {
+  String workspaceEnvDownloadProgress(String downloaded, String total, int percent) {
     return '$downloaded / $total MB ($percent%)';
   }
 
@@ -20135,12 +19824,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get skillsEmptyTitle => '还没有技能';
 
   @override
-  String get skillsEmptyBody =>
-      '技能是包含 SKILL.md 的文件夹。可粘贴 Markdown、导入 .md/.zip，或从 GitHub 安装。';
+  String get skillsEmptyBody => '技能是包含 SKILL.md 的文件夹。可粘贴 Markdown、导入 .md/.zip，或从 GitHub 安装。';
 
   @override
-  String get skillsEmptyFormat =>
-      '---\nname: my-skill\ndescription: 这个技能做什么\n---\n\n# 说明';
+  String get skillsEmptyFormat => '---\nname: my-skill\ndescription: 这个技能做什么\n---\n\n# 说明';
 
   @override
   String get skillsImport => '导入';
@@ -20164,8 +19851,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get skillsImportGitHubLabel => 'GitHub 链接';
 
   @override
-  String get skillsImportGitHubHint =>
-      'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
+  String get skillsImportGitHubHint => 'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
 
   @override
   String get skillsImportConfirm => '导入';
@@ -20334,8 +20020,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEntryUnbindConfirmTitle => '解除绑定？';
 
   @override
-  String get workspaceEntryChangeConfirmBody =>
-      '此对话已使用过工作区工具，之前消息中的文件链接可能不再可用。';
+  String get workspaceEntryChangeConfirmBody => '此对话已使用过工作区工具，之前消息中的文件链接可能不再可用。';
 
   @override
   String get workspaceEntryCwd => '工作目录';
@@ -20615,8 +20300,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get skillsImportGitHubRepoLabel => '仓库地址';
 
   @override
-  String get skillsImportGitHubUrlHint =>
-      'https://github.com/owner/repo 或 owner/repo[/path]';
+  String get skillsImportGitHubUrlHint => 'https://github.com/owner/repo 或 owner/repo[/path]';
 
   @override
   String get skillsImportGitHubHelp => '支持仓库根目录或子目录下的 SKILL.md';
@@ -20751,8 +20435,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvInfoSection => '信息';
 
   @override
-  String get workspaceEnvInfoBody =>
-      '环境是沙盒使用的 Linux 根文件系统。工作区单独存放，重置环境不会删除工作区文件。数据保存在本机已解压的 rootfs 中。';
+  String get workspaceEnvInfoBody => '环境是沙盒使用的 Linux 根文件系统。工作区单独存放，重置环境不会删除工作区文件。数据保存在本机已解压的 rootfs 中。';
 
   @override
   String get workspaceEnvRepairDetail => '重新校验并修补文件';
@@ -20766,8 +20449,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String get workspaceEnvResetConfirmMessage =>
-      '这将删除整个 Linux 环境及其中安装的软件包。工作区文件不受影响。';
+  String get workspaceEnvResetConfirmMessage => '这将删除整个 Linux 环境及其中安装的软件包。工作区文件不受影响。';
 
   @override
   String get workspaceEnvRestartDoneBanner => '重置已完成，请重启应用以完成安装。';
@@ -20827,17 +20509,12 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
-  String workspaceEnvDownloadLine(
-    String downloaded,
-    String total,
-    String phase,
-  ) {
+  String workspaceEnvDownloadLine(String downloaded, String total, String phase) {
     return '$downloaded / $total · $phase';
   }
 
   @override
-  String get workspaceEnvNativeUnsandboxed =>
-      '命令在本机直接运行（无沙盒），除非允许本会话全部工具，否则需要批准。';
+  String get workspaceEnvNativeUnsandboxed => '命令在本机直接运行（无沙盒），除非允许本会话全部工具，否则需要批准。';
 
   @override
   String get workspaceEnvRootfsTitle => '/';
@@ -21035,8 +20712,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvDependencySources => '软件包源';
 
   @override
-  String get workspaceEnvDependencySourcesDetail =>
-      '预设使用所选 apt/apk 源安装；pip 和 npm 源用于后续安装的软件包。';
+  String get workspaceEnvDependencySourcesDetail => '预设使用所选 apt/apk 源安装；pip 和 npm 源用于后续安装的软件包。';
 
   @override
   String get workspaceEnvDownloadSource => '沙盒下载源';
@@ -21051,12 +20727,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvDownloadCustom => '自定义链接';
 
   @override
-  String get workspaceEnvDownloadCustomHint =>
-      'https://example.com/ubuntu-base/releases/24.04/release/';
+  String get workspaceEnvDownloadCustomHint => 'https://example.com/ubuntu-base/releases/24.04/release/';
 
   @override
-  String get workspaceEnvDownloadCustomDetail =>
-      '填写镜像目录或完整下载链接，镜像需匹配所选系统、版本及设备架构。';
+  String get workspaceEnvDownloadCustomDetail => '填写镜像目录或完整下载链接，镜像需匹配所选系统、版本及设备架构。';
 
   @override
   String get workspaceEnvDownloadInvalidUrl => '请输入有效的 HTTP 或 HTTPS 链接。';
@@ -21107,15 +20781,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvVariablesEmpty => '还没有环境变量。可以添加工具需要的 API 密钥等配置。';
 
   @override
-  String get workspaceEnvVariablesScope =>
-      '所有工作区共用。修改会用于新的 Agent 命令和应用内终端会话，已有终端需重新打开。外部系统终端使用其自身的环境变量。';
+  String get workspaceEnvVariablesScope => '所有工作区共用。修改会用于新的 Agent 命令和应用内终端会话，已有终端需重新打开。外部系统终端使用其自身的环境变量。';
 
   @override
   String get workspaceEnvPrivacyMode => '隐私模式';
 
   @override
-  String get workspaceEnvPrivacyDetail =>
-      '命令仍能使用真实值。工作区工具输出发给模型前，匹配到的至少 5 个字符的变量值会替换为 [REDACTED]，本地日志保留原文。较短的值不做遮蔽，以免误替换常见开关和数字。';
+  String get workspaceEnvPrivacyDetail => '命令仍能使用真实值。工作区工具输出发给模型前，匹配到的至少 5 个字符的变量值会替换为 [REDACTED]，本地日志保留原文。较短的值不做遮蔽，以免误替换常见开关和数字。';
 
   @override
   String get workspaceEnvVariableAdd => '添加变量';
@@ -21133,8 +20805,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvVariableNote => '备注（可选）';
 
   @override
-  String get workspaceEnvVariableNameHint =>
-      '名称使用字母、数字和下划线，不能以数字开头，区分大小写。命令中可通过 \$NAME 使用变量。';
+  String get workspaceEnvVariableNameHint => '名称使用字母、数字和下划线，不能以数字开头，区分大小写。命令中可通过 \$NAME 使用变量。';
 
   @override
   String get workspaceEnvVariableInvalidName => '请输入有效的变量名称。';
@@ -21155,8 +20826,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get incomingShareReplaceDraft => '输入框中有尚未发送的内容。是否替换为分享的内容，并开始新对话？';
 
   @override
-  String get incomingShareFailed =>
-      '部分分享内容未能导入，请检查文件访问权限和可用存储空间。一次最多分享 32 个文件。';
+  String get incomingShareFailed => '部分分享内容未能导入，请检查文件访问权限和可用存储空间。一次最多分享 32 个文件。';
 
   @override
   String get incomingShareImporting => '正在导入';
@@ -21191,26 +20861,22 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceExternalMount => '挂载外部文件夹';
 
   @override
-  String get workspaceExternalMountSubtitle =>
-      '所选文件夹挂载到 /mounts/<name>，供各工作区的 AI 工具、Shell 和文件浏览器访问。最多挂载 10 个文件夹。';
+  String get workspaceExternalMountSubtitle => '所选文件夹挂载到 /mounts/<name>，供各工作区的 AI 工具、Shell 和文件浏览器访问。最多挂载 10 个文件夹。';
 
   @override
   String get workspaceExternalStorageTitle => '允许访问文件';
 
   @override
-  String get workspaceExternalStorageMessage =>
-      '工作区和 Shell 需要直接读写外部文件夹，请在 Android 系统设置中允许 Kelivo 访问文件。Android 11 及以上需开启“所有文件访问权限”，然后选择要挂载的本地文件夹。';
+  String get workspaceExternalStorageMessage => '工作区和 Shell 需要直接读写外部文件夹，请在 Android 系统设置中允许 Kelivo 访问文件。Android 11 及以上需开启“所有文件访问权限”，然后选择要挂载的本地文件夹。';
 
   @override
   String get workspaceExternalGrantAccess => '前往授权';
 
   @override
-  String get workspaceExternalLocalOnly =>
-      'Android 仅支持挂载本地文件夹，此文件提供方没有可供 Shell 访问的本地目录。';
+  String get workspaceExternalLocalOnly => 'Android 仅支持挂载本地文件夹，此文件提供方没有可供 Shell 访问的本地目录。';
 
   @override
-  String get workspaceExternalUnavailable =>
-      '外部文件夹不可用。请检查存储连接和访问权限，重新选择文件夹以恢复访问。';
+  String get workspaceExternalUnavailable => '外部文件夹不可用。请检查存储连接和访问权限，重新选择文件夹以恢复访问。';
 
   @override
   String get workspaceExternalReconnect => '重新选择文件夹';
@@ -21234,8 +20900,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceMountAllowWrite => '允许写入';
 
   @override
-  String get workspaceMountPermissionsHint =>
-      '关闭后，AI 文件工具和文件浏览器会拒绝修改此文件夹。Shell 会检查部分常用文件命令，但任意脚本不保证受限。保存挂载变更时会停止正在运行的命令和终端会话。';
+  String get workspaceMountPermissionsHint => '关闭后，AI 文件工具和文件浏览器会拒绝修改此文件夹。Shell 会检查部分常用文件命令，但任意脚本不保证受限。保存挂载变更时会停止正在运行的命令和终端会话。';
 
   @override
   String get workspaceMountBrowse => '浏览文件';
@@ -21250,8 +20915,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceMountInactive => '不可用，请重新选择文件夹';
 
   @override
-  String get workspaceMountInvalidName =>
-      '名称最多 64 个字符，不能包含斜杠、冒号或控制字符，也不能为 . 或 ..。';
+  String get workspaceMountInvalidName => '名称最多 64 个字符，不能包含斜杠、冒号或控制字符，也不能为 . 或 ..。';
 
   @override
   String get workspaceMountDuplicate => '已存在同名挂载。';
@@ -21263,8 +20927,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceMountOverlap => '此文件夹与已有挂载相同或互相包含。请选择其他文件夹，以避免权限冲突。';
 
   @override
-  String get workspaceMountTargetOccupied =>
-      '/mounts 下的同名位置已有本地文件。请更换挂载名称，或先移走这些文件。原有文件未被删除。';
+  String get workspaceMountTargetOccupied => '/mounts 下的同名位置已有本地文件。请更换挂载名称，或先移走这些文件。原有文件未被删除。';
 
   @override
   String get workspaceEnvSystemImage => '系统镜像';
@@ -21282,22 +20945,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvChooseImage => '选择 rootfs 镜像文件';
 
   @override
-  String get workspaceEnvLocalImageHint =>
-      '支持根文件系统压缩包（.tar.gz、.tar.xz、.tar），不支持 ISO 或磁盘镜像。镜像需匹配设备 CPU 架构并包含 /bin/sh，解压后自动识别系统和版本。';
+  String get workspaceEnvLocalImageHint => '支持根文件系统压缩包（.tar.gz、.tar.xz、.tar），不支持 ISO 或磁盘镜像。镜像需匹配设备 CPU 架构并包含 /bin/sh，解压后自动识别系统和版本。';
 
   @override
   String get workspaceEnvImportImage => '导入镜像';
 
   @override
-  String get workspaceEnvInvalidImage =>
-      '请选择适用于此设备的 rootfs 镜像，需包含可执行的 /bin/sh，且 CPU 架构匹配。';
+  String get workspaceEnvInvalidImage => '请选择适用于此设备的 rootfs 镜像，需包含可执行的 /bin/sh，且 CPU 架构匹配。';
 
   @override
   String get workspaceEnvReplaceSystem => '更换系统';
 
   @override
-  String get workspaceEnvReplaceSystemHint =>
-      '更换会替换当前环境内的软件包和文件，并停止运行中的命令与终端会话。工作区、聊天文件和外部文件夹会保留。新镜像准备失败时保留原有环境。';
+  String get workspaceEnvReplaceSystemHint => '更换会替换当前环境内的软件包和文件，并停止运行中的命令与终端会话。工作区、聊天文件和外部文件夹会保留。新镜像准备失败时保留原有环境。';
 
   @override
   String get workspaceEnvProotOptions => 'PRoot 配置';
@@ -21309,15 +20969,13 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get workspaceEnvShellAutomatic => '自动选择';
 
   @override
-  String get workspaceEnvShellHint =>
-      '留空时优先使用 /bin/bash，否则使用 /bin/sh。自定义 Shell 需填写环境内的绝对路径。';
+  String get workspaceEnvShellHint => '留空时优先使用 /bin/bash，否则使用 /bin/sh。自定义 Shell 需填写环境内的绝对路径。';
 
   @override
   String get workspaceEnvProotArguments => '额外 PRoot 参数';
 
   @override
-  String get workspaceEnvProotArgumentsHint =>
-      '每行填写一个参数，无需 Shell 引号。例如将 -k 和 5.10.0 分别放在两行，或使用 --kernel-release=5.10.0。配置对之后启动的命令和终端会话生效。';
+  String get workspaceEnvProotArgumentsHint => '每行填写一个参数，无需 Shell 引号。例如将 -k 和 5.10.0 分别放在两行，或使用 --kernel-release=5.10.0。配置对之后启动的命令和终端会话生效。';
 
   @override
   String get workspaceEnvProotInvalid => '请填写有效的 Shell 绝对路径，并将 PRoot 参数逐行填写。';
@@ -21338,8 +20996,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get displaySettingsPageShowProducedFilesTitle => '显示回复底部文件卡片';
 
   @override
-  String get displaySettingsPageShowProducedFilesSubtitle =>
-      '在回复底部显示工具创建或修改的文件。';
+  String get displaySettingsPageShowProducedFilesSubtitle => '在回复底部显示工具创建或修改的文件。';
 
   @override
   String get reasoningBudgetSliderLow => 'Low';
@@ -21360,8 +21017,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get defaultModelPagePerChatModelTitle => '每个对话独立模型';
 
   @override
-  String get defaultModelPagePerChatModelSubtitle =>
-      '开启后，在对话中切换模型只影响当前对话；关闭后会直接修改当前助手的模型，使用该助手的所有对话都会跟随。';
+  String get defaultModelPagePerChatModelSubtitle => '开启后，在对话中切换模型只影响当前对话；关闭后会直接修改当前助手的模型，使用该助手的所有对话都会跟随。';
 
   @override
   String get googleFontsTitle => 'Google Fonts';
@@ -21373,8 +21029,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get googleFontsSearchHint => '搜索字体或语言';
 
   @override
-  String get googleFontsHint =>
-      '下载常规字重字体后预览并应用，已安装字体可离线使用。目录来自 Expo Google Fonts，字体从 Google Fonts 下载。';
+  String get googleFontsHint => '下载常规字重字体后预览并应用，已安装字体可离线使用。目录来自 Expo Google Fonts，字体从 Google Fonts 下载。';
 
   @override
   String get googleFontsNoResults => '没有匹配的字体';
@@ -21392,8 +21047,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get googleFontsLicense => '字体许可证';
 
   @override
-  String get assistantEditLocationPermissionSettingsMessage =>
-      '定位权限已被禁止。请在系统设置中允许定位访问，然后重新开启此工具。';
+  String get assistantEditLocationPermissionSettingsMessage => '定位权限已被禁止。请在系统设置中允许定位访问，然后重新开启此工具。';
 
   @override
   String get healthDataSettingsCategoryReproductive => '生殖健康';
@@ -21402,8 +21056,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get healthDataSettingsTypeMenstrualFlowTitle => '经期记录';
 
   @override
-  String get healthDataSettingsTypeMenstrualFlowSubtitle =>
-      '最近 90 天记录的经量与周期开始日期';
+  String get healthDataSettingsTypeMenstrualFlowSubtitle => '最近 90 天记录的经量与周期开始日期';
 
   @override
   String get assistantEditGradientBackgroundTitle => '渐变背景';
@@ -21475,8 +21128,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundAndroidEnabled => '后台生成';
 
   @override
-  String get backgroundAndroidEnabledDetail =>
-      '在锁屏、切到后台或划掉最近任务后继续当前生成。任务运行期间会显示系统常驻通知。';
+  String get backgroundAndroidEnabledDetail => '在锁屏、切到后台或划掉最近任务后继续当前生成。任务运行期间会显示系统常驻通知。';
 
   @override
   String get backgroundIosEnabled => '增强后台运行';
@@ -21488,8 +21140,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundNotifications => '任务通知';
 
   @override
-  String get backgroundNotificationsDetail =>
-      '在当前查看的会话之外完成或失败时通知。此开关不控制 Android 必需的常驻通知。';
+  String get backgroundNotificationsDetail => '在当前查看的会话之外完成或失败时通知。此开关不控制 Android 必需的常驻通知。';
 
   @override
   String get backgroundPrivacy => '任务状态隐私';
@@ -21513,22 +21164,19 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundLiveUpdates => '实时通知 / 灵动岛';
 
   @override
-  String get backgroundLiveUpdatesDetail =>
-      '在支持的设备上使用 Android 16 实时通知。系统成功展示实时通知时优先于悬浮窗。';
+  String get backgroundLiveUpdatesDetail => '在支持的设备上使用 Android 16 实时通知。系统成功展示实时通知时优先于悬浮窗。';
 
   @override
   String get backgroundLocation => '定位辅助保活';
 
   @override
-  String get backgroundLocationDetail =>
-      '在后台任务期间使用低精度定位辅助运行，不保存坐标或发送给 AI 服务。需要开启增强后台运行并授权定位。';
+  String get backgroundLocationDetail => '在后台任务期间使用低精度定位辅助运行，不保存坐标或发送给 AI 服务。需要开启增强后台运行并授权定位。';
 
   @override
   String get backgroundSilentAudio => '静音音频保活';
 
   @override
-  String get backgroundSilentAudioDetail =>
-      '后台任务运行时播放静音音频，并让位于录音和朗读。需要开启增强后台运行，无需麦克风权限。';
+  String get backgroundSilentAudioDetail => '后台任务运行时播放静音音频，并让位于录音和朗读。需要开启增强后台运行，无需麦克风权限。';
 
   @override
   String get backgroundSpeech => '后台朗读';
@@ -21552,8 +21200,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundFinishUntilForeground => '回到应用时收起';
 
   @override
-  String get backgroundFinishVisibilityDetail =>
-      '用于 Android 悬浮窗和 iOS 锁屏完成卡片。回到应用时清理完成状态，最长保留 15 分钟；取消任务立即收起。';
+  String get backgroundFinishVisibilityDetail => '用于 Android 悬浮窗和 iOS 锁屏完成卡片。回到应用时清理完成状态，最长保留 15 分钟；取消任务立即收起。';
 
   @override
   String get backgroundOverlayIcon => '悬浮窗图标';
@@ -21583,8 +21230,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundAutostart => '自启动与后台运行';
 
   @override
-  String get backgroundAutostartDetail =>
-      '请手动检查设备的自启动和后台限制。Android 无法可靠查询这些厂商设置的授权状态。';
+  String get backgroundAutostartDetail => '请手动检查设备的自启动和后台限制。Android 无法可靠查询这些厂商设置的授权状态。';
 
   @override
   String get backgroundLocationPermission => '定位权限';
@@ -21644,12 +21290,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get backgroundUnsupported => '当前设备不支持或系统设置未允许';
 
   @override
-  String get backgroundIosLimit =>
-      '后台执行由 iOS 控制，实时活动本身不能保活。强退可能停止生成，实时状态可能要等再次打开应用后才能清理。';
+  String get backgroundIosLimit => '后台执行由 iOS 控制，实时活动本身不能保活。强退可能停止生成，实时状态可能要等再次打开应用后才能清理。';
 
   @override
-  String get backgroundAndroidLimit =>
-      '如任务中断，请检查通知、电池及厂商后台设置。系统强行停止或终止进程仍可能中断生成。';
+  String get backgroundAndroidLimit => '如任务中断，请检查通知、电池及厂商后台设置。系统强行停止或终止进程仍可能中断生成。';
 
   @override
   String get backgroundStale => '状态暂未更新，请打开应用查看。';
@@ -21751,8 +21395,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get mcpImportJson => '导入 JSON';
 
   @override
-  String get mcpImportJsonHint =>
-      '粘贴 Claude Desktop 或 Cursor 的 MCP 配置，预览后添加服务器，不覆盖现有配置。';
+  String get mcpImportJsonHint => '粘贴 Claude Desktop 或 Cursor 的 MCP 配置，预览后添加服务器，不覆盖现有配置。';
 
   @override
   String get mcpImportPaste => '从剪贴板粘贴';
@@ -21767,8 +21410,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get startupRecoverySnapshotTitle => '从数据库快照恢复';
 
   @override
-  String get startupRecoverySnapshotBody =>
-      '即使数据库无法打开，也可以选择本机快照恢复聊天和设置。请勿卸载 Kelivo，卸载会一并删除这些快照。';
+  String get startupRecoverySnapshotBody => '即使数据库无法打开，也可以选择本机快照恢复聊天和设置。请勿卸载 Kelivo，卸载会一并删除这些快照。';
 
   @override
   String get startupRecoverySnapshotEmpty => '未在本机找到数据库快照。请先导出数据，再尝试其他恢复操作。';
@@ -21850,19 +21492,16 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get scheduledTasksPermission => '闹钟和提醒';
 
   @override
-  String get scheduledTasksPermissionDetail =>
-      '允许设置闹钟，才能按指定时间执行。未授权时，已启用的任务会等待授权。';
+  String get scheduledTasksPermissionDetail => '允许设置闹钟，才能按指定时间执行。未授权时，已启用的任务会等待授权。';
 
   @override
   String get scheduledTasksPermissionAction => '去授权';
 
   @override
-  String get scheduledTasksReliability =>
-      '建议在电池设置中允许 Kelivo 后台运行。强行停止后需重新打开应用。错过的任务不会补跑，执行时间跟随设备时区。';
+  String get scheduledTasksReliability => '建议在电池设置中允许 Kelivo 后台运行。强行停止后需重新打开应用。错过的任务不会补跑，执行时间跟随设备时区。';
 
   @override
-  String get scheduledTasksExecutionDetail =>
-      '结果保存在对话中，完成后会发送回复预览通知，点击可打开对话。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+  String get scheduledTasksExecutionDetail => '结果保存在对话中，完成后会发送回复预览通知，点击可打开对话。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
 
   @override
   String get scheduledTasksRunNow => '立即运行';
@@ -21984,8 +21623,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get scheduledTasksEndDate => '结束日期';
 
   @override
-  String get scheduledTasksActiveWindowDetail =>
-      '仅在此日期范围内执行，包含结束当天。未设置的日期不作限制。';
+  String get scheduledTasksActiveWindowDetail => '仅在此日期范围内执行，包含结束当天。未设置的日期不作限制。';
 
   @override
   String get scheduledTasksDate => '日期';
@@ -22009,8 +21647,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get scheduledTasksDateRangeInvalid => '结束日期不能早于开始日期。';
 
   @override
-  String get scheduledTasksRegenerateDetail =>
-      '使用原有上下文，为所选问题生成新的回答，保留已有回答和后续消息。';
+  String get scheduledTasksRegenerateDetail => '使用原有上下文，为所选问题生成新的回答，保留已有回答和后续消息。';
 
   @override
   String get scheduledTasksSaving => '正在保存…';
@@ -22034,17 +21671,114 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get scheduledTasksDesktopEmpty => '暂无定时任务';
 
   @override
-  String get scheduledTasksDesktopReliability =>
-      '仅在 Kelivo 运行时执行，最小化或驻留托盘时也会继续。退出或电脑休眠期间错过的任务不会补运行，也不会自动启动应用。';
+  String get scheduledTasksDesktopReliability => '仅在 Kelivo 运行时执行，最小化或驻留托盘时也会继续。退出或电脑休眠期间错过的任务不会补运行，也不会自动启动应用。';
 
   @override
-  String get scheduledTasksDesktopExecutionDetail =>
-      '结果保存在对话中，可从任务的运行记录打开。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+  String get scheduledTasksDesktopExecutionDetail => '结果保存在对话中，可从任务的运行记录打开。单次最多运行 10 分钟；需要用户回答或工具确认时会停止。';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字与正文同大';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle => '开启后 Markdown 引用（>）内的文字不再被额外放大';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint => '当前供应商不支持这些内置工具。';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => '网页抓取';
+
+  @override
+  String get displaySettingsPageUiFontSizeTitle => '界面字体大小';
+
+  @override
+  String get displaySettingsPageInputFontSizeTitle => '输入框字体大小';
+
+  @override
+  String get assistantEditSkillsTab => '技能';
+
+  @override
+  String get assistantEditSkillsEmptyMessage => '还没有绑定技能。点击下方管理技能。';
+
+  @override
+  String get assistantEditManageSkillsButton => '管理技能';
+
+  @override
+  String get skillsAddTooltip => '新增技能';
+
+  @override
+  String get skillsEmptyMessage => '还没有技能，导入或新增一个吧。';
+
+  @override
+  String get skillsImportButton => '导入';
+
+  @override
+  String get skillsDeleteAction => '删除';
+
+  @override
+  String get skillsMultiSelect => '多选';
+
+  @override
+  String get skillsSelectAll => '全选';
+
+  @override
+  String get skillsSelectNone => '取消全选';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return '删除（$count）';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return '确定要删除选中的 $count 个技能吗？此操作不可撤销。';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return '确定要删除技能「$name」吗？此操作不可撤销。';
+  }
+
+  @override
+  String get skillsSaveButton => '保存';
+
+  @override
+  String get skillsNameLabel => '名称';
+
+  @override
+  String get skillsDescriptionLabel => '描述';
+
+  @override
+  String get skillsTriggerKeywordsLabel => '触发关键词';
+
+  @override
+  String get skillsTriggerKeywordsHint => '用逗号分隔，命中后自动启用该技能';
+
+  @override
+  String get skillsContentHint => '技能内容（注入到对话的提示词）';
+
+  @override
+  String get skillsNoValidImported => '没有可导入的技能';
+
+  @override
+  String skillsImportFailed(String error) {
+    return '导入失败：$error';
+  }
+
+  @override
+  String skillsImportedCount(int count) {
+    return '已导入 $count 个技能';
+  }
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '触发关键词：$keywords';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
 class AppLocalizationsZhHant extends AppLocalizationsZh {
-  AppLocalizationsZhHant() : super('zh_Hant');
+  AppLocalizationsZhHant(): super('zh_Hant');
 
   @override
   String get helloWorld => '你好，世界！';
@@ -22180,8 +21914,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get storageSpaceSubDisplacedDatabases => '自動重建前保留的資料庫';
 
   @override
-  String get storageSpaceClearDisplacedDatabasesConfirmMessage =>
-      '確定刪除這些保留的舊資料庫嗎？它們是 Kelivo 重建資料庫時留下的，可能是那些聊天記錄和設定僅存的一份。刪除後無法復原。';
+  String get storageSpaceClearDisplacedDatabasesConfirmMessage => '確定刪除這些保留的舊資料庫嗎？它們是 Kelivo 重建資料庫時留下的，可能是那些聊天記錄和設定僅存的一份。刪除後無法復原。';
 
   @override
   String get storageSpaceRestoreTracesHint => '還原完成後保留的舊資料快照。清理不會影響目前的應用程式資料。';
@@ -22193,8 +21926,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get storageSpaceClearDisplacedDatabasesButton => '刪除保留的舊資料庫';
 
   @override
-  String get storageSpaceClearRestoreTracesConfirmMessage =>
-      '確定清理已完成還原留下的舊資料快照嗎？目前的資料庫、設定和檔案不會受到影響。';
+  String get storageSpaceClearRestoreTracesConfirmMessage => '確定清理已完成還原留下的舊資料快照嗎？目前的資料庫、設定和檔案不會受到影響。';
 
   @override
   String get storageSpaceSubCompletedRestoreRuns => '已完成的還原快照';
@@ -22215,8 +21947,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get storageSpaceSafeToClearHint => '可安全清理，不影響聊天記錄。';
 
   @override
-  String get storageSpaceLegacyChatDataHint =>
-      '這是遷移到 SQLite 前保留的 Hive 舊檔案。清理後不會刪除目前的聊天記錄。';
+  String get storageSpaceLegacyChatDataHint => '這是遷移到 SQLite 前保留的 Hive 舊檔案。清理後不會刪除目前的聊天記錄。';
 
   @override
   String get storageSpaceNotSafeToClearHint => '可能影響聊天記錄，請謹慎刪除。';
@@ -22316,8 +22047,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get storageSpaceClearLegacyChatDataConfirmMessage =>
-      '確定清理保留的舊聊天檔案嗎？目前的 SQLite 聊天記錄不會受到影響。';
+  String get storageSpaceClearLegacyChatDataConfirmMessage => '確定清理保留的舊聊天檔案嗎？目前的 SQLite 聊天記錄不會受到影響。';
 
   @override
   String get storageSpaceViewLogsButton => '查看日誌';
@@ -22736,8 +22466,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get homePagePleaseSelectModel => '請先選擇模型';
 
   @override
-  String get homePageAudioAttachmentUnsupported =>
-      '目前模型不支援音訊附件，請切換到支援音訊輸入的模型或移除音訊檔案後再試。';
+  String get homePageAudioAttachmentUnsupported => '目前模型不支援音訊附件，請切換到支援音訊輸入的模型或移除音訊檔案後再試。';
 
   @override
   String get homePagePleaseSetupTranslateModel => '請先設定翻譯模型';
@@ -22963,8 +22692,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditContextMessagesTitle => '上下文訊息數量';
 
   @override
-  String get assistantEditContextMessagesDescription =>
-      '多少歷史訊息會被當作上下文傳送給模型，超過數量會忽略，只保留最近 N 條';
+  String get assistantEditContextMessagesDescription => '多少歷史訊息會被當作上下文傳送給模型，超過數量會忽略，只保留最近 N 條';
 
   @override
   String get assistantEditStreamOutputTitle => '串流輸出';
@@ -23099,8 +22827,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditImageUrlDialogTitle => '輸入圖片連結';
 
   @override
-  String get assistantEditImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get assistantEditImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get assistantEditImageUrlDialogCancel => '取消';
@@ -23297,22 +23024,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditPreviewTitle => '預覽';
 
   @override
-  String get assistantEditPromptTimeVarWarning =>
-      '在系統提示詞中使用時間變數會讓每一輪請求的開頭都不同，Prompt 快取無法命中，費用和首字延遲都會上升。需要讓模型知道當前時間時，請改用下方的「追加當前時間」開關。';
+  String get assistantEditPromptTimeVarWarning => '在系統提示詞中使用時間變數會讓每一輪請求的開頭都不同，Prompt 快取無法命中，費用和首字延遲都會上升。需要讓模型知道當前時間時，請改用下方的「追加當前時間」開關。';
 
   @override
   String get assistantEditPromptIso8601Title => '使用 ISO 8601 格式';
 
   @override
-  String get assistantEditPromptIso8601Subtitle =>
-      '包含時區偏移，例如 2026-08-08T14:30:05+08:00';
+  String get assistantEditPromptIso8601Subtitle => '包含時區偏移，例如 2026-08-08T14:30:05+08:00';
 
   @override
   String get assistantEditPromptAppendTimeTitle => '追加當前時間';
 
   @override
-  String get assistantEditPromptAppendTimeSubtitle =>
-      '在每條使用者訊息末尾追加傳送時刻。時間在請求末尾，不影響 Prompt 快取。';
+  String get assistantEditPromptAppendTimeSubtitle => '在每條使用者訊息末尾追加傳送時刻。時間在請求末尾，不影響 Prompt 快取。';
 
   @override
   String get assistantEditPromptAppendTimeInfoTitle => '追加時間格式';
@@ -23571,22 +23295,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backupRestoreFailureTitle => '還原需要處理';
 
   @override
-  String get backupRestoreFailureContent =>
-      'Kelivo 無法驗證完整的原有或新資料，因此未開啟聊天資料。請關閉 Kelivo 後重試；若問題持續發生，請保留診斷碼以供支援人員排查。';
+  String get backupRestoreFailureContent => 'Kelivo 無法驗證完整的原有或新資料，因此未開啟聊天資料。請關閉 Kelivo 後重試；若問題持續發生，請保留診斷碼以供支援人員排查。';
 
   @override
   String get backupRestoreBusinessLeaseUnavailableTitle => 'Kelivo 已在執行';
 
   @override
-  String get backupRestoreBusinessLeaseUnavailableContent =>
-      'Kelivo 的資料仍由另一個應用程式程序使用。請關閉其他 Kelivo 視窗後重新啟動；目前程序尚未開啟聊天資料。';
+  String get backupRestoreBusinessLeaseUnavailableContent => 'Kelivo 的資料仍由另一個應用程式程序使用。請關閉其他 Kelivo 視窗後重新啟動；目前程序尚未開啟聊天資料。';
 
   @override
   String get restoreProgressTitle => '正在還原備份';
 
   @override
-  String get restoreProgressWarning =>
-      '請保持 Kelivo 開啟直到完成。此時關閉應用程式，下次啟動會從頭再來一次。';
+  String get restoreProgressWarning => '請保持 Kelivo 開啟直到完成。此時關閉應用程式，下次啟動會從頭再來一次。';
 
   @override
   String get restoreProgressStageCheckingBackup => '正在驗證備份';
@@ -23651,8 +23372,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupRecoveryResetDialogTitle => '重設全部資料？';
 
   @override
-  String get startupRecoveryResetDialogContent =>
-      '這會永久刪除本裝置上 Kelivo 的資料庫並重新開始。如果之後可能還需要這些資料，請先匯出一份副本。此操作無法復原。';
+  String get startupRecoveryResetDialogContent => '這會永久刪除本裝置上 Kelivo 的資料庫並重新開始。如果之後可能還需要這些資料，請先匯出一份副本。此操作無法復原。';
 
   @override
   String get startupRecoveryResetDialogConfirm => '重設並重新啟動';
@@ -23727,8 +23447,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupRecoverySectionDataTitle => '你的資料';
 
   @override
-  String get startupRecoverySectionDataBody =>
-      '目前沒有任何資料被刪除。在嘗試下方操作前，先把副本存到安全的地方。';
+  String get startupRecoverySectionDataBody => '目前沒有任何資料被刪除。在嘗試下方操作前，先把副本存到安全的地方。';
 
   @override
   String startupRecoveryExportSavedTo(String path) {
@@ -23739,8 +23458,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupRecoverySectionRepairTitle => '診斷與修復';
 
   @override
-  String get startupRecoverySectionRepairBody =>
-      '完整性檢查只會讀取資料庫。修復會清除上次更新中斷留下的中繼資料並重新啟動，不會刪除聊天記錄。';
+  String get startupRecoverySectionRepairBody => '完整性檢查只會讀取資料庫。修復會清除上次更新中斷留下的中繼資料並重新啟動，不會刪除聊天記錄。';
 
   @override
   String get startupRecoveryIntegrityButton => '檢查資料庫完整性';
@@ -23763,8 +23481,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupRecoveryDangerZone => '危險操作';
 
   @override
-  String get startupRecoveryDangerBody =>
-      '重設會永久刪除本裝置上 Kelivo 的資料庫。請先匯出資料副本——重設同時會銷毀排查根本問題所需的證據。';
+  String get startupRecoveryDangerBody => '重設會永久刪除本裝置上 Kelivo 的資料庫。請先匯出資料副本——重設同時會銷毀排查根本問題所需的證據。';
 
   @override
   String get startupRecoveryResetAcknowledge => '我已匯出副本，或不需要這些資料。';
@@ -23773,19 +23490,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupDatabaseUpdateRequiredTitle => '請更新 Kelivo 以繼續';
 
   @override
-  String get startupDatabaseUpdateRequiredContent =>
-      '本裝置上的聊天資料庫由更新版本的 Kelivo 建立，目前版本無法開啟。資料未被改動。請安裝最新版 Kelivo 後重新開啟。';
+  String get startupDatabaseUpdateRequiredContent => '本裝置上的聊天資料庫由更新版本的 Kelivo 建立，目前版本無法開啟。資料未被改動。請安裝最新版 Kelivo 後重新開啟。';
 
   @override
   String get startupDatabaseUpdateRequiredDowngradeTitle => '若要改用舊版';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeIntro =>
-      '目前版本無法開啟本機這份資料庫。若你必須留在舊版，請依下列步驟處理；在備份完成之前，不要刪除或覆蓋這裡的資料。';
+  String get startupDatabaseUpdateRequiredDowngradeIntro => '目前版本無法開啟本機這份資料庫。若你必須留在舊版，請依下列步驟處理；在備份完成之前，不要刪除或覆蓋這裡的資料。';
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep1 =>
-      '先安裝並開啟最新版 Kelivo，在「設定 → 資料備份」匯出一份備份檔。';
+  String get startupDatabaseUpdateRequiredDowngradeStep1 => '先安裝並開啟最新版 Kelivo，在「設定 → 資料備份」匯出一份備份檔。';
 
   @override
   String startupDatabaseUpdateRequiredDowngradeStep2(String url) {
@@ -23793,8 +23507,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get startupDatabaseUpdateRequiredDowngradeStep3 =>
-      '確認本機資料已經另外備份好之後，再安裝舊版，並匯入轉換後的備份。';
+  String get startupDatabaseUpdateRequiredDowngradeStep3 => '確認本機資料已經另外備份好之後，再安裝舊版，並匯入轉換後的備份。';
 
   @override
   String get startupDatabaseUpdateRequiredOpenTool => '打開轉換工具';
@@ -23819,8 +23532,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backupPageSelectImportMode => '選擇匯入模式';
 
   @override
-  String get backupPageSelectImportModeDescription =>
-      '請選擇還原方式。聊天與檔案開關決定本次還原的元件。';
+  String get backupPageSelectImportModeDescription => '請選擇還原方式。聊天與檔案開關決定本次還原的元件。';
 
   @override
   String get backupPageOverwriteMode => '完全覆蓋';
@@ -23832,8 +23544,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backupPageMergeMode => '合併';
 
   @override
-  String get backupPageMergeModeDescription =>
-      '保留本機資料並加入備份資料；相同對話會略過，衝突對話會重新分配 ID。';
+  String get backupPageMergeModeDescription => '保留本機資料並加入備份資料；相同對話會略過，衝突對話會重新分配 ID。';
 
   @override
   String get backupPageRestore => '還原';
@@ -23853,8 +23564,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backupPageForwardCompatCancel => '取消';
 
   @override
-  String get backupPageSchemaTooNewMessage =>
-      '這份備份由更新版本的 Kelivo 建立，目前版本無法讀取。請先升級 Kelivo 後重試。';
+  String get backupPageSchemaTooNewMessage => '這份備份由更新版本的 Kelivo 建立，目前版本無法讀取。請先升級 Kelivo 後重試。';
 
   @override
   String get backupPageBackupUploaded => '已上傳備份';
@@ -24266,13 +23976,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get compressContextKeepAllMessages => '保留條數涵蓋全部訊息，無內容可壓縮';
 
   @override
-  String compressContextEstimatePreview(
-    int summarized,
-    int kept,
-    int minTokens,
-    int maxTokens,
-    int totalTokens,
-  ) {
+  String compressContextEstimatePreview(int summarized, int kept, int minTokens, int maxTokens, int totalTokens) {
     return '總結 $summarized 字元，原樣保留 $kept 字元 → 壓縮後約 $minTokens–$maxTokens tokens（原文約 $totalTokens tokens）';
   }
 
@@ -24448,12 +24152,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get chatMessageWidgetRegenerateConfirmTitle => '確認重新生成';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmContent =>
-      '重新生成只會更新目前訊息，不會刪除下面的訊息。確定要繼續嗎？';
+  String get chatMessageWidgetRegenerateConfirmContent => '重新生成只會更新目前訊息，不會刪除下面的訊息。確定要繼續嗎？';
 
   @override
-  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent =>
-      '重新生成將會刪除此訊息下面的所有訊息，且無法復原。確定要繼續嗎？';
+  String get chatMessageWidgetRegenerateConfirmDeleteTrailingContent => '重新生成將會刪除此訊息下面的所有訊息，且無法復原。確定要繼續嗎？';
 
   @override
   String get chatMessageWidgetRegenerateConfirmCancel => '取消';
@@ -24608,8 +24310,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageEnableDollarLatexTitle => '啟用 \$...\$ 渲染';
 
   @override
-  String get displaySettingsPageEnableDollarLatexSubtitle =>
-      '將 \$...\$ 之間的內容以行內數學公式渲染';
+  String get displaySettingsPageEnableDollarLatexSubtitle => '將 \$...\$ 之間的內容以行內數學公式渲染';
 
   @override
   String get displaySettingsPageEnableMathTitle => '啟用數學公式渲染';
@@ -24621,12 +24322,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageEnableUserMarkdownTitle => '使用者訊息 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableReasoningMarkdownTitle =>
-      '思维鏈 Markdown 渲染';
+  String get displaySettingsPageEnableReasoningMarkdownTitle => '思维鏈 Markdown 渲染';
 
   @override
-  String get displaySettingsPageEnableAssistantMarkdownTitle =>
-      '助手訊息 Markdown 渲染';
+  String get displaySettingsPageEnableAssistantMarkdownTitle => '助手訊息 Markdown 渲染';
 
   @override
   String get displaySettingsPageMobileCodeBlockWrapTitle => '行動端程式碼區塊自動換行';
@@ -24644,12 +24343,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageCollapseLongUserMessagesTitle => '摺疊過長訊息';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesSubtitle =>
-      '超過閾值的使用者訊息摺疊顯示，點擊可展開';
+  String get displaySettingsPageCollapseLongUserMessagesSubtitle => '超過閾值的使用者訊息摺疊顯示，點擊可展開';
 
   @override
-  String get displaySettingsPageCollapseLongUserMessagesCharsTitle =>
-      '超過多少字元摺疊';
+  String get displaySettingsPageCollapseLongUserMessagesCharsTitle => '超過多少字元摺疊';
 
   @override
   String get displaySettingsPageCollapseLongUserMessagesCharsUnit => '字元';
@@ -24700,8 +24397,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get messageExportThinkingContentLabel => '思考內容';
 
   @override
-  String get messageExportSheetDateTimeWithSecondsPattern =>
-      'yyyy年M月d日 HH:mm:ss';
+  String get messageExportSheetDateTimeWithSecondsPattern => 'yyyy年M月d日 HH:mm:ss';
 
   @override
   String get exportDisclaimerAiGenerated => '內容由 AI 生成，請仔細甄別';
@@ -24929,8 +24625,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get sideDrawerImageUrlDialogTitle => '輸入圖片連結';
 
   @override
-  String get sideDrawerImageUrlDialogHint =>
-      '例如: https://example.com/avatar.png';
+  String get sideDrawerImageUrlDialogHint => '例如: https://example.com/avatar.png';
 
   @override
   String get sideDrawerQQAvatarDialogTitle => '使用QQ頭像';
@@ -25195,8 +24890,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get defaultModelPageTitleModelTitle => '標題總結模型';
 
   @override
-  String get defaultModelPageTitleModelSubtitle =>
-      '用於總結對話標題，預設跟隨目前對話模型，也可指定其他模型。';
+  String get defaultModelPageTitleModelSubtitle => '用於總結對話標題，預設跟隨目前對話模型，也可指定其他模型。';
 
   @override
   String get titleModelThinkingTitle => '是否開啟思考';
@@ -25211,15 +24905,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get defaultModelPageSuggestionModelTitle => '聊天建議模型';
 
   @override
-  String get defaultModelPageSuggestionModelSubtitle =>
-      '用於在助手回覆後生成聊天建議，可跟隨目前對話模型或指定其他模型。預設未啟用。';
+  String get defaultModelPageSuggestionModelSubtitle => '用於在助手回覆後生成聊天建議，可跟隨目前對話模型或指定其他模型。預設未啟用。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyTitle => '摘要更新頻率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyDescription =>
-      '累計達到所選條數的新訊息後，會更新歷史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyDescription => '累計達到所選條數的新訊息後，會更新歷史聊天摘要。';
 
   @override
   String assistantEditRecentChatsSummaryFrequencyOption(int count) {
@@ -25233,26 +24925,22 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditRecentChatsSummaryFrequencyCustomTitle => '自訂摘要頻率';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomDescription =>
-      '輸入累計多少則新訊息後再更新歷史聊天摘要。';
+  String get assistantEditRecentChatsSummaryFrequencyCustomDescription => '輸入累計多少則新訊息後再更新歷史聊天摘要。';
 
   @override
   String get assistantEditRecentChatsSummaryFrequencyCustomLabel => '新訊息數量';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomHint =>
-      '請輸入大於 0 的整數';
+  String get assistantEditRecentChatsSummaryFrequencyCustomHint => '請輸入大於 0 的整數';
 
   @override
-  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid =>
-      '請輸入大於 0 的整數';
+  String get assistantEditRecentChatsSummaryFrequencyCustomInvalid => '請輸入大於 0 的整數';
 
   @override
   String get defaultModelPageTranslateModelTitle => '翻譯模型';
 
   @override
-  String get defaultModelPageTranslateModelSubtitle =>
-      '用於翻譯訊息內容的模型，推薦使用快速且準確的模型';
+  String get defaultModelPageTranslateModelSubtitle => '用於翻譯訊息內容的模型，推薦使用快速且準確的模型';
 
   @override
   String get defaultModelPageOcrModelTitle => 'OCR 模型';
@@ -25266,8 +24954,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get defaultModelPageOcrModelSubtitle => '用於對圖片執行文字辨識的模型';
 
   @override
-  String get defaultModelPageOcrModelRequiresImageInput =>
-      '請選擇標記為支援圖片輸入的模型用於 OCR';
+  String get defaultModelPageOcrModelRequiresImageInput => '請選擇標記為支援圖片輸入的模型用於 OCR';
 
   @override
   String get defaultModelPagePromptLabel => '提示詞';
@@ -25302,10 +24989,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String defaultModelPageSummaryVars(
-    String previousSummaryVar,
-    String userMessagesVar,
-  ) {
+  String defaultModelPageSummaryVars(String previousSummaryVar, String userMessagesVar) {
     return '變數：舊摘要：$previousSummaryVar，新訊息：$userMessagesVar';
   }
 
@@ -25456,41 +25140,34 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get modelDetailSheetYoutubeTool => 'YouTube';
 
   @override
-  String get modelDetailSheetYoutubeToolDescription =>
-      '啟用 YouTube 連結讀取（自動辨識提示詞中的連結）';
+  String get modelDetailSheetYoutubeToolDescription => '啟用 YouTube 連結讀取（自動辨識提示詞中的連結）';
 
   @override
-  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint =>
-      '需要啟用 OpenAI Responses API。';
+  String get modelDetailSheetOpenaiBuiltinToolsResponsesOnlyHint => '需要啟用 OpenAI Responses API。';
 
   @override
   String get modelDetailSheetWebFetchTool => '網頁擷取';
 
   @override
-  String get modelDetailSheetOpenrouterWebFetchToolDescription =>
-      '啟用 OpenRouter 網頁擷取伺服器工具';
+  String get modelDetailSheetOpenrouterWebFetchToolDescription => '啟用 OpenRouter 網頁擷取伺服器工具';
 
   @override
-  String get modelDetailSheetClaudeWebFetchToolDescription =>
-      '允許 Claude 擷取對話中出現的網頁與 PDF';
+  String get modelDetailSheetClaudeWebFetchToolDescription => '允許 Claude 擷取對話中出現的網頁與 PDF';
 
   @override
-  String get modelDetailSheetClaudeCodeExecutionToolDescription =>
-      '允許 Claude 在 Anthropic 沙箱中執行 Python 與 Bash';
+  String get modelDetailSheetClaudeCodeExecutionToolDescription => '允許 Claude 在 Anthropic 沙箱中執行 Python 與 Bash';
 
   @override
   String get modelDetailSheetOpenrouterShellTool => 'Shell';
 
   @override
-  String get modelDetailSheetOpenrouterShellToolDescription =>
-      '在託管的隔離沙箱中執行 Shell 命令';
+  String get modelDetailSheetOpenrouterShellToolDescription => '在託管的隔離沙箱中執行 Shell 命令';
 
   @override
   String get modelDetailSheetOpenaiCodeInterpreterTool => '程式碼解譯器';
 
   @override
-  String get modelDetailSheetOpenaiCodeInterpreterToolDescription =>
-      '啟用程式碼解譯器工具（容器自動，記憶體上限 4g）';
+  String get modelDetailSheetOpenaiCodeInterpreterToolDescription => '啟用程式碼解譯器工具（容器自動，記憶體上限 4g）';
 
   @override
   String get modelDetailSheetOpenaiImageGenerationTool => '圖像生成';
@@ -25574,8 +25251,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get providerDetailPageCustomRequestTitle => '自訂請求';
 
   @override
-  String get providerDetailPageCustomRequestDescription =>
-      '套用於此供應商的所有模型。模型設定優先於此處，此處設定優先於助手設定。';
+  String get providerDetailPageCustomRequestDescription => '套用於此供應商的所有模型。模型設定優先於此處，此處設定優先於助手設定。';
 
   @override
   String get providerDetailPageNetworkTab => '網路代理';
@@ -25608,23 +25284,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get providerDetailPageAihubmixAppCodeLabel => '應用 Code（享 10% 優惠）';
 
   @override
-  String get providerDetailPageAihubmixAppCodeHelp =>
-      '為請求附加 APP-Code，可享 10% 優惠，僅對 AIhubmix 生效。';
+  String get providerDetailPageAihubmixAppCodeHelp => '為請求附加 APP-Code，可享 10% 優惠，僅對 AIhubmix 生效。';
 
   @override
-  String get providerDetailPageClaudePromptCachingTitle =>
-      'Claude Prompt Caching';
+  String get providerDetailPageClaudePromptCachingTitle => 'Claude Prompt Caching';
 
   @override
-  String get providerDetailPageClaudePromptCachingHelp =>
-      '透過 Claude 官方或 OpenRouter 呼叫 Claude 時附加 cache_control。';
+  String get providerDetailPageClaudePromptCachingHelp => '透過 Claude 官方或 OpenRouter 呼叫 Claude 時附加 cache_control。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtlTitle => '快取 TTL';
 
   @override
-  String get providerDetailPageClaudePromptCachingTtlHelp =>
-      '5 分鐘為預設值。1 小時寫入成本更高，但長對話中可減少重複重建快取。';
+  String get providerDetailPageClaudePromptCachingTtlHelp => '5 分鐘為預設值。1 小時寫入成本更高，但長對話中可減少重複重建快取。';
 
   @override
   String get providerDetailPageClaudePromptCachingTtl5m => '5 分鐘';
@@ -25892,8 +25564,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get addProviderSheetVertexAiProjectIdLabel => '專案ID';
 
   @override
-  String get addProviderSheetVertexAiServiceAccountJsonLabel =>
-      '服務帳號 JSON（貼上或匯入）';
+  String get addProviderSheetVertexAiServiceAccountJsonLabel => '服務帳號 JSON（貼上或匯入）';
 
   @override
   String get addProviderSheetImportJsonButton => '匯入 JSON';
@@ -26169,8 +25840,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchServiceEditorMultiKeyNone => '未設定';
 
   @override
-  String get searchApiKeysPageDescription =>
-      '列表中的 Key 依序輪詢使用，第一個為主 Key；不查額度，以防觸發服務商風控。';
+  String get searchApiKeysPageDescription => '列表中的 Key 依序輪詢使用，第一個為主 Key；不查額度，以防觸發服務商風控。';
 
   @override
   String get searchApiKeysPagePrimaryBadge => '主';
@@ -26288,8 +25958,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchSettingsSheetClaudeDynamicSearchTitle => '動態過濾';
 
   @override
-  String get searchSettingsSheetClaudeDynamicSearchDescription =>
-      '篩選搜尋結果，節省 token';
+  String get searchSettingsSheetClaudeDynamicSearchDescription => '篩選搜尋結果，節省 token';
 
   @override
   String get searchSettingsSheetWebSearchTitle => '網路搜尋';
@@ -26395,8 +26064,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowUserNameTimestampTitle => '顯示使用者名稱與時間戳';
 
   @override
-  String get displaySettingsPageShowUserNameTimestampSubtitle =>
-      '是否在聊天訊息中顯示使用者名稱以時間戳';
+  String get displaySettingsPageShowUserNameTimestampSubtitle => '是否在聊天訊息中顯示使用者名稱以時間戳';
 
   @override
   String get displaySettingsPageShowUserNameTitle => '顯示使用者名稱';
@@ -26408,15 +26076,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowUserMessageActionsTitle => '顯示使用者訊息操作按鈕';
 
   @override
-  String get displaySettingsPageShowUserMessageActionsSubtitle =>
-      '在使用者訊息下方顯示複製、重傳與更多按鈕';
+  String get displaySettingsPageShowUserMessageActionsSubtitle => '在使用者訊息下方顯示複製、重傳與更多按鈕';
 
   @override
   String get displaySettingsPageShowModelNameTimestampTitle => '顯示模型名稱與時間戳';
 
   @override
-  String get displaySettingsPageShowModelNameTimestampSubtitle =>
-      '是否在聊天訊息中顯示模型名稱及時間戳';
+  String get displaySettingsPageShowModelNameTimestampSubtitle => '是否在聊天訊息中顯示模型名稱及時間戳';
 
   @override
   String get displaySettingsPageShowModelNameTitle => '顯示模型名稱';
@@ -26428,8 +26094,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowProviderInChatMessageTitle => '模型名稱後顯示供應商';
 
   @override
-  String get displaySettingsPageShowProviderInChatMessageSubtitle =>
-      '在聊天訊息的模型名稱後面顯示供應商名稱（如 模型 | 供應商）';
+  String get displaySettingsPageShowProviderInChatMessageSubtitle => '在聊天訊息的模型名稱後面顯示供應商名稱（如 模型 | 供應商）';
 
   @override
   String get displaySettingsPageChatModelIconTitle => '聊天列表模型圖示';
@@ -26447,8 +26112,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowThinkingCardsTitle => '顯示思考卡片';
 
   @override
-  String get displaySettingsPageShowThinkingCardsSubtitle =>
-      '關閉後，聊天中不再顯示思考過程卡片';
+  String get displaySettingsPageShowThinkingCardsSubtitle => '關閉後，聊天中不再顯示思考過程卡片';
 
   @override
   String get displaySettingsPageShowToolCardsTitle => '顯示工具卡片';
@@ -26460,15 +26124,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageAutoCollapseThinkingTitle => '自動折疊思考';
 
   @override
-  String get displaySettingsPageAutoCollapseThinkingSubtitle =>
-      '思考完成後自動折疊，保持介面簡潔';
+  String get displaySettingsPageAutoCollapseThinkingSubtitle => '思考完成後自動折疊，保持介面簡潔';
 
   @override
   String get displaySettingsPageCollapseThinkingStepsTitle => '折疊思考步驟';
 
   @override
-  String get displaySettingsPageCollapseThinkingStepsSubtitle =>
-      '預設只顯示最新步驟，展開後查看全部';
+  String get displaySettingsPageCollapseThinkingStepsSubtitle => '預設只顯示最新步驟，展開後查看全部';
 
   @override
   String get displaySettingsPageShowToolResultSummaryTitle => '顯示工具結果摘要';
@@ -26477,15 +26139,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageInsertSuggestionOnlyTitle => '點擊建議時僅填入輸入框';
 
   @override
-  String get displaySettingsPageShowToolResultSummarySubtitle =>
-      '在工具步驟下方顯示摘要文字';
+  String get displaySettingsPageShowToolResultSummarySubtitle => '在工具步驟下方顯示摘要文字';
 
   @override
   String get displaySettingsPageHideToolResultImagesTitle => '隱藏工具結果中的圖片';
 
   @override
-  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle =>
-      '重新生成時刪除下面的訊息';
+  String get displaySettingsPageRegenerateDeleteTrailingMessagesTitle => '重新生成時刪除下面的訊息';
 
   @override
   String get displaySettingsPageShowRegenerateConfirmDialogTitle => '重新生成前彈出確認';
@@ -26494,12 +26154,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageForkKeepMessageVersionsTitle => '建立分支時保留訊息版本';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle =>
-      '編輯助手時保留思考與工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsTitle => '編輯助手時保留思考與工具卡片';
 
   @override
-  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle =>
-      '關閉後，目前編輯版本只保留助手正文；切回上一版本仍可查看思考與工具卡片';
+  String get displaySettingsPageEditAssistantKeepThinkingToolCardsSubtitle => '關閉後，目前編輯版本只保留助手正文；切回上一版本仍可查看思考與工具卡片';
 
   @override
   String chainOfThoughtExpandSteps(Object count) {
@@ -26519,20 +26177,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageEnableImageCropperTitle => '啟用圖片裁剪';
 
   @override
-  String get displaySettingsPageEnableImageCropperSubtitle =>
-      '從相簿或相機選擇圖片後，允許裁剪圖片';
+  String get displaySettingsPageEnableImageCropperSubtitle => '從相簿或相機選擇圖片後，允許裁剪圖片';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle =>
-      '點選助手時不自動關閉側邊欄';
+  String get displaySettingsPageKeepSidebarOpenOnAssistantTapTitle => '點選助手時不自動關閉側邊欄';
 
   @override
-  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle =>
-      '點選話題時不自動關閉側邊欄';
+  String get displaySettingsPageKeepSidebarOpenOnTopicTapTitle => '點選話題時不自動關閉側邊欄';
 
   @override
-  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle =>
-      '關閉側邊欄時不折疊助手列表';
+  String get displaySettingsPageKeepAssistantListExpandedOnSidebarCloseTitle => '關閉側邊欄時不折疊助手列表';
 
   @override
   String get displaySettingsPageShowUpdatesTitle => '顯示更新';
@@ -26541,12 +26195,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowUpdatesSubtitle => '顯示應用程式更新通知';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationTitle =>
-      '生成時保持螢幕常亮';
+  String get displaySettingsPageKeepScreenOnDuringGenerationTitle => '生成時保持螢幕常亮';
 
   @override
-  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle =>
-      '防止生成途中鎖定螢幕導致中斷，會增加耗電';
+  String get displaySettingsPageKeepScreenOnDuringGenerationSubtitle => '防止生成途中鎖定螢幕導致中斷，會增加耗電';
 
   @override
   String get displaySettingsPageMessageNavButtonsTitle => '訊息導航按鈕';
@@ -26564,8 +26216,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageMessageNavButtonsModeHover => '滑鼠懸停時顯示';
 
   @override
-  String get displaySettingsPageMessageNavButtonsModeScrollAndHover =>
-      '滾動和滑鼠懸停時顯示';
+  String get displaySettingsPageMessageNavButtonsModeScrollAndHover => '滾動和滑鼠懸停時顯示';
 
   @override
   String get displaySettingsPageMessageNavButtonsModeNever => '永不顯示';
@@ -26742,15 +26393,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get themeAdvancedSettingsPageUseLayeredSurfacesTitle => '新版分層配色（實驗）';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle =>
-      '頁面更深、卡片更亮，兩者都保留主題色相；關閉可恢復舊外觀';
+  String get themeAdvancedSettingsPageUseLayeredSurfacesSubtitle => '頁面更深、卡片更亮，兩者都保留主題色相；關閉可恢復舊外觀';
 
   @override
   String get themeAdvancedSettingsPageUseLayeredSheetTilesTitle => '彈窗內瓦片分層';
 
   @override
-  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle =>
-      '預設瓦片與彈窗同色';
+  String get themeAdvancedSettingsPageUseLayeredSheetTilesSubtitle => '預設瓦片與彈窗同色';
 
   @override
   String get themeSettingsPageColorPalettesSection => '配色方案';
@@ -27220,29 +26869,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get ttsSettingsTextSelectionQuotedOnlyTitle => '僅引號內文字';
 
   @override
-  String get ttsSettingsTextSelectionQuotedOnlyDescription =>
-      '播放 “”、‘’、\"\"、\'\'、「」或『』內的文字。';
+  String get ttsSettingsTextSelectionQuotedOnlyDescription => '播放 “”、‘’、\"\"、\'\'、「」或『』內的文字。';
 
   @override
   String get ttsSettingsTextSelectionOutsideParenthesesTitle => '括號外文字';
 
   @override
-  String get ttsSettingsTextSelectionOutsideParenthesesDescription =>
-      '跳過 () 和 （） 內的文字。';
+  String get ttsSettingsTextSelectionOutsideParenthesesDescription => '跳過 () 和 （） 內的文字。';
 
   @override
   String get ttsSettingsTextSelectionItalicOnlyTitle => '僅斜體文字';
 
   @override
-  String get ttsSettingsTextSelectionItalicOnlyDescription =>
-      '播放 Markdown 或 HTML 斜體文字。';
+  String get ttsSettingsTextSelectionItalicOnlyDescription => '播放 Markdown 或 HTML 斜體文字。';
 
   @override
   String get ttsSettingsTextSelectionNonItalicTitle => '僅正體文字';
 
   @override
-  String get ttsSettingsTextSelectionNonItalicDescription =>
-      '跳過 Markdown 或 HTML 斜體文字。';
+  String get ttsSettingsTextSelectionNonItalicDescription => '跳過 Markdown 或 HTML 斜體文字。';
 
   @override
   String get ttsFloatingPlayerLabel => '語音播放器';
@@ -27365,12 +27010,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settingsShare => 'Kelivo - 開源AI助理';
 
   @override
-  String get searchProviderBingLocalDescription =>
-      '使用網路抓取工具取得 Bing 搜尋結果。無需 API 金鑰，但可能不夠穩定。';
+  String get searchProviderBingLocalDescription => '使用網路抓取工具取得 Bing 搜尋結果。無需 API 金鑰，但可能不夠穩定。';
 
   @override
-  String get searchProviderDuckDuckGoDescription =>
-      '基於 DDGS 的 DuckDuckGo 隱私搜尋，無需 API 金鑰，支援設定地區。';
+  String get searchProviderDuckDuckGoDescription => '基於 DDGS 的 DuckDuckGo 隱私搜尋，無需 API 金鑰，支援設定地區。';
 
   @override
   String get searchProviderBraveDescription => 'Brave 獨立搜尋引擎。注重隱私，無追蹤或建立個人檔案。';
@@ -27379,8 +27022,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchProviderExaDescription => '具備語義理解的神經搜尋引擎。適合研究與查找特定內容。';
 
   @override
-  String get searchProviderLinkUpDescription =>
-      '提供來源可追溯答案的搜尋 API，同時提供搜尋結果與 AI 摘要。';
+  String get searchProviderLinkUpDescription => '提供來源可追溯答案的搜尋 API，同時提供搜尋結果與 AI 摘要。';
 
   @override
   String get searchProviderMetasoDescription => '秘塔中文搜尋引擎。針對中文內容優化並提供 AI 能力。';
@@ -27389,20 +27031,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchProviderSearXNGDescription => '重視隱私的元搜尋引擎。需自建實例，無追蹤。';
 
   @override
-  String get searchProviderTavilyDescription =>
-      '為大型語言模型（LLM）優化的 AI 搜尋 API，提供高品質、相關的搜尋結果。';
+  String get searchProviderTavilyDescription => '為大型語言模型（LLM）優化的 AI 搜尋 API，提供高品質、相關的搜尋結果。';
 
   @override
-  String get searchProviderZhipuDescription =>
-      '智譜 AI 旗下中文 AI 搜尋服務，針對中文內容與查詢進行優化。';
+  String get searchProviderZhipuDescription => '智譜 AI 旗下中文 AI 搜尋服務，針對中文內容與查詢進行優化。';
 
   @override
-  String get searchProviderOllamaDescription =>
-      'Ollama 網路搜尋 API。為模型補充最新資訊，降低幻覺並提升準確性。';
+  String get searchProviderOllamaDescription => 'Ollama 網路搜尋 API。為模型補充最新資訊，降低幻覺並提升準確性。';
 
   @override
-  String get searchProviderJinaDescription =>
-      'AI 搜尋基礎設施：提供 Embeddings、重排序、Web Reader、DeepSearch 與小語言模型。支援多語言與多模態。';
+  String get searchProviderJinaDescription => 'AI 搜尋基礎設施：提供 Embeddings、重排序、Web Reader、DeepSearch 與小語言模型。支援多語言與多模態。';
 
   @override
   String get searchServiceNameBingLocal => 'Bing（本機）';
@@ -27441,15 +27079,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchServiceNamePerplexity => 'Perplexity';
 
   @override
-  String get searchProviderPerplexityDescription =>
-      'Perplexity 搜尋 API。提供排序的網頁結果，支援地區與網域過濾。';
+  String get searchProviderPerplexityDescription => 'Perplexity 搜尋 API。提供排序的網頁結果，支援地區與網域過濾。';
 
   @override
   String get searchServiceNameBocha => '博查';
 
   @override
-  String get searchProviderBochaDescription =>
-      '博查 AI 全網網頁搜尋，支援時間範圍與摘要，更適合 AI 使用。';
+  String get searchProviderBochaDescription => '博查 AI 全網網頁搜尋，支援時間範圍與摘要，更適合 AI 使用。';
 
   @override
   String get searchServiceNameDoubao => '豆包';
@@ -27461,57 +27097,49 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchServiceNameSerper => 'Serper';
 
   @override
-  String get searchProviderSerperDescription =>
-      'Serper Google 搜尋 API。回應快速，支援國家/地區、語言、時間和頁碼過濾。';
+  String get searchProviderSerperDescription => 'Serper Google 搜尋 API。回應快速，支援國家/地區、語言、時間和頁碼過濾。';
 
   @override
   String get searchServiceNameQuerit => 'Querit';
 
   @override
-  String get searchProviderQueritDescription =>
-      '面向 LLM 應用的 Querit 搜尋 API。返回即時網頁結果，並支援站點、時間、國家和語言過濾。';
+  String get searchProviderQueritDescription => '面向 LLM 應用的 Querit 搜尋 API。返回即時網頁結果，並支援站點、時間、國家和語言過濾。';
 
   @override
   String get searchServiceNameGrok => 'Grok';
 
   @override
-  String get searchProviderGrokDescription =>
-      '透過 xAI Responses API 使用 Grok 搜尋。呼叫網頁和 X 搜尋工具，並返回帶引用的來源。';
+  String get searchProviderGrokDescription => '透過 xAI Responses API 使用 Grok 搜尋。呼叫網頁和 X 搜尋工具，並返回帶引用的來源。';
 
   @override
   String get searchServiceNameStepFun => 'StepFun';
 
   @override
-  String get searchProviderStepFunDescription =>
-      '透過 StepFun POST /v1/search 進行網頁搜尋。';
+  String get searchProviderStepFunDescription => '透過 StepFun POST /v1/search 進行網頁搜尋。';
 
   @override
   String get searchServiceNameFirecrawl => 'Firecrawl';
 
   @override
-  String get searchProviderFirecrawlDescription =>
-      'Firecrawl Search API v2。API Key 可選。此處不支援 Scrape。';
+  String get searchProviderFirecrawlDescription => 'Firecrawl Search API v2。API Key 可選。此處不支援 Scrape。';
 
   @override
   String get searchServiceNameTinyFish => 'TinyFish';
 
   @override
-  String get searchProviderTinyFishDescription =>
-      'TinyFish Search API，支援地區與語言參數。需要 API Key。此處不支援 Fetch/Scrape。';
+  String get searchProviderTinyFishDescription => 'TinyFish Search API，支援地區與語言參數。需要 API Key。此處不支援 Fetch/Scrape。';
 
   @override
   String get searchServiceNameAnySearch => 'AnySearch';
 
   @override
-  String get searchProviderAnySearchDescription =>
-      '面向 AI 智慧代理的統一搜尋服務，可在網頁與專業資料來源間自動路由。API Key 可選。';
+  String get searchProviderAnySearchDescription => '面向 AI 智慧代理的統一搜尋服務，可在網頁與專業資料來源間自動路由。API Key 可選。';
 
   @override
   String get searchServiceNameParallel => 'Parallel';
 
   @override
-  String get searchProviderParallelDescription =>
-      'Parallel 搜尋 API。返回面向 LLM 優化的網頁摘錄，支援 turbo、fast、basic 和 advanced 模式。';
+  String get searchProviderParallelDescription => 'Parallel 搜尋 API。返回面向 LLM 優化的網頁摘錄，支援 turbo、fast、basic 和 advanced 模式。';
 
   @override
   String get searchServicesDialogSearchMode => '搜尋模式';
@@ -27520,8 +27148,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchServiceNameYou => 'You.com';
 
   @override
-  String get searchProviderYouDescription =>
-      'You.com 搜尋 API。返回網頁與新聞結果，支援 Highlights 或 Snippets。';
+  String get searchProviderYouDescription => 'You.com 搜尋 API。返回網頁與新聞結果，支援 Highlights 或 Snippets。';
 
   @override
   String get searchServicesDialogContentMode => '內容模式';
@@ -27542,8 +27169,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get searchServicesDialogMaximumTokens => '最大 token 數';
 
   @override
-  String get searchServicesDialogMaximumTokensInvalid =>
-      '最大 token 數必須介於 1024 和 32768 之間。';
+  String get searchServicesDialogMaximumTokensInvalid => '最大 token 數必須介於 1024 和 32768 之間。';
 
   @override
   String get searchServiceNameKelivo => 'Kelivo';
@@ -27722,8 +27348,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get chatInputBarQuickPhraseTooltip => '快捷片語';
 
   @override
-  String get assistantEditQuickPhraseDescription =>
-      '管理此助理的快捷片語。點擊下方按鈕以新增或編輯片語。';
+  String get assistantEditQuickPhraseDescription => '管理此助理的快捷片語。點擊下方按鈕以新增或編輯片語。';
 
   @override
   String get assistantEditManageQuickPhraseButton => '管理快捷片語';
@@ -27735,22 +27360,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditLocalToolTimeInfoTitle => '時間資訊';
 
   @override
-  String get assistantEditLocalToolTimeInfoSubtitle =>
-      '讀取裝置日期、星期、時間、時區、UTC 偏移和時間戳。';
+  String get assistantEditLocalToolTimeInfoSubtitle => '讀取裝置日期、星期、時間、時區、UTC 偏移和時間戳。';
 
   @override
   String get assistantEditLocalToolClipboardTitle => '剪貼簿';
 
   @override
-  String get assistantEditLocalToolClipboardSubtitle =>
-      '在明確需要時讀取或寫入裝置剪貼簿中的純文字。';
+  String get assistantEditLocalToolClipboardSubtitle => '在明確需要時讀取或寫入裝置剪貼簿中的純文字。';
 
   @override
   String get assistantEditLocalToolTextToSpeechTitle => '文字轉語音';
 
   @override
-  String get assistantEditLocalToolTextToSpeechSubtitle =>
-      '允許助手使用已設定的語音播放朗讀文字。';
+  String get assistantEditLocalToolTextToSpeechSubtitle => '允許助手使用已設定的語音播放朗讀文字。';
 
   @override
   String get assistantEditLocalToolAskUserTitle => '詢問使用者';
@@ -27762,36 +27384,31 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditLocalToolCalculateTitle => '計算機';
 
   @override
-  String get assistantEditLocalToolCalculateSubtitle =>
-      '計算數學表達式，支援加減乘除冪運算 sqrt sin cos 等。';
+  String get assistantEditLocalToolCalculateSubtitle => '計算數學表達式，支援加減乘除冪運算 sqrt sin cos 等。';
 
   @override
   String get assistantEditLocalToolScreenTimeTitle => '螢幕使用時間';
 
   @override
-  String get assistantEditLocalToolScreenTimeSubtitle =>
-      '查詢本裝置的應用使用時長，需要授予使用情況存取權限。';
+  String get assistantEditLocalToolScreenTimeSubtitle => '查詢本裝置的應用使用時長，需要授予使用情況存取權限。';
 
   @override
   String get chatMessageWidgetScreenTimeTotal => '總螢幕使用時間';
 
   @override
-  String get chatMessageWidgetScreenTimePermissionRequired =>
-      '未授予使用記錄存取權限，請在系統設定中開啟後重試。';
+  String get chatMessageWidgetScreenTimePermissionRequired => '未授予使用記錄存取權限，請在系統設定中開啟後重試。';
 
   @override
   String get assistantEditLocalToolCalendarQueryTitle => '查詢日曆';
 
   @override
-  String get assistantEditLocalToolCalendarQuerySubtitle =>
-      '讀取本裝置上的日曆行程，需要授予日曆權限。';
+  String get assistantEditLocalToolCalendarQuerySubtitle => '讀取本裝置上的日曆行程，需要授予日曆權限。';
 
   @override
   String get assistantEditLocalToolCalendarCreateTitle => '建立行程';
 
   @override
-  String get assistantEditLocalToolCalendarCreateSubtitle =>
-      '在你確認後於本裝置建立日曆行程，需要授予日曆權限。';
+  String get assistantEditLocalToolCalendarCreateSubtitle => '在你確認後於本裝置建立日曆行程，需要授予日曆權限。';
 
   @override
   String get assistantEditLocalToolLocationTitle => '目前位置';
@@ -27803,15 +27420,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditLocalToolWeatherTitle => '天氣';
 
   @override
-  String get assistantEditLocalToolWeatherSubtitle =>
-      '取得目前位置或指定地點的 Apple 天氣，結果中會顯示 WeatherKit 資料來源。';
+  String get assistantEditLocalToolWeatherSubtitle => '取得目前位置或指定地點的 Apple 天氣，結果中會顯示 WeatherKit 資料來源。';
 
   @override
   String get assistantEditLocalToolHealthTitle => '健康摘要';
 
   @override
-  String get assistantEditLocalToolHealthSubtitle =>
-      '讀取本裝置的健康活動摘要，需要授予健康資料讀取權限。';
+  String get assistantEditLocalToolHealthSubtitle => '讀取本裝置的健康活動摘要，需要授予健康資料讀取權限。';
 
   @override
   String assistantEditLocalToolHealthSelectedCount(int selected, int total) {
@@ -27822,8 +27437,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get healthDataSettingsTitle => '健康資料';
 
   @override
-  String get healthDataSettingsDescription =>
-      '目前助手在日常對話中可使用的 HealthKit 訊號。開關表示 Kelivo 可以嘗試讀取該範圍，實際授權仍由 iOS 管理。';
+  String get healthDataSettingsDescription => '目前助手在日常對話中可使用的 HealthKit 訊號。開關表示 Kelivo 可以嘗試讀取該範圍，實際授權仍由 iOS 管理。';
 
   @override
   String healthDataSettingsBadge(int selected, int total) {
@@ -27963,22 +27577,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditLocalToolRemindersQueryTitle => '查詢提醒';
 
   @override
-  String get assistantEditLocalToolRemindersQuerySubtitle =>
-      '讀取本裝置上的提醒事項，需要授予提醒事項完整存取權限。';
+  String get assistantEditLocalToolRemindersQuerySubtitle => '讀取本裝置上的提醒事項，需要授予提醒事項完整存取權限。';
 
   @override
   String get assistantEditLocalToolRemindersCreateTitle => '建立提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCreateSubtitle =>
-      '在你確認後於本裝置建立提醒事項，需要授予提醒事項完整存取權限。';
+  String get assistantEditLocalToolRemindersCreateSubtitle => '在你確認後於本裝置建立提醒事項，需要授予提醒事項完整存取權限。';
 
   @override
   String get assistantEditLocalToolRemindersCompleteTitle => '完成提醒';
 
   @override
-  String get assistantEditLocalToolRemindersCompleteSubtitle =>
-      '在你確認後將提醒事項標記為完成，需要授予提醒事項完整存取權限。';
+  String get assistantEditLocalToolRemindersCompleteSubtitle => '在你確認後將提醒事項標記為完成，需要授予提醒事項完整存取權限。';
 
   @override
   String get assistantEditMemorySwitchDescription => '允許助理主動儲存並在對話間引用使用者相關資訊';
@@ -27987,8 +27598,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditRecentChatsSwitchTitle => '參考歷史聊天記錄';
 
   @override
-  String get assistantEditRecentChatsSwitchDescription =>
-      '在新對話中引用最近的對話標題以增強上下文';
+  String get assistantEditRecentChatsSwitchDescription => '在新對話中引用最近的對話標題以增強上下文';
 
   @override
   String get assistantEditAddMemoryButton => '新增記憶';
@@ -28050,8 +27660,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get providersPageMultiSelectTooltip => '多選';
 
   @override
-  String get providersPageDeleteSelectedConfirmContent =>
-      '確定要刪除選中的供應商嗎？此操作不可撤銷。';
+  String get providersPageDeleteSelectedConfirmContent => '確定要刪除選中的供應商嗎？此操作不可撤銷。';
 
   @override
   String get providersPageDeleteSelectedSnackbar => '已刪除選中的供應商';
@@ -28143,8 +27752,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get networkProxyBypassLabel => '代理繞過';
 
   @override
-  String get networkProxyBypassHint =>
-      '以逗號分隔的主機或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
+  String get networkProxyBypassHint => '以逗號分隔的主機或 CIDR，例如：localhost,127.0.0.1,192.168.0.0/16,*.local';
 
   @override
   String get networkProxyOptionalHint => '可選';
@@ -28307,15 +27915,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get flutterLogSettingTitle => 'Flutter日誌列印';
 
   @override
-  String get flutterLogSettingSubtitle =>
-      '開啟後會將 Flutter 錯誤與 print 輸出寫入 logs/flutter_logs.txt';
+  String get flutterLogSettingSubtitle => '開啟後會將 Flutter 錯誤與 print 輸出寫入 logs/flutter_logs.txt';
 
   @override
   String get contextLogSettingTitle => '上下文日誌';
 
   @override
-  String get contextLogSettingSubtitle =>
-      '開啟後會將每次實際傳送給模型的完整上下文寫入 logs/context_logs.txt';
+  String get contextLogSettingSubtitle => '開啟後會將每次實際傳送給模型的完整上下文寫入 logs/context_logs.txt';
 
   @override
   String get contextLogViewerTitle => '上下文';
@@ -28469,15 +28075,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get logSettingsSaveOutput => '保存回應輸出';
 
   @override
-  String get logSettingsSaveOutputSubtitle =>
-      '記錄串流輸出的每個分片（可能影響生成效能）。HTTP 報錯回應仍會寫入。';
+  String get logSettingsSaveOutputSubtitle => '記錄串流輸出的每個分片（可能影響生成效能）。HTTP 報錯回應仍會寫入。';
 
   @override
   String get logSettingsElidePayloads => '省略大載荷';
 
   @override
-  String get logSettingsElidePayloadsSubtitle =>
-      '把內聯的 base64 圖片和檔案替換成佔位符，日誌更小、檢視器更快。';
+  String get logSettingsElidePayloadsSubtitle => '把內聯的 base64 圖片和檔案替換成佔位符，日誌更小、檢視器更快。';
 
   @override
   String get logSettingsAutoDelete => '自動刪除';
@@ -28560,43 +28164,37 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memoryAboutQuickstartTitle => '三步上手';
 
   @override
-  String get memoryAboutQuickstartBody =>
-      '① 在「設定 → 記憶」裡選擇處理模型。\n② 在助手的「記憶」頁打開長期記憶和自動整理。\n③ 聊幾輪，或點「整理記憶」，再到「全部記憶」查看結果。';
+  String get memoryAboutQuickstartBody => '① 在「設定 → 記憶」裡選擇處理模型。\n② 在助手的「記憶」頁打開長期記憶和自動整理。\n③ 聊幾輪，或點「整理記憶」，再到「全部記憶」查看結果。';
 
   @override
   String get memoryAboutTypesTitle => '記憶類型';
 
   @override
-  String get memoryAboutTypesBody =>
-      '身分：使用者的穩定資訊，例如稱呼、職業、語言、長期偏好。寫成完整的第三人稱陳述。\n\n工作流：使用者習慣怎麼做事，例如工具、格式、審閱方式。\n\n語氣：使用者希望助手怎麼說話，例如語氣、篇幅、語言風格。\n\n指令：助手應長期遵守的規則，而不是本次對話裡的一次性任務。';
+  String get memoryAboutTypesBody => '身分：使用者的穩定資訊，例如稱呼、職業、語言、長期偏好。寫成完整的第三人稱陳述。\n\n工作流：使用者習慣怎麼做事，例如工具、格式、審閱方式。\n\n語氣：使用者希望助手怎麼說話，例如語氣、篇幅、語言風格。\n\n指令：助手應長期遵守的規則，而不是本次對話裡的一次性任務。';
 
   @override
   String get memoryAboutScopeTitle => '全域與助手範圍';
 
   @override
-  String get memoryAboutScopeBody =>
-      '全域記憶會對所有助手注入。助手範圍的記憶只對該助手可見。跨助手都該知道的事實用全域；只屬於某一個助手的規則或上下文用助手範圍。';
+  String get memoryAboutScopeBody => '全域記憶會對所有助手注入。助手範圍的記憶只對該助手可見。跨助手都該知道的事實用全域；只屬於某一個助手的規則或上下文用助手範圍。';
 
   @override
   String get memoryAboutInjectionTitle => '記憶如何注入';
 
   @override
-  String get memoryAboutInjectionBody =>
-      '開對話時，每類會把最近的若干條放進模型上下文。某類超過注入上限時，塊會標上 mode=\"summary\"，並用 total / shown 標明總數與展示條數，其餘由模型用 memory_search_profile 按需查詢。可在「設定 → 記憶」調大上限，更全面但更費 token。';
+  String get memoryAboutInjectionBody => '開對話時，每類會把最近的若干條放進模型上下文。某類超過注入上限時，塊會標上 mode=\"summary\"，並用 total / shown 標明總數與展示條數，其餘由模型用 memory_search_profile 按需查詢。可在「設定 → 記憶」調大上限，更全面但更費 token。';
 
   @override
   String get memoryAboutPipelineTitle => '後台整理';
 
   @override
-  String get memoryAboutPipelineBody =>
-      '開啟自動整理後，對話結束會走：判斷是否值得記 → 擷取候選 → 去重合併 → 必要時把身分類記憶提煉進使用者畫像。也可以在助手「記憶」頁點「整理記憶」。因此處理模型會被較頻繁呼叫。';
+  String get memoryAboutPipelineBody => '開啟自動整理後，對話結束會走：判斷是否值得記 → 擷取候選 → 去重合併 → 必要時把身分類記憶提煉進使用者畫像。也可以在助手「記憶」頁點「整理記憶」。因此處理模型會被較頻繁呼叫。';
 
   @override
   String get memoryAboutCacheTitle => '保持快取良好';
 
   @override
-  String get memoryAboutCacheBody =>
-      '注入前綴會保持穩定，未改動時可復用 Prompt 快取，從而降低費用與延遲。避免無意義的大批量改動或重排。日常增刪改單條通常影響有限。';
+  String get memoryAboutCacheBody => '注入前綴會保持穩定，未改動時可復用 Prompt 快取，從而降低費用與延遲。避免無意義的大批量改動或重排。日常增刪改單條通常影響有限。';
 
   @override
   String get memoryAboutFaqTitle => '常見問題';
@@ -28605,8 +28203,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memoryAboutFaqWhyNotRememberedTitle => '為什麼沒記住？';
 
   @override
-  String get memoryAboutFaqWhyNotRememberedBody =>
-      '整理會被跳過，常見原因包括：新訊息不足，暫不整理；沒有新訊息需要整理；尚未選擇記憶處理模型。臨時對話不會寫入記憶。也可以按助手關閉記憶或自動整理。';
+  String get memoryAboutFaqWhyNotRememberedBody => '整理會被跳過，常見原因包括：新訊息不足，暫不整理；沒有新訊息需要整理；尚未選擇記憶處理模型。臨時對話不會寫入記憶。也可以按助手關閉記憶或自動整理。';
 
   @override
   String get memorySettingsThinkingTitle => '啟用思考';
@@ -28621,8 +28218,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsTitle => '每類注入條數';
 
   @override
-  String get memorySettingsInjectionMaxItemsSubtitle =>
-      '某一類型的記憶超過該條數時，只注入最近的若干條，其餘由模型用 memory_search_profile 按需查詢。調大更全面但更費 token。若你改過規則提示詞，請一併更新或恢復預設。';
+  String get memorySettingsInjectionMaxItemsSubtitle => '某一類型的記憶超過該條數時，只注入最近的若干條，其餘由模型用 memory_search_profile 按需查詢。調大更全面但更費 token。若你改過規則提示詞，請一併更新或恢復預設。';
 
   @override
   String memorySettingsInjectionMaxItemsOption(int n) {
@@ -28636,8 +28232,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsCustomTitle => '自訂注入條數';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomDescription =>
-      '請輸入 1 到 100 之間的整數。';
+  String get memorySettingsInjectionMaxItemsCustomDescription => '請輸入 1 到 100 之間的整數。';
 
   @override
   String get memorySettingsInjectionMaxItemsCustomLabel => '條數';
@@ -28646,8 +28241,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memorySettingsInjectionMaxItemsCustomHint => '1–100';
 
   @override
-  String get memorySettingsInjectionMaxItemsCustomInvalid =>
-      '請輸入 1 到 100 之間的整數';
+  String get memorySettingsInjectionMaxItemsCustomInvalid => '請輸入 1 到 100 之間的整數';
 
   @override
   String get memorySettingsPromptLangSection => '提示詞語言';
@@ -28698,8 +28292,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get memoryPromptEditSmartAddTitle => 'Smart Add';
 
   @override
-  String get memoryPromptEditSmartAddSubtitle =>
-      'NEW / MERGE / CONFLICT / SKIP 去重判定';
+  String get memoryPromptEditSmartAddSubtitle => 'NEW / MERGE / CONFLICT / SKIP 去重判定';
 
   @override
   String get memoryPromptEditDistillTitle => 'Profile Distiller';
@@ -29202,12 +28795,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get legacyMemoryMigrationContentOrganize => '模型整理';
 
   @override
-  String get legacyMemoryMigrationContentPreserveDescription =>
-      '模型只負責分類，寫入時保留舊記憶原文。';
+  String get legacyMemoryMigrationContentPreserveDescription => '模型只負責分類，寫入時保留舊記憶原文。';
 
   @override
-  String get legacyMemoryMigrationContentOrganizeDescription =>
-      '模型會分類並改寫內容，使用可編輯的遷移提示詞。';
+  String get legacyMemoryMigrationContentOrganizeDescription => '模型會分類並改寫內容，使用可編輯的遷移提示詞。';
 
   @override
   String get legacyMemoryMigrationBatchSize => '批大小';
@@ -29321,15 +28912,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditWriteScopeToolDefaultGlobal => '模型自選（預設全域）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultGlobalSubtitle =>
-      '模型可選擇全域或本助手，缺省寫入全域';
+  String get assistantEditWriteScopeToolDefaultGlobalSubtitle => '模型可選擇全域或本助手，缺省寫入全域';
 
   @override
   String get assistantEditWriteScopeToolDefaultAssistant => '模型自選（預設本助手）';
 
   @override
-  String get assistantEditWriteScopeToolDefaultAssistantSubtitle =>
-      '模型可選擇全域或本助手，缺省寫入本助手';
+  String get assistantEditWriteScopeToolDefaultAssistantSubtitle => '模型可選擇全域或本助手，缺省寫入本助手';
 
   @override
   String get assistantEditDedupeModeTitle => '去重方式';
@@ -29341,15 +28930,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditDedupeModeBatched => '合併';
 
   @override
-  String get assistantEditDedupeModeBatchedSubtitle =>
-      '一次請求判斷本輪全部候選。更快更省；條目多時精度較差。';
+  String get assistantEditDedupeModeBatchedSubtitle => '一次請求判斷本輪全部候選。更快更省；條目多時精度較差。';
 
   @override
   String get assistantEditDedupeModePerItem => '逐條';
 
   @override
-  String get assistantEditDedupeModePerItemSubtitle =>
-      '每條候選單獨請求判斷。更準確，但會增加處理模型呼叫。';
+  String get assistantEditDedupeModePerItemSubtitle => '每條候選單獨請求判斷。更準確，但會增加處理模型呼叫。';
 
   @override
   String get assistantEditOrganizeFrequencyTitle => '整理頻率';
@@ -29369,8 +28956,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get assistantEditOrganizeFrequencyCustomTitle => '自訂整理頻率';
 
   @override
-  String get assistantEditOrganizeFrequencyCustomDescription =>
-      '請輸入 1 到 20 之間的整數。';
+  String get assistantEditOrganizeFrequencyCustomDescription => '請輸入 1 到 20 之間的整數。';
 
   @override
   String get assistantEditOrganizeFrequencyCustomLabel => '輪數';
@@ -29625,12 +29211,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get debugPageCreateManyMessagesConversationButton => '建立 1024 條訊息的對話';
 
   @override
-  String get debugPageCreateDailyMixedMarkdownConversationButton =>
-      '建立 3000 條日常混合 Markdown 訊息';
+  String get debugPageCreateDailyMixedMarkdownConversationButton => '建立 3000 條日常混合 Markdown 訊息';
 
   @override
-  String get debugPageCreateLongReasoningConversationButton =>
-      '建立長思考鏈對話（128 條）';
+  String get debugPageCreateLongReasoningConversationButton => '建立長思考鏈對話（128 條）';
 
   @override
   String get debugPageCreatingButton => '建立中...';
@@ -29642,8 +29226,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get debugPageCreatingManyMessagesConversation => '正在建立 1024 條訊息的對話...';
 
   @override
-  String get debugPageCreatingDailyMixedMarkdownConversation =>
-      '正在建立 3000 條日常混合 Markdown 對話...';
+  String get debugPageCreatingDailyMixedMarkdownConversation => '正在建立 3000 條日常混合 Markdown 對話...';
 
   @override
   String get debugPageCreatingLongReasoningConversation => '正在建立長思考鏈調試對話...';
@@ -29682,8 +29265,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get debugPageOversizedConversationSeedText =>
-      '這是一段用於復現超大對話渲染卡頓的長調試文字。它包含重複的 Markdown 風格文字、標點、中文內容和普通詞語，方便測試聊天渲染、儲存和捲動效能。';
+  String get debugPageOversizedConversationSeedText => '這是一段用於復現超大對話渲染卡頓的長調試文字。它包含重複的 Markdown 風格文字、標點、中文內容和普通詞語，方便測試聊天渲染、儲存和捲動效能。';
 
   @override
   String debugPageManyMessagesSeedText(String role, int index) {
@@ -29694,15 +29276,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationIntroTitle => '升級聊天記錄儲存';
 
   @override
-  String get migrationIntroSubtitle =>
-      'Kelivo 將聊天記錄遷移到更快的 SQLite 資料庫。升級會在應用程式開啟前完成，避免新舊資料同時寫入。';
+  String get migrationIntroSubtitle => 'Kelivo 將聊天記錄遷移到更快的 SQLite 資料庫。升級會在應用程式開啟前完成，避免新舊資料同時寫入。';
 
   @override
   String get migrationBackupNote => '遷移開始前，會先匯出包含設定、聊天記錄和本地檔案的 ZIP 備份。';
 
   @override
-  String get migrationPerformanceNote =>
-      '遷移後，啟動、歷史載入和搜尋都會使用 SQLite 索引，長對話會更流暢。';
+  String get migrationPerformanceNote => '遷移後，啟動、歷史載入和搜尋都會使用 SQLite 索引，長對話會更流暢。';
 
   @override
   String get migrationSourceDatabaseLabel => 'Hive';
@@ -29723,8 +29303,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationSkipChatsJsonOption => '跳過 chats.json';
 
   @override
-  String get migrationSkipChatsJsonDescription =>
-      '仍會備份原始 Hive、設定和本機檔案，超大聊天記錄建議選擇。';
+  String get migrationSkipChatsJsonDescription => '仍會備份原始 Hive、設定和本機檔案，超大聊天記錄建議選擇。';
 
   @override
   String get migrationSkipBackupOption => '跳過本次備份';
@@ -29736,15 +29315,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationBackingUpTitle => '正在備份';
 
   @override
-  String get migrationBackingUpSubtitle =>
-      '正在匯出設定、聊天記錄、上傳檔案、圖片和字體。請保持 Kelivo 開啟，等待備份完成。';
+  String get migrationBackingUpSubtitle => '正在匯出設定、聊天記錄、上傳檔案、圖片和字體。請保持 Kelivo 開啟，等待備份完成。';
 
   @override
   String get migrationMigratingTitle => '正在遷移到 SQLite';
 
   @override
-  String get migrationMigratingSubtitle =>
-      '正在分批寫入對話和訊息，避免超大聊天記錄占滿記憶體。請保持 Kelivo 在前台，等待遷移完成。';
+  String get migrationMigratingSubtitle => '正在分批寫入對話和訊息，避免超大聊天記錄占滿記憶體。請保持 Kelivo 在前台，等待遷移完成。';
 
   @override
   String migrationBackingUpDetail(String fileName) {
@@ -29802,8 +29379,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationCompleteTitle => '升級完成';
 
   @override
-  String get migrationCompleteSubtitle =>
-      '你的聊天記錄已遷移到 SQLite。請重啟 Kelivo 進入升級後的應用程式。';
+  String get migrationCompleteSubtitle => '你的聊天記錄已遷移到 SQLite。請重啟 Kelivo 進入升級後的應用程式。';
 
   @override
   String get migrationConversationCount => '對話';
@@ -29827,8 +29403,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationFailedTitle => '遷移失敗';
 
   @override
-  String get migrationFailedSubtitle =>
-      '原始 Hive 資料仍然保留；如果備份已經完成，備份檔案也不會被修改。查看下方原因後可以重試。';
+  String get migrationFailedSubtitle => '原始 Hive 資料仍然保留；如果備份已經完成，備份檔案也不會被修改。查看下方原因後可以重試。';
 
   @override
   String get migrationUnknownError => '未知遷移錯誤。';
@@ -29846,8 +29421,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationSkipDialogTitle => '跳過遷移？';
 
   @override
-  String get migrationSkipDialogMessage =>
-      'Kelivo 將以空的聊天資料庫啟動。舊的聊天記錄會保留在磁碟上（重新命名為 .retired 後綴），但不會被遷移，也不會在應用程式中顯示。之後如需找回，請使用已儲存的備份 ZIP。';
+  String get migrationSkipDialogMessage => 'Kelivo 將以空的聊天資料庫啟動。舊的聊天記錄會保留在磁碟上（重新命名為 .retired 後綴），但不會被遷移，也不會在應用程式中顯示。之後如需找回，請使用已儲存的備份 ZIP。';
 
   @override
   String get migrationSkipDialogCancel => '取消';
@@ -29856,8 +29430,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get migrationSkipDialogConfirm => '跳過並全新開始';
 
   @override
-  String get migrationChatsExportDegradedNote =>
-      'chats.json 匯出因出錯而被跳過。備份 ZIP 仍包含原始 Hive 檔案，完整聊天記錄未遺失。';
+  String get migrationChatsExportDegradedNote => 'chats.json 匯出因出錯而被跳過。備份 ZIP 仍包含原始 Hive 檔案，完整聊天記錄未遺失。';
 
   @override
   String get timelineJumpToLatest => '跳到最新';
@@ -29916,23 +29489,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get imageSettingsPageCompressTransparentTitle => '壓縮透明及動態圖片';
 
   @override
-  String get imageSettingsPageCompressTransparentSubtitle =>
-      '開啟後將壓縮透明 PNG、GIF 等格式；透明區域填充為白色，動圖僅保留第一幀。';
+  String get imageSettingsPageCompressTransparentSubtitle => '開啟後將壓縮透明 PNG、GIF 等格式；透明區域填充為白色，動圖僅保留第一幀。';
 
   @override
-  String get imageSettingsPageFooter =>
-      '壓縮會在加入圖片時進行，已儲存或已傳送的圖片不受影響；壓縮後圖片會以 JPEG 格式隨訊息傳送。';
+  String get imageSettingsPageFooter => '壓縮會在加入圖片時進行，已儲存或已傳送的圖片不受影響；壓縮後圖片會以 JPEG 格式隨訊息傳送。';
 
   @override
   String get imageSettingsPageSendSectionTitle => '傳送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksTitle =>
-      '將 Markdown 圖片連結作為圖片傳送';
+  String get imageSettingsPageMarkdownImageLinksTitle => '將 Markdown 圖片連結作為圖片傳送';
 
   @override
-  String get imageSettingsPageMarkdownImageLinksSubtitle =>
-      '開啟後，訊息文字中的 ![alt](url) 會作為圖片傳送給視覺模型；關閉後僅以純文字傳送。手動加入的圖片附件不受影響。';
+  String get imageSettingsPageMarkdownImageLinksSubtitle => '開啟後，訊息文字中的 ![alt](url) 會作為圖片傳送給視覺模型；關閉後僅以純文字傳送。手動加入的圖片附件不受影響。';
 
   @override
   String get memoryTraceSettingsTitle => '流程追蹤';
@@ -30186,15 +29755,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get messageStyleSettingsPageAssistantFitContent => '助手氣泡貼合內容';
 
   @override
-  String get messageStyleSettingsPageAssistantFitContentSubtitle =>
-      '助手氣泡按文字寬度收縮，不再佔滿整行';
+  String get messageStyleSettingsPageAssistantFitContentSubtitle => '助手氣泡按文字寬度收縮，不再佔滿整行';
 
   @override
   String get messageStyleSettingsPageAssistantSplitParagraphs => '分段顯示為多個氣泡';
 
   @override
-  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle =>
-      '助手回覆遇到空行時拆分，每段單獨一個氣泡';
+  String get messageStyleSettingsPageAssistantSplitParagraphsSubtitle => '助手回覆遇到空行時拆分，每段單獨一個氣泡';
 
   @override
   String get messageStyleSettingsPageStyleFrostedSubtitle => '半透明毛玻璃';
@@ -30245,8 +29812,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get messageStyleSettingsPageRoleAssistant => '助手';
 
   @override
-  String get messageStyleSettingsPageRoleAssistantHint =>
-      '助手設定同時作用於思考、工具呼叫和翻譯卡片。';
+  String get messageStyleSettingsPageRoleAssistantHint => '助手設定同時作用於思考、工具呼叫和翻譯卡片。';
 
   @override
   String get localSnapshotSectionTitle => '本機副本';
@@ -30360,8 +29926,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get localSnapshotCopiesEmptyHint => '資料有變化時會自動存一份，還原資料前也一定會先存一份。';
 
   @override
-  String get localSnapshotCopiesScopeNote =>
-      '本機副本只存在這台裝置上。它防的是應用內資料被損壞或誤刪，防不了裝置遺失或解除安裝應用——那要靠 WebDAV / S3 備份。';
+  String get localSnapshotCopiesScopeNote => '本機副本只存在這台裝置上。它防的是應用內資料被損壞或誤刪，防不了裝置遺失或解除安裝應用——那要靠 WebDAV / S3 備份。';
 
   @override
   String get localSnapshotOriginAutomatic => '自動備份';
@@ -30426,8 +29991,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get localSnapshotDeleteTitle => '刪除這份副本？';
 
   @override
-  String get localSnapshotDeleteMessage =>
-      '這份副本會從裝置上永久刪除。它裡面有、而目前資料庫裡沒有的資料將無法找回。';
+  String get localSnapshotDeleteMessage => '這份副本會從裝置上永久刪除。它裡面有、而目前資料庫裡沒有的資料將無法找回。';
 
   @override
   String get localSnapshotDeleteLastWarning => '這是唯一一份還有內容的副本。';
@@ -30498,8 +30062,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get toolSchemaSettingsResetAllTitle => '全部還原預設？';
 
   @override
-  String get toolSchemaSettingsResetAllMessage =>
-      '將把所有內建工具的描述還原為應用預設文案，自訂措辭會遺失。';
+  String get toolSchemaSettingsResetAllMessage => '將把所有內建工具的描述還原為應用預設文案，自訂措辭會遺失。';
 
   @override
   String get toolSchemaSettingsResetAllConfirm => '還原';
@@ -30510,8 +30073,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get toolSchemaSettingsMemoryLangNote =>
-      '記憶工具的預設描述會隨記憶提示語言在中/英之間切換。自訂描述依工具名只存一份，切換語言後不會跟著變。';
+  String get toolSchemaSettingsMemoryLangNote => '記憶工具的預設描述會隨記憶提示語言在中/英之間切換。自訂描述依工具名只存一份，切換語言後不會跟著變。';
 
   @override
   String get toolSchemaSettingsDescriptionLabel => '描述';
@@ -31010,8 +30572,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvInstall => '安裝';
 
   @override
-  String get workspaceEnvInstallSubtitleAndroid =>
-      '可選擇 Ubuntu、Alpine、Debian，也可匯入本機 rootfs 映像。';
+  String get workspaceEnvInstallSubtitleAndroid => '可選擇 Ubuntu、Alpine、Debian，也可匯入本機 rootfs 映像。';
 
   @override
   String get workspaceEnvInstallSubtitleIos => '已內建，無需下載';
@@ -31096,8 +30657,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvErrorUnsupportedAbi => '目前裝置架構不受支援。';
 
   @override
-  String get workspaceEnvErrorArchitectureMismatch =>
-      '已安裝的沙盒架構與目前應用程式不符，請重新安裝沙盒後使用。原沙盒檔案已保留。';
+  String get workspaceEnvErrorArchitectureMismatch => '已安裝的沙盒架構與目前應用程式不符，請重新安裝沙盒後使用。原沙盒檔案已保留。';
 
   @override
   String get workspaceEnvErrorProotMissing => '缺少 PRoot 執行檔。';
@@ -31144,8 +30704,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvChipRestart => '需要重新啟動';
 
   @override
-  String get workspaceEnvNativeExplanation =>
-      '在桌面端，Kelivo 使用系統終端機，而不是 Linux 沙箱。';
+  String get workspaceEnvNativeExplanation => '在桌面端，Kelivo 使用系統終端機，而不是 Linux 沙箱。';
 
   @override
   String workspaceEnvNativeShellPath(String path) {
@@ -31153,15 +30712,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get workspaceEnvNativeShellApproval =>
-      '除非此工作階段允許全部工具，否則 shell 工具需要核准。';
+  String get workspaceEnvNativeShellApproval => '除非此工作階段允許全部工具，否則 shell 工具需要核准。';
 
   @override
-  String workspaceEnvDownloadProgress(
-    String downloaded,
-    String total,
-    int percent,
-  ) {
+  String workspaceEnvDownloadProgress(String downloaded, String total, int percent) {
     return '$downloaded / $total MB ($percent%)';
   }
 
@@ -31193,12 +30747,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get skillsEmptyTitle => '還沒有技能';
 
   @override
-  String get skillsEmptyBody =>
-      '技能是包含 SKILL.md 的資料夾。可貼上 Markdown、匯入 .md/.zip，或從 GitHub 安裝。';
+  String get skillsEmptyBody => '技能是包含 SKILL.md 的資料夾。可貼上 Markdown、匯入 .md/.zip，或從 GitHub 安裝。';
 
   @override
-  String get skillsEmptyFormat =>
-      '---\nname: my-skill\ndescription: 這個技能做什麼\n---\n\n# 說明';
+  String get skillsEmptyFormat => '---\nname: my-skill\ndescription: 這個技能做什麼\n---\n\n# 說明';
 
   @override
   String get skillsImport => '匯入';
@@ -31222,8 +30774,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get skillsImportGitHubLabel => 'GitHub 連結';
 
   @override
-  String get skillsImportGitHubHint =>
-      'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
+  String get skillsImportGitHubHint => 'github.com/owner/repo 或 github.com/owner/repo/tree/ref/path';
 
   @override
   String get skillsImportConfirm => '匯入';
@@ -31392,8 +30943,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEntryUnbindConfirmTitle => '解除綁定？';
 
   @override
-  String get workspaceEntryChangeConfirmBody =>
-      '此對話已使用過工作區工具，之前訊息中的檔案連結可能不再可用。';
+  String get workspaceEntryChangeConfirmBody => '此對話已使用過工作區工具，之前訊息中的檔案連結可能不再可用。';
 
   @override
   String get workspaceEntryCwd => '工作目錄';
@@ -31673,8 +31223,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get skillsImportGitHubRepoLabel => '倉庫地址';
 
   @override
-  String get skillsImportGitHubUrlHint =>
-      'https://github.com/owner/repo 或 owner/repo[/path]';
+  String get skillsImportGitHubUrlHint => 'https://github.com/owner/repo 或 owner/repo[/path]';
 
   @override
   String get skillsImportGitHubHelp => '支援倉庫根目錄或子目錄下的 SKILL.md';
@@ -31809,8 +31358,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvInfoSection => '資訊';
 
   @override
-  String get workspaceEnvInfoBody =>
-      '環境是沙盒使用的 Linux 根檔案系統。工作區單獨存放，重設環境不會刪除工作區檔案。資料保存在本機已解壓的 rootfs 中。';
+  String get workspaceEnvInfoBody => '環境是沙盒使用的 Linux 根檔案系統。工作區單獨存放，重設環境不會刪除工作區檔案。資料保存在本機已解壓的 rootfs 中。';
 
   @override
   String get workspaceEnvRepairDetail => '重新校驗並修補檔案';
@@ -31824,8 +31372,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get workspaceEnvResetConfirmMessage =>
-      '這將刪除整個 Linux 環境及其中安裝的套件。工作區檔案不受影響。';
+  String get workspaceEnvResetConfirmMessage => '這將刪除整個 Linux 環境及其中安裝的套件。工作區檔案不受影響。';
 
   @override
   String get workspaceEnvRestartDoneBanner => '重設已完成，請重新啟動應用以完成安裝。';
@@ -31885,17 +31432,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String workspaceEnvDownloadLine(
-    String downloaded,
-    String total,
-    String phase,
-  ) {
+  String workspaceEnvDownloadLine(String downloaded, String total, String phase) {
     return '$downloaded / $total · $phase';
   }
 
   @override
-  String get workspaceEnvNativeUnsandboxed =>
-      '指令在本機直接執行（無沙盒），除非允許本工作階段全部工具，否則需要核准。';
+  String get workspaceEnvNativeUnsandboxed => '指令在本機直接執行（無沙盒），除非允許本工作階段全部工具，否則需要核准。';
 
   @override
   String get workspaceEnvRootfsTitle => '/';
@@ -32093,8 +31635,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvDependencySources => '軟體套件來源';
 
   @override
-  String get workspaceEnvDependencySourcesDetail =>
-      '預設使用所選 apt/apk 來源安裝；pip 和 npm 來源用於後續安裝的軟體套件。';
+  String get workspaceEnvDependencySourcesDetail => '預設使用所選 apt/apk 來源安裝；pip 和 npm 來源用於後續安裝的軟體套件。';
 
   @override
   String get workspaceEnvDownloadSource => '沙盒下載來源';
@@ -32109,19 +31650,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvDownloadCustom => '自訂連結';
 
   @override
-  String get workspaceEnvDownloadCustomHint =>
-      'https://example.com/ubuntu-base/releases/24.04/release/';
+  String get workspaceEnvDownloadCustomHint => 'https://example.com/ubuntu-base/releases/24.04/release/';
 
   @override
-  String get workspaceEnvDownloadCustomDetail =>
-      '填寫映像目錄或完整下載連結，映像需符合所選系統、版本及裝置架構。';
+  String get workspaceEnvDownloadCustomDetail => '填寫映像目錄或完整下載連結，映像需符合所選系統、版本及裝置架構。';
 
   @override
   String get workspaceEnvDownloadInvalidUrl => '請輸入有效的 HTTP 或 HTTPS 連結。';
 
   @override
-  String get workspaceEnvDownloadVerified =>
-      '下載後會驗證所選映像的官方 SHA-256。軟體套件來源可另行設定。';
+  String get workspaceEnvDownloadVerified => '下載後會驗證所選映像的官方 SHA-256。軟體套件來源可另行設定。';
 
   @override
   String get workspaceEnvDownloadStart => '下載並安裝';
@@ -32166,15 +31704,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvVariablesEmpty => '還沒有環境變數。可以新增工具需要的 API 金鑰等設定。';
 
   @override
-  String get workspaceEnvVariablesScope =>
-      '所有工作區共用。修改會用於新的 Agent 命令和應用程式內終端機工作階段，已有終端機需重新開啟。外部系統終端機使用其自身的環境變數。';
+  String get workspaceEnvVariablesScope => '所有工作區共用。修改會用於新的 Agent 命令和應用程式內終端機工作階段，已有終端機需重新開啟。外部系統終端機使用其自身的環境變數。';
 
   @override
   String get workspaceEnvPrivacyMode => '隱私模式';
 
   @override
-  String get workspaceEnvPrivacyDetail =>
-      '命令仍能使用真實值。工作區工具輸出傳給模型前，匹配到的至少 5 個字元的變數值會替換為 [REDACTED]，本機日誌保留原文。較短的值不做遮蔽，以免誤替換常見開關和數字。';
+  String get workspaceEnvPrivacyDetail => '命令仍能使用真實值。工作區工具輸出傳給模型前，匹配到的至少 5 個字元的變數值會替換為 [REDACTED]，本機日誌保留原文。較短的值不做遮蔽，以免誤替換常見開關和數字。';
 
   @override
   String get workspaceEnvVariableAdd => '新增變數';
@@ -32192,8 +31728,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvVariableNote => '備註（選填）';
 
   @override
-  String get workspaceEnvVariableNameHint =>
-      '名稱使用字母、數字和底線，不能以數字開頭，區分大小寫。命令中可透過 \$NAME 使用變數。';
+  String get workspaceEnvVariableNameHint => '名稱使用字母、數字和底線，不能以數字開頭，區分大小寫。命令中可透過 \$NAME 使用變數。';
 
   @override
   String get workspaceEnvVariableInvalidName => '請輸入有效的變數名稱。';
@@ -32214,8 +31749,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get incomingShareReplaceDraft => '輸入框中有尚未傳送的內容。是否替換為分享的內容，並開始新對話？';
 
   @override
-  String get incomingShareFailed =>
-      '部分分享內容未能匯入，請檢查檔案存取權限和可用儲存空間。一次最多分享 32 個檔案。';
+  String get incomingShareFailed => '部分分享內容未能匯入，請檢查檔案存取權限和可用儲存空間。一次最多分享 32 個檔案。';
 
   @override
   String get incomingShareImporting => '正在匯入';
@@ -32250,26 +31784,22 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceExternalMount => '掛載外部資料夾';
 
   @override
-  String get workspaceExternalMountSubtitle =>
-      '所選資料夾掛載至 /mounts/<name>，供各工作區的 AI 工具、Shell 和檔案瀏覽器存取。最多掛載 10 個資料夾。';
+  String get workspaceExternalMountSubtitle => '所選資料夾掛載至 /mounts/<name>，供各工作區的 AI 工具、Shell 和檔案瀏覽器存取。最多掛載 10 個資料夾。';
 
   @override
   String get workspaceExternalStorageTitle => '允許存取檔案';
 
   @override
-  String get workspaceExternalStorageMessage =>
-      '工作區和 Shell 需要直接讀寫外部資料夾，請在 Android 系統設定中允許 Kelivo 存取檔案。Android 11 及以上需開啟「所有檔案存取權限」，然後選擇要掛載的本機資料夾。';
+  String get workspaceExternalStorageMessage => '工作區和 Shell 需要直接讀寫外部資料夾，請在 Android 系統設定中允許 Kelivo 存取檔案。Android 11 及以上需開啟「所有檔案存取權限」，然後選擇要掛載的本機資料夾。';
 
   @override
   String get workspaceExternalGrantAccess => '前往授權';
 
   @override
-  String get workspaceExternalLocalOnly =>
-      'Android 僅支援掛載本機資料夾，此檔案提供者沒有可供 Shell 存取的本機目錄。';
+  String get workspaceExternalLocalOnly => 'Android 僅支援掛載本機資料夾，此檔案提供者沒有可供 Shell 存取的本機目錄。';
 
   @override
-  String get workspaceExternalUnavailable =>
-      '外部資料夾無法使用。請檢查儲存裝置連線及存取權限，重新選擇資料夾以恢復存取。';
+  String get workspaceExternalUnavailable => '外部資料夾無法使用。請檢查儲存裝置連線及存取權限，重新選擇資料夾以恢復存取。';
 
   @override
   String get workspaceExternalReconnect => '重新選擇資料夾';
@@ -32293,8 +31823,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceMountAllowWrite => '允許寫入';
 
   @override
-  String get workspaceMountPermissionsHint =>
-      '關閉後，AI 檔案工具和檔案瀏覽器會拒絕修改此資料夾。Shell 會檢查部分常用檔案命令，但任意腳本不保證受限。儲存掛載變更時會停止正在執行的命令和終端工作階段。';
+  String get workspaceMountPermissionsHint => '關閉後，AI 檔案工具和檔案瀏覽器會拒絕修改此資料夾。Shell 會檢查部分常用檔案命令，但任意腳本不保證受限。儲存掛載變更時會停止正在執行的命令和終端工作階段。';
 
   @override
   String get workspaceMountBrowse => '瀏覽檔案';
@@ -32309,8 +31838,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceMountInactive => '無法使用，請重新選擇資料夾';
 
   @override
-  String get workspaceMountInvalidName =>
-      '名稱最多 64 個字元，不能包含斜線、冒號或控制字元，也不能為 . 或 ..。';
+  String get workspaceMountInvalidName => '名稱最多 64 個字元，不能包含斜線、冒號或控制字元，也不能為 . 或 ..。';
 
   @override
   String get workspaceMountDuplicate => '已存在同名掛載。';
@@ -32322,8 +31850,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceMountOverlap => '此資料夾與已有掛載相同或互相包含。請選擇其他資料夾，以避免權限衝突。';
 
   @override
-  String get workspaceMountTargetOccupied =>
-      '/mounts 下的同名位置已有本機檔案。請更換掛載名稱，或先移走這些檔案。原有檔案未被刪除。';
+  String get workspaceMountTargetOccupied => '/mounts 下的同名位置已有本機檔案。請更換掛載名稱，或先移走這些檔案。原有檔案未被刪除。';
 
   @override
   String get workspaceEnvSystemImage => '系統映像';
@@ -32341,22 +31868,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvChooseImage => '選擇 rootfs 映像檔案';
 
   @override
-  String get workspaceEnvLocalImageHint =>
-      '支援根檔案系統壓縮包（.tar.gz、.tar.xz、.tar），不支援 ISO 或磁碟映像。映像需符合裝置 CPU 架構並包含 /bin/sh，解壓後自動識別系統和版本。';
+  String get workspaceEnvLocalImageHint => '支援根檔案系統壓縮包（.tar.gz、.tar.xz、.tar），不支援 ISO 或磁碟映像。映像需符合裝置 CPU 架構並包含 /bin/sh，解壓後自動識別系統和版本。';
 
   @override
   String get workspaceEnvImportImage => '匯入映像';
 
   @override
-  String get workspaceEnvInvalidImage =>
-      '請選擇適用於此裝置的 rootfs 映像，需包含可執行的 /bin/sh，且 CPU 架構相符。';
+  String get workspaceEnvInvalidImage => '請選擇適用於此裝置的 rootfs 映像，需包含可執行的 /bin/sh，且 CPU 架構相符。';
 
   @override
   String get workspaceEnvReplaceSystem => '更換系統';
 
   @override
-  String get workspaceEnvReplaceSystemHint =>
-      '更換會取代目前環境內的軟體套件和檔案，並停止執行中的命令與終端工作階段。工作區、聊天檔案和外部資料夾會保留。新映像準備失敗時保留原有環境。';
+  String get workspaceEnvReplaceSystemHint => '更換會取代目前環境內的軟體套件和檔案，並停止執行中的命令與終端工作階段。工作區、聊天檔案和外部資料夾會保留。新映像準備失敗時保留原有環境。';
 
   @override
   String get workspaceEnvProotOptions => 'PRoot 設定';
@@ -32368,15 +31892,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get workspaceEnvShellAutomatic => '自動選擇';
 
   @override
-  String get workspaceEnvShellHint =>
-      '留空時優先使用 /bin/bash，否則使用 /bin/sh。自訂 Shell 需填寫環境內的絕對路徑。';
+  String get workspaceEnvShellHint => '留空時優先使用 /bin/bash，否則使用 /bin/sh。自訂 Shell 需填寫環境內的絕對路徑。';
 
   @override
   String get workspaceEnvProotArguments => '額外 PRoot 參數';
 
   @override
-  String get workspaceEnvProotArgumentsHint =>
-      '每行填寫一個參數，無需 Shell 引號。例如將 -k 和 5.10.0 分別放在兩行，或使用 --kernel-release=5.10.0。設定對之後啟動的命令和終端工作階段生效。';
+  String get workspaceEnvProotArgumentsHint => '每行填寫一個參數，無需 Shell 引號。例如將 -k 和 5.10.0 分別放在兩行，或使用 --kernel-release=5.10.0。設定對之後啟動的命令和終端工作階段生效。';
 
   @override
   String get workspaceEnvProotInvalid => '請填寫有效的 Shell 絕對路徑，並將 PRoot 參數逐行填寫。';
@@ -32397,8 +31919,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get displaySettingsPageShowProducedFilesTitle => '顯示回覆底部檔案卡片';
 
   @override
-  String get displaySettingsPageShowProducedFilesSubtitle =>
-      '在回覆底部顯示工具建立或修改的檔案。';
+  String get displaySettingsPageShowProducedFilesSubtitle => '在回覆底部顯示工具建立或修改的檔案。';
 
   @override
   String get reasoningBudgetSliderLow => 'Low';
@@ -32419,8 +31940,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get defaultModelPagePerChatModelTitle => '每個對話獨立模型';
 
   @override
-  String get defaultModelPagePerChatModelSubtitle =>
-      '開啟後，在對話中切換模型只影響目前對話；關閉後會直接修改目前助手的模型，使用該助手的所有對話都會跟隨。';
+  String get defaultModelPagePerChatModelSubtitle => '開啟後，在對話中切換模型只影響目前對話；關閉後會直接修改目前助手的模型，使用該助手的所有對話都會跟隨。';
 
   @override
   String get googleFontsTitle => 'Google Fonts';
@@ -32432,8 +31952,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get googleFontsSearchHint => '搜尋字型或語言';
 
   @override
-  String get googleFontsHint =>
-      '下載一般字重字型後預覽並套用，已安裝字型可離線使用。目錄來自 Expo Google Fonts，字型從 Google Fonts 下載。';
+  String get googleFontsHint => '下載一般字重字型後預覽並套用，已安裝字型可離線使用。目錄來自 Expo Google Fonts，字型從 Google Fonts 下載。';
 
   @override
   String get googleFontsNoResults => '沒有符合的字型';
@@ -32451,8 +31970,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get googleFontsLicense => '字型授權條款';
 
   @override
-  String get assistantEditLocationPermissionSettingsMessage =>
-      '定位權限已被禁止。請在系統設定中允許定位存取，然後重新開啟此工具。';
+  String get assistantEditLocationPermissionSettingsMessage => '定位權限已被禁止。請在系統設定中允許定位存取，然後重新開啟此工具。';
 
   @override
   String get healthDataSettingsCategoryReproductive => '生殖健康';
@@ -32461,8 +31979,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get healthDataSettingsTypeMenstrualFlowTitle => '經期記錄';
 
   @override
-  String get healthDataSettingsTypeMenstrualFlowSubtitle =>
-      '最近 90 天記錄的經量與週期開始日期';
+  String get healthDataSettingsTypeMenstrualFlowSubtitle => '最近 90 天記錄的經量與週期開始日期';
 
   @override
   String get assistantEditGradientBackgroundTitle => '漸層背景';
@@ -32534,8 +32051,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundAndroidEnabled => '背景生成';
 
   @override
-  String get backgroundAndroidEnabledDetail =>
-      '在鎖定螢幕、切到背景或劃掉最近任務後繼續目前的生成。任務執行期間會顯示系統常駐通知。';
+  String get backgroundAndroidEnabledDetail => '在鎖定螢幕、切到背景或劃掉最近任務後繼續目前的生成。任務執行期間會顯示系統常駐通知。';
 
   @override
   String get backgroundIosEnabled => '增強背景執行';
@@ -32547,8 +32063,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundNotifications => '任務通知';
 
   @override
-  String get backgroundNotificationsDetail =>
-      '在目前查看的對話之外完成或失敗時通知。此開關不控制 Android 必需的常駐通知。';
+  String get backgroundNotificationsDetail => '在目前查看的對話之外完成或失敗時通知。此開關不控制 Android 必需的常駐通知。';
 
   @override
   String get backgroundPrivacy => '任務狀態隱私';
@@ -32560,36 +32075,31 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundLiveActivities => '即時動態';
 
   @override
-  String get backgroundLiveActivitiesDetail =>
-      '在鎖定畫面和動態島顯示目前任務，是否可用及展示位置由系統決定。';
+  String get backgroundLiveActivitiesDetail => '在鎖定畫面和動態島顯示目前任務，是否可用及展示位置由系統決定。';
 
   @override
   String get backgroundOverlay => '任務懸浮視窗';
 
   @override
-  String get backgroundOverlayDetail =>
-      '在其他應用程式上顯示可拖動的任務懸浮視窗。點擊進入對話；關閉按鈕僅隱藏懸浮視窗。';
+  String get backgroundOverlayDetail => '在其他應用程式上顯示可拖動的任務懸浮視窗。點擊進入對話；關閉按鈕僅隱藏懸浮視窗。';
 
   @override
   String get backgroundLiveUpdates => '即時通知 / 動態島';
 
   @override
-  String get backgroundLiveUpdatesDetail =>
-      '在支援的裝置上使用 Android 16 即時通知。系統成功展示即時通知時優先於懸浮視窗。';
+  String get backgroundLiveUpdatesDetail => '在支援的裝置上使用 Android 16 即時通知。系統成功展示即時通知時優先於懸浮視窗。';
 
   @override
   String get backgroundLocation => '定位輔助保活';
 
   @override
-  String get backgroundLocationDetail =>
-      '在背景任務期間使用低精度定位輔助執行，不儲存座標或傳送給 AI 服務。需要開啟增強背景執行並授權定位。';
+  String get backgroundLocationDetail => '在背景任務期間使用低精度定位輔助執行，不儲存座標或傳送給 AI 服務。需要開啟增強背景執行並授權定位。';
 
   @override
   String get backgroundSilentAudio => '靜音音訊保活';
 
   @override
-  String get backgroundSilentAudioDetail =>
-      '背景任務執行時播放靜音音訊，並讓位於錄音和朗讀。需要開啟增強背景執行，無需麥克風權限。';
+  String get backgroundSilentAudioDetail => '背景任務執行時播放靜音音訊，並讓位於錄音和朗讀。需要開啟增強背景執行，無需麥克風權限。';
 
   @override
   String get backgroundSpeech => '背景朗讀';
@@ -32613,8 +32123,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundFinishUntilForeground => '回到應用程式時收起';
 
   @override
-  String get backgroundFinishVisibilityDetail =>
-      '用於 Android 懸浮視窗和 iOS 鎖定畫面完成卡片。回到應用程式時清理完成狀態，最長保留 15 分鐘；取消任務立即收起。';
+  String get backgroundFinishVisibilityDetail => '用於 Android 懸浮視窗和 iOS 鎖定畫面完成卡片。回到應用程式時清理完成狀態，最長保留 15 分鐘；取消任務立即收起。';
 
   @override
   String get backgroundOverlayIcon => '懸浮視窗圖示';
@@ -32644,8 +32153,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundAutostart => '自動啟動與背景執行';
 
   @override
-  String get backgroundAutostartDetail =>
-      '請手動檢查裝置的自動啟動和背景限制。Android 無法可靠查詢這些廠商設定的授權狀態。';
+  String get backgroundAutostartDetail => '請手動檢查裝置的自動啟動和背景限制。Android 無法可靠查詢這些廠商設定的授權狀態。';
 
   @override
   String get backgroundLocationPermission => '定位權限';
@@ -32705,12 +32213,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get backgroundUnsupported => '目前裝置不支援或系統設定未允許';
 
   @override
-  String get backgroundIosLimit =>
-      '背景執行由 iOS 控制，即時動態本身無法保活。強制結束可能停止生成，即時狀態可能要等再次開啟應用程式後才能清理。';
+  String get backgroundIosLimit => '背景執行由 iOS 控制，即時動態本身無法保活。強制結束可能停止生成，即時狀態可能要等再次開啟應用程式後才能清理。';
 
   @override
-  String get backgroundAndroidLimit =>
-      '如任務中斷，請檢查通知、電池及廠商背景設定。系統強制停止或終止程序仍可能中斷生成。';
+  String get backgroundAndroidLimit => '如任務中斷，請檢查通知、電池及廠商背景設定。系統強制停止或終止程序仍可能中斷生成。';
 
   @override
   String get backgroundStale => '狀態暫未更新，請開啟應用程式查看。';
@@ -32812,8 +32318,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get mcpImportJson => '匯入 JSON';
 
   @override
-  String get mcpImportJsonHint =>
-      '貼上 Claude Desktop 或 Cursor 的 MCP 設定，預覽後新增伺服器，不覆蓋現有設定。';
+  String get mcpImportJsonHint => '貼上 Claude Desktop 或 Cursor 的 MCP 設定，預覽後新增伺服器，不覆蓋現有設定。';
 
   @override
   String get mcpImportPaste => '從剪貼簿貼上';
@@ -32828,8 +32333,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get startupRecoverySnapshotTitle => '從資料庫快照還原';
 
   @override
-  String get startupRecoverySnapshotBody =>
-      '即使資料庫無法開啟，也可以選擇本機快照還原聊天和設定。請勿解除安裝 Kelivo，解除安裝會一併刪除這些快照。';
+  String get startupRecoverySnapshotBody => '即使資料庫無法開啟，也可以選擇本機快照還原聊天和設定。請勿解除安裝 Kelivo，解除安裝會一併刪除這些快照。';
 
   @override
   String get startupRecoverySnapshotEmpty => '未在本機找到資料庫快照。請先匯出資料，再嘗試其他還原操作。';
@@ -32911,19 +32415,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get scheduledTasksPermission => '鬧鐘和提醒';
 
   @override
-  String get scheduledTasksPermissionDetail =>
-      '允許設定鬧鐘，才能按指定時間執行。未授權時，已啟用的任務會等待授權。';
+  String get scheduledTasksPermissionDetail => '允許設定鬧鐘，才能按指定時間執行。未授權時，已啟用的任務會等待授權。';
 
   @override
   String get scheduledTasksPermissionAction => '前往授權';
 
   @override
-  String get scheduledTasksReliability =>
-      '建議在電池設定中允許 Kelivo 背景執行。強制停止後需重新開啟應用程式。錯過的任務不會補跑，執行時間跟隨裝置時區。';
+  String get scheduledTasksReliability => '建議在電池設定中允許 Kelivo 背景執行。強制停止後需重新開啟應用程式。錯過的任務不會補跑，執行時間跟隨裝置時區。';
 
   @override
-  String get scheduledTasksExecutionDetail =>
-      '結果儲存在對話中，完成後會傳送回覆預覽通知，點擊可開啟對話。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。';
+  String get scheduledTasksExecutionDetail => '結果儲存在對話中，完成後會傳送回覆預覽通知，點擊可開啟對話。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。';
 
   @override
   String get scheduledTasksRunNow => '立即執行';
@@ -33045,8 +32546,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get scheduledTasksEndDate => '結束日期';
 
   @override
-  String get scheduledTasksActiveWindowDetail =>
-      '僅在此日期範圍內執行，包含結束當天。未設定的日期不作限制。';
+  String get scheduledTasksActiveWindowDetail => '僅在此日期範圍內執行，包含結束當天。未設定的日期不作限制。';
 
   @override
   String get scheduledTasksDate => '日期';
@@ -33070,8 +32570,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get scheduledTasksDateRangeInvalid => '結束日期不能早於開始日期。';
 
   @override
-  String get scheduledTasksRegenerateDetail =>
-      '使用原有上下文，為所選問題產生新的回答，保留已有回答和後續訊息。';
+  String get scheduledTasksRegenerateDetail => '使用原有上下文，為所選問題產生新的回答，保留已有回答和後續訊息。';
 
   @override
   String get scheduledTasksSaving => '正在儲存…';
@@ -33095,10 +32594,107 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get scheduledTasksDesktopEmpty => '尚無排程任務';
 
   @override
-  String get scheduledTasksDesktopReliability =>
-      '僅在 Kelivo 執行時運作，最小化或常駐系統匣時也會繼續。結束或電腦休眠期間錯過的任務不會補執行，也不會自動啟動應用程式。';
+  String get scheduledTasksDesktopReliability => '僅在 Kelivo 執行時運作，最小化或常駐系統匣時也會繼續。結束或電腦休眠期間錯過的任務不會補執行，也不會自動啟動應用程式。';
 
   @override
-  String get scheduledTasksDesktopExecutionDetail =>
-      '結果儲存在對話中，可從任務的執行記錄開啟。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。';
+  String get scheduledTasksDesktopExecutionDetail => '結果儲存在對話中，可從任務的執行記錄開啟。單次最多執行 10 分鐘；需要使用者回答或工具確認時會停止。';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字與正文同大';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle => '開啟後 Markdown 引用（>）內的文字不再被額外放大';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint => '目前供應商不支援這些內建工具。';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => '網頁擷取';
+
+  @override
+  String get displaySettingsPageUiFontSizeTitle => '介面字體大小';
+
+  @override
+  String get displaySettingsPageInputFontSizeTitle => '輸入框字體大小';
+
+  @override
+  String get assistantEditSkillsTab => '技能';
+
+  @override
+  String get assistantEditSkillsEmptyMessage => '還沒有綁定技能。點擊下方管理技能。';
+
+  @override
+  String get assistantEditManageSkillsButton => '管理技能';
+
+  @override
+  String get skillsAddTooltip => '新增技能';
+
+  @override
+  String get skillsEmptyMessage => '還沒有技能，匯入或新增一個吧。';
+
+  @override
+  String get skillsImportButton => '匯入';
+
+  @override
+  String get skillsDeleteAction => '刪除';
+
+  @override
+  String get skillsMultiSelect => '多選';
+
+  @override
+  String get skillsSelectAll => '全選';
+
+  @override
+  String get skillsSelectNone => '取消全選';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return '刪除（$count）';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return '確定要刪除選中的 $count 個技能嗎？此操作無法復原。';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return '確定要刪除技能「$name」嗎？此操作無法復原。';
+  }
+
+  @override
+  String get skillsSaveButton => '儲存';
+
+  @override
+  String get skillsNameLabel => '名稱';
+
+  @override
+  String get skillsDescriptionLabel => '描述';
+
+  @override
+  String get skillsTriggerKeywordsLabel => '觸發關鍵字';
+
+  @override
+  String get skillsTriggerKeywordsHint => '用逗號分隔，命中後自動啟用該技能';
+
+  @override
+  String get skillsContentHint => '技能內容（注入到對話的提示詞）';
+
+  @override
+  String get skillsNoValidImported => '沒有可匯入的技能';
+
+  @override
+  String skillsImportFailed(String error) {
+    return '匯入失敗：$error';
+  }
+
+  @override
+  String skillsImportedCount(int count) {
+    return '已匯入 $count 個技能';
+  }
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '觸發關鍵字：$keywords';
+  }
 }

@@ -36,6 +36,9 @@ import '../../../core/models/memory_entry.dart';
 import '../../../core/providers/memory_provider.dart';
 import '../../../core/providers/memory_provider_v2.dart';
 import '../../../core/providers/settings_provider.dart';
+import '../../../core/providers/skill_provider.dart';
+import '../../../core/models/skill.dart';
+import '../../../features/skills/pages/skills_page.dart';
 import '../../../core/services/chat/chat_service.dart';
 import '../../../core/services/memory/memory_gatekeeper.dart';
 import '../../../core/services/memory/memory_pipeline.dart';
@@ -79,6 +82,7 @@ part 'assistant_settings_edit_local_tools_tab.dart';
 part 'assistant_settings_edit_mcp_tab.dart';
 part 'assistant_settings_edit_quick_phrase_tab.dart';
 part 'assistant_settings_edit_custom_request_tab.dart';
+part 'assistant_settings_edit_role_skills_tab.dart';
 
 const int _contextMessageMin = Assistant.minContextMessageSize;
 const int _contextMessageMax = Assistant.maxContextMessageSize;
@@ -162,6 +166,12 @@ List<_AssistantEditTabSpec> _assistantEditTabSpecs(
       label: l10n.assistantEditPageWorkspaceTab,
       icon: Lucide.FolderCode,
       child: AssistantSettingsEditWorkspaceTab(assistantId: assistantId),
+    ),
+    _AssistantEditTabSpec(
+      id: assistantEditTabSkills,
+      label: l10n.assistantEditSkillsTab,
+      icon: Lucide.Sparkles,
+      child: _SkillsTab(assistantId: assistantId),
     ),
   ];
 }
@@ -1646,6 +1656,7 @@ enum _AssistantDesktopMenu {
   quick,
   custom,
   regex,
+  roleSkills,
 }
 
 Future<void> showAssistantDesktopDialog(
@@ -1773,6 +1784,8 @@ class _DesktopAssistantDialogShellState
                         return AssistantRegexDesktopPane(
                           assistantId: widget.assistantId,
                         );
+                      case _AssistantDesktopMenu.roleSkills:
+                        return _SkillsTab(assistantId: widget.assistantId);
                     }
                   }(),
                 ),
@@ -1811,6 +1824,7 @@ class _DesktopAssistantMenuState extends State<_DesktopAssistantMenu> {
       (_AssistantDesktopMenu.custom, l10n.assistantEditPageCustomTab),
       (_AssistantDesktopMenu.regex, l10n.assistantEditPageRegexTab),
       (_AssistantDesktopMenu.workspace, l10n.assistantEditPageWorkspaceTab),
+      (_AssistantDesktopMenu.roleSkills, l10n.assistantEditSkillsTab),
     ];
     return SizedBox(
       width: 220,

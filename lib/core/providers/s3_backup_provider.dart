@@ -26,13 +26,14 @@ class S3BackupProvider extends ChangeNotifier {
     required ChatService chatService,
     required BusinessRepository businessRepository,
     required BusinessPreferences businessPreferences,
+    S3BackupClient? client,
     S3Config? initialConfig,
   }) : _dataSync = DataSync(
          chatService: chatService,
          businessRepository: businessRepository,
          businessPreferences: businessPreferences,
        ),
-       _client = const S3BackupClient(),
+       _client = client ?? const S3BackupClient(),
        _cfg = initialConfig ?? const S3Config();
 
   S3Config get config => _cfg;

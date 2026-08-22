@@ -59,6 +59,28 @@ void main() {
       expect(visible, const ['regex']);
     });
 
+    test('new tabs not in savedOrder remain visible even if in hiddenIds', () {
+      // Regression: restoring an old backup may list the new 'skills' tab id
+      // in hidden ids, but since the user never had a chance to hide it, it
+      // should still be shown.
+      final visible = visibleAssistantEditTabIds(
+        savedOrder: const [
+          'basic',
+          'prompts',
+          'memory',
+          'localTools',
+          'mcp',
+          'quickPhrase',
+          'custom',
+          'regex',
+        ],
+        hiddenIds: const {'skills', 'mcp'},
+      );
+
+      expect(visible, contains('skills'));
+      expect(visible, isNot(contains('mcp')));
+    });
+
     test('visual tab index switches as swipe animation crosses halfway', () {
       expect(visualAssistantEditTabIndex(animationValue: 0.49, tabCount: 4), 0);
       expect(visualAssistantEditTabIndex(animationValue: 0.51, tabCount: 4), 1);
