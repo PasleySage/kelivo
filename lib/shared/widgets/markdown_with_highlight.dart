@@ -5709,10 +5709,12 @@ class ModernBlockQuote extends InlineMd {
               return component;
             })
             .toList(growable: false);
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
     final innerMarkdown = _BlockquoteMarkdownContent(
       data: data,
       config: config,
       components: innerComponents,
+      sameSize: settings.markdownBlockquoteSameSize,
     );
     final child = Directionality(
       textDirection: config.textDirection,
@@ -5760,11 +5762,13 @@ class _BlockquoteMarkdownContent extends StatelessWidget {
     required this.data,
     required this.config,
     required this.components,
+    this.sameSize = false,
   });
 
   final String data;
   final GptMarkdownConfig config;
   final List<MarkdownComponent> components;
+  final bool sameSize;
 
   @override
   Widget build(BuildContext context) {
@@ -5834,26 +5838,29 @@ class _BlockquoteMarkdownContent extends StatelessWidget {
   }
 
   Widget _buildMarkdown(String text) {
+    final innerConfig = sameSize
+        ? config.copyWith(textScaler: TextScaler.linear(1.0))
+        : config;
     return GptMarkdown(
       text,
-      style: config.style,
-      textDirection: config.textDirection,
-      textAlign: config.textAlign,
-      textScaler: config.textScaler,
-      onLinkTap: config.onLinkTap,
-      latexWorkaround: config.latexWorkaround,
-      latexBuilder: config.latexBuilder,
-      codeBuilder: config.codeBuilder,
-      sourceTagBuilder: config.sourceTagBuilder,
-      highlightBuilder: config.highlightBuilder,
-      linkBuilder: config.linkBuilder,
-      imageBuilder: config.imageBuilder,
-      orderedListBuilder: config.orderedListBuilder,
-      unOrderedListBuilder: config.unOrderedListBuilder,
-      tableBuilder: config.tableBuilder,
+      style: innerConfig.style,
+      textDirection: innerConfig.textDirection,
+      textAlign: innerConfig.textAlign,
+      textScaler: innerConfig.textScaler,
+      onLinkTap: innerConfig.onLinkTap,
+      latexWorkaround: innerConfig.latexWorkaround,
+      latexBuilder: innerConfig.latexBuilder,
+      codeBuilder: innerConfig.codeBuilder,
+      sourceTagBuilder: innerConfig.sourceTagBuilder,
+      highlightBuilder: innerConfig.highlightBuilder,
+      linkBuilder: innerConfig.linkBuilder,
+      imageBuilder: innerConfig.imageBuilder,
+      orderedListBuilder: innerConfig.orderedListBuilder,
+      unOrderedListBuilder: innerConfig.unOrderedListBuilder,
+      tableBuilder: innerConfig.tableBuilder,
       components: components,
-      inlineComponents: config.inlineComponents,
-      followLinkColor: config.followLinkColor,
+      inlineComponents: innerConfig.inlineComponents,
+      followLinkColor: innerConfig.followLinkColor,
       useDollarSignsForLatex: false,
       preprocessBlocks: config.preprocessBlocks,
       generation: config.generation,

@@ -2,6 +2,38 @@ part of '../desktop_settings_page.dart';
 
 // ===== Display Settings Body =====
 
+/// Opens the logs directory. On Windows, launches Explorer directly because
+/// url_launcher's file:// handling can hang the app there; other platforms
+/// keep [launchUrl]. Best-effort with a launchUrl fallback.
+Future<void> _openLogsFolder() async {
+  try {
+    final dir = await AppDirectories.getAppDataDirectory();
+    final logsDir = Directory('${dir.path}/logs');
+    if (!await logsDir.exists()) {
+      await logsDir.create(recursive: true);
+    }
+    if (Platform.isWindows) {
+      // explorer.exe parses its own command line and, when handed a plain
+      // directory path via CreateProcess, notoriously opens the Documents
+      // library instead. `cmd /c start "" <path>` lets cmd hand the path to
+      // the shell correctly, so Explorer opens the requested folder. The app
+      // data logs path contains no spaces, so no extra quoting is needed.
+      await Process.start(
+        'cmd',
+        <String>['/c', 'start', '', logsDir.path],
+        mode: ProcessStartMode.detached,
+      );
+      return;
+    }
+    await launchUrl(Uri.file(logsDir.path));
+  } catch (_) {
+    try {
+      final dir = await AppDirectories.getAppDataDirectory();
+      await launchUrl(Uri.file('${dir.path}/logs'));
+    } catch (_) {}
+  }
+}
+
 class _DisplaySettingsBody extends StatelessWidget {
   const _DisplaySettingsBody({super.key});
   @override
@@ -39,14 +71,30 @@ class _DisplaySettingsBody extends StatelessWidget {
               const SizedBox(height: 16),
               _SettingsCard(
                 title: l10n.desktopSettingsFontsTitle,
-                children: const [
-                  _DesktopAppFontRow(),
-                  _RowDivider(),
-                  _DesktopCodeFontRow(),
-                  _RowDivider(),
-                  _AppLanguageRow(),
-                  _RowDivider(),
-                  _ChatFontSizeRow(),
+                children: [
+                  const _DesktopAppFontRow(),
+                  const _RowDivider(),
+                  const _DesktopCodeFontRow(),
+                  const _RowDivider(),
+                  const _AppLanguageRow(),
+                  const _RowDivider(),
+                  _FontScaleRow(
+                    label: l10n.displaySettingsPageUiFontSizeTitle,
+                    getter: (s) => s.uiFontScale,
+                    setter: (s, v) => s.setUiFontScale(v),
+                  ),
+                  const _RowDivider(),
+                  _FontScaleRow(
+                    label: l10n.displaySettingsPageChatFontSizeTitle,
+                    getter: (s) => s.chatFontScale,
+                    setter: (s, v) => s.setChatFontScale(v),
+                  ),
+                  const _RowDivider(),
+                  _FontScaleRow(
+                    label: l10n.displaySettingsPageInputFontSizeTitle,
+                    getter: (s) => s.inputFontScale,
+                    setter: (s, v) => s.setInputFontScale(v),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -104,6 +152,8 @@ class _DisplaySettingsBody extends StatelessWidget {
                   _ToggleRowReasoningMarkdown(),
                   _RowDivider(),
                   _ToggleRowAssistantMarkdown(),
+                  _RowDivider(),
+                  _ToggleRowMarkdownBlockquoteSameSize(),
                   _RowDivider(),
                   _AutoCollapseCodeBlocksSection(),
                 ],
@@ -1644,18 +1694,25 @@ class _LanguageDropdownItemState extends State<_LanguageDropdownItem> {
   }
 }
 
-class _ChatFontSizeRow extends StatefulWidget {
-  const _ChatFontSizeRow();
+class _FontScaleRow extends StatefulWidget {
+  const _FontScaleRow({
+    required this.label,
+    required this.getter,
+    required this.setter,
+  });
+  final String label;
+  final double Function(SettingsProvider) getter;
+  final Future<void> Function(SettingsProvider, double) setter;
   @override
-  State<_ChatFontSizeRow> createState() => _ChatFontSizeRowState();
+  State<_FontScaleRow> createState() => _FontScaleRowState();
 }
 
-class _ChatFontSizeRowState extends State<_ChatFontSizeRow> {
+class _FontScaleRowState extends State<_FontScaleRow> {
   late final TextEditingController _controller;
   @override
   void initState() {
     super.initState();
-    final scale = context.read<SettingsProvider>().chatFontScale;
+    final scale = widget.getter(context.read<SettingsProvider>());
     _controller = TextEditingController(text: '${(scale * 100).round()}');
   }
 
@@ -1665,20 +1722,19 @@ class _ChatFontSizeRowState extends State<_ChatFontSizeRow> {
     super.dispose();
   }
 
-  void _commit(String text) {
+  Future<void> _commit(String text) async {
     final v = text.trim();
     final n = double.tryParse(v);
     if (n == null) return;
     final clamped = (n / 100.0).clamp(0.5, 1.5);
-    context.read<SettingsProvider>().setChatFontScale(clamped);
+    await widget.setter(context.read<SettingsProvider>(), clamped);
     _controller.text = '${(clamped * 100).round()}';
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     return _LabeledRow(
-      label: l10n.displaySettingsPageChatFontSizeTitle,
+      label: widget.label,
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -2512,6 +2568,22 @@ class _ToggleRowAssistantMarkdown extends StatelessWidget {
   }
 }
 
+class _ToggleRowMarkdownBlockquoteSameSize extends StatelessWidget {
+  const _ToggleRowMarkdownBlockquoteSameSize();
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final sp = context.watch<SettingsProvider>();
+    return _ToggleRow(
+      label: l10n.displaySettingsPageMarkdownBlockquoteSameSizeTitle,
+      subtitle: l10n.displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
+      value: sp.markdownBlockquoteSameSize,
+      onChanged: (v) =>
+          context.read<SettingsProvider>().setMarkdownBlockquoteSameSize(v),
+    );
+  }
+}
+
 class _ToggleRowAutoCollapseCodeBlocks extends StatelessWidget {
   const _ToggleRowAutoCollapseCodeBlocks();
   @override
@@ -2753,15 +2825,7 @@ class _ToggleRowRequestLogging extends StatelessWidget {
             message: l10n.logViewerOpenFolder,
             child: InkWell(
               borderRadius: BorderRadius.circular(6),
-              onTap: () async {
-                final dir = await AppDirectories.getAppDataDirectory();
-                final logsDir = Directory('${dir.path}/logs');
-                if (!await logsDir.exists()) {
-                  await logsDir.create(recursive: true);
-                }
-                final uri = Uri.file(logsDir.path);
-                await launchUrl(uri);
-              },
+              onTap: _openLogsFolder,
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: Icon(
@@ -2810,15 +2874,7 @@ class _ToggleRowFlutterLogging extends StatelessWidget {
             message: l10n.logViewerOpenFolder,
             child: InkWell(
               borderRadius: BorderRadius.circular(6),
-              onTap: () async {
-                final dir = await AppDirectories.getAppDataDirectory();
-                final logsDir = Directory('${dir.path}/logs');
-                if (!await logsDir.exists()) {
-                  await logsDir.create(recursive: true);
-                }
-                final uri = Uri.file(logsDir.path);
-                await launchUrl(uri);
-              },
+              onTap: _openLogsFolder,
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: Icon(
@@ -3099,9 +3155,11 @@ class _ToggleRow extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.tip,
+    this.subtitle,
   });
   final String label;
   final String? tip;
+  final String? subtitle;
   final bool value;
   final ValueChanged<bool>? onChanged;
   @override
@@ -3125,6 +3183,17 @@ class _ToggleRow extends StatelessWidget {
                     decoration: TextDecoration.none,
                   ),
                 ),
+                if (subtitle != null && subtitle!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: cs.onSurface.withValues(alpha: 0.55),
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
