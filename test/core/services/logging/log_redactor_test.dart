@@ -209,6 +209,29 @@ void main() {
       expect(LogRedactor.redactBody(body), body);
     });
 
+    test('masks GitHub, GitLab, Slack, and Stripe token prefixes', () {
+      const body =
+          '{"message":"tokens: ghp_0123456789abcdefghijklmnopqrstuvwxyz '
+          'glpat-abcdefghijklmnopqrstuvwxyz xoxb-1234567890-abcdefghij '
+          'sk_test_abcdefghijklmnopqrstuvwxyz"}';
+      final redacted = LogRedactor.redactBody(body);
+      expect(redacted, isNot(contains('ghp_0123456789abcdefghijklmnopqrstuvwxyz')));
+      expect(redacted, isNot(contains('glpat-abcdefghijklmnopqrstuvwxyz')));
+      expect(redacted, isNot(contains('xoxb-1234567890-abcdefghij')));
+      expect(redacted, isNot(contains('sk_test_abcdefghijklmnopqrstuvwxyz')));
+      expect(redacted, contains('ghp***wxyz(len=40)'));
+      expect(redacted, contains('glp***wxyz(len=32)'));
+      expect(redacted, contains('xox***ghij(len=26)'));
+      expect(redacted, contains('sk_***wxyz(len=34)'));
+    });
+
+    test('redactText masks GitHub PAT in free text', () {
+      const text = 'failed with ghp_0123456789abcdefghijklmnopqrstuvwxyz';
+      final redacted = LogRedactor.redactText(text);
+      expect(redacted, isNot(contains('ghp_0123456789abcdefghijklmnopqrstuvwxyz')));
+      expect(redacted, contains('ghp***wxyz(len=40)'));
+    });
+
     test('is idempotent and leaves safe bodies unchanged', () {
       const safe = '{"message":"hello","count":1}';
       expect(LogRedactor.redactBody(safe), safe);
