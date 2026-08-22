@@ -1,5 +1,10 @@
 import java.util.Properties
 
+// Note: use "meowTarget" (NOT "target") - "target" is a reserved Flutter Gradle
+// property that specifies the Dart entrypoint file, and would break the build.
+val target = project.findProperty("meowTarget") as? String ?: "kelivo"
+val isMeow = target == "kelivomeow"
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android Gradle plugin.
@@ -10,6 +15,7 @@ android {
     namespace = "com.psyche.kelivo"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "28.2.13676358"
+    buildToolsVersion = "36.0.0"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -18,13 +24,15 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.psyche.kelivo"
+        applicationId = if (isMeow) "com.psyche.kelivomeow" else "com.psyche.kelivo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["appLabel"] = if (isMeow) "KelivoMeow" else "Kelivo"
+        manifestPlaceholders["appScheme"] = if (isMeow) "psyche.kelivomeow" else "psyche.kelivo"
         // Flutter controls APK ABI filtering, including --split-per-abi.
         externalNativeBuild {
             cmake {
