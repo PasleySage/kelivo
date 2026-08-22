@@ -4264,10 +4264,23 @@ class _ChatInputBarState extends State<ChatInputBar>
                                               //   );
                                               // }
 
-                                              final enterToSend = context
-                                                  .watch<SettingsProvider>()
-                                                  .enterToSendOnMobile;
-                                              return GestureDetector(
+                                              final settings = context
+                                                  .watch<SettingsProvider>();
+                                              final enterToSend =
+                                                  settings.enterToSendOnMobile;
+                                              // Composer font scaling: divide the
+                                              // app-wide UI scale out so the input
+                                              // font scale stays absolute.
+                                              final mqData = MediaQuery.of(
+                                                context,
+                                              );
+                                              final effectiveScale =
+                                                  MediaQuery.textScalerOf(
+                                                    context,
+                                                  ).scale(1) /
+                                                  settings.uiFontScale *
+                                                  settings.inputFontScale;
+                                              final inputField = GestureDetector(
                                                 behavior: HitTestBehavior
                                                     .deferToChild,
                                                 // onSecondaryTapDown: (details) {
@@ -4350,6 +4363,15 @@ class _ChatInputBarState extends State<ChatInputBar>
                                                   cursorColor:
                                                       theme.colorScheme.primary,
                                                 ),
+                                              );
+                                              return MediaQuery(
+                                                data: mqData.copyWith(
+                                                  textScaler:
+                                                      TextScaler.linear(
+                                                        effectiveScale,
+                                                      ),
+                                                ),
+                                                child: inputField,
                                               );
                                             },
                                           ),

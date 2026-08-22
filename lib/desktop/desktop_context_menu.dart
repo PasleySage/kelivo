@@ -175,7 +175,11 @@ double _estimateMenuWidth(
   double minW,
   double maxW,
 ) {
-  // Base paddings: 12 left/right; icon 18 + spacing 10 if present
+  // Base paddings: 12 left/right; icon 18 + spacing 10 if present. Font size
+  // and width bounds scale with the user's text-scaler so menu items stay
+  // legible at chatFontScale 150%+ (otherwise the layout was computed at 14.5px
+  // and the rendered text at 21.75px overflowed, wrapping the last glyph).
+  final double fontScale = MediaQuery.textScalerOf(context).scale(1.0);
   double maxText = 0;
   final textStyle = Theme.of(context).textTheme.bodyMedium!.copyWith(
     fontSize: 14.5,
@@ -227,11 +231,12 @@ Future<void> showDesktopAnchoredMenu(
   const double minMenuWidth = 160;
   const double maxMenuWidth = 360;
   const double gap = 8; // should match showDesktopContextMenuAt gap
+  final double fontScale = MediaQuery.textScalerOf(context).scale(1.0);
   final double menuWidth = _estimateMenuWidth(
     context,
     items,
-    minMenuWidth,
-    maxMenuWidth,
+    minMenuWidth * fontScale,
+    maxMenuWidth * fontScale,
   );
   final anchorBottomCenter = topLeft + Offset(size.width / 2, size.height);
   final adjusted = anchorBottomCenter - Offset(menuWidth / 2 + gap, 0);

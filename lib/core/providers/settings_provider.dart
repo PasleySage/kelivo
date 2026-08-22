@@ -282,6 +282,8 @@ class SettingsProvider extends ChangeNotifier {
       'display_long_paste_as_file_threshold_v1';
   static const String _desktopSendShortcutKey = 'desktop_send_shortcut_v1';
   static const String _displayChatFontScaleKey = 'display_chat_font_scale_v1';
+  static const String _displayUiFontScaleKey = 'display_ui_font_scale_v1';
+  static const String _displayInputFontScaleKey = 'display_input_font_scale_v1';
   static const String _displayAutoScrollEnabledKey =
       'display_auto_scroll_enabled_v1';
   static const String _displayChatBackgroundMaskStrengthKey =
@@ -304,6 +306,8 @@ class SettingsProvider extends ChangeNotifier {
       'display_show_genui_header_v1';
   static const String _displayEnableAssistantMarkdownKey =
       'display_enable_assistant_markdown_v1';
+  static const String _displayMarkdownBlockquoteSameSizeKey =
+      'display_markdown_blockquote_same_size_v1';
   static const String _displayShowChatListDateKey =
       'display_show_chat_list_date_v1';
   static const String _imageCropperEnabledKey = 'image_cropper_enabled_v1';
@@ -1110,6 +1114,15 @@ class SettingsProvider extends ChangeNotifier {
     }
     _chatFontScale =
         localPreferences.getDouble(_displayChatFontScaleKey) ?? 1.0;
+    // First launch after the settings split: the composer used to follow the
+    // chat scale, so inherit it once to keep existing setups unchanged until
+    // the new sliders are adjusted.
+    final storedUiScale = localPreferences.getDouble(_displayUiFontScaleKey);
+    final storedInputScale = localPreferences.getDouble(
+      _displayInputFontScaleKey,
+    );
+    _uiFontScale = storedUiScale ?? 1.0;
+    _inputFontScale = storedInputScale ?? _chatFontScale;
     _autoScrollEnabled = prefs.getBool(_displayAutoScrollEnabledKey) ?? true;
     _chatBackgroundMaskStrength =
         prefs.getDouble(_displayChatBackgroundMaskStrengthKey) ?? 1.0;
@@ -1149,6 +1162,8 @@ class SettingsProvider extends ChangeNotifier {
     _showGenUiHeader = prefs.getBool(_displayShowGenUiHeaderKey) ?? true;
     _enableAssistantMarkdown =
         prefs.getBool(_displayEnableAssistantMarkdownKey) ?? true;
+    _markdownBlockquoteSameSize =
+        prefs.getBool(_displayMarkdownBlockquoteSameSizeKey) ?? true;
     _showChatListDate = prefs.getBool(_displayShowChatListDateKey) ?? false;
     _imageCropperEnabled = prefs.getBool(_imageCropperEnabledKey) ?? false;
     _imageUploadQuality = switch (prefs.getString(_imageUploadQualityKey)) {
@@ -5096,6 +5111,40 @@ Requirements:
     await prefs.setDouble(_displayChatFontScaleKey, _chatFontScale);
   }
 
+  // Display: app-wide UI font scale (0.5 - 1.5, default 1.0). Applied in
+  // main.dart as the base TextScaler; chat and input scales stack on top.
+  double _uiFontScale = 1.0;
+  double get uiFontScale => _uiFontScale;
+  Future<void> setUiFontScale(double scale) async {
+    final s = scale.clamp(0.5, 1.5);
+    if (_uiFontScale == s) return;
+    _uiFontScale = s;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    final ok = await prefs.setDouble(_displayUiFontScaleKey, _uiFontScale);
+    if (!ok) {
+      debugPrint('setUiFontScale: failed to persist $_displayUiFontScaleKey');
+    }
+  }
+
+  // Display: composer/input font scale (0.5 - 1.5). Applied on top of the UI
+  // scale to the chat composer and message edit fields.
+  double _inputFontScale = 1.0;
+  double get inputFontScale => _inputFontScale;
+  Future<void> setInputFontScale(double scale) async {
+    final s = scale.clamp(0.5, 1.5);
+    if (_inputFontScale == s) return;
+    _inputFontScale = s;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    final ok = await prefs.setDouble(_displayInputFontScaleKey, _inputFontScale);
+    if (!ok) {
+      debugPrint(
+        'setInputFontScale: failed to persist $_displayInputFontScaleKey',
+      );
+    }
+  }
+
   // Display: follow the bottom during streaming until the user scrolls up
   bool _autoScrollEnabled = true;
   bool get autoScrollEnabled => _autoScrollEnabled;
@@ -5234,6 +5283,17 @@ Requirements:
     notifyListeners();
     final prefs = _preferences;
     await prefs.setBool(_displayEnableAssistantMarkdownKey, v);
+  }
+
+  // Display: keep blockquote text the same size as body text
+  bool _markdownBlockquoteSameSize = true;
+  bool get markdownBlockquoteSameSize => _markdownBlockquoteSameSize;
+  Future<void> setMarkdownBlockquoteSameSize(bool v) async {
+    if (_markdownBlockquoteSameSize == v) return;
+    _markdownBlockquoteSameSize = v;
+    notifyListeners();
+    final prefs = _preferences;
+    await prefs.setBool(_displayMarkdownBlockquoteSameSizeKey, v);
   }
 
   // Display: show chat list date
@@ -5920,6 +5980,8 @@ Requirements:
     copy._desktopSendShortcut = _desktopSendShortcut;
     copy._desktopMessageNavButtonsMode = _desktopMessageNavButtonsMode;
     copy._chatFontScale = _chatFontScale;
+    copy._uiFontScale = _uiFontScale;
+    copy._inputFontScale = _inputFontScale;
     copy._autoScrollEnabled = _autoScrollEnabled;
     copy._enableDollarLatex = _enableDollarLatex;
     copy._enableMathRendering = _enableMathRendering;
@@ -5928,6 +5990,7 @@ Requirements:
     copy._enableReasoningMarkdown = _enableReasoningMarkdown;
     copy._enableAssistantMarkdown = _enableAssistantMarkdown;
     copy._showGenUiHeader = _showGenUiHeader;
+    copy._markdownBlockquoteSameSize = _markdownBlockquoteSameSize;
     copy._showChatListDate = _showChatListDate;
     copy._autoCollapseCodeBlock = _autoCollapseCodeBlock;
     copy._autoCollapseCodeBlockLines = _autoCollapseCodeBlockLines;
