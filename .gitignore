@@ -68,3 +68,13 @@ internationalization.md
 /skills-lock.json
 /.scratch/
 /.grok/
+
+# personal deploy files contain local absolute paths
+deploy/*.ps1
+deploy/*.md
+
+# local helper script with real paths
+/crop_window.ps1
+
+# build junk that got tracked historically
+/android/build/
