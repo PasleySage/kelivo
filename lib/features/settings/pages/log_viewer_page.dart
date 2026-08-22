@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart' show compute;
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
@@ -98,17 +99,26 @@ class _LogViewerPageState extends State<LogViewerPage>
           }
         }
 
-        void sortByMtimeDesc(List<File> files) {
+        Future<void> sortByMtimeDesc(List<File> files) async {
+          final stats = <File, FileStat?>{};
+          for (final f in files) {
+            try {
+              stats[f] = await f.stat();
+            } catch (_) {
+              // If stat fails, leave it null so the file still appears (epoch).
+              stats[f] = null;
+            }
+          }
           files.sort((a, b) {
-            final aStat = a.statSync();
-            final bStat = b.statSync();
-            return bStat.modified.compareTo(aStat.modified);
+            final aTime = stats[a]?.modified ?? DateTime(1970);
+            final bTime = stats[b]?.modified ?? DateTime(1970);
+            return bTime.compareTo(aTime);
           });
         }
 
-        sortByMtimeDesc(request);
-        sortByMtimeDesc(app);
-        sortByMtimeDesc(contextFiles);
+        await sortByMtimeDesc(request);
+        await sortByMtimeDesc(app);
+        await sortByMtimeDesc(contextFiles);
 
         setState(() {
           _requestLogFiles = request;
@@ -331,14 +341,19 @@ class _LogFilesList extends StatelessWidget {
       itemCount: files.length,
       itemBuilder: (context, index) {
         final file = files[index];
-        final stat = file.statSync();
+        FileStat? stat;
+        try {
+          stat = file.statSync();
+        } catch (_) {
+          stat = null;
+        }
         final fileName = p.basename(file.path);
         final isCurrentLog =
             fileName.toLowerCase() == activeFileName.toLowerCase();
 
         final title = isCurrentLog ? l10n.logViewerCurrentLog : fileName;
         final subtitle =
-            '${formatFileSize(stat.size)} · ${formatDate(stat.modified)}';
+            '${formatFileSize(stat?.size ?? 0)} · ${formatDate(stat?.modified ?? DateTime(1970))}';
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 10),
