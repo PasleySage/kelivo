@@ -22,41 +22,6 @@ class NotificationService {
   static String? _pendingConversationId;
   static const String _chatCompletionPayloadPrefix = 'chat-complete:';
 
-  /// Whether the app is currently in the foreground. Updated by the
-  /// home page lifecycle observer; defaults to true (never notify) until
-  /// the first lifecycle event arrives.
-  static bool isAppForeground = true;
-
-  /// Registered by app bootstrap: returns true when the "notify on
-  /// background completion" feature is enabled in settings.
-  static bool Function()? notifyGate;
-
-  /// Registered by app bootstrap: resolves localized completion strings at
-  /// notify time (no context needed). Returns (title, body).
-  static (String, String) Function()? completionTextsResolver;
-
-  static (String, String) get _completionTexts {
-    final resolver = completionTextsResolver;
-    if (resolver != null) return resolver();
-    return ('Generation complete', 'Assistant reply has been generated');
-  }
-
-  /// Fire the "generation finished" notification, but only when it makes
-  /// sense: Android only, app is in the background, and the user enabled
-  /// the notify mode. Safe to call unconditionally from generation teardown.
-  static Future<void> maybeNotifyChatCompleted() async {
-    if (!Platform.isAndroid) return;
-    if (isAppForeground) return;
-    final gate = notifyGate;
-    if (gate == null || !gate()) return;
-    final (title, body) = _completionTexts;
-    await showChatCompleted(
-      conversationId: _pendingConversationId ?? '',
-      title: title,
-      body: body,
-    );
-  }
-
   static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
     'kelivo_bg_chat_v3',
     'Chat Background',

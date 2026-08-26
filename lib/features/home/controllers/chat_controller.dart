@@ -7,7 +7,6 @@ import '../../../core/models/chat_message.dart';
 import '../../../core/models/conversation.dart';
 import '../../../core/services/chat/chat_service.dart';
 import '../../../core/services/screen_wakelock.dart';
-import '../../../core/services/notification_service.dart';
 import 'message_render_model.dart';
 
 /// Initial window for a conversation switch, loaded by
@@ -1135,17 +1134,11 @@ class ChatController extends ChangeNotifier {
         ScreenWakelock.release();
       }
       if (!loading) {
-        // Generation just ended (completed, failed or stopped). If the user
-        // has background-notify enabled and left the app, tap them with a
-        // local notification. No-op when conditions aren't met.
-        // ignore: discarded_futures
-        NotificationService.maybeNotifyChatCompleted();
         if (_currentConversation?.id == conversationId &&
             !_chatService.isConversationFullyCached(conversationId)) {
           // Resume an idle backfill that generation paused.
           _scheduleIdleCacheBackfill(conversationId);
         }
-
       }
     }
   }
