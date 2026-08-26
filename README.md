@@ -63,7 +63,6 @@ flutter build apk --release -PmeowTarget=kelivomeow
 
 - Windows 构建依赖 Flutter Desktop 与 Rust 工具链（`super_native_extensions` 经 cargokit 编译）
 - Android 构建依赖 JDK 21、NDK 28.2、Rust 的 `aarch64-linux-android` / `armeabi-v7a` / `x86_64-linux-android` 目标
-- 详细的部署与上游合流流程见 [`deploy/`](deploy/) 目录
 
 ## 📄 License
 
