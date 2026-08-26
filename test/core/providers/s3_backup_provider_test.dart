@@ -16,6 +16,8 @@ import 'package:Kelivo/core/database/business_repository.dart';
 import 'package:Kelivo/core/database/business_restore_service.dart';
 import 'package:Kelivo/core/models/backup.dart';
 import 'package:Kelivo/core/providers/s3_backup_provider.dart';
+import 'package:Kelivo/core/services/backup/backup_cancel_token.dart';
+import 'package:Kelivo/core/services/backup/backup_task_progress.dart';
 import 'package:Kelivo/core/services/backup/s3_client.dart';
 import 'package:Kelivo/core/services/chat/chat_service.dart';
 
@@ -54,6 +56,8 @@ class _FakeS3Client extends S3BackupClient {
     S3Config cfg, {
     required String key,
     required File file,
+    BackupProgressSink? onProgress,
+    BackupCancelToken? cancelToken,
   }) async {
     lastUploadedKey = key;
     final dest = File(p.join(_bucket.path, key));
@@ -66,6 +70,9 @@ class _FakeS3Client extends S3BackupClient {
     S3Config cfg, {
     required String key,
     required File destination,
+    BackupProgressSink? onProgress,
+    BackupCancelToken? cancelToken,
+    int? expectedSize,
   }) async {
     final src = File(p.join(_bucket.path, key));
     await destination.parent.create(recursive: true);
@@ -73,7 +80,11 @@ class _FakeS3Client extends S3BackupClient {
   }
 
   @override
-  Future<List<BackupFileItem>> listObjects(S3Config cfg) async => const [];
+  Future<List<BackupFileItem>> listObjects(
+    S3Config cfg, {
+    BackupProgressSink? onProgress,
+    BackupCancelToken? cancelToken,
+  }) async => const [];
 
   @override
   Future<void> deleteObject(S3Config cfg, {required String key}) async {
