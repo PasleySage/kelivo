@@ -75,6 +75,7 @@ void main() {
           'regex',
         ],
         hiddenIds: const {'skills', 'mcp'},
+        protectedNewIds: const ['skills'],
       );
 
       expect(visible, contains('skills'));
