@@ -32,7 +32,8 @@ class SkillImporter {
 
   // S2: zip-bomb defense. Per-entry and whole-archive decompression budgets.
   static const int maxUncompressedEntryBytes = 5 * 1024 * 1024; // 5 MB / entry
-  static const int maxUncompressedArchiveBytes = 50 * 1024 * 1024; // 50 MB total
+  static const int maxUncompressedArchiveBytes =
+      50 * 1024 * 1024; // 50 MB total
 
   // S2: file-level document (PDF/DOCX) size guard. Unlike zip entries these
   // are parsed as a whole, so cap the raw bytes before handing them to the
@@ -114,12 +115,9 @@ class SkillImporter {
       throw const FormatException('Skill archive has too many entries.');
     }
 
-    final supported =
-        archive.files
-            .where(
-              (entry) => entry.isFile && _isSupportedSkillEntry(entry.name),
-            )
-            .toList(growable: false);
+    final supported = archive.files
+        .where((entry) => entry.isFile && _isSupportedSkillEntry(entry.name))
+        .toList(growable: false);
 
     // Claude Skills multi-file packages ship a primary `SKILL.md` plus
     // companion files (references/, agents/, assets/, ...). Treat such an

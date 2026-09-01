@@ -18,11 +18,12 @@ Future<void> _openLogsFolder() async {
       // library instead. `cmd /c start "" <path>` lets cmd hand the path to
       // the shell correctly, so Explorer opens the requested folder. The app
       // data logs path contains no spaces, so no extra quoting is needed.
-      await Process.start(
-        'cmd',
-        <String>['/c', 'start', '', logsDir.path],
-        mode: ProcessStartMode.detached,
-      );
+      await Process.start('cmd', <String>[
+        '/c',
+        'start',
+        '',
+        logsDir.path,
+      ], mode: ProcessStartMode.detached);
       return;
     }
     await launchUrl(Uri.file(logsDir.path));

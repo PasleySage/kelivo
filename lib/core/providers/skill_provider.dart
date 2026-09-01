@@ -40,7 +40,10 @@ class SkillProvider extends ChangeNotifier {
       // G2 (graceful degradation): a broken or unavailable store must never
       // crash the app. Degrade to an empty skill set and keep the provider
       // usable so Kelivo's core keeps running.
-      FlutterLogger.log('SkillProvider init failed, using empty skill set: $e\n$st', tag: 'Skill');
+      FlutterLogger.log(
+        'SkillProvider init failed, using empty skill set: $e\n$st',
+        tag: 'Skill',
+      );
       _skills.clear();
     }
     _initialized = true;
@@ -55,12 +58,17 @@ class SkillProvider extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(_legacyPrefsKey);
       if (raw == null || raw.isEmpty) return;
-      final legacy = Skill.decodeList(raw).where((s) => s.id.isNotEmpty).toList();
+      final legacy = Skill.decodeList(
+        raw,
+      ).where((s) => s.id.isNotEmpty).toList();
       for (final skill in legacy) {
         try {
           await _storage.save(skill);
         } catch (e, st) {
-          FlutterLogger.log('Skill migration skipped for ${skill.id}: $e\n$st', tag: 'Skill');
+          FlutterLogger.log(
+            'Skill migration skipped for ${skill.id}: $e\n$st',
+            tag: 'Skill',
+          );
         }
       }
       await prefs.remove(_legacyPrefsKey);
@@ -101,7 +109,10 @@ class SkillProvider extends ChangeNotifier {
       bytes: bytes,
       fileName: fileName,
     );
-    final skills = await _addManyImported(imported, sourcePath: sourcePath ?? fileName);
+    final skills = await _addManyImported(
+      imported,
+      sourcePath: sourcePath ?? fileName,
+    );
     return skills.first;
   }
 
@@ -190,7 +201,10 @@ class SkillProvider extends ChangeNotifier {
     try {
       await _storage.delete(id);
     } catch (e, st) {
-      FlutterLogger.log('SkillProvider delete file failed (kept in memory): $e\n$st', tag: 'Skill');
+      FlutterLogger.log(
+        'SkillProvider delete file failed (kept in memory): $e\n$st',
+        tag: 'Skill',
+      );
     }
     notifyListeners();
   }
@@ -262,7 +276,10 @@ class SkillProvider extends ChangeNotifier {
     try {
       await _storage.save(skill);
     } catch (e, st) {
-      FlutterLogger.log('SkillProvider persist failed, kept in memory only: $e\n$st', tag: 'Skill');
+      FlutterLogger.log(
+        'SkillProvider persist failed, kept in memory only: $e\n$st',
+        tag: 'Skill',
+      );
     }
   }
 }

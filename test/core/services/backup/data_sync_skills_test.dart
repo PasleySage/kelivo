@@ -56,103 +56,121 @@ void main() {
       if (await root.exists()) await root.delete(recursive: true);
     });
 
-    test('includes skills directory in backup when includeFiles is true', () async {
-      // Arrange: write a skill file into the app data skills directory.
-      final skillsDir = Directory('${root.path}/skills');
-      await skillsDir.create(recursive: true);
-      final skillFile = File('${skillsDir.path}/test-skill.json');
-      await skillFile.writeAsString(
-        jsonEncode({
-          'id': 'test-skill',
-          'name': 'Test Skill',
-          'description': 'A skill used in backup tests',
-          'content': 'Always answer in rhyme.',
-          'triggerKeywords': ['rhyme'],
-          'createdAt': '2026-08-17T10:00:00.000Z',
-          'updatedAt': '2026-08-17T10:00:00.000Z',
-        }),
-      );
-
-      final database = AppDatabase.open(file: File('${root.path}/business.sqlite'));
-      final repository = BusinessRepository(database);
-      File? backup;
-      try {
-        await BusinessRestoreService(repository).overwrite({
-          'provider_configs_v1': jsonEncode({}),
-          'providers_order_v1': <String>[],
-          'assistants_v1': jsonEncode([]),
-        });
-
-        backup = await DataSync(
-          chatService: ChatService(),
-          businessRepository: repository,
-        ).prepareBackupFile(
-          const WebDavConfig(includeChats: false, includeFiles: true),
+    test(
+      'includes skills directory in backup when includeFiles is true',
+      () async {
+        // Arrange: write a skill file into the app data skills directory.
+        final skillsDir = Directory('${root.path}/skills');
+        await skillsDir.create(recursive: true);
+        final skillFile = File('${skillsDir.path}/test-skill.json');
+        await skillFile.writeAsString(
+          jsonEncode({
+            'id': 'test-skill',
+            'name': 'Test Skill',
+            'description': 'A skill used in backup tests',
+            'content': 'Always answer in rhyme.',
+            'triggerKeywords': ['rhyme'],
+            'createdAt': '2026-08-17T10:00:00.000Z',
+            'updatedAt': '2026-08-17T10:00:00.000Z',
+          }),
         );
 
-        final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
-        final skillEntry = archive.findFile('skills/test-skill.json');
-        expect(skillEntry, isNotNull, reason: 'skills/test-skill.json should be in backup');
-        final restoredContent = jsonDecode(
-          utf8.decode(skillEntry!.readBytes()!),
-        ) as Map<String, dynamic>;
-        expect(restoredContent['id'], 'test-skill');
-        expect(restoredContent['name'], 'Test Skill');
-
-        final manifestEntry = archive.findFile('manifest.json');
-        expect(manifestEntry, isNotNull);
-        final manifest = jsonDecode(
-          utf8.decode(manifestEntry!.readBytes()!),
-        ) as Map<String, dynamic>;
-        final entries = manifest['entries'] as Map<String, dynamic>;
-        expect(entries.containsKey('skills/test-skill.json'), isTrue);
-        expect(
-          (entries['skills/test-skill.json'] as Map<String, dynamic>)['bytes'],
-          await skillFile.length(),
+        final database = AppDatabase.open(
+          file: File('${root.path}/business.sqlite'),
         );
-      } finally {
-        await DataSync.cleanupTemporaryBackupFile(backup);
-        await database.close();
-      }
-    });
+        final repository = BusinessRepository(database);
+        File? backup;
+        try {
+          await BusinessRestoreService(repository).overwrite({
+            'provider_configs_v1': jsonEncode({}),
+            'providers_order_v1': <String>[],
+            'assistants_v1': jsonEncode([]),
+          });
 
-    test('does not include skills directory when includeFiles is false', () async {
-      final skillsDir = Directory('${root.path}/skills');
-      await skillsDir.create(recursive: true);
-      await File('${skillsDir.path}/ignored.json')
-          .writeAsString('{"id":"ignored"}');
+          backup =
+              await DataSync(
+                chatService: ChatService(),
+                businessRepository: repository,
+              ).prepareBackupFile(
+                const WebDavConfig(includeChats: false, includeFiles: true),
+              );
 
-      final database = AppDatabase.open(file: File('${root.path}/business.sqlite'));
-      final repository = BusinessRepository(database);
-      File? backup;
-      try {
-        await BusinessRestoreService(repository).overwrite({
-          'provider_configs_v1': jsonEncode({}),
-          'providers_order_v1': <String>[],
-          'assistants_v1': jsonEncode([]),
-        });
+          final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
+          final skillEntry = archive.findFile('skills/test-skill.json');
+          expect(
+            skillEntry,
+            isNotNull,
+            reason: 'skills/test-skill.json should be in backup',
+          );
+          final restoredContent =
+              jsonDecode(utf8.decode(skillEntry!.readBytes()!))
+                  as Map<String, dynamic>;
+          expect(restoredContent['id'], 'test-skill');
+          expect(restoredContent['name'], 'Test Skill');
 
-        backup = await DataSync(
-          chatService: ChatService(),
-          businessRepository: repository,
-        ).prepareBackupFile(
-          const WebDavConfig(includeChats: false, includeFiles: false),
+          final manifestEntry = archive.findFile('manifest.json');
+          expect(manifestEntry, isNotNull);
+          final manifest =
+              jsonDecode(utf8.decode(manifestEntry!.readBytes()!))
+                  as Map<String, dynamic>;
+          final entries = manifest['entries'] as Map<String, dynamic>;
+          expect(entries.containsKey('skills/test-skill.json'), isTrue);
+          expect(
+            (entries['skills/test-skill.json']
+                as Map<String, dynamic>)['bytes'],
+            await skillFile.length(),
+          );
+        } finally {
+          await DataSync.cleanupTemporaryBackupFile(backup);
+          await database.close();
+        }
+      },
+    );
+
+    test(
+      'does not include skills directory when includeFiles is false',
+      () async {
+        final skillsDir = Directory('${root.path}/skills');
+        await skillsDir.create(recursive: true);
+        await File(
+          '${skillsDir.path}/ignored.json',
+        ).writeAsString('{"id":"ignored"}');
+
+        final database = AppDatabase.open(
+          file: File('${root.path}/business.sqlite'),
         );
+        final repository = BusinessRepository(database);
+        File? backup;
+        try {
+          await BusinessRestoreService(repository).overwrite({
+            'provider_configs_v1': jsonEncode({}),
+            'providers_order_v1': <String>[],
+            'assistants_v1': jsonEncode([]),
+          });
 
-        final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
-        expect(archive.findFile('skills/ignored.json'), isNull);
+          backup =
+              await DataSync(
+                chatService: ChatService(),
+                businessRepository: repository,
+              ).prepareBackupFile(
+                const WebDavConfig(includeChats: false, includeFiles: false),
+              );
 
-        final manifestEntry = archive.findFile('manifest.json')!;
-        final manifest = jsonDecode(
-          utf8.decode(manifestEntry.readBytes()!),
-        ) as Map<String, dynamic>;
-        final entries = manifest['entries'] as Map<String, dynamic>;
-        expect(entries.containsKey('skills/ignored.json'), isFalse);
-      } finally {
-        await DataSync.cleanupTemporaryBackupFile(backup);
-        await database.close();
-      }
-    });
+          final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
+          expect(archive.findFile('skills/ignored.json'), isNull);
+
+          final manifestEntry = archive.findFile('manifest.json')!;
+          final manifest =
+              jsonDecode(utf8.decode(manifestEntry.readBytes()!))
+                  as Map<String, dynamic>;
+          final entries = manifest['entries'] as Map<String, dynamic>;
+          expect(entries.containsKey('skills/ignored.json'), isFalse);
+        } finally {
+          await DataSync.cleanupTemporaryBackupFile(backup);
+          await database.close();
+        }
+      },
+    );
 
     test('restores skills directory from a local backup (no chats)', () async {
       // Arrange: seed a skill that must survive a full restore cycle.

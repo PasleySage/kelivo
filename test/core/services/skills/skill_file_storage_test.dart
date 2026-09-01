@@ -26,27 +26,30 @@ void main() {
     });
 
     Skill makeSkill(String id, String content) => Skill(
-          id: id,
-          name: 'Test',
-          content: content,
-          createdAt: DateTime(2026, 1, 1),
-          updatedAt: DateTime(2026, 1, 1),
-        );
+      id: id,
+      name: 'Test',
+      content: content,
+      createdAt: DateTime(2026, 1, 1),
+      updatedAt: DateTime(2026, 1, 1),
+    );
 
-    test('save stores secret in keychain and leaves placeholder in JSON', () async {
-      final secret = 'sk-ABCDEFGHIJKLMNOPQRSTUVWXYZ12'; // matches sk- pattern
-      final skill = makeSkill('s1', 'my key is $secret please use it');
-      await storage.save(skill);
+    test(
+      'save stores secret in keychain and leaves placeholder in JSON',
+      () async {
+        final secret = 'sk-ABCDEFGHIJKLMNOPQRSTUVWXYZ12'; // matches sk- pattern
+        final skill = makeSkill('s1', 'my key is $secret please use it');
+        await storage.save(skill);
 
-      final file = File(p.join(dir.path, 's1.json'));
-      final json =
-          (jsonDecode(await file.readAsString()) as Map).cast<String, dynamic>();
-      expect(json['content'], contains('__KELIVO_SKILL_SECRET_0__'));
-      expect(json['content'], isNot(contains(secret)));
+        final file = File(p.join(dir.path, 's1.json'));
+        final json = (jsonDecode(await file.readAsString()) as Map)
+            .cast<String, dynamic>();
+        expect(json['content'], contains('__KELIVO_SKILL_SECRET_0__'));
+        expect(json['content'], isNot(contains(secret)));
 
-      final vault = await const FlutterSecureStorage().readAll();
-      expect(vault['kelivo_skill::s1::secret::0'], secret);
-    });
+        final vault = await const FlutterSecureStorage().readAll();
+        expect(vault['kelivo_skill::s1::secret::0'], secret);
+      },
+    );
 
     test('load restores secret from keychain', () async {
       final secret = 'AIzaSyA1234567890abcdefghijklmnopqrstuvwxyz'; // 35 chars
@@ -100,19 +103,28 @@ void main() {
       await storage.delete('s5');
 
       final vault = await const FlutterSecureStorage().readAll();
-      expect(vault.keys.any((k) => k.startsWith('kelivo_skill::s5::')), isFalse);
+      expect(
+        vault.keys.any((k) => k.startsWith('kelivo_skill::s5::')),
+        isFalse,
+      );
       expect(File(p.join(dir.path, 's5.json')).existsSync(), isFalse);
     });
 
-    test('skill without secrets is stored verbatim (no placeholders)', () async {
-      final skill = makeSkill('s6', 'just plain instructions, no keys');
-      await storage.save(skill);
-      final loaded = (await storage.loadAll()).first;
-      expect(loaded.content, 'just plain instructions, no keys');
+    test(
+      'skill without secrets is stored verbatim (no placeholders)',
+      () async {
+        final skill = makeSkill('s6', 'just plain instructions, no keys');
+        await storage.save(skill);
+        final loaded = (await storage.loadAll()).first;
+        expect(loaded.content, 'just plain instructions, no keys');
 
-      final vault = await const FlutterSecureStorage().readAll();
-      expect(vault.keys.any((k) => k.startsWith('kelivo_skill::s6::')), isFalse);
-    });
+        final vault = await const FlutterSecureStorage().readAll();
+        expect(
+          vault.keys.any((k) => k.startsWith('kelivo_skill::s6::')),
+          isFalse,
+        );
+      },
+    );
 
     test('secretCount is persisted in the skill JSON (#4)', () async {
       final s1 = 'sk-ABCDEFGHIJKLMNOPQRSTUVWXYZab';
@@ -124,19 +136,21 @@ void main() {
       expect(json['secretCount'], 2);
     });
 
-    test('skill with an unrestorable keychain secret is skipped on load (#2)',
-        () async {
-      final secret = 'sk-ABCDEFGHIJKLMNOPQRSTUVWXYZ12';
-      await storage.save(makeSkill('s7', 'key=$secret'));
-      // Simulate the OS keychain entry going missing (cleared / locked).
-      await const FlutterSecureStorage().delete(
-        key: 'kelivo_skill::s7::secret::0',
-      );
+    test(
+      'skill with an unrestorable keychain secret is skipped on load (#2)',
+      () async {
+        final secret = 'sk-ABCDEFGHIJKLMNOPQRSTUVWXYZ12';
+        await storage.save(makeSkill('s7', 'key=$secret'));
+        // Simulate the OS keychain entry going missing (cleared / locked).
+        await const FlutterSecureStorage().delete(
+          key: 'kelivo_skill::s7::secret::0',
+        );
 
-      final loaded = await storage.loadAll();
-      // The placeholder must never reach the model, so the broken skill is
-      // dropped rather than returned with an unresolved placeholder.
-      expect(loaded.any((s) => s.id == 's7'), isFalse);
-    });
+        final loaded = await storage.loadAll();
+        // The placeholder must never reach the model, so the broken skill is
+        // dropped rather than returned with an unresolved placeholder.
+        expect(loaded.any((s) => s.id == 's7'), isFalse);
+      },
+    );
   });
 }
