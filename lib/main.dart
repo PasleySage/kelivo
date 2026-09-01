@@ -707,9 +707,7 @@ class MyApp extends StatelessWidget {
             chatService: ctx.read<ChatService>(),
           ),
         ),
-        ChangeNotifierProvider(
-          create: (_) => SkillProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => SkillProvider()),
         ChangeNotifierProvider(
           create: (_) => TagProvider(preferences: businessPreferences),
         ),

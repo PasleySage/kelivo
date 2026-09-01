@@ -407,12 +407,10 @@ class _SkillTile extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     return Material(
       color: isDark
-          ? (selected
-              ? cs.primary.withValues(alpha: 0.20)
-              : Colors.white10)
+          ? (selected ? cs.primary.withValues(alpha: 0.20) : Colors.white10)
           : (selected
-              ? cs.primary.withValues(alpha: 0.12)
-              : Colors.white.withValues(alpha: 0.96)),
+                ? cs.primary.withValues(alpha: 0.12)
+                : Colors.white.withValues(alpha: 0.96)),
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
@@ -468,10 +466,7 @@ class _SkillTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               if (selectionMode)
-                Checkbox(
-                  value: selected,
-                  onChanged: (_) => onSelect?.call(),
-                )
+                Checkbox(value: selected, onChanged: (_) => onSelect?.call())
               else ...[
                 // Explicit delete button so desktop (mouse) users can remove a
                 // skill without the mobile-only swipe gesture.

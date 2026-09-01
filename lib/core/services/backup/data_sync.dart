@@ -289,6 +289,7 @@ class DataSync {
     'workspaces',
     'sessions',
   ];
+
   /// File-name prefix for backups created by this build (skill-enabled
   /// kelivomeow), so its zips are distinguishable from stock Kelivo's
   /// `kelivo_backup_*` at a glance. Restore does not depend on the file name,
@@ -973,7 +974,8 @@ class DataSync {
       await for (final ent in tmp.list(followLinks: false)) {
         if (_isLiveTempPath(ent.path)) continue;
         final name = p.basename(ent.path);
-        final isBackupName = name.startsWith(_backupNamePrefix) ||
+        final isBackupName =
+            name.startsWith(_backupNamePrefix) ||
             name.startsWith(_legacyBackupNamePrefix);
         if (ent is Directory && isBackupName) {
           if (await isStale(ent, name)) await _deleteDirectoryQuietly(ent);

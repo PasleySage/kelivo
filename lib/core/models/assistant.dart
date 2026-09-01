@@ -429,8 +429,7 @@ class Assistant {
       }
       return const <AssistantRegex>[];
     })(),
-    skillIds:
-        (json['skillIds'] as List?)?.cast<String>() ?? const <String>[],
+    skillIds: (json['skillIds'] as List?)?.cast<String>() ?? const <String>[],
   );
 
   static String memorySmartAddModeToString(MemorySmartAddMode mode) {

@@ -1278,6 +1278,31 @@ class _TactileIconButtonState extends State<_TactileIconButton> {
   }
 }
 
+Widget _iosSectionCard({required List<Widget> children}) {
+  return Builder(
+    builder: (context) {
+      final theme = Theme.of(context);
+      final cs = theme.colorScheme;
+      final isDark = theme.brightness == Brightness.dark;
+      final Color bg = context.appColors.surfaceCard;
+      return Container(
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: cs.outlineVariant.withValues(alpha: isDark ? 0.08 : 0.06),
+            width: 0.6,
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Column(children: children),
+        ),
+      );
+    },
+  );
+}
 Widget _iosDivider(BuildContext context) {
   final cs = Theme.of(context).colorScheme;
   return Divider(
