@@ -9610,7 +9610,7 @@ abstract class AppLocalizations {
   /// The app name 'Kelivo' displayed in the about page header and desktop home page.
   ///
   /// In en, this message translates to:
-  /// **'Kelivo'**
+  /// **'KelivoMeow'**
   String get aboutPageAppName;
 
   /// Short tagline under the app name on the about page describing Kelivo as an open-source AI assistant.
