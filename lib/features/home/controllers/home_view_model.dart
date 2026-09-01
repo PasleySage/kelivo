@@ -1144,7 +1144,10 @@ if (restoringEntry) return conversation;
         // Graceful degradation (G4): skill resolution/injection must never take
         // down conversation creation. Log the failure instead of swallowing it
         // silently so issues are diagnosable; the chat proceeds without skills.
-        FlutterLogger.log('Skill injection failed, skipping: $e\n$st', tag: 'Skill');
+        FlutterLogger.log(
+          'Skill injection failed, skipping: $e\n$st',
+          tag: 'Skill',
+        );
         skillSystem = null;
       }
       final presets = ap.getPresetMessagesForAssistant(a?.id);
@@ -1156,10 +1159,9 @@ if (restoringEntry) return conversation;
         final injected = <ChatMessage>[];
         for (final pm in allMessages) {
           final roleRaw = pm['role'] ?? 'user';
-          final role =
-              (roleRaw == 'assistant' || roleRaw == 'system')
-                  ? roleRaw
-                  : 'user';
+          final role = (roleRaw == 'assistant' || roleRaw == 'system')
+              ? roleRaw
+              : 'user';
           final content = (pm['content'] ?? '').trim();
           if (content.isEmpty) continue;
           injected.add(

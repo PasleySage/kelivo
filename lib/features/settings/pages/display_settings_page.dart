@@ -1731,8 +1731,8 @@ class RenderingSettingsPage extends StatelessWidget {
                 context,
                 icon: Lucide.TextSelect,
                 label: l10n.displaySettingsPageMarkdownBlockquoteSameSizeTitle,
-                subtitle: l10n
-                    .displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
+                subtitle:
+                    l10n.displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
                 value: sp.markdownBlockquoteSameSize,
                 onChanged: (v) => context
                     .read<SettingsProvider>()
