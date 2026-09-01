@@ -119,90 +119,102 @@ void main() {
       if (await root.exists()) await root.delete(recursive: true);
     });
 
-    test('S3 backup round-trips skills directory through upload/restore', () async {
-      final bucket = await Directory.systemTemp.createTemp('kelivo_s3_bucket_');
-      final fakeClient = _FakeS3Client(bucket);
+    test(
+      'S3 backup round-trips skills directory through upload/restore',
+      () async {
+        final bucket = await Directory.systemTemp.createTemp(
+          'kelivo_s3_bucket_',
+        );
+        final fakeClient = _FakeS3Client(bucket);
 
-      // Seed a skill that must survive the S3 backup + restore cycle.
-      final skillsDir = Directory('${root.path}/skills');
-      await skillsDir.create(recursive: true);
-      final skillFile = File('${skillsDir.path}/restore-me.json');
-      await skillFile.writeAsString(
-        jsonEncode({
-          'id': 'restore-me',
-          'name': 'Restore Me',
-          'description': 'skill restored from S3 backup',
-          'content': 'Be concise.',
-          'triggerKeywords': <String>[],
-          'createdAt': '2026-08-18T08:00:00.000Z',
-          'updatedAt': '2026-08-18T08:00:00.000Z',
-        }),
-      );
-
-      final database = AppDatabase.open(
-        file: File('${root.path}/business.sqlite'),
-      );
-      final repository = BusinessRepository(database);
-      try {
-        await BusinessRestoreService(repository).overwrite({
-          'provider_configs_v1': jsonEncode({}),
-          'providers_order_v1': <String>[],
-          'assistants_v1': jsonEncode([]),
-        });
-
-        final provider = S3BackupProvider(
-          chatService: ChatService(),
-          businessRepository: repository,
-          businessPreferences: BusinessPreferences(repository),
-          client: fakeClient,
-          initialConfig: const S3Config(includeChats: false, includeFiles: true),
+        // Seed a skill that must survive the S3 backup + restore cycle.
+        final skillsDir = Directory('${root.path}/skills');
+        await skillsDir.create(recursive: true);
+        final skillFile = File('${skillsDir.path}/restore-me.json');
+        await skillFile.writeAsString(
+          jsonEncode({
+            'id': 'restore-me',
+            'name': 'Restore Me',
+            'description': 'skill restored from S3 backup',
+            'content': 'Be concise.',
+            'triggerKeywords': <String>[],
+            'createdAt': '2026-08-18T08:00:00.000Z',
+            'updatedAt': '2026-08-18T08:00:00.000Z',
+          }),
         );
 
-        // 1) Backup uploads a ZIP that contains the skills directory.
-        final uploaded = await provider.backup();
-        expect(uploaded, isTrue, reason: provider.message ?? 'backup failed');
-        expect(fakeClient.lastUploadedKey, isNotNull);
-
-        final remote = File(p.join(bucket.path, fakeClient.lastUploadedKey!));
-        expect(await remote.exists(), isTrue, reason: 'ZIP should be on the bucket');
-        final archive = ZipDecoder().decodeBytes(await remote.readAsBytes());
-        expect(
-          archive.findFile('skills/restore-me.json'),
-          isNotNull,
-          reason: 'skills/restore-me.json must be packed into the S3 backup',
+        final database = AppDatabase.open(
+          file: File('${root.path}/business.sqlite'),
         );
+        final repository = BusinessRepository(database);
+        try {
+          await BusinessRestoreService(repository).overwrite({
+            'provider_configs_v1': jsonEncode({}),
+            'providers_order_v1': <String>[],
+            'assistants_v1': jsonEncode([]),
+          });
 
-        // 2) Simulate a wiped device: remove the live skills directory.
-        await skillsDir.delete(recursive: true);
-        expect(await Directory('${root.path}/skills').exists(), isFalse);
+          final provider = S3BackupProvider(
+            chatService: ChatService(),
+            businessRepository: repository,
+            businessPreferences: BusinessPreferences(repository),
+            client: fakeClient,
+            initialConfig: const S3Config(
+              includeChats: false,
+              includeFiles: true,
+            ),
+          );
 
-        // 3) Restore from the uploaded object and verify skills come back.
-        final item = BackupFileItem(
-          href: Uri(
-            scheme: 's3',
-            host: 'test-bucket',
-            pathSegments: fakeClient.lastUploadedKey!.split('/'),
-          ),
-          displayName: fakeClient.lastUploadedKey!.split('/').last,
-          size: await remote.length(),
-          lastModified: null,
-        );
-        await provider.restoreFromItem(item, mode: RestoreMode.overwrite);
+          // 1) Backup uploads a ZIP that contains the skills directory.
+          final uploaded = await provider.backup();
+          expect(uploaded, isTrue, reason: provider.message ?? 'backup failed');
+          expect(fakeClient.lastUploadedKey, isNotNull);
 
-        final restored = File('${root.path}/skills/restore-me.json');
-        expect(
-          await restored.exists(),
-          isTrue,
-          reason: 'skills should be restored from the S3 backup',
-        );
-        final restoredJson =
-            jsonDecode(await restored.readAsString()) as Map<String, dynamic>;
-        expect(restoredJson['id'], 'restore-me');
-        expect(restoredJson['name'], 'Restore Me');
-      } finally {
-        await database.close();
-        if (await bucket.exists()) await bucket.delete(recursive: true);
-      }
-    });
+          final remote = File(p.join(bucket.path, fakeClient.lastUploadedKey!));
+          expect(
+            await remote.exists(),
+            isTrue,
+            reason: 'ZIP should be on the bucket',
+          );
+          final archive = ZipDecoder().decodeBytes(await remote.readAsBytes());
+          expect(
+            archive.findFile('skills/restore-me.json'),
+            isNotNull,
+            reason: 'skills/restore-me.json must be packed into the S3 backup',
+          );
+
+          // 2) Simulate a wiped device: remove the live skills directory.
+          await skillsDir.delete(recursive: true);
+          expect(await Directory('${root.path}/skills').exists(), isFalse);
+
+          // 3) Restore from the uploaded object and verify skills come back.
+          final item = BackupFileItem(
+            href: Uri(
+              scheme: 's3',
+              host: 'test-bucket',
+              pathSegments: fakeClient.lastUploadedKey!.split('/'),
+            ),
+            displayName: fakeClient.lastUploadedKey!.split('/').last,
+            size: await remote.length(),
+            lastModified: null,
+          );
+          await provider.restoreFromItem(item, mode: RestoreMode.overwrite);
+
+          final restored = File('${root.path}/skills/restore-me.json');
+          expect(
+            await restored.exists(),
+            isTrue,
+            reason: 'skills should be restored from the S3 backup',
+          );
+          final restoredJson =
+              jsonDecode(await restored.readAsString()) as Map<String, dynamic>;
+          expect(restoredJson['id'], 'restore-me');
+          expect(restoredJson['name'], 'Restore Me');
+        } finally {
+          await database.close();
+          if (await bucket.exists()) await bucket.delete(recursive: true);
+        }
+      },
+    );
   });
 }

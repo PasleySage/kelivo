@@ -26,13 +26,14 @@ import '../../../utils/app_directories.dart';
 /// secret.
 class SkillFileStorage {
   SkillFileStorage(this.directory, [FlutterSecureStorage? secure])
-      : _secure = secure ??
-            FlutterSecureStorage(
+    : _secure =
+          secure ??
+          FlutterSecureStorage(
             // Persist to encrypted storage on Android so secrets
             // survive app reinstalls and avoid the KeyStore entry limits
-              // that the default backend can hit with many keys (#7).
-              aOptions: const AndroidOptions(encryptedSharedPreferences: true),
-            );
+            // that the default backend can hit with many keys (#7).
+            aOptions: const AndroidOptions(encryptedSharedPreferences: true),
+          );
 
   /// Resolves the default on-disk location under the app data directory,
   /// reusing Kelivo's platform-specific [AppDirectories] convention.
@@ -50,8 +51,7 @@ class SkillFileStorage {
   static String _vaultKey(String skillId, int index) =>
       'kelivo_skill::$skillId::secret::$index';
 
-  static final RegExp _placeholderRe =
-      RegExp(r'__KELIVO_SKILL_SECRET_(\d+)__');
+  static final RegExp _placeholderRe = RegExp(r'__KELIVO_SKILL_SECRET_(\d+)__');
 
   Future<Directory> ensureDir() async {
     if (!await directory.exists()) {
@@ -96,7 +96,10 @@ class SkillFileStorage {
         if (skill.id.isNotEmpty) skills.add(skill);
       } catch (_) {
         // G2: a single corrupt file must not break the rest of the store.
-        FlutterLogger.log('Skipping unreadable skill file: ${file.path}', tag: 'Skill');
+        FlutterLogger.log(
+          'Skipping unreadable skill file: ${file.path}',
+          tag: 'Skill',
+        );
       }
     }
     return skills;
