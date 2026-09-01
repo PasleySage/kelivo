@@ -24,7 +24,9 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = if (isMeow) "com.psyche.kelivomeow" else "com.psyche.kelivo"
+        // Note: meow app id suffix ".app" is intentional - it sidesteps the
+        // stale HyperOS launcher display-name cache for com.psyche.kelivomeow.
+        applicationId = if (isMeow) "com.psyche.kelivomeow.app" else "com.psyche.kelivo"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
