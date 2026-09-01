@@ -10,7 +10,6 @@ import 'package:Kelivo/core/models/chat_message.dart';
 import 'package:Kelivo/core/models/conversation.dart';
 import 'package:Kelivo/core/providers/assistant_provider.dart';
 import 'package:Kelivo/core/providers/settings_provider.dart';
-import 'package:Kelivo/core/providers/skill_provider.dart';
 import 'package:Kelivo/core/services/chat/chat_service.dart';
 import 'package:Kelivo/core/services/notification_service.dart';
 import 'package:Kelivo/features/home/controllers/home_page_controller.dart';
@@ -220,9 +219,6 @@ void main() {
           ChangeNotifierProvider(
             create: (_) =>
                 AssistantProvider(preferences: createBusinessTestPreferences()),
-          ),
-          ChangeNotifierProvider<SkillProvider>(
-            create: (_) => SkillProvider()..initialize(),
           ),
         ],
         child: MaterialApp(
