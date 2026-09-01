@@ -43,20 +43,20 @@ List<String> visibleAssistantEditTabIds({
   required List<String> savedOrder,
   required Set<String> hiddenIds,
   List<String> defaultOrder = defaultAssistantEditTabIds,
+  List<String> protectedNewIds = const [],
 }) {
   final ordered = orderAssistantEditTabIds(
     savedOrder: savedOrder,
     defaultOrder: defaultOrder,
   );
-  final knownIds = savedOrder.toSet();
-  final visible = ordered.where((id) {
-    // New tabs that did not exist in the user's saved order should never be
-    // hidden by stale hidden-id data (e.g. restored from a backup that did not
-    // yet know about them). Only ids the user has actually configured can be
-    // hidden.
-    if (!knownIds.contains(id)) return true;
-    return !hiddenIds.contains(id);
-  }).toList();
+  // Tabs the user has never had a chance to hide (e.g. a 'skills' tab added
+  // after their saved order was written, then restored from an old backup
+  // whose hidden-id list happens to contain it) are kept visible. All other
+  // hidden-id entries are honoured as before.
+  final protected = protectedNewIds.toSet();
+  final visible = ordered
+      .where((id) => protected.contains(id) || !hiddenIds.contains(id))
+      .toList();
   return List.unmodifiable(visible.isNotEmpty ? visible : [ordered.first]);
 }
 

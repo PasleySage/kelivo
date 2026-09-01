@@ -1016,13 +1016,24 @@ class HomeViewModel extends ChangeNotifier {
     resetFileProcessingIndicator();
 
     final ap = _contextProvider.read<AssistantProvider>();
-    final sp = _contextProvider.read<SkillProvider>();
+    SkillProvider? sp;
+    try {
+      sp = _contextProvider.read<SkillProvider>();
+    } catch (_) {
+      sp = null;
+    }
     try {
       await ap.loaded;
-      await sp.initialize();
     } catch (e) {
       onError?.call(e.toString());
       return;
+    }
+    try {
+      await sp?.initialize();
+    } catch (_) {
+      // The skill provider may be absent (e.g. in tests) or degraded; skill
+      // injection is optional and must never block conversation creation.
+      sp = null;
     }
     if (!_contextProvider.mounted) return;
     final assistantId = ap.currentAssistantId;
@@ -1041,10 +1052,12 @@ class HomeViewModel extends ChangeNotifier {
     try {
       String? skillSystem;
       try {
-        final skills = sp.resolveActiveSkills(
+        final skills = sp?.resolveActiveSkills(
           explicitSkillIds: a?.skillIds ?? const <String>[],
         );
-        skillSystem = buildSkillSystemText(skills);
+        if (skills != null && skills.isNotEmpty) {
+          skillSystem = buildSkillSystemText(skills);
+        }
       } catch (e, st) {
         // Graceful degradation (G4): skill resolution/injection must never take
         // down conversation creation. Log the failure instead of swallowing it

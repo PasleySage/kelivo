@@ -198,6 +198,7 @@ List<_AssistantEditTabSpec> _visibleAssistantEditTabs(
   return visibleAssistantEditTabIds(
     savedOrder: settings.mobileAssistantEditTabOrder,
     hiddenIds: settings.hiddenMobileAssistantEditTabs,
+    protectedNewIds: const [assistantEditTabSkills],
   ).map((id) => byId[id]).nonNulls.toList();
 }
 
