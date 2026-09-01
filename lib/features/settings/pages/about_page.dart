@@ -447,7 +447,7 @@ class _AboutPageState extends State<AboutPage> {
                             behavior: HitTestBehavior.opaque,
                             onTap: _onAppNameTap,
                             child: Text(
-                              'Kelivo',
+                              'KelivoMeow',
                               key: const ValueKey('about-page-app-name'),
                               style: TextStyle(
                                 fontSize: 16,
