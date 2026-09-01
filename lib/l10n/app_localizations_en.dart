@@ -4213,7 +4213,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutPageKelivoSearchAlreadyUnlocked => 'You\'ve already been through this door.';
 
   @override
-  String get aboutPageAppName => 'Kelivo';
+  String get aboutPageAppName => 'KelivoMeow';
 
   @override
   String get aboutPageAppDescription => 'Open-source AI Assistant';

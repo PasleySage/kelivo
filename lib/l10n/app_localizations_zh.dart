@@ -4213,7 +4213,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aboutPageKelivoSearchAlreadyUnlocked => '这扇门你已经推开过了。';
 
   @override
-  String get aboutPageAppName => 'Kelivo';
+  String get aboutPageAppName => 'KelivoMeow';
 
   @override
   String get aboutPageAppDescription => '开源AI 助手';
@@ -15136,7 +15136,7 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get aboutPageKelivoSearchAlreadyUnlocked => '这扇门你已经推开过了。';
 
   @override
-  String get aboutPageAppName => 'Kelivo';
+  String get aboutPageAppName => 'KelivoMeow';
 
   @override
   String get aboutPageAppDescription => '开源 AI 助手';
@@ -25985,7 +25985,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get aboutPageKelivoSearchAlreadyUnlocked => '這扇門你已經推開過了。';
 
   @override
-  String get aboutPageAppName => 'Kelivo';
+  String get aboutPageAppName => 'KelivoMeow';
 
   @override
   String get aboutPageAppDescription => '開源 AI 助理';
