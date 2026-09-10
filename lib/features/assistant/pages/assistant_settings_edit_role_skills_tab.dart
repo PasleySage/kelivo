@@ -1,15 +1,15 @@
 part of 'assistant_settings_edit_page.dart';
 
-class _SkillsTab extends StatefulWidget {
-  const _SkillsTab({required this.assistantId});
+class _RoleSkillsTab extends StatefulWidget {
+  const _RoleSkillsTab({required this.assistantId});
 
   final String assistantId;
 
   @override
-  State<_SkillsTab> createState() => _SkillsTabState();
+  State<_RoleSkillsTab> createState() => _RoleSkillsTabState();
 }
 
-class _SkillsTabState extends State<_SkillsTab> {
+class _RoleSkillsTabState extends State<_RoleSkillsTab> {
   @override
   void initState() {
     super.initState();
@@ -32,14 +32,14 @@ class _SkillsTabState extends State<_SkillsTab> {
     }
 
     Future<void> updateBinding(String skillId, bool enabled) async {
-      final ids = assistant.skillIds.toSet();
+      final ids = assistant.roleSkillIds.toSet();
       if (enabled) {
         ids.add(skillId);
       } else {
         ids.remove(skillId);
       }
       await context.read<AssistantProvider>().updateAssistant(
-        assistant.copyWith(skillIds: ids.toList(growable: false)),
+        assistant.copyWith(roleSkillIds: ids.toList(growable: false)),
       );
     }
 
@@ -105,7 +105,7 @@ class _SkillsTabState extends State<_SkillsTab> {
             for (var i = 0; i < skills.length; i++) ...[
               _SkillBindingRow(
                 skill: skills[i],
-                enabled: assistant.skillIds.contains(skills[i].id),
+                enabled: assistant.roleSkillIds.contains(skills[i].id),
                 onChanged: (enabled) => updateBinding(skills[i].id, enabled),
               ),
               if (i != skills.length - 1) _iosDivider(context),
