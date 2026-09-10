@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../../utils/sandbox_path_resolver.dart';
 import '../database/business_preferences.dart';
@@ -55,15 +56,6 @@ class AssistantProvider extends ChangeNotifier {
         ..clear()
         ..addAll(_decodeAssistants(raw));
       bool changed = false;
-      // KelivoMeow one-time migration: role-skill bindings used to live under
-      // the legacy `skillIds` key. Upstream later reuses that key name for
-      // workspace skills, so move the old values to `roleSkillIds` exactly
-      // once (guarded by a local-only flag so workspace bindings written
-      // later are never misread as role skills).
-      if (!(preferences.getBool(_roleSkillsMigratedKey) ?? false)) {
-        changed |= _migrateLegacyRoleSkills(raw);
-        await preferences.setBool(_roleSkillsMigratedKey, true);
-      }
       // Fix any sandboxed local paths (avatars/backgrounds) imported from other platforms
       for (int i = 0; i < _assistants.length; i++) {
         final a = _assistants[i];
@@ -113,6 +105,17 @@ class AssistantProvider extends ChangeNotifier {
       _currentAssistantId = null;
     }
     notifyListeners();
+
+    // KelivoMeow one-time migration: role-skill bindings used to live under the
+    // legacy `skillIds` key; upstream later reused that key name for workspace
+    // skills, so move the old values to `roleSkillIds` exactly once. Deferred to
+    // the very end of the load on purpose — it awaits SharedPreferences, and the
+    // synchronous portion above (decode, current-assistant restore, prompt
+    // templates) must stay synchronous because callers read that state right
+    // after constructing the provider.
+    if (raw != null && raw.isNotEmpty) {
+      await _migrateRoleSkills(raw);
+    }
   }
 
   List<Assistant> _decodeAssistants(String raw) {
@@ -157,6 +160,31 @@ class AssistantProvider extends ChangeNotifier {
       return false;
     }
     return migrated;
+  }
+
+  /// Runs the guarded one-shot `skillIds` -> `roleSkillIds` migration.
+  ///
+  /// The guard flag is registered as a localOnly business key, so it lives in
+  /// SharedPreferences: `BusinessPreferences` rejects local-only keys.
+  Future<void> _migrateRoleSkills(String raw) async {
+    var migrated = false;
+    try {
+      final localPreferences = await SharedPreferences.getInstance();
+      final alreadyMigrated =
+          localPreferences.getBool(_roleSkillsMigratedKey) ?? false;
+      if (alreadyMigrated) return;
+      migrated = _migrateLegacyRoleSkills(raw);
+      await localPreferences.setBool(_roleSkillsMigratedKey, true);
+    } catch (_) {
+      // Local storage unavailable (e.g. tests without a mock): the migration is
+      // idempotent, so running it is safe.
+      migrated = _migrateLegacyRoleSkills(raw);
+    }
+    if (!migrated) return;
+    try {
+      await _persist();
+    } catch (_) {}
+    notifyListeners();
   }
 
   Assistant _defaultAssistant(AppLocalizations l10n) => Assistant(
