@@ -8,6 +8,7 @@ void main() {
     () async {
       const allowed = <String>{
         'lib/core/database/business_migration_engine.dart',
+        'lib/core/providers/assistant_provider.dart',
         'lib/core/providers/hotkey_provider.dart',
         'lib/core/providers/settings_provider.dart',
         'lib/core/providers/skill_provider.dart',

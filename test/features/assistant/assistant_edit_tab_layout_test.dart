@@ -30,7 +30,7 @@ void main() {
 
       expect(ordered.take(4), const ['mcp', 'basic', 'prompts', 'memory']);
       expect(ordered, containsAll(defaultAssistantEditTabIds));
-      expect(ordered.last, 'workspace');
+      expect(ordered.last, 'roleSkills');
     });
 
     test('ignores duplicate and unknown saved ids', () {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:Kelivo/core/providers/assistant_provider.dart';
 
@@ -33,10 +34,10 @@ Future<AssistantProvider> _loadedProvider({
 }) async {
   await session.preferences.setString('assistants_v1', jsonEncode(assistants));
   final provider = AssistantProvider(preferences: session.preferences);
-  for (var i = 0; i < 25; i++) {
-    if (provider.assistants.length == assistants.length) return provider;
-    await Future<void>.delayed(const Duration(milliseconds: 10));
-  }
+  // Wait for the whole load to settle: polling `assistants.length` returns as
+  // soon as the raw JSON is decoded, which is before the one-shot migration
+  // (it awaits SharedPreferences) has run.
+  await provider.loaded;
   return provider;
 }
 
@@ -49,6 +50,9 @@ void main() {
   late BusinessPreferencesTestSession session;
 
   setUp(() async {
+    // The migration guard is a localOnly business key, so it lives in
+    // SharedPreferences rather than BusinessPreferences.
+    SharedPreferences.setMockInitialValues(<String, Object>{});
     tempDir = await Directory.systemTemp.createTemp(
       'kelivo_role_skills_migration_test_',
     );
@@ -81,11 +85,11 @@ void main() {
       );
 
       expect(provider.assistants.single.roleSkillIds, ['shalom', 'selin']);
-      // The one-shot flag is persisted so the migration never runs twice.
-      expect(
-        session.preferences.getBool('kelivomeow_role_skills_migrated_v1'),
-        isTrue,
-      );
+      // The one-shot flag is persisted so the migration never runs twice. It is
+      // a localOnly business key, so it lives in SharedPreferences rather than
+      // in BusinessPreferences.
+      final guard = await SharedPreferences.getInstance();
+      expect(guard.getBool('kelivomeow_role_skills_migrated_v1'), isTrue);
     },
   );
 
@@ -94,10 +98,9 @@ void main() {
     () async {
       // Simulates the post-merge layout: upstream stores workspace bindings
       // under `skillIds`, role bindings live in `roleSkillIds`.
-      await session.preferences.setBool(
-        'kelivomeow_role_skills_migrated_v1',
-        true,
-      );
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'kelivomeow_role_skills_migrated_v1': true,
+      });
       final provider = await _loadedProvider(
         session: session,
         assistants: const [
