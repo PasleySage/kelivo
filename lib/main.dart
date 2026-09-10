@@ -570,7 +570,9 @@ Future<void> _initDesktopWindow() async {
       await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     }
     // Initialize and show desktop window with persisted size/position
-    await DesktopWindowController.instance.initializeAndShow(title: 'KelivoMeow');
+    await DesktopWindowController.instance.initializeAndShow(
+      title: 'KelivoMeow',
+    );
   } catch (_) {
     // Ignore on unsupported platforms.
   }

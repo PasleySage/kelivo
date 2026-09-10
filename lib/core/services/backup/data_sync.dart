@@ -1043,7 +1043,6 @@ class DataSync {
     required Map<String, List<String>> businessEntityRowIds,
     required Map<String, String> assetRootPaths,
     BackupIsolateContext? ctx,
-    required String skillsDirPath,
   }) {
     if (includeChats != (databasePath != null && snapshotInfo != null)) {
       throw StateError('backup_database_component');
@@ -2416,10 +2415,6 @@ class DataSync {
     }
     final appData = await AppDirectories.getAppDataDirectory();
     return Directory(p.join(appData.path, name));
-  }
-
-  Future<Directory> _getSkillsDir() async {
-    return await AppDirectories.getSkillsDirectory();
   }
 
   Future<void> _copyRestoredFile(File source, File target) async {

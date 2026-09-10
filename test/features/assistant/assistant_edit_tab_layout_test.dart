@@ -4,21 +4,24 @@ import 'package:Kelivo/features/assistant/utils/assistant_edit_tab_layout.dart';
 
 void main() {
   group('assistant edit tab layout', () {
-    test('default order puts tools before phrases, workspace and role skills last', () {
-      expect(defaultAssistantEditTabIds, const [
-        'basic',
-        'prompts',
-        'memory',
-        'localTools',
-        'skills',
-        'mcp',
-        'quickPhrase',
-        'custom',
-        'regex',
-        'workspace',
-        'roleSkills',
-      ]);
-    });
+    test(
+      'default order puts tools before phrases, workspace and role skills last',
+      () {
+        expect(defaultAssistantEditTabIds, const [
+          'basic',
+          'prompts',
+          'memory',
+          'localTools',
+          'skills',
+          'mcp',
+          'quickPhrase',
+          'custom',
+          'regex',
+          'workspace',
+          'roleSkills',
+        ]);
+      },
+    );
 
     test('orders saved ids first and appends missing defaults', () {
       final ordered = orderAssistantEditTabIds(
