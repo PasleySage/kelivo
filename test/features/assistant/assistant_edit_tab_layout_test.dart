@@ -4,7 +4,7 @@ import 'package:Kelivo/features/assistant/utils/assistant_edit_tab_layout.dart';
 
 void main() {
   group('assistant edit tab layout', () {
-    test('default order puts tools before phrases and workspace last', () {
+    test('default order puts tools before phrases, workspace and role skills last', () {
       expect(defaultAssistantEditTabIds, const [
         'basic',
         'prompts',
@@ -16,6 +16,7 @@ void main() {
         'custom',
         'regex',
         'workspace',
+        'roleSkills',
       ]);
     });
 
@@ -60,7 +61,7 @@ void main() {
     });
 
     test('new tabs not in savedOrder remain visible even if in hiddenIds', () {
-      // Regression: restoring an old backup may list the new 'skills' tab id
+      // Regression: restoring an old backup may list the new 'roleSkills' tab id
       // in hidden ids, but since the user never had a chance to hide it, it
       // should still be shown.
       final visible = visibleAssistantEditTabIds(
@@ -74,11 +75,11 @@ void main() {
           'custom',
           'regex',
         ],
-        hiddenIds: const {'skills', 'mcp'},
-        protectedNewIds: const ['skills'],
+        hiddenIds: const {'roleSkills', 'mcp'},
+        protectedNewIds: const ['roleSkills'],
       );
 
-      expect(visible, contains('skills'));
+      expect(visible, contains('roleSkills'));
       expect(visible, isNot(contains('mcp')));
     });
 

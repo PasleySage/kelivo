@@ -227,7 +227,7 @@ class SkillProvider extends ChangeNotifier {
     for (final skill in _skills) {
       final isExplicit = explicit.contains(skill.id);
       if (isExplicit) {
-        // Explicitly bound skills (assistant.skillIds) are injected regardless
+        // Explicitly bound skills (assistant.roleSkillIds) are injected regardless
         // of the global enabled toggle: binding is the user's clear intent.
         // The global toggle only gates keyword-triggered implicit skills below.
         candidates.add((skill: skill, explicit: true));

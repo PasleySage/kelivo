@@ -1053,7 +1053,7 @@ class HomeViewModel extends ChangeNotifier {
       String? skillSystem;
       try {
         final skills = sp?.resolveActiveSkills(
-          explicitSkillIds: a?.skillIds ?? const <String>[],
+          explicitSkillIds: a?.roleSkillIds ?? const <String>[],
         );
         if (skills != null && skills.isNotEmpty) {
           skillSystem = buildSkillSystemText(skills);

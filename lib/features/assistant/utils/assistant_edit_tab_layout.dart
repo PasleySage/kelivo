@@ -8,7 +8,7 @@ const String assistantEditTabSkills = 'skills';
 const String assistantEditTabQuickPhrase = 'quickPhrase';
 const String assistantEditTabCustom = 'custom';
 const String assistantEditTabRegex = 'regex';
-const String assistantEditTabSkills = 'skills';
+const String assistantEditRoleSkills = 'roleSkills';
 
 const List<String> defaultAssistantEditTabIds = [
   assistantEditTabBasic,
@@ -21,6 +21,7 @@ const List<String> defaultAssistantEditTabIds = [
   assistantEditTabCustom,
   assistantEditTabRegex,
   assistantEditTabWorkspace,
+  assistantEditRoleSkills,
 ];
 
 List<String> orderAssistantEditTabIds({

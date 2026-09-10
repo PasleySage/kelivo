@@ -29,6 +29,7 @@ final class BusinessKeyRegistry {
     'display_input_font_scale_v1',
     'display_markdown_blockquote_same_size_v1',
     'flutter_log_enabled_v1',
+    'kelivomeow_role_skills_migrated_v1',
   };
 
   static const discardedKeys = <String>{
