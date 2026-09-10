@@ -168,7 +168,7 @@ List<_AssistantEditTabSpec> _assistantEditTabSpecs(
       id: assistantEditRoleSkills,
       label: l10n.assistantEditSkillsTab,
       icon: Lucide.Sparkles,
-      child: _SkillsTab(assistantId: assistantId),
+      child: _RoleSkillsTab(assistantId: assistantId),
     ),
   ];
 }
@@ -195,7 +195,7 @@ List<_AssistantEditTabSpec> _visibleAssistantEditTabs(
   return visibleAssistantEditTabIds(
     savedOrder: settings.mobileAssistantEditTabOrder,
     hiddenIds: settings.hiddenMobileAssistantEditTabs,
-    protectedNewIds: const [assistantEditTabSkills],
+    protectedNewIds: const [assistantEditRoleSkills],
   ).map((id) => byId[id]).nonNulls.toList();
 }
 
@@ -1301,6 +1301,7 @@ Widget _iosSectionCard({required List<Widget> children}) {
     },
   );
 }
+
 Widget _iosDivider(BuildContext context) {
   final cs = Theme.of(context).colorScheme;
   return Divider(
@@ -1819,7 +1820,7 @@ class _DesktopAssistantDialogShellState
                           assistantId: widget.assistantId,
                         );
                       case _AssistantDesktopMenu.roleSkills:
-                        return _SkillsTab(assistantId: widget.assistantId);
+                        return _RoleSkillsTab(assistantId: widget.assistantId);
                     }
                   }(),
                 ),

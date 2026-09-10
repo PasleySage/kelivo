@@ -19,6 +19,7 @@ const List<String> defaultAssistantEditTabIds = [
   assistantEditTabQuickPhrase,
   assistantEditTabCustom,
   assistantEditTabRegex,
+  assistantEditRoleSkills,
 ];
 
 List<String> orderAssistantEditTabIds({
