@@ -11,9 +11,12 @@ import '../../../core/providers/skill_provider.dart';
 import '../../../core/services/skills/skill_importer.dart';
 import '../../../icons/lucide_adapter.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/form_sheet.dart';
+import '../../../shared/widgets/ios_form_text_field.dart';
 import '../../../shared/widgets/ios_tactile.dart';
 import '../../../shared/widgets/snackbar.dart';
 import '../../../theme/app_font_weights.dart';
+import '../../../theme/app_semantic_colors.dart';
 
 class SkillsPage extends StatefulWidget {
   const SkillsPage({super.key});
@@ -85,14 +88,8 @@ class _SkillsPageState extends State<SkillsPage> {
   }
 
   Future<void> _showAddEditSheet({Skill? skill}) async {
-    final result = await showModalBottomSheet<_SkillEditResult?>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
+    final result = await showFormSheet<_SkillEditResult?>(
+      context,
       builder: (_) => _SkillEditSheet(skill: skill),
     );
     if (!mounted || result == null) return;
@@ -593,79 +590,66 @@ class _SkillEditSheetState extends State<_SkillEditSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
-    final bottom = MediaQuery.of(context).viewInsets.bottom;
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.9,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 10, 16, bottom + 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
-                  child: Text(
-                    MaterialLocalizations.of(context).closeButtonLabel,
-                  ),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: _save,
-                  child: Text(l10n.skillsSaveButton),
-                ),
-              ],
-            ),
-            TextField(
-              controller: _nameController,
-              autofocus: widget.skill == null,
-              decoration: InputDecoration(labelText: l10n.skillsNameLabel),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(
-                labelText: l10n.skillsDescriptionLabel,
-              ),
-            ),
-            TextField(
-              controller: _triggersController,
-              decoration: InputDecoration(
-                labelText: l10n.skillsTriggerKeywordsLabel,
-                hintText: l10n.skillsTriggerKeywordsHint,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white10
-                      : const Color(0xFFF7F7F9),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: cs.outlineVariant.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: TextField(
-                  controller: _contentController,
-                  expands: true,
-                  maxLines: null,
-                  minLines: null,
-                  keyboardType: TextInputType.multiline,
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                    hintText: l10n.skillsContentHint,
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(12),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    // Standard app form sheet (World Book style) instead of hand-rolled
+    // Material chrome: handle + title + IosFormTextFields + action pair.
+    return FormSheet(
+      title: widget.skill == null
+          ? l10n.skillsAddTooltip
+          : l10n.skillsEditTitle,
+      actions: FormSheetActions(
+        cancelLabel: MaterialLocalizations.of(context).cancelButtonLabel,
+        confirmLabel: l10n.skillsSaveButton,
+        onCancel: () => Navigator.of(context).maybePop(),
+        onConfirm: _save,
       ),
+      children: [
+        IosFormTextField(
+          label: l10n.skillsNameLabel,
+          controller: _nameController,
+          autofocus: widget.skill == null,
+          textInputAction: TextInputAction.next,
+        ),
+        IosFormTextField(
+          label: l10n.skillsDescriptionLabel,
+          controller: _descriptionController,
+          textInputAction: TextInputAction.next,
+        ),
+        IosFormTextField(
+          label: l10n.skillsTriggerKeywordsLabel,
+          hintText: l10n.skillsTriggerKeywordsHint,
+          controller: _triggersController,
+          textInputAction: TextInputAction.next,
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.42,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.appColors.surfaceFill,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withValues(alpha: 0.2),
+              ),
+            ),
+            child: TextField(
+              controller: _contentController,
+              expands: true,
+              maxLines: null,
+              minLines: null,
+              keyboardType: TextInputType.multiline,
+              textAlignVertical: TextAlignVertical.top,
+              decoration: InputDecoration(
+                hintText: l10n.skillsContentHint,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.all(12),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
