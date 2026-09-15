@@ -66,7 +66,7 @@ class _RoleSkillsTabState extends State<_RoleSkillsTab> {
               ),
               const SizedBox(height: 24),
               ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 200),
+                constraints: BoxConstraints(minWidth: scaledDim(context, 200)),
                 child: _IosButton(
                   label: l10n.assistantEditManageSkillsButton,
                   icon: Lucide.Sparkles,
