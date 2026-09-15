@@ -99,6 +99,7 @@ import 'workspace_tool_detail.dart';
 import 'workspace_tool_ui.dart';
 import '../../../theme/app_font_weights.dart';
 import '../../home/controllers/streaming_content_notifier.dart';
+import '../../../utils/ui_scale.dart';
 
 final RegExp _urlSchemeRe = RegExp(r'^[a-zA-Z][a-zA-Z0-9+.-]*:');
 
@@ -1070,10 +1071,10 @@ class _ToolDetailDesktopDialogState extends State<_ToolDetailDesktopDialog> {
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minWidth: 420,
-          maxWidth: 640,
-          maxHeight: 680,
+        constraints: BoxConstraints(
+          minWidth: scaledDim(context, 420),
+          maxWidth: scaledDim(context, 640),
+          maxHeight: scaledDim(context, 680),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
@@ -1732,8 +1733,11 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     final safeTop = insets.top + 12;
     final safeBottom = insets.bottom + 12;
 
-    const double menuWidth = 220; // compact width
-    final double estMenuHeight = widget.onEdit == null ? 140 : 184;
+    final double menuWidth = scaledDim(context, 220); // compact width
+    final double estMenuHeight = scaledDim(
+      context,
+      widget.onEdit == null ? 140 : 184,
+    );
     const double gap = 10; // space between bubble and menu
 
     // Horizontal placement: align menu's right edge to bubble's right edge,
@@ -2759,7 +2763,9 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                 ),
                 const SizedBox(width: 6),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 180),
+                  constraints: BoxConstraints(
+                    maxWidth: scaledDim(context, 180),
+                  ),
                   child: Text(
                     d.name,
                     overflow: TextOverflow.ellipsis,
@@ -4238,8 +4244,8 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
     final name = (widget.assistantName ?? '').trim();
     final ch = name.isNotEmpty ? name.characters.first.toUpperCase() : 'A';
     return Container(
-      width: 32,
-      height: 32,
+      width: scaledDim(context, 32),
+      height: scaledDim(context, 32),
       decoration: BoxDecoration(
         color: cs.primary.withValues(alpha: 0.1),
         shape: BoxShape.circle,
@@ -4339,7 +4345,7 @@ class _MenuItem extends StatelessWidget {
         onTap?.call();
       },
       child: Container(
-        height: 44,
+        height: scaledDim(context, 44),
         padding: const EdgeInsets.symmetric(horizontal: 12),
         alignment: Alignment.centerLeft,
         child: Row(
@@ -4397,8 +4403,8 @@ class _BranchSelector extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 28,
-          height: 28,
+          width: scaledDim(context, 28),
+          height: scaledDim(context, 28),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,
@@ -5783,7 +5789,7 @@ class _ChainOfThoughtReasoningStepState
     Widget? content;
     if (state == _ReasoningStepState.preview) {
       content = ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 100),
+        constraints: BoxConstraints(maxHeight: scaledDim(context, 100)),
         child: OptionalShaderMask(
           enabled: _hasOverflow,
           shaderCallback: (rect) {
@@ -7785,7 +7791,7 @@ class _AskUserOptionRow extends StatelessWidget {
       onTap: disabled ? null : onTap,
       child: Container(
         width: double.infinity,
-        constraints: const BoxConstraints(minHeight: 40),
+        constraints: BoxConstraints(minHeight: scaledDim(context, 40)),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
@@ -7908,8 +7914,8 @@ class _AskUserIndexBadge extends StatelessWidget {
     final fg = chatSurfaceForegroundPalette(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      width: 24,
-      height: 24,
+      width: scaledDim(context, 24),
+      height: scaledDim(context, 24),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -7990,7 +7996,7 @@ class _AskUserSubmitButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       onTap: onTap,
       child: Container(
-        height: 38,
+        height: scaledDim(context, 38),
         padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
         child: Row(
@@ -8052,7 +8058,7 @@ class _SourcesSummaryCard extends StatelessWidget {
       onTap: onTap,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 18),
+        constraints: BoxConstraints(minHeight: scaledDim(context, 18)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

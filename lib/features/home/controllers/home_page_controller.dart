@@ -674,6 +674,10 @@ class HomePageController extends ChangeNotifier {
   bool get tabletSidebarOpen =>
       _compactDesktop ? _compactSidebarOpen : _tabletSidebarOpen;
   double get embeddedSidebarWidth => _embeddedSidebarWidth;
+  bool get rightSidebarOpen => _rightSidebarOpen;
+  double get embeddedSidebarWidth =>
+      _embeddedSidebarWidth * _sidebarWidthScale();
+  double get rightSidebarWidth => _rightSidebarWidth * _sidebarWidthScale();
   double get inputBarHeight => _inputBarHeight;
   bool get desktopUiInited => _desktopUiInited;
   bool get isGlobalSearchMode => _isGlobalSearchMode;
@@ -3211,8 +3215,43 @@ class HomePageController extends ChangeNotifier {
     } catch (_) {}
   }
 
+  void toggleRightSidebar() {
+    dismissKeyboard();
+    try {
+      if (_context.read<SettingsProvider>().hapticsOnDrawer) {
+        Haptics.drawerPulse();
+      }
+    } catch (_) {}
+    _rightSidebarOpen = !_rightSidebarOpen;
+    notifyListeners();
+    try {
+      _context.read<SettingsProvider>().setDesktopRightSidebarOpen(
+        _rightSidebarOpen,
+      );
+    } catch (_) {}
+  }
+
+  /// Damped width scale for the persisted sidebars (1.0 at 100% font scale).
+  /// Sidebar widths are persisted in 100%-space and scaled at usage so the
+  /// panes keep their proportions at large UI font scales (topic list would
+  /// otherwise wrap and truncate inside the unscaled width). The scale grows
+  /// at half the font rate — a full 1.5× width felt bloated; tune
+  /// [_widthScaleDamping] (0 = no growth, 1 = full font scale) to adjust.
+  static const double _widthScaleDamping = 0.5;
+
+  double _sidebarWidthScale() {
+    try {
+      final fs = MediaQuery.textScalerOf(_context).scale(1.0);
+      return 1.0 + (fs - 1.0) * _widthScaleDamping;
+    } catch (_) {
+      return 1.0;
+    }
+  }
+
   void updateSidebarWidth(double dx) {
-    _embeddedSidebarWidth = (_embeddedSidebarWidth + dx).clamp(
+    // dx arrives in screen space; the stored width is logical (100%-space).
+    final fs = _sidebarWidthScale();
+    _embeddedSidebarWidth = (_embeddedSidebarWidth + dx / fs).clamp(
       _sidebarMinWidth,
       _sidebarMaxWidth,
     );
@@ -3223,6 +3262,24 @@ class HomePageController extends ChangeNotifier {
     try {
       _context.read<SettingsProvider>().setDesktopSidebarWidth(
         _embeddedSidebarWidth,
+      );
+    } catch (_) {}
+  }
+
+  void updateRightSidebarWidth(double dx) {
+    // dx arrives in screen space; the stored width is logical (100%-space).
+    final fs = _sidebarWidthScale();
+    _rightSidebarWidth = (_rightSidebarWidth - dx / fs).clamp(
+      _sidebarMinWidth,
+      _sidebarMaxWidth,
+    );
+    notifyListeners();
+  }
+
+  void saveRightSidebarWidth() {
+    try {
+      _context.read<SettingsProvider>().setDesktopRightSidebarWidth(
+        _rightSidebarWidth,
       );
     } catch (_) {}
   }

@@ -65,6 +65,7 @@ import '../../../shared/widgets/snackbar.dart';
 import '../../../theme/app_font_weights.dart';
 import '../../../theme/design_tokens.dart';
 import '../../../utils/avatar_cache.dart';
+import '../../../utils/avatar_scale.dart';
 import '../../../utils/brand_assets.dart';
 import '../../../utils/platform_utils.dart';
 import '../../../utils/sandbox_path_resolver.dart';
@@ -76,6 +77,7 @@ import 'health_data_settings_page.dart';
 import '../../settings/pages/phone_control_settings_page.dart';
 import 'package:Kelivo/theme/app_semantic_colors.dart';
 import 'package:Kelivo/shared/widgets/section_card.dart';
+import '../../../utils/ui_scale.dart';
 
 part 'assistant_settings_edit_basic_tab.dart';
 part '../widgets/assistant_gradient_settings.dart';
@@ -233,7 +235,7 @@ Future<int?> _showContextMessageInputDialog(
               ),
               title: Text(l10n.assistantEditContextMessagesTitle),
               content: SizedBox(
-                width: 360,
+                width: scaledDim(context, 360),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1716,7 +1718,10 @@ Future<void> showAssistantDesktopDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 860, maxHeight: 640),
+          constraints: BoxConstraints(
+            maxWidth: scaledDim(context, 860),
+            maxHeight: scaledDim(context, 640),
+          ),
           child: _DesktopAssistantDialogShell(assistantId: assistantId),
         ),
       );
@@ -1865,7 +1870,7 @@ class _DesktopAssistantMenuState extends State<_DesktopAssistantMenu> {
       child: ListView.separated(
         padding: const EdgeInsets.all(12),
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
+        separatorBuilder: (_, __) => SizedBox(height: scaledDim(context, 8)),
         itemBuilder: (ctx, i) {
           final selected = widget.selected == items[i].$1;
           final bg = selected

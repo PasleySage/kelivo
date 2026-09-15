@@ -26,6 +26,7 @@ import 'package:Kelivo/theme/app_semantic_colors.dart';
 import 'package:Kelivo/utils/mcp_structured_image.dart';
 
 import 'chat_surface.dart';
+import '../../../utils/ui_scale.dart';
 
 export 'package:Kelivo/features/workspace/workspace_file_navigation.dart';
 
