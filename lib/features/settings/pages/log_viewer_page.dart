@@ -24,6 +24,7 @@ import '../../../core/services/logging/log_payload_elider.dart';
 import '../logs/request_log_parser.dart';
 import '../../../theme/app_font_weights.dart';
 import 'package:Kelivo/theme/app_semantic_colors.dart';
+import '../../../utils/ui_scale.dart';
 
 /// Mobile log viewer - shows list of log files and allows viewing/exporting
 class LogViewerPage extends StatefulWidget {
@@ -2784,7 +2785,7 @@ class _KvGrid extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 84,
+                width: scaledDim(context, 84),
                 child: Text(
                   it.k,
                   style: TextStyle(
