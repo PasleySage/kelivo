@@ -3245,14 +3245,13 @@ class _DesktopProviderDetailPaneState extends State<DesktopProviderDetailPane> {
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: ConstrainedBox(
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                          minWidth: 72,
-                                                          maxWidth: scaledDim(
-                                                            context,
-                                                            120,
-                                                          ),
-                                                        ),
+                                                    constraints: BoxConstraints(
+                                                      minWidth: 72,
+                                                      maxWidth: scaledDim(
+                                                        context,
+                                                        120,
+                                                      ),
+                                                    ),
                                                     child: ProviderBalanceBadge(
                                                       providerKey:
                                                           widget.providerKey,
