@@ -80,3 +80,17 @@ flutter pub get                             # install dependencies
 flutter gen-l10n                            # regenerate l10n files
 dart run build_runner build                 # regenerate Drift code
 ```
+
+## Agent skills
+
+### Issue tracker
+
+Local markdown files under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical roles, label strings identical to the role names. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: root `CONTEXT.md` plus `docs/adr/` — neither exists yet, proceed silently if absent. See `docs/agents/domain.md`.
