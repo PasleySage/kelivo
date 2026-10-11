@@ -23280,136 +23280,330 @@ abstract class AppLocalizations {
   /// **'Completing sign-in…'**
   String get mcpOAuthExchangingToken;
 
+  /// No description provided for @homePageAudioAttachmentUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The current model does not support audio attachments. Switch to a model that supports audio input or remove the audio file and try again.'**
+  String get homePageAudioAttachmentUnsupported;
+
+  /// No description provided for @reasoningBudgetSheetOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get reasoningBudgetSheetOff;
+
+  /// No description provided for @reasoningBudgetSheetAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get reasoningBudgetSheetAuto;
+
+  /// No description provided for @reasoningBudgetSheetLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Reasoning'**
+  String get reasoningBudgetSheetLight;
+
+  /// No description provided for @reasoningBudgetSheetMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium Reasoning'**
+  String get reasoningBudgetSheetMedium;
+
+  /// No description provided for @reasoningBudgetSheetHeavy.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy Reasoning'**
+  String get reasoningBudgetSheetHeavy;
+
+  /// No description provided for @reasoningBudgetSheetXhigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Extreme Reasoning'**
+  String get reasoningBudgetSheetXhigh;
+
+  /// No description provided for @reasoningBudgetSheetMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Reasoning'**
+  String get reasoningBudgetSheetMax;
+
+  /// No description provided for @reasoningBudgetSheetCurrentLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Level: {level}'**
+  String reasoningBudgetSheetCurrentLevel(String level);
+
+  /// No description provided for @reasoningBudgetSheetOffSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off reasoning, answer directly'**
+  String get reasoningBudgetSheetOffSubtitle;
+
+  /// No description provided for @reasoningBudgetSheetAutoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let the model decide reasoning level automatically'**
+  String get reasoningBudgetSheetAutoSubtitle;
+
+  /// No description provided for @reasoningBudgetSheetLightSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use light reasoning to answer questions'**
+  String get reasoningBudgetSheetLightSubtitle;
+
+  /// No description provided for @reasoningBudgetSheetMediumSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use moderate reasoning to answer questions'**
+  String get reasoningBudgetSheetMediumSubtitle;
+
+  /// No description provided for @reasoningBudgetSheetHeavySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use heavy reasoning for complex questions'**
+  String get reasoningBudgetSheetHeavySubtitle;
+
+  /// No description provided for @reasoningBudgetSheetXhighSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use maximum reasoning depth for the toughest problems'**
+  String get reasoningBudgetSheetXhighSubtitle;
+
+  /// No description provided for @reasoningBudgetSheetCustomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Reasoning Budget'**
+  String get reasoningBudgetSheetCustomLabel;
+
+  /// No description provided for @reasoningBudgetSheetCustomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 2048 (-1 auto, 0 off)'**
+  String get reasoningBudgetSheetCustomHint;
+
+  /// No description provided for @modelDetailSheetModelIdDisabledHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{modelId}'**
+  String modelDetailSheetModelIdDisabledHint(String modelId);
+
+  /// No description provided for @modelDetailSheetSearchTool.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get modelDetailSheetSearchTool;
+
+  /// No description provided for @modelDetailSheetSearchToolDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Google Search integration'**
+  String get modelDetailSheetSearchToolDescription;
+
+  /// No description provided for @modelDetailSheetModelIdExistsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Model ID already exists'**
+  String get modelDetailSheetModelIdExistsError;
+
+  /// No description provided for @reasoningBudgetSliderLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get reasoningBudgetSliderLow;
+
+  /// No description provided for @reasoningBudgetSliderMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get reasoningBudgetSliderMedium;
+
+  /// No description provided for @reasoningBudgetSliderHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get reasoningBudgetSliderHigh;
+
+  /// No description provided for @reasoningBudgetSliderXhigh.
+  ///
+  /// In en, this message translates to:
+  /// **'XHigh'**
+  String get reasoningBudgetSliderXhigh;
+
+  /// No description provided for @reasoningBudgetSliderMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get reasoningBudgetSliderMax;
+
   /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeTitle.
   ///
   /// In en, this message translates to:
   /// **'Blockquote same size as body'**
   String get displaySettingsPageMarkdownBlockquoteSameSizeTitle;
+
   /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Keep Markdown blockquote (>) text the same size as body text'**
   String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle;
+
+  /// No description provided for @modelDetailSheetBuiltinToolsUnsupportedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Current provider does not support these built-in tools.'**
+  String get modelDetailSheetBuiltinToolsUnsupportedHint;
+
+  /// No description provided for @modelDetailSheetOpenrouterWebFetchTool.
+  ///
+  /// In en, this message translates to:
+  /// **'Web Fetch'**
+  String get modelDetailSheetOpenrouterWebFetchTool;
+
   /// No description provided for @displaySettingsPageUiFontSizeTitle.
   ///
   /// In en, this message translates to:
   /// **'UI Font Size'**
   String get displaySettingsPageUiFontSizeTitle;
+
   /// No description provided for @displaySettingsPageInputFontSizeTitle.
   ///
   /// In en, this message translates to:
   /// **'Input Box Font Size'**
   String get displaySettingsPageInputFontSizeTitle;
+
   /// No description provided for @assistantEditSkillsTab.
   ///
   /// In en, this message translates to:
   /// **'Skills'**
   String get assistantEditSkillsTab;
+
   /// No description provided for @assistantEditSkillsEmptyMessage.
   ///
   /// In en, this message translates to:
   /// **'No skills bound yet. Tap manage skills below.'**
   String get assistantEditSkillsEmptyMessage;
+
   /// No description provided for @assistantEditManageSkillsButton.
   ///
   /// In en, this message translates to:
   /// **'Manage skills'**
   String get assistantEditManageSkillsButton;
+
   /// No description provided for @skillsAddTooltip.
   ///
   /// In en, this message translates to:
   /// **'Add skill'**
   String get skillsAddTooltip;
+
   /// No description provided for @skillsEmptyMessage.
   ///
   /// In en, this message translates to:
   /// **'No skills yet. Import or add one.'**
   String get skillsEmptyMessage;
+
   /// No description provided for @skillsImportButton.
   ///
   /// In en, this message translates to:
   /// **'Import'**
   String get skillsImportButton;
+
   /// No description provided for @skillsDeleteAction.
   ///
   /// In en, this message translates to:
   /// **'Delete'**
   String get skillsDeleteAction;
+
   /// No description provided for @skillsMultiSelect.
   ///
   /// In en, this message translates to:
   /// **'Multi-select'**
   String get skillsMultiSelect;
+
   /// No description provided for @skillsSelectAll.
   ///
   /// In en, this message translates to:
   /// **'Select all'**
   String get skillsSelectAll;
+
   /// No description provided for @skillsSelectNone.
   ///
   /// In en, this message translates to:
   /// **'Deselect all'**
   String get skillsSelectNone;
+
   /// No description provided for @skillsDeleteSelected.
   ///
   /// In en, this message translates to:
   /// **'Delete ({count})'**
-  String skillsDeleteSelected(int count);
+  String skillsDeleteSelected(Object count);
+
   /// No description provided for @skillsDeleteSelectedConfirm.
   ///
   /// In en, this message translates to:
   /// **'Delete {count} selected skills? This cannot be undone.'**
-  String skillsDeleteSelectedConfirm(int count);
+  String skillsDeleteSelectedConfirm(Object count);
+
   /// No description provided for @skillsDeleteConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'Delete skill "{name}"? This cannot be undone.'**
-  String skillsDeleteConfirmMessage(String name);
+  /// **'Delete skill \"{name}\"? This cannot be undone.'**
+  String skillsDeleteConfirmMessage(Object name);
+
   /// No description provided for @skillsSaveButton.
   ///
   /// In en, this message translates to:
   /// **'Save'**
   String get skillsSaveButton;
+
   /// No description provided for @skillsNameLabel.
   ///
   /// In en, this message translates to:
   /// **'Name'**
   String get skillsNameLabel;
+
   /// No description provided for @skillsDescriptionLabel.
   ///
   /// In en, this message translates to:
   /// **'Description'**
   String get skillsDescriptionLabel;
+
   /// No description provided for @skillsTriggerKeywordsLabel.
   ///
   /// In en, this message translates to:
   /// **'Trigger keywords'**
   String get skillsTriggerKeywordsLabel;
+
   /// No description provided for @skillsTriggerKeywordsHint.
   ///
   /// In en, this message translates to:
   /// **'Comma-separated; auto-activates this skill when matched'**
   String get skillsTriggerKeywordsHint;
+
   /// No description provided for @skillsContentHint.
   ///
   /// In en, this message translates to:
   /// **'Skill content (prompt injected into the conversation)'**
   String get skillsContentHint;
+
   /// No description provided for @skillsNoValidImported.
   ///
   /// In en, this message translates to:
   /// **'No valid skills to import'**
   String get skillsNoValidImported;
+
   /// No description provided for @skillsImportFailed.
   ///
   /// In en, this message translates to:
   /// **'Import failed: {error}'**
   String skillsImportFailed(String error);
+
   /// No description provided for @skillsImportedCount.
   ///
   /// In en, this message translates to:
   /// **'Imported {count} skills'**
   String skillsImportedCount(int count);
+
   /// No description provided for @skillsTriggersLine.
   ///
   /// In en, this message translates to:

@@ -57,7 +57,7 @@ void main() {
     });
 
     test(
-      'includes skills directory in backup when includeFiles is true',
+      'includes skills directory in backup when skills are in scope',
       () async {
         // Arrange: write a skill file into the app data skills directory.
         final skillsDir = Directory('${root.path}/skills');
@@ -92,7 +92,9 @@ void main() {
                 chatService: ChatService(),
                 businessRepository: repository,
               ).prepareBackupFile(
-                const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
+                const WebDavConfig(
+                  scope: BackupScope(excluded: {BackupCategory.chats}),
+                ),
               );
 
           final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
@@ -128,7 +130,7 @@ void main() {
     );
 
     test(
-      'does not include skills directory when includeFiles is false',
+      'does not include skills directory when skills are out of scope',
       () async {
         final skillsDir = Directory('${root.path}/skills');
         await skillsDir.create(recursive: true);
@@ -153,7 +155,11 @@ void main() {
                 chatService: ChatService(),
                 businessRepository: repository,
               ).prepareBackupFile(
-                const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats, BackupCategory.files})),
+                const WebDavConfig(
+                  scope: BackupScope(
+                    excluded: {BackupCategory.chats, BackupCategory.skills},
+                  ),
+                ),
               );
 
           final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
@@ -206,7 +212,9 @@ void main() {
           businessRepository: repository,
         );
         backup = await dataSync.prepareBackupFile(
-          const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
+          const WebDavConfig(
+            scope: BackupScope(excluded: {BackupCategory.chats}),
+          ),
         );
 
         // Simulate a wiped device: remove the live skills directory.
@@ -215,7 +223,9 @@ void main() {
 
         await dataSync.restoreFromLocalFile(
           backup,
-          const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
+          const WebDavConfig(
+            scope: BackupScope(excluded: {BackupCategory.chats}),
+          ),
         );
 
         final restored = File('${root.path}/skills/restore-me.json');

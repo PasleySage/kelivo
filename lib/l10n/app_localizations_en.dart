@@ -13038,74 +13038,200 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mcpOAuthWaitingBrowser => 'Waiting for browser authorization…';
 
   @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => 'Blockquote same size as body';
+  String get mcpOAuthExchangingToken => 'Completing sign-in…';
+
   @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle => 'Keep Markdown blockquote (>) text the same size as body text';
+  String get homePageAudioAttachmentUnsupported =>
+      'The current model does not support audio attachments. Switch to a model that supports audio input or remove the audio file and try again.';
+
+  @override
+  String get reasoningBudgetSheetOff => 'Off';
+
+  @override
+  String get reasoningBudgetSheetAuto => 'Auto';
+
+  @override
+  String get reasoningBudgetSheetLight => 'Light Reasoning';
+
+  @override
+  String get reasoningBudgetSheetMedium => 'Medium Reasoning';
+
+  @override
+  String get reasoningBudgetSheetHeavy => 'Heavy Reasoning';
+
+  @override
+  String get reasoningBudgetSheetXhigh => 'Extreme Reasoning';
+
+  @override
+  String get reasoningBudgetSheetMax => 'Maximum Reasoning';
+
+  @override
+  String reasoningBudgetSheetCurrentLevel(String level) {
+    return 'Current Level: $level';
+  }
+
+  @override
+  String get reasoningBudgetSheetOffSubtitle =>
+      'Turn off reasoning, answer directly';
+
+  @override
+  String get reasoningBudgetSheetAutoSubtitle =>
+      'Let the model decide reasoning level automatically';
+
+  @override
+  String get reasoningBudgetSheetLightSubtitle =>
+      'Use light reasoning to answer questions';
+
+  @override
+  String get reasoningBudgetSheetMediumSubtitle =>
+      'Use moderate reasoning to answer questions';
+
+  @override
+  String get reasoningBudgetSheetHeavySubtitle =>
+      'Use heavy reasoning for complex questions';
+
+  @override
+  String get reasoningBudgetSheetXhighSubtitle =>
+      'Use maximum reasoning depth for the toughest problems';
+
+  @override
+  String get reasoningBudgetSheetCustomLabel => 'Custom Reasoning Budget';
+
+  @override
+  String get reasoningBudgetSheetCustomHint => 'e.g. 2048 (-1 auto, 0 off)';
+
+  @override
+  String modelDetailSheetModelIdDisabledHint(String modelId) {
+    return '$modelId';
+  }
+
+  @override
+  String get modelDetailSheetSearchTool => 'Search';
+
+  @override
+  String get modelDetailSheetSearchToolDescription =>
+      'Enable Google Search integration';
+
+  @override
+  String get modelDetailSheetModelIdExistsError => 'Model ID already exists';
+
+  @override
+  String get reasoningBudgetSliderLow => 'Low';
+
+  @override
+  String get reasoningBudgetSliderMedium => 'Medium';
+
+  @override
+  String get reasoningBudgetSliderHigh => 'High';
+
+  @override
+  String get reasoningBudgetSliderXhigh => 'XHigh';
+
+  @override
+  String get reasoningBudgetSliderMax => 'Max';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle =>
+      'Blockquote same size as body';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
+      'Keep Markdown blockquote (>) text the same size as body text';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint =>
+      'Current provider does not support these built-in tools.';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => 'Web Fetch';
+
   @override
   String get displaySettingsPageUiFontSizeTitle => 'UI Font Size';
+
   @override
   String get displaySettingsPageInputFontSizeTitle => 'Input Box Font Size';
+
   @override
   String get assistantEditSkillsTab => 'Skills';
+
   @override
-  String get assistantEditSkillsEmptyMessage => 'No skills bound yet. Tap manage skills below.';
+  String get assistantEditSkillsEmptyMessage =>
+      'No skills bound yet. Tap manage skills below.';
+
   @override
   String get assistantEditManageSkillsButton => 'Manage skills';
+
   @override
   String get skillsAddTooltip => 'Add skill';
+
   @override
   String get skillsEmptyMessage => 'No skills yet. Import or add one.';
+
   @override
   String get skillsImportButton => 'Import';
+
   @override
   String get skillsDeleteAction => 'Delete';
+
   @override
   String get skillsMultiSelect => 'Multi-select';
+
   @override
   String get skillsSelectAll => 'Select all';
+
   @override
   String get skillsSelectNone => 'Deselect all';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return 'Delete ($count)';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return 'Delete $count selected skills? This cannot be undone.';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return 'Delete skill \"$name\"? This cannot be undone.';
+  }
+
   @override
   String get skillsSaveButton => 'Save';
+
   @override
   String get skillsNameLabel => 'Name';
+
   @override
   String get skillsDescriptionLabel => 'Description';
+
   @override
   String get skillsTriggerKeywordsLabel => 'Trigger keywords';
+
   @override
-  String get skillsTriggerKeywordsHint => 'Comma-separated; auto-activates this skill when matched';
+  String get skillsTriggerKeywordsHint =>
+      'Comma-separated; auto-activates this skill when matched';
+
   @override
-  String get skillsContentHint => 'Skill content (prompt injected into the conversation)';
+  String get skillsContentHint =>
+      'Skill content (prompt injected into the conversation)';
+
   @override
   String get skillsNoValidImported => 'No valid skills to import';
 
   @override
   String skillsImportFailed(String error) {
-    return 'Import failed: \${error}';
+    return 'Import failed: $error';
   }
+
   @override
   String skillsImportedCount(int count) {
-    return 'Imported \$count skills';
+    return 'Imported $count skills';
   }
+
   @override
   String skillsTriggersLine(String keywords) {
-    return 'Trigger keywords: \${keywords}';
+    return 'Trigger keywords: $keywords';
   }
-
-  @override
-  String skillsDeleteSelected(int count) {
-    return 'Delete (\$count)';
-  }
-  @override
-  String skillsDeleteSelectedConfirm(int count) {
-    return 'Delete \$count selected skills? This cannot be undone.';
-  }
-  @override
-  String skillsDeleteConfirmMessage(String name) {
-    return 'Delete skill "\${name}"? This cannot be undone.';
-  }
-
-  @override
-  String get mcpOAuthExchangingToken => 'Completing sign-in…';
 }
