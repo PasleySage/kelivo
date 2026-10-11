@@ -13267,6 +13267,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mcpOAuthWaitingBrowser => 'Waiting for browser authorization…';
 
   @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => 'Blockquote same size as body';
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle => 'Keep Markdown blockquote (>) text the same size as body text';
+  @override
+  String get displaySettingsPageUiFontSizeTitle => 'UI Font Size';
+  @override
+  String get displaySettingsPageInputFontSizeTitle => 'Input Box Font Size';
+  @override
+  String get assistantEditSkillsTab => 'Skills';
+  @override
+  String get assistantEditSkillsEmptyMessage => 'No skills bound yet. Tap manage skills below.';
+  @override
+  String get assistantEditManageSkillsButton => 'Manage skills';
+  @override
+  String get skillsAddTooltip => 'Add skill';
+  @override
+  String get skillsEmptyMessage => 'No skills yet. Import or add one.';
+  @override
+  String get skillsImportButton => 'Import';
+  @override
+  String get skillsDeleteAction => 'Delete';
+  @override
+  String get skillsMultiSelect => 'Multi-select';
+  @override
+  String get skillsSelectAll => 'Select all';
+  @override
+  String get skillsSelectNone => 'Deselect all';
+  @override
+  String get skillsSaveButton => 'Save';
+  @override
+  String get skillsNameLabel => 'Name';
+  @override
+  String get skillsDescriptionLabel => 'Description';
+  @override
+  String get skillsTriggerKeywordsLabel => 'Trigger keywords';
+  @override
+  String get skillsTriggerKeywordsHint => 'Comma-separated; auto-activates this skill when matched';
+  @override
+  String get skillsContentHint => 'Skill content (prompt injected into the conversation)';
+  @override
+  String get skillsNoValidImported => 'No valid skills to import';
+
+  @override
+  String skillsImportFailed(String error) {
+    return 'Import failed: \${error}';
+  }
+  @override
+  String skillsImportedCount(int count) {
+    return 'Imported \$count skills';
+  }
+  @override
+  String skillsTriggersLine(String keywords) {
+    return 'Trigger keywords: \${keywords}';
+  }
+
+  @override
+  String skillsDeleteSelected(int count) {
+    return 'Delete (\$count)';
+  }
+  @override
+  String skillsDeleteSelectedConfirm(int count) {
+    return 'Delete \$count selected skills? This cannot be undone.';
+  }
+  @override
+  String skillsDeleteConfirmMessage(String name) {
+    return 'Delete skill "\${name}"? This cannot be undone.';
+  }
+
+  @override
   String get mcpOAuthExchangingToken => 'Completing sign-in…';
 
   @override
