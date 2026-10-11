@@ -10,8 +10,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../../shared/utils/format_bytes.dart';
 import '../../../shared/widgets/audio_clip_player.dart';
 import '../../../shared/widgets/ios_tactile.dart';
-import '../../../theme/app_font_weights.dart';
 import '../../../utils/ui_scale.dart';
+import '../../../theme/app_font_weights.dart';
 
 /// Metadata only: never read an attachment's contents to draw its preview.
 class ComposerAttachmentCard extends StatefulWidget {
@@ -111,7 +111,11 @@ class _ComposerAttachmentCardState extends State<ComposerAttachmentCard> {
                   : _details(
                       context,
                       extension: extension,
-                      leading: Icon(icon, size: 19, color: cs.primary),
+                      leading: Icon(
+                        icon,
+                        size: scaledDim(context, 19),
+                        color: cs.primary,
+                      ),
                     ),
             ),
             Positioned(
@@ -120,8 +124,8 @@ class _ComposerAttachmentCardState extends State<ComposerAttachmentCard> {
               child: IosIconButton(
                 key: widget.removeKey,
                 icon: Lucide.X,
-                size: 12,
-                padding: const EdgeInsets.all(7),
+                size: scaledDim(context, 12),
+                padding: EdgeInsets.all(scaledDim(context, 7)),
                 tooltip: AppLocalizations.of(
                   context,
                 )!.chatInputBarRemoveAttachment,
@@ -148,7 +152,7 @@ class _ComposerAttachmentCardState extends State<ComposerAttachmentCard> {
       mainAxisSize: MainAxisSize.min,
       children: [
         leading,
-        const SizedBox(height: 5),
+        SizedBox(height: scaledDim(context, 5)),
         Text(
           widget.file.fileName,
           maxLines: 2,
@@ -203,8 +207,8 @@ class ComposerImportProgress extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 10, 8, 4),
       child: Row(
         children: [
-          Icon(Lucide.Import, size: 18, color: cs.primary),
-          const SizedBox(width: 10),
+          Icon(Lucide.Import, size: scaledDim(context, 18), color: cs.primary),
+          SizedBox(width: scaledDim(context, 10)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,14 +222,14 @@ class ComposerImportProgress extends StatelessWidget {
                     fontWeight: AppFontWeights.medium,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: scaledDim(context, 4)),
                 LinearProgressIndicator(
                   value: progress.fraction,
                   minHeight: 3,
                   borderRadius: BorderRadius.circular(3),
                   backgroundColor: cs.primary.withValues(alpha: 0.10),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: scaledDim(context, 4)),
                 Text(
                   detail,
                   maxLines: 1,
@@ -237,8 +241,8 @@ class ComposerImportProgress extends StatelessWidget {
           ),
           IosIconButton(
             icon: Lucide.X,
-            size: 16,
-            padding: const EdgeInsets.all(12),
+            size: scaledDim(context, 16),
+            padding: EdgeInsets.all(scaledDim(context, 12)),
             tooltip: l10n.homePageCancel,
             onTap: onCancel,
           ),

@@ -8,6 +8,7 @@ import '../../../icons/lucide_adapter.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/context_usage_details.dart';
 import '../../../shared/widgets/ios_tactile.dart';
+import '../../../utils/ui_scale.dart';
 import '../../../shared/widgets/section_card.dart';
 import '../../../theme/app_font_weights.dart';
 
@@ -83,7 +84,7 @@ class _ContextUsageHeaderState extends State<ContextUsageHeader> {
       children: [
         ContextUsageBreakdown(snapshot: snapshot),
         if (showSetWindow) ...[
-          const SizedBox(height: 12),
+          SizedBox(height: scaledDim(context, 12)),
           _SetWindowRow(onTap: () => _openSetWindow(snapshot)),
         ],
       ],
@@ -111,8 +112,12 @@ class _SetWindowRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          Icon(Lucide.Settings2, size: 22, color: cs.onSurface),
-          const SizedBox(width: 14),
+          Icon(
+            Lucide.Settings2,
+            size: scaledDim(context, 22),
+            color: cs.onSurface,
+          ),
+          SizedBox(width: scaledDim(context, 14)),
           Expanded(
             child: Text(
               l10n.contextUsageSetWindow,

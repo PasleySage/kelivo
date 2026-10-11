@@ -9,6 +9,7 @@ import '../icons/lucide_adapter.dart';
 import '../l10n/app_localizations.dart';
 import '../shared/widgets/context_usage_details.dart';
 import '../shared/widgets/ios_tactile.dart';
+import '../utils/ui_scale.dart';
 import '../theme/app_font_weights.dart';
 import 'desktop_glass_popover.dart';
 import 'model_spec_edit_dialog.dart';
@@ -106,7 +107,7 @@ class _ContextUsagePopoverContent extends StatelessWidget {
 
     return ConstrainedBox(
       key: contextUsagePopoverKey,
-      constraints: const BoxConstraints(maxHeight: 420),
+      constraints: BoxConstraints(maxHeight: scaledDim(context, 420)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         child: Column(
@@ -119,7 +120,7 @@ class _ContextUsagePopoverContent extends StatelessWidget {
                 tooltip: l10n.contextUsageRefresh,
                 semanticLabel: l10n.contextUsageRefresh,
                 icon: Lucide.RefreshCw,
-                size: 16,
+                size: scaledDim(context, 16),
                 onTap: () => usage.refresh(conversationId, force: true),
               ),
             ),
@@ -139,7 +140,7 @@ class _ContextUsagePopoverContent extends StatelessWidget {
               onTap: () => unawaited(onImages()),
             ),
             if (showSetWindow) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: scaledDim(context, 8)),
               _ActionRow(
                 key: const ValueKey('context-usage-set-window'),
                 icon: Lucide.Settings2,
@@ -179,7 +180,9 @@ class _ActionRow extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: description == null ? 22 : 38),
+        constraints: BoxConstraints(
+          minHeight: scaledDim(context, description == null ? 22 : 38),
+        ),
         child: Row(
           children: [
             Icon(icon, size: 17, color: cs.onSurface.withValues(alpha: 0.7)),
