@@ -160,8 +160,7 @@ void main() {
             businessPreferences: BusinessPreferences(repository),
             client: fakeClient,
             initialConfig: const S3Config(
-              includeChats: false,
-              includeFiles: true,
+              scope: BackupScope(excluded: {BackupCategory.chats}),
             ),
           );
 
