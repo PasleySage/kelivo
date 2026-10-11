@@ -6,6 +6,7 @@ import '../../core/utils/token_format.dart';
 import '../../features/home/services/context_usage_service.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/app_font_weights.dart';
+import '../../utils/ui_scale.dart';
 
 abstract final class ContextUsagePalette {
   static const Color system = Color(0xFF8E8E93);
@@ -225,7 +226,7 @@ class ContextUsageSummaryHeader extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: scaledDim(context, 8)),
                   Text(
                     contextUsageSummaryText(l10n, snapshot),
                     maxLines: 1,
@@ -238,7 +239,7 @@ class ContextUsageSummaryHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: scaledDim(context, 2)),
               Text(
                 contextUsageStateLabel(l10n, snapshot),
                 textAlign: TextAlign.end,
@@ -365,7 +366,7 @@ class ContextUsageLegend extends StatelessWidget {
     return Column(
       children: [
         for (var i = 0; i < segments.length; i++) ...[
-          if (i > 0) const SizedBox(height: 8),
+          if (i > 0) SizedBox(height: scaledDim(context, 8)),
           _LegendRow(
             key: ValueKey('context-usage-bucket-${segments[i].key}'),
             color: ContextUsagePalette.of(segments[i].key, cs),
@@ -414,7 +415,7 @@ class _LegendRow extends StatelessWidget {
           ),
           child: const SizedBox(width: 10, height: 10),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: scaledDim(context, 10)),
         Expanded(
           child: Text(
             label,
@@ -429,9 +430,9 @@ class _LegendRow extends StatelessWidget {
         ),
         Text(formatTokenCount(tokens), style: valueStyle),
         if (percent != null) ...[
-          const SizedBox(width: 8),
+          SizedBox(width: scaledDim(context, 8)),
           SizedBox(
-            width: 46,
+            width: scaledDim(context, 46),
             child: Text(percent!, textAlign: TextAlign.end, style: valueStyle),
           ),
         ],
@@ -462,12 +463,12 @@ class ContextUsageBreakdown extends StatelessWidget {
       children: [
         ContextUsageSummaryHeader(snapshot: snapshot, trailing: headerTrailing),
         if (segments.isNotEmpty) ...[
-          const SizedBox(height: 10),
+          SizedBox(height: scaledDim(context, 10)),
           ContextUsageStackedBar(
             key: const ValueKey('context-usage-stacked-bar'),
             snapshot: snapshot!,
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: scaledDim(context, 12)),
           ContextUsageLegend(snapshot: snapshot!),
         ],
       ],

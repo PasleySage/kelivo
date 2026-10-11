@@ -8,6 +8,7 @@ import '../../../icons/lucide_adapter.dart';
 import '../../../l10n/app_localizations.dart';
 import 'package:Kelivo/theme/app_semantic_colors.dart';
 import 'context_usage_header.dart';
+import '../../../utils/ui_scale.dart';
 
 /// Bottom sheet for mobile: compress context or clear context.
 class ContextManagementSheet extends StatelessWidget {
@@ -56,8 +57,8 @@ class ContextManagementSheet extends StatelessWidget {
         children: [
           // Drag handle
           Container(
-            width: 40,
-            height: 4,
+            width: scaledDim(context, 40),
+            height: scaledDim(context, 4),
             decoration: BoxDecoration(
               color: cs.onSurface.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(999),
