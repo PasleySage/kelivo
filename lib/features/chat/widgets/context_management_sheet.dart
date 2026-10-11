@@ -8,6 +8,7 @@ import '../../../shared/widgets/ios_tactile.dart';
 import 'package:Kelivo/theme/app_semantic_colors.dart';
 import '../../../shared/widgets/section_card.dart';
 import 'context_usage_header.dart';
+import '../../../utils/ui_scale.dart';
 
 /// Bottom sheet for mobile: compress context or clear context.
 class ContextManagementSheet extends StatelessWidget {
@@ -55,14 +56,14 @@ class ContextManagementSheet extends StatelessWidget {
         children: [
           // Drag handle
           Container(
-            width: 40,
-            height: 4,
+            width: scaledDim(context, 40),
+            height: scaledDim(context, 4),
             decoration: BoxDecoration(
               color: cs.onSurface.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(999),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: scaledDim(context, 16)),
           Flexible(
             child: SingleChildScrollView(
               child: Column(
@@ -72,7 +73,7 @@ class ContextManagementSheet extends StatelessWidget {
                     conversationId: conversationId,
                     draftText: draftText,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _OptionRow(
                     icon: Lucide.package2,
                     label: l10n.compressContext,
@@ -82,7 +83,7 @@ class ContextManagementSheet extends StatelessWidget {
                       onCompress?.call();
                     },
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   _OptionRow(
                     icon: Lucide.Eraser,
                     label: l10n.bottomToolsSheetClearContext,
@@ -93,7 +94,7 @@ class ContextManagementSheet extends StatelessWidget {
                       onClear?.call();
                     },
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                 ],
               ),
             ),
@@ -134,8 +135,8 @@ class _OptionRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          Icon(icon, size: 22, color: cs.onSurface),
-          const SizedBox(width: 14),
+          Icon(icon, size: scaledDim(context, 22), color: cs.onSurface),
+          SizedBox(width: scaledDim(context, 14)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +149,7 @@ class _OptionRow extends StatelessWidget {
                     color: cs.onSurface,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: scaledDim(context, 2)),
                 Text(
                   description,
                   style: TextStyle(
@@ -160,7 +161,7 @@ class _OptionRow extends StatelessWidget {
             ),
           ),
           if (trailing != null) ...[
-            const SizedBox(width: 12),
+            SizedBox(width: scaledDim(context, 12)),
             Text(
               trailing!,
               style: TextStyle(

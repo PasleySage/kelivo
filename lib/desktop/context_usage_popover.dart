@@ -8,6 +8,7 @@ import '../icons/lucide_adapter.dart';
 import '../l10n/app_localizations.dart';
 import '../shared/widgets/context_usage_details.dart';
 import '../shared/widgets/ios_tactile.dart';
+import '../utils/ui_scale.dart';
 import '../theme/app_font_weights.dart';
 import 'desktop_glass_popover.dart';
 import 'model_spec_edit_dialog.dart';
@@ -88,7 +89,7 @@ class _ContextUsagePopoverContent extends StatelessWidget {
 
     return ConstrainedBox(
       key: contextUsagePopoverKey,
-      constraints: const BoxConstraints(maxHeight: 420),
+      constraints: BoxConstraints(maxHeight: scaledDim(context, 420)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         child: Column(
@@ -101,12 +102,12 @@ class _ContextUsagePopoverContent extends StatelessWidget {
                 tooltip: l10n.contextUsageRefresh,
                 semanticLabel: l10n.contextUsageRefresh,
                 icon: Lucide.RefreshCw,
-                size: 16,
+                size: scaledDim(context, 16),
                 onTap: () => usage.refresh(conversationId, force: true),
               ),
             ),
             if (showSetWindow) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: scaledDim(context, 8)),
               _ActionRow(
                 key: const ValueKey('context-usage-set-window'),
                 icon: Lucide.Settings2,
@@ -153,7 +154,7 @@ class _ActionRowState extends State<_ActionRow> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 120),
-          height: 40,
+          height: scaledDim(context, 40),
           padding: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             color: _hovered
@@ -163,8 +164,12 @@ class _ActionRowState extends State<_ActionRow> {
           ),
           child: Row(
             children: [
-              Icon(widget.icon, size: 16, color: cs.onSurface),
-              const SizedBox(width: 8),
+              Icon(
+                widget.icon,
+                size: scaledDim(context, 16),
+                color: cs.onSurface,
+              ),
+              SizedBox(width: scaledDim(context, 8)),
               Expanded(
                 child: Text(
                   widget.label,

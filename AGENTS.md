@@ -22,7 +22,32 @@ dart analyze --fatal-infos lib test         # zero warnings, zero infos
 flutter test                                # all unit tests green
 ```
 
+Then sweep for leftovers from this round of work — debug prints, temporary
+scripts or mocks, hardcoded placeholder data, temporary flags, and any code
+kept only for debugging. Delete what is clearly scratch; keep real business
+code, regression tests, fixtures, and logs you are still relying on. List
+anything ambiguous (path, purpose, risk) instead of deciding for the user.
+
 CI (`pr-check.yml`) enforces the same gates on every PR.
+
+## Fixed boxes must scale
+
+Flutter scales text through the global `TextScaler` but leaves container
+geometry alone, so a literal box wrapped around scaled text wraps or clips at
+145% and above. Wrap geometry in `scaledDim(context, n)` (`lib/utils/ui_scale.dart`,
+`lib/utils/avatar_scale.dart`) and keep the `fontSize` literal — the framework
+already multiplies it. Pinning the text (`maxLines: 1` + `softWrap: false`) is
+the other accepted fix.
+
+Every upstream release lands new UI written with bare literals, so sweep the
+files a version adds before pushing:
+
+```bash
+grep -nE 'SizedBox\((width|height):\s*\d|\b(width|height):\s*\d+,|\bsize:\s*\d+,' <file.dart>
+```
+
+The pre-push gate (`deploy/pre_push_check.ps1`, check `[5]`) audits added lines
+for this and blocks the push.
 
 ## Benchmarks are not tests
 
