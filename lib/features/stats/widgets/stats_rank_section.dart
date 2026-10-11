@@ -252,13 +252,14 @@ class _RankRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final ts = MediaQuery.textScalerOf(context);
-    final rowHeight = ts.scale(34.0);
     final ratio = maxValue <= 0 ? 0.0 : item.value / maxValue;
     final widthFactor = (0.36 + ratio * 0.64).clamp(0.36, 1.0);
     final fillColor = context.appColors.surfaceFill;
     final leading = leadingBuilder?.call(context, item);
 
-    final rowHeight = item.cost == null ? 34.0 : 42.0;
+    // Rows grow when a cost line is present; scale both cases so the fixed
+    // height budget tracks the ambient text scaler.
+    final rowHeight = ts.scale(item.cost == null ? 34.0 : 42.0);
     return Row(
       children: [
         Expanded(
@@ -346,7 +347,6 @@ class _RankRow extends StatelessWidget {
                   ),
                 ),
             ],
-          ),
           ),
         ),
       ],

@@ -92,7 +92,7 @@ void main() {
                 chatService: ChatService(),
                 businessRepository: repository,
               ).prepareBackupFile(
-                const WebDavConfig(includeChats: false, includeFiles: true),
+                const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
               );
 
           final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
@@ -153,7 +153,7 @@ void main() {
                 chatService: ChatService(),
                 businessRepository: repository,
               ).prepareBackupFile(
-                const WebDavConfig(includeChats: false, includeFiles: false),
+                const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats, BackupCategory.files})),
               );
 
           final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
@@ -206,7 +206,7 @@ void main() {
           businessRepository: repository,
         );
         backup = await dataSync.prepareBackupFile(
-          const WebDavConfig(includeChats: false, includeFiles: true),
+          const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
         );
 
         // Simulate a wiped device: remove the live skills directory.
@@ -215,7 +215,7 @@ void main() {
 
         await dataSync.restoreFromLocalFile(
           backup,
-          const WebDavConfig(includeChats: false, includeFiles: true),
+          const WebDavConfig(scope: BackupScope(excluded: {BackupCategory.chats})),
         );
 
         final restored = File('${root.path}/skills/restore-me.json');
