@@ -8,6 +8,7 @@ import '../../../icons/lucide_adapter.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import '../../../core/providers/settings_provider.dart';
+import '../../../utils/ui_scale.dart';
 import 'auto_retry_page.dart';
 import 'google_fonts_picker_page.dart';
 import 'image_settings_page.dart';
@@ -640,7 +641,7 @@ class _DisplaySettingsPageState extends State<DisplaySettingsPage> {
                             visualDensity: VisualDensity.compact,
                             icon: Icon(
                               Lucide.RotateCcw,
-                              size: 18,
+                              size: scaledDim(context, 18),
                               color: cs.onSurface.withValues(alpha: 0.7),
                             ),
                             // Reset to the default 100% scale.
