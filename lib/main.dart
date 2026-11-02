@@ -34,7 +34,6 @@ import 'core/providers/mcp_provider.dart';
 import 'core/providers/tts_provider.dart';
 import 'core/providers/asr_provider.dart';
 import 'core/providers/assistant_provider.dart';
-import 'core/providers/skill_provider.dart';
 import 'core/providers/tag_provider.dart';
 import 'core/providers/update_provider.dart';
 import 'core/providers/quick_phrase_provider.dart';
@@ -798,7 +797,7 @@ class MyApp extends StatelessWidget {
             chatService: ctx.read<ChatService>(),
           ),
         ),
-        ChangeNotifierProvider(create: (_) => SkillProvider()),
+        // KelivoMeow 的技能栈已移除，改用上游工作区技能。
         ChangeNotifierProvider(
           create: (ctx) {
             final assistants = ctx.read<AssistantProvider>();

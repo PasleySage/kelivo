@@ -12654,6 +12654,73 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mcpOAuthExchangingToken => '正在完成登录…';
 
   @override
+  String get markdownPlaygroundTitle => 'Markdown Playground';
+
+  @override
+  String get markdownPlaygroundSource => 'Markdown 源码';
+
+  @override
+  String get markdownPlaygroundPreview => '渲染预览';
+
+  @override
+  String get markdownPlaygroundAst => 'AST 语法树';
+
+  @override
+  String get markdownPlaygroundPlay => '逐字输入';
+
+  @override
+  String get markdownPlaygroundPause => '暂停';
+
+  @override
+  String get markdownPlaygroundResume => '继续';
+
+  @override
+  String get markdownPlaygroundShowAll => '显示全文';
+
+  @override
+  String get markdownPlaygroundWidth => '预览宽度';
+
+  @override
+  String get markdownPlaygroundTheme => '预览主题';
+
+  @override
+  String get markdownPlaygroundPlain => '选区纯文本';
+
+  @override
+  String get markdownPlaygroundMarkdown => '选区 Markdown';
+
+  @override
+  String get markdownPlaygroundSelectionHint => '在预览中选择文本，查看复制结果。';
+
+  @override
+  String get markdownPlaygroundEmpty => '输入 Markdown 开始预览。';
+
+  @override
+  String markdownPlaygroundProgress(int shown, int total) {
+    return '已输入 $shown / $total';
+  }
+
+  @override
+  String get markdownCopyMarkdownAction => '复制为 Markdown';
+
+  @override
+  String get markdownCopyCsvAction => '复制 CSV';
+
+  @override
+  String get markdownCopyImageAction => '复制图片';
+
+  @override
+  String get markdownCodeLabel => '代码';
+
+  @override
+  String get markdownDetailsLabel => '详情';
+
+  @override
+  String markdownMoreRows(int count) {
+    return '再显示 $count 行';
+  }
+
+  @override
   String get homePageAudioAttachmentUnsupported =>
       '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
 
@@ -12829,94 +12896,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String skillsImportedCount(int count) {
     return '已导入 $count 个技能';
-  }
-
-  @override
-  String skillsTriggersLine(String keywords) {
-    return '触发关键词：$keywords';
-  }
-
-  @override
-  String skillsDeleteSelected(int count) {
-    return '删除（\$count）';
-  }
-  @override
-  String skillsDeleteSelectedConfirm(int count) {
-    return '确定要删除选中的 \$count 个技能吗？此操作不可撤销。';
-  }
-  @override
-  String skillsDeleteConfirmMessage(String name) {
-    return '确定要删除技能「\${name}」吗？此操作不可撤销。';
-  }
-
-  @override
-  String get mcpOAuthExchangingToken => '正在完成登录…';
-
-  @override
-  String get markdownPlaygroundTitle => 'Markdown Playground';
-
-  @override
-  String get markdownPlaygroundSource => 'Markdown 源码';
-
-  @override
-  String get markdownPlaygroundPreview => '渲染预览';
-
-  @override
-  String get markdownPlaygroundAst => 'AST 语法树';
-
-  @override
-  String get markdownPlaygroundPlay => '逐字输入';
-
-  @override
-  String get markdownPlaygroundPause => '暂停';
-
-  @override
-  String get markdownPlaygroundResume => '继续';
-
-  @override
-  String get markdownPlaygroundShowAll => '显示全文';
-
-  @override
-  String get markdownPlaygroundWidth => '预览宽度';
-
-  @override
-  String get markdownPlaygroundTheme => '预览主题';
-
-  @override
-  String get markdownPlaygroundPlain => '选区纯文本';
-
-  @override
-  String get markdownPlaygroundMarkdown => '选区 Markdown';
-
-  @override
-  String get markdownPlaygroundSelectionHint => '在预览中选择文本，查看复制结果。';
-
-  @override
-  String get markdownPlaygroundEmpty => '输入 Markdown 开始预览。';
-
-  @override
-  String markdownPlaygroundProgress(int shown, int total) {
-    return '已输入 $shown / $total';
-  }
-
-  @override
-  String get markdownCopyMarkdownAction => '复制为 Markdown';
-
-  @override
-  String get markdownCopyCsvAction => '复制 CSV';
-
-  @override
-  String get markdownCopyImageAction => '复制图片';
-
-  @override
-  String get markdownCodeLabel => '代码';
-
-  @override
-  String get markdownDetailsLabel => '详情';
-
-  @override
-  String markdownMoreRows(int count) {
-    return '再显示 $count 行';
   }
 
   @override
@@ -15270,6 +15249,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get imageContextUpdateFailed => '未能保存修改，请重试。';
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '触发关键词：$keywords';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hans`).
@@ -27915,6 +27899,184 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   }
 
   @override
+  String get homePageAudioAttachmentUnsupported =>
+      '当前模型不支持音频附件，请切换到支持音频输入的模型或移除音频文件后重试。';
+
+  @override
+  String get reasoningBudgetSheetOff => '关闭';
+
+  @override
+  String get reasoningBudgetSheetAuto => '自动';
+
+  @override
+  String get reasoningBudgetSheetLight => '轻度推理';
+
+  @override
+  String get reasoningBudgetSheetMedium => '中度推理';
+
+  @override
+  String get reasoningBudgetSheetHeavy => '重度推理';
+
+  @override
+  String get reasoningBudgetSheetXhigh => '极限推理';
+
+  @override
+  String get reasoningBudgetSheetMax => '全力推理';
+
+  @override
+  String reasoningBudgetSheetCurrentLevel(String level) {
+    return '当前档位：$level';
+  }
+
+  @override
+  String get reasoningBudgetSheetOffSubtitle => '关闭推理功能，直接回答';
+
+  @override
+  String get reasoningBudgetSheetAutoSubtitle => '由模型自动决定推理级别';
+
+  @override
+  String get reasoningBudgetSheetLightSubtitle => '使用少量推理来回答问题';
+
+  @override
+  String get reasoningBudgetSheetMediumSubtitle => '使用较多推理来回答问题';
+
+  @override
+  String get reasoningBudgetSheetHeavySubtitle => '使用大量推理来回答问题，适合复杂问题';
+
+  @override
+  String get reasoningBudgetSheetXhighSubtitle => '使用最大推理深度，适合最复杂的问题';
+
+  @override
+  String get reasoningBudgetSheetCustomLabel => '自定义推理预算';
+
+  @override
+  String get reasoningBudgetSheetCustomHint => '例如：2048 (-1 自动，0 关闭)';
+
+  @override
+  String modelDetailSheetModelIdDisabledHint(String modelId) {
+    return '$modelId';
+  }
+
+  @override
+  String get modelDetailSheetSearchTool => '搜索';
+
+  @override
+  String get modelDetailSheetSearchToolDescription => '启用 Google 搜索集成';
+
+  @override
+  String get modelDetailSheetModelIdExistsError => '模型 ID 已存在';
+
+  @override
+  String get reasoningBudgetSliderLow => 'Low';
+
+  @override
+  String get reasoningBudgetSliderMedium => 'Medium';
+
+  @override
+  String get reasoningBudgetSliderHigh => 'High';
+
+  @override
+  String get reasoningBudgetSliderXhigh => 'XHigh';
+
+  @override
+  String get reasoningBudgetSliderMax => 'Max';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字与正文同大';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
+      '开启后 Markdown 引用（>）内的文字不再被额外放大';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint => '当前供应商不支持这些内置工具。';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => '网页抓取';
+
+  @override
+  String get displaySettingsPageUiFontSizeTitle => '界面字体大小';
+
+  @override
+  String get displaySettingsPageInputFontSizeTitle => '输入框字体大小';
+
+  @override
+  String get assistantEditSkillsTab => '技能';
+
+  @override
+  String get assistantEditSkillsEmptyMessage => '还没有绑定技能。点击下方管理技能。';
+
+  @override
+  String get assistantEditManageSkillsButton => '管理技能';
+
+  @override
+  String get skillsAddTooltip => '新增技能';
+
+  @override
+  String get skillsEmptyMessage => '还没有技能，导入或新增一个吧。';
+
+  @override
+  String get skillsImportButton => '导入';
+
+  @override
+  String get skillsDeleteAction => '删除';
+
+  @override
+  String get skillsMultiSelect => '多选';
+
+  @override
+  String get skillsSelectAll => '全选';
+
+  @override
+  String get skillsSelectNone => '取消全选';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return '删除（$count）';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return '确定要删除选中的 $count 个技能吗？此操作不可撤销。';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return '确定要删除技能「$name」吗？此操作不可撤销。';
+  }
+
+  @override
+  String get skillsSaveButton => '保存';
+
+  @override
+  String get skillsNameLabel => '名称';
+
+  @override
+  String get skillsDescriptionLabel => '描述';
+
+  @override
+  String get skillsTriggerKeywordsLabel => '触发关键词';
+
+  @override
+  String get skillsTriggerKeywordsHint => '用逗号分隔，命中后自动启用该技能';
+
+  @override
+  String get skillsContentHint => '技能内容（注入到对话的提示词）';
+
+  @override
+  String get skillsNoValidImported => '没有可导入的技能';
+
+  @override
+  String skillsImportFailed(String error) {
+    return '导入失败：$error';
+  }
+
+  @override
+  String skillsImportedCount(int count) {
+    return '已导入 $count 个技能';
+  }
+
+  @override
   String get markdownNoteLabel => '备注';
 
   @override
@@ -30195,6 +30357,11 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   @override
   String get recoveryCopiesNeedUpdate =>
       '部分副本来自更新版本的 Kelivo，请升级 App 后再恢复。这些副本仍然保留。';
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '触发关键词：$keywords';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -42918,6 +43085,184 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
+  String get homePageAudioAttachmentUnsupported =>
+      '目前模型不支援音訊附件，請切換到支援音訊輸入的模型或移除音訊檔案後再試。';
+
+  @override
+  String get reasoningBudgetSheetOff => '關閉';
+
+  @override
+  String get reasoningBudgetSheetAuto => '自動';
+
+  @override
+  String get reasoningBudgetSheetLight => '輕度推理';
+
+  @override
+  String get reasoningBudgetSheetMedium => '中度推理';
+
+  @override
+  String get reasoningBudgetSheetHeavy => '重度推理';
+
+  @override
+  String get reasoningBudgetSheetXhigh => '極限推理';
+
+  @override
+  String get reasoningBudgetSheetMax => '全力推理';
+
+  @override
+  String reasoningBudgetSheetCurrentLevel(String level) {
+    return '目前檔位：$level';
+  }
+
+  @override
+  String get reasoningBudgetSheetOffSubtitle => '關閉推理功能，直接回答';
+
+  @override
+  String get reasoningBudgetSheetAutoSubtitle => '由模型自動決定推理級別';
+
+  @override
+  String get reasoningBudgetSheetLightSubtitle => '使用少量推理來回答問題';
+
+  @override
+  String get reasoningBudgetSheetMediumSubtitle => '使用較多推理來回答問題';
+
+  @override
+  String get reasoningBudgetSheetHeavySubtitle => '使用大量推理來回答問題，適合複雜問題';
+
+  @override
+  String get reasoningBudgetSheetXhighSubtitle => '使用最大推理深度，適合最複雜的問題';
+
+  @override
+  String get reasoningBudgetSheetCustomLabel => '自訂推理預算';
+
+  @override
+  String get reasoningBudgetSheetCustomHint => '例如：2048 (-1 自動，0 關閉)';
+
+  @override
+  String modelDetailSheetModelIdDisabledHint(String modelId) {
+    return '$modelId';
+  }
+
+  @override
+  String get modelDetailSheetSearchTool => '搜尋';
+
+  @override
+  String get modelDetailSheetSearchToolDescription => '啟用 Google 搜尋整合';
+
+  @override
+  String get modelDetailSheetModelIdExistsError => '模型 ID 已存在';
+
+  @override
+  String get reasoningBudgetSliderLow => 'Low';
+
+  @override
+  String get reasoningBudgetSliderMedium => 'Medium';
+
+  @override
+  String get reasoningBudgetSliderHigh => 'High';
+
+  @override
+  String get reasoningBudgetSliderXhigh => 'XHigh';
+
+  @override
+  String get reasoningBudgetSliderMax => 'Max';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字與正文同大';
+
+  @override
+  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
+      '開啟後 Markdown 引用（>）內的文字不再被額外放大';
+
+  @override
+  String get modelDetailSheetBuiltinToolsUnsupportedHint => '目前供應商不支援這些內建工具。';
+
+  @override
+  String get modelDetailSheetOpenrouterWebFetchTool => '網頁擷取';
+
+  @override
+  String get displaySettingsPageUiFontSizeTitle => '介面字體大小';
+
+  @override
+  String get displaySettingsPageInputFontSizeTitle => '輸入框字體大小';
+
+  @override
+  String get assistantEditSkillsTab => '技能';
+
+  @override
+  String get assistantEditSkillsEmptyMessage => '還沒有綁定技能。點擊下方管理技能。';
+
+  @override
+  String get assistantEditManageSkillsButton => '管理技能';
+
+  @override
+  String get skillsAddTooltip => '新增技能';
+
+  @override
+  String get skillsEmptyMessage => '還沒有技能，匯入或新增一個吧。';
+
+  @override
+  String get skillsImportButton => '匯入';
+
+  @override
+  String get skillsDeleteAction => '刪除';
+
+  @override
+  String get skillsMultiSelect => '多選';
+
+  @override
+  String get skillsSelectAll => '全選';
+
+  @override
+  String get skillsSelectNone => '取消全選';
+
+  @override
+  String skillsDeleteSelected(Object count) {
+    return '刪除（$count）';
+  }
+
+  @override
+  String skillsDeleteSelectedConfirm(Object count) {
+    return '確定要刪除選中的 $count 個技能嗎？此操作無法復原。';
+  }
+
+  @override
+  String skillsDeleteConfirmMessage(Object name) {
+    return '確定要刪除技能「$name」嗎？此操作無法復原。';
+  }
+
+  @override
+  String get skillsSaveButton => '儲存';
+
+  @override
+  String get skillsNameLabel => '名稱';
+
+  @override
+  String get skillsDescriptionLabel => '描述';
+
+  @override
+  String get skillsTriggerKeywordsLabel => '觸發關鍵字';
+
+  @override
+  String get skillsTriggerKeywordsHint => '用逗號分隔，命中後自動啟用該技能';
+
+  @override
+  String get skillsContentHint => '技能內容（注入到對話的提示詞）';
+
+  @override
+  String get skillsNoValidImported => '沒有可匯入的技能';
+
+  @override
+  String skillsImportFailed(String error) {
+    return '匯入失敗：$error';
+  }
+
+  @override
+  String skillsImportedCount(int count) {
+    return '已匯入 $count 個技能';
+  }
+
+  @override
   String get markdownNoteLabel => '備註';
 
   @override
@@ -45201,4 +45546,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get recoveryCopiesNeedUpdate =>
       '部分副本來自更新版本的 Kelivo，請升級 App 後再還原。這些副本仍然保留。';
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '觸發關鍵字：$keywords';
+  }
 }

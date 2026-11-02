@@ -179,7 +179,6 @@ double _estimateMenuWidth(
   // and width bounds scale with the user's text-scaler so menu items stay
   // legible at chatFontScale 150%+ (otherwise the layout was computed at 14.5px
   // and the rendered text at 21.75px overflowed, wrapping the last glyph).
-  final double fontScale = MediaQuery.textScalerOf(context).scale(1.0);
   double maxText = 0;
   final textStyle = Theme.of(context).textTheme.bodyMedium!.copyWith(
     fontSize: 14.5,

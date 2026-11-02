@@ -2665,8 +2665,6 @@ class _ToggleRowAssistantMarkdown extends StatelessWidget {
 
 class _ToggleRowGenUiHeader extends StatelessWidget {
   const _ToggleRowGenUiHeader();
-class _ToggleRowMarkdownBlockquoteSameSize extends StatelessWidget {
-  const _ToggleRowMarkdownBlockquoteSameSize();
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -2677,6 +2675,17 @@ class _ToggleRowMarkdownBlockquoteSameSize extends StatelessWidget {
       value: sp.showGenUiHeader,
       onChanged: (value) =>
           context.read<SettingsProvider>().setShowGenUiHeader(value),
+    );
+  }
+}
+
+class _ToggleRowMarkdownBlockquoteSameSize extends StatelessWidget {
+  const _ToggleRowMarkdownBlockquoteSameSize();
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final sp = context.watch<SettingsProvider>();
+    return _ToggleRow(
       label: l10n.displaySettingsPageMarkdownBlockquoteSameSizeTitle,
       subtitle: l10n.displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
       value: sp.markdownBlockquoteSameSize,

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../core/models/assistant.dart';
 import '../../../shared/widgets/emoji_text.dart';
 import '../../../shared/widgets/avatar_image.dart';
-import '../../../utils/avatar_cache.dart';
 import '../../../utils/avatar_scale.dart';
-import '../../../utils/sandbox_path_resolver.dart';
 import '../../../theme/app_font_weights.dart';
 
 class AssistantAvatar extends StatelessWidget {

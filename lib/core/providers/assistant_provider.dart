@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../../utils/sandbox_path_resolver.dart';
 import '../database/business_preferences.dart';
@@ -23,10 +22,6 @@ class AssistantProvider extends ChangeNotifier {
   static const String _orphanedAssistantKey =
       'orphaned_conversations_assistant_id_v1';
 
-  /// Local-only one-shot guard for the legacy `skillIds` → `roleSkillIds`
-  /// migration (see [_migrateLegacyRoleSkills]).
-  static const String _roleSkillsMigratedKey =
-      'kelivomeow_role_skills_migrated_v1';
 
   final BusinessPreferences preferences;
   final List<Assistant> _assistants = <Assistant>[];
@@ -117,16 +112,6 @@ class AssistantProvider extends ChangeNotifier {
     _isLoaded = true;
     notifyListeners();
 
-    // KelivoMeow one-time migration: role-skill bindings used to live under the
-    // legacy `skillIds` key; upstream later reused that key name for workspace
-    // skills, so move the old values to `roleSkillIds` exactly once. Deferred to
-    // the very end of the load on purpose — it awaits SharedPreferences, and the
-    // synchronous portion above (decode, current-assistant restore, prompt
-    // templates) must stay synchronous because callers read that state right
-    // after constructing the provider.
-    if (raw != null && raw.isNotEmpty) {
-      await _migrateRoleSkills(raw);
-    }
   }
 
   Future<void> _ensureOrphanedAssistant() async {
@@ -148,61 +133,6 @@ class AssistantProvider extends ChangeNotifier {
       for (final e in decoded)
         Assistant.fromJson((e as Map).cast<String, dynamic>()),
     ];
-  /// Moves role-skill bindings that older builds stored under the legacy
-  /// `skillIds` key into `roleSkillIds`. Returns true when anything changed.
-  ///
-  /// Only assistants that have no `roleSkillIds` of their own are considered,
-  /// and the caller runs this behind [_roleSkillsMigratedKey] so it happens at
-  /// most once per install.
-  bool _migrateLegacyRoleSkills(String raw) {
-    var migrated = false;
-    try {
-      final decoded = jsonDecode(raw);
-      if (decoded is! List) return false;
-      for (final item in decoded) {
-        if (item is! Map) continue;
-        final existing = item['roleSkillIds'];
-        if (existing is List && existing.isNotEmpty) continue;
-        final legacy = item['skillIds'];
-        if (legacy is! List || legacy.isEmpty) continue;
-        final id = item['id']?.toString();
-        if (id == null) continue;
-        final index = _assistants.indexWhere((a) => a.id == id);
-        if (index < 0) continue;
-        _assistants[index] = _assistants[index].copyWith(
-          roleSkillIds: [for (final e in legacy) e.toString()],
-        );
-        migrated = true;
-      }
-    } catch (_) {
-      return false;
-    }
-    return migrated;
-  }
-
-  /// Runs the guarded one-shot `skillIds` -> `roleSkillIds` migration.
-  ///
-  /// The guard flag is registered as a localOnly business key, so it lives in
-  /// SharedPreferences: `BusinessPreferences` rejects local-only keys.
-  Future<void> _migrateRoleSkills(String raw) async {
-    var migrated = false;
-    try {
-      final localPreferences = await SharedPreferences.getInstance();
-      final alreadyMigrated =
-          localPreferences.getBool(_roleSkillsMigratedKey) ?? false;
-      if (alreadyMigrated) return;
-      migrated = _migrateLegacyRoleSkills(raw);
-      await localPreferences.setBool(_roleSkillsMigratedKey, true);
-    } catch (_) {
-      // Local storage unavailable (e.g. tests without a mock): the migration is
-      // idempotent, so running it is safe.
-      migrated = _migrateLegacyRoleSkills(raw);
-    }
-    if (!migrated) return;
-    try {
-      await _persist();
-    } catch (_) {}
-    notifyListeners();
   }
 
   Assistant _defaultAssistant(AppLocalizations l10n) => Assistant(

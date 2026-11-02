@@ -10,8 +10,6 @@ import '../../../core/models/compress_context_options.dart';
 import '../../../core/models/conversation.dart';
 import '../../../core/services/chat/context_compression_service.dart';
 import '../../../core/providers/assistant_provider.dart';
-import '../../../core/providers/skill_provider.dart';
-import '../../../core/services/skills/skill_prompt_builder.dart';
 import '../../../core/providers/settings_provider.dart';
 import '../../../core/services/api/chat_api_service.dart';
 import '../../../core/services/chat/chat_service.dart';
@@ -1222,24 +1220,11 @@ class HomeViewModel extends ChangeNotifier {
     resetFileProcessingIndicator();
 
     final ap = _contextProvider.read<AssistantProvider>();
-    SkillProvider? sp;
-    try {
-      sp = _contextProvider.read<SkillProvider>();
-    } catch (_) {
-      sp = null;
-    }
     try {
       await ap.loaded;
     } catch (e) {
       onError?.call(e.toString());
       return null;
-    }
-try {
-      await sp?.initialize();
-    } catch (_) {
-      // The skill provider may be absent (e.g. in tests) or degraded; skill
-      // injection is optional and must never block conversation creation.
-      sp = null;
     }
     if (!_contextProvider.mounted) return null;
     final targetAssistantId = assistantId ?? ap.currentAssistantId;
@@ -1270,29 +1255,10 @@ try {
 
 if (restoringEntry) return conversation;
 
-    // Inject assistant preset messages + bound skills (as a system message)
+    // Inject assistant preset messages (as system/user messages)
     try {
-      String? skillSystem;
-      try {
-        final skills = sp?.resolveActiveSkills(
-          explicitSkillIds: a?.roleSkillIds ?? const <String>[],
-        );
-        if (skills != null && skills.isNotEmpty) {
-          skillSystem = buildSkillSystemText(skills);
-        }
-      } catch (e, st) {
-        // Graceful degradation (G4): skill resolution/injection must never take
-        // down conversation creation. Log the failure instead of swallowing it
-        // silently so issues are diagnosable; the chat proceeds without skills.
-        FlutterLogger.log(
-          'Skill injection failed, skipping: $e\n$st',
-          tag: 'Skill',
-        );
-        skillSystem = null;
-      }
       final presets = ap.getPresetMessagesForAssistant(a?.id);
       final allMessages = <Map<String, String>>[
-        if (skillSystem != null) {'role': 'system', 'content': skillSystem},
         ...presets,
       ];
       if (allMessages.isNotEmpty && currentConversation != null) {

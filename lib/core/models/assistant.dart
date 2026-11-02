@@ -98,8 +98,7 @@ class Assistant {
   final List<PresetMessage> presetMessages;
   // Regex replacement rules
   final List<AssistantRegex> regexRules;
-  final List<String>
-  roleSkillIds; // KelivoMeow role-skill bindings (injected as system prompt)
+
 
   const Assistant({
     required this.id,
@@ -149,7 +148,7 @@ class Assistant {
     this.useIso8601TimeFormat = false,
     this.presetMessages = const <PresetMessage>[],
     this.regexRules = const <AssistantRegex>[],
-    this.roleSkillIds = const <String>[],
+
   });
 
   Assistant copyWith({
@@ -199,7 +198,7 @@ class Assistant {
     bool? useIso8601TimeFormat,
     List<PresetMessage>? presetMessages,
     List<AssistantRegex>? regexRules,
-    List<String>? roleSkillIds,
+
     bool clearChatModel = false,
     bool clearDefaultWorkspaceId = false,
     bool clearSkillIds = false,
@@ -284,7 +283,7 @@ class Assistant {
       useIso8601TimeFormat: useIso8601TimeFormat ?? this.useIso8601TimeFormat,
       presetMessages: presetMessages ?? this.presetMessages,
       regexRules: regexRules ?? this.regexRules,
-      roleSkillIds: roleSkillIds ?? this.roleSkillIds,
+
     );
   }
 
@@ -335,7 +334,7 @@ class Assistant {
     'useIso8601TimeFormat': useIso8601TimeFormat,
     'presetMessages': PresetMessage.encodeList(presetMessages),
     'regexRules': regexRules.map((e) => e.toJson()).toList(),
-    'roleSkillIds': roleSkillIds,
+
   };
 
   static ReasoningRequest? _readReasoning(Object? value) {
@@ -487,8 +486,7 @@ class Assistant {
       }
       return const <AssistantRegex>[];
     })(),
-    roleSkillIds:
-        (json['roleSkillIds'] as List?)?.cast<String>() ?? const <String>[],
+
   );
 
   static String memorySmartAddModeToString(MemorySmartAddMode mode) {

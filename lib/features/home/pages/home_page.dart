@@ -1292,12 +1292,9 @@ class _HomePageState extends State<HomePage>
       onForkConversation: _controller.isTemporaryConversation
           ? null
           : (message) => _controller.forkConversation(message),
-      onShareMessage: (index, messages) =>
-          _controller.shareMessage(index, messages),
       onSelectMessages: (index, messages) => _controller.startMessageSelection(
         messageIndex: index,
         messageList: messages,
-        mode: ChatSelectionMode.delete,
       ),
       onSpeakMessage: (message) => _controller.speakMessage(message),
       onSuggestionTap: (suggestion) => _controller.sendSuggestion(suggestion),

@@ -38,9 +38,7 @@ import '../../../core/models/memory_entry.dart';
 import '../../../core/providers/memory_provider.dart';
 import '../../../core/providers/memory_provider_v2.dart';
 import '../../../core/providers/settings_provider.dart';
-import '../../../core/providers/skill_provider.dart';
-import '../../../core/models/skill.dart';
-import '../../../features/skills/pages/skills_page.dart';
+
 import '../../../core/services/chat/chat_service.dart';
 import '../../../core/services/memory/memory_gatekeeper.dart';
 import '../../../core/services/memory/memory_pipeline.dart';
@@ -88,7 +86,7 @@ part 'assistant_settings_edit_local_tools_tab.dart';
 part 'assistant_settings_edit_mcp_tab.dart';
 part 'assistant_settings_edit_quick_phrase_tab.dart';
 part 'assistant_settings_edit_custom_request_tab.dart';
-part 'assistant_settings_edit_role_skills_tab.dart';
+
 
 const int _contextMessageMin = Assistant.minContextMessageSize;
 const int _contextMessageMax = Assistant.maxContextMessageSize;
@@ -167,12 +165,7 @@ List<_AssistantEditTabSpec> _assistantEditTabSpecs(
       icon: Lucide.CaseSensitive,
       child: AssistantRegexTab(assistantId: assistantId),
     ),
-    _AssistantEditTabSpec(
-      id: assistantEditRoleSkills,
-      label: l10n.assistantEditSkillsTab,
-      icon: Lucide.Sparkles,
-      child: _RoleSkillsTab(assistantId: assistantId),
-    ),
+
   ];
 }
 
@@ -198,7 +191,7 @@ List<_AssistantEditTabSpec> _visibleAssistantEditTabs(
   return visibleAssistantEditTabIds(
     savedOrder: settings.mobileAssistantEditTabOrder,
     hiddenIds: settings.hiddenMobileAssistantEditTabs,
-    protectedNewIds: const [assistantEditRoleSkills],
+    protectedNewIds: const [],
   ).map((id) => byId[id]).nonNulls.toList();
 }
 
@@ -1279,32 +1272,6 @@ class _TactileIconButtonState extends State<_TactileIconButton> {
   }
 }
 
-Widget _iosSectionCard({required List<Widget> children}) {
-  return Builder(
-    builder: (context) {
-      final theme = Theme.of(context);
-      final cs = theme.colorScheme;
-      final isDark = theme.brightness == Brightness.dark;
-      final Color bg = context.appColors.surfaceCard;
-      return Container(
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: cs.outlineVariant.withValues(alpha: isDark ? 0.08 : 0.06),
-            width: 0.6,
-          ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Column(children: children),
-        ),
-      );
-    },
-  );
-}
-
 Widget _iosDivider(BuildContext context) {
   final cs = Theme.of(context).colorScheme;
   return Divider(
@@ -1685,7 +1652,7 @@ enum _AssistantDesktopMenu {
   quick,
   custom,
   regex,
-  roleSkills,
+
 }
 
 Future<void> openAssistantBasicSettings(
@@ -1826,8 +1793,7 @@ class _DesktopAssistantDialogShellState
                     return AssistantRegexDesktopPane(
                       assistantId: widget.assistantId,
                     );
-                  case _AssistantDesktopMenu.roleSkills:
-                    return _SkillsTab(assistantId: widget.assistantId);
+
                 }
               }(),
             ),
@@ -1863,7 +1829,7 @@ class _DesktopAssistantMenuState extends State<_DesktopAssistantMenu> {
       (_AssistantDesktopMenu.quick, l10n.assistantEditPageQuickPhraseTab),
       (_AssistantDesktopMenu.custom, l10n.assistantEditPageCustomTab),
       (_AssistantDesktopMenu.regex, l10n.assistantEditPageRegexTab),
-      (_AssistantDesktopMenu.roleSkills, l10n.assistantEditSkillsTab),
+
     ];
     return SizedBox(
       width: 220,
