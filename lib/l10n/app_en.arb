@@ -6044,8 +6044,6 @@
   "reasoningBudgetSliderHigh": "High",
   "reasoningBudgetSliderXhigh": "XHigh",
   "reasoningBudgetSliderMax": "Max",
-  "displaySettingsPageMarkdownBlockquoteSameSizeTitle": "Blockquote same size as body",
-  "displaySettingsPageMarkdownBlockquoteSameSizeSubtitle": "Keep Markdown blockquote (>) text the same size as body text",
   "modelDetailSheetBuiltinToolsUnsupportedHint": "Current provider does not support these built-in tools.",
   "modelDetailSheetOpenrouterWebFetchTool": "Web Fetch",
   "displaySettingsPageUiFontSizeTitle": "UI Font Size",

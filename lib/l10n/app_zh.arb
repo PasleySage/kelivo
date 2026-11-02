@@ -4818,8 +4818,6 @@
   "modelDetailSheetOpenrouterWebFetchTool": "网页抓取",
   "displaySettingsPageUiFontSizeTitle": "界面字体大小",
   "displaySettingsPageInputFontSizeTitle": "输入框字体大小",
-  "displaySettingsPageMarkdownBlockquoteSameSizeTitle": "引用文字与正文同大",
-  "displaySettingsPageMarkdownBlockquoteSameSizeSubtitle": "开启后 Markdown 引用（>）内的文字不再被额外放大",
   "assistantEditSkillsTab": "技能",
   "assistantEditSkillsEmptyMessage": "还没有绑定技能。点击下方管理技能。",
   "assistantEditManageSkillsButton": "管理技能",

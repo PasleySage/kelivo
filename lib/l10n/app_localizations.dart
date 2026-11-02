@@ -23934,18 +23934,6 @@ abstract class AppLocalizations {
   /// **'Max'**
   String get reasoningBudgetSliderMax;
 
-  /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Blockquote same size as body'**
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle;
-
-  /// No description provided for @displaySettingsPageMarkdownBlockquoteSameSizeSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep Markdown blockquote (>) text the same size as body text'**
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle;
-
   /// No description provided for @modelDetailSheetBuiltinToolsUnsupportedHint.
   ///
   /// In en, this message translates to:

@@ -1650,17 +1650,6 @@ class RenderingSettingsPage extends StatelessWidget {
                 onChanged: (value) =>
                     context.read<SettingsProvider>().setShowGenUiHeader(value),
               ),
-              _iosSwitchRow(
-                context,
-                icon: Lucide.TextSelect,
-                label: l10n.displaySettingsPageMarkdownBlockquoteSameSizeTitle,
-                subtitle:
-                    l10n.displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
-                value: sp.markdownBlockquoteSameSize,
-                onChanged: (v) => context
-                    .read<SettingsProvider>()
-                    .setMarkdownBlockquoteSameSize(v),
-              ),
               _iosDivider(context),
               _iosSwitchRow(
                 context,

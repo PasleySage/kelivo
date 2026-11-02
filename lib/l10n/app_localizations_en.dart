@@ -13428,14 +13428,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reasoningBudgetSliderMax => 'Max';
 
   @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle =>
-      'Blockquote same size as body';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
-      'Keep Markdown blockquote (>) text the same size as body text';
-
-  @override
   String get modelDetailSheetBuiltinToolsUnsupportedHint =>
       'Current provider does not support these built-in tools.';
 

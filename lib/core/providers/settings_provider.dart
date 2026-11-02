@@ -306,8 +306,6 @@ class SettingsProvider extends ChangeNotifier {
       'display_show_genui_header_v1';
   static const String _displayEnableAssistantMarkdownKey =
       'display_enable_assistant_markdown_v1';
-  static const String _displayMarkdownBlockquoteSameSizeKey =
-      'display_markdown_blockquote_same_size_v1';
   static const String _displayShowChatListDateKey =
       'display_show_chat_list_date_v1';
   static const String _imageCropperEnabledKey = 'image_cropper_enabled_v1';
@@ -1162,8 +1160,6 @@ class SettingsProvider extends ChangeNotifier {
     _showGenUiHeader = prefs.getBool(_displayShowGenUiHeaderKey) ?? true;
     _enableAssistantMarkdown =
         prefs.getBool(_displayEnableAssistantMarkdownKey) ?? true;
-    _markdownBlockquoteSameSize =
-        prefs.getBool(_displayMarkdownBlockquoteSameSizeKey) ?? true;
     _showChatListDate = prefs.getBool(_displayShowChatListDateKey) ?? false;
     _imageCropperEnabled = prefs.getBool(_imageCropperEnabledKey) ?? false;
     _imageUploadQuality = switch (prefs.getString(_imageUploadQualityKey)) {
@@ -5288,17 +5284,6 @@ Requirements:
     await prefs.setBool(_displayEnableAssistantMarkdownKey, v);
   }
 
-  // Display: keep blockquote text the same size as body text
-  bool _markdownBlockquoteSameSize = true;
-  bool get markdownBlockquoteSameSize => _markdownBlockquoteSameSize;
-  Future<void> setMarkdownBlockquoteSameSize(bool v) async {
-    if (_markdownBlockquoteSameSize == v) return;
-    _markdownBlockquoteSameSize = v;
-    notifyListeners();
-    final prefs = _preferences;
-    await prefs.setBool(_displayMarkdownBlockquoteSameSizeKey, v);
-  }
-
   // Display: show chat list date
   bool _showChatListDate = false;
   bool get showChatListDate => _showChatListDate;
@@ -5993,7 +5978,6 @@ Requirements:
     copy._enableReasoningMarkdown = _enableReasoningMarkdown;
     copy._enableAssistantMarkdown = _enableAssistantMarkdown;
     copy._showGenUiHeader = _showGenUiHeader;
-    copy._markdownBlockquoteSameSize = _markdownBlockquoteSameSize;
     copy._showChatListDate = _showChatListDate;
     copy._autoCollapseCodeBlock = _autoCollapseCodeBlock;
     copy._autoCollapseCodeBlockLines = _autoCollapseCodeBlockLines;

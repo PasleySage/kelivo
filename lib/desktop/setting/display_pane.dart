@@ -165,8 +165,6 @@ class _DisplaySettingsBody extends StatelessWidget {
                   _ToggleRowAssistantMarkdown(),
                   _ToggleRowGenUiHeader(),
                   _RowDivider(),
-                  _ToggleRowMarkdownBlockquoteSameSize(),
-                  _RowDivider(),
                   _AutoCollapseCodeBlocksSection(),
                 ],
               ),
@@ -2679,22 +2677,6 @@ class _ToggleRowGenUiHeader extends StatelessWidget {
   }
 }
 
-class _ToggleRowMarkdownBlockquoteSameSize extends StatelessWidget {
-  const _ToggleRowMarkdownBlockquoteSameSize();
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final sp = context.watch<SettingsProvider>();
-    return _ToggleRow(
-      label: l10n.displaySettingsPageMarkdownBlockquoteSameSizeTitle,
-      subtitle: l10n.displaySettingsPageMarkdownBlockquoteSameSizeSubtitle,
-      value: sp.markdownBlockquoteSameSize,
-      onChanged: (v) =>
-          context.read<SettingsProvider>().setMarkdownBlockquoteSameSize(v),
-    );
-  }
-}
-
 class _ToggleRowAutoCollapseCodeBlocks extends StatelessWidget {
   const _ToggleRowAutoCollapseCodeBlocks();
   @override
@@ -3312,11 +3294,9 @@ class _ToggleRow extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.tip,
-    this.subtitle,
   });
   final String label;
   final String? tip;
-  final String? subtitle;
   final bool value;
   final ValueChanged<bool>? onChanged;
   @override
@@ -3340,17 +3320,7 @@ class _ToggleRow extends StatelessWidget {
                     decoration: TextDecoration.none,
                   ),
                 ),
-                if (subtitle != null && subtitle!.isNotEmpty) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: cs.onSurface.withValues(alpha: 0.55),
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                ],
+
               ],
             ),
           ),

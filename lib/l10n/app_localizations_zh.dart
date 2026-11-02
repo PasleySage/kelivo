@@ -12804,13 +12804,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reasoningBudgetSliderMax => 'Max';
 
   @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字与正文同大';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
-      '开启后 Markdown 引用（>）内的文字不再被额外放大';
-
-  @override
   String get modelDetailSheetBuiltinToolsUnsupportedHint => '当前供应商不支持这些内置工具。';
 
   @override
@@ -27980,13 +27973,6 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
 
   @override
   String get reasoningBudgetSliderMax => 'Max';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字与正文同大';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
-      '开启后 Markdown 引用（>）内的文字不再被额外放大';
 
   @override
   String get modelDetailSheetBuiltinToolsUnsupportedHint => '当前供应商不支持这些内置工具。';
@@ -43166,13 +43152,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get reasoningBudgetSliderMax => 'Max';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeTitle => '引用文字與正文同大';
-
-  @override
-  String get displaySettingsPageMarkdownBlockquoteSameSizeSubtitle =>
-      '開啟後 Markdown 引用（>）內的文字不再被額外放大';
 
   @override
   String get modelDetailSheetBuiltinToolsUnsupportedHint => '目前供應商不支援這些內建工具。';
