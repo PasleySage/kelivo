@@ -15,7 +15,6 @@ void main() {
         'quickPhrase',
         'custom',
         'regex',
-        'roleSkills',
       ]);
     });
 
@@ -26,7 +25,7 @@ void main() {
 
       expect(ordered.take(4), const ['mcp', 'basic', 'prompts', 'memory']);
       expect(ordered, containsAll(defaultAssistantEditTabIds));
-      expect(ordered.last, 'roleSkills');
+      expect(ordered.last, 'regex');
     });
 
     test('ignores duplicate and unknown saved ids', () {
@@ -61,9 +60,9 @@ void main() {
     });
 
     test('new tabs not in savedOrder remain visible even if in hiddenIds', () {
-      // Regression: restoring an old backup may list the new 'roleSkills' tab id
-      // in hidden ids, but since the user never had a chance to hide it, it
-      // should still be shown.
+      // Regression: restoring an old backup may list a tab id the user's saved
+      // order predates in hidden ids, but since the user never had a chance to
+      // hide it, it should still be shown.
       final visible = visibleAssistantEditTabIds(
         savedOrder: const [
           'basic',
@@ -75,11 +74,11 @@ void main() {
           'custom',
           'regex',
         ],
-        hiddenIds: const {'roleSkills', 'mcp'},
-        protectedNewIds: const ['roleSkills'],
+        hiddenIds: const {'skills', 'mcp'},
+        protectedNewIds: const ['skills'],
       );
 
-      expect(visible, contains('roleSkills'));
+      expect(visible, contains('skills'));
       expect(visible, isNot(contains('mcp')));
     });
 
