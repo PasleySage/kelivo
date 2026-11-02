@@ -1751,7 +1751,7 @@ class _FontScaleRowState extends State<_FontScaleRow> {
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: scaledDim(context, 8)),
           Text(
             '%',
             style: TextStyle(
@@ -1762,7 +1762,7 @@ class _FontScaleRowState extends State<_FontScaleRow> {
               decoration: TextDecoration.none,
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: scaledDim(context, 8)),
           Tooltip(
             message: l10n.displaySettingsPageFontResetLabel,
             child: _IconBtn(
@@ -1901,7 +1901,7 @@ class _DesktopAppFontRow extends StatelessWidget {
               }
             },
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: scaledDim(context, 8)),
           Tooltip(
             message: l10n.googleFontsTitle,
             child: _IconBtn(
@@ -3292,7 +3292,6 @@ class _ToggleRow extends StatelessWidget {
                     decoration: TextDecoration.none,
                   ),
                 ),
-
               ],
             ),
           ),
@@ -3533,7 +3532,7 @@ class _BackgroundMaskRowState extends State<_BackgroundMaskRow> {
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: scaledDim(context, 8)),
           Text(
             '%',
             style: TextStyle(
