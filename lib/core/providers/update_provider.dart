@@ -100,15 +100,36 @@ class UpdateProvider extends ChangeNotifier {
           jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
       final info = UpdateInfo.fromJson(data);
 
+      // KelivoMeow: 上游 update.json 的 downloads 各平台全部指向官方站点
+      // （kelivo.psycheas.top / App Store）。本 fork 只发布在
+      // github.com/PasleySage/kelivo/releases，这里统一改写落地页，
+      // 避免点「更新」把用户送去安装官方 Kelivo。版本提醒逻辑保持不变。
+      const selfReleases = 'https://github.com/PasleySage/kelivo/releases';
+      final selfInfo = UpdateInfo(
+        app: 'KelivoMeow',
+        version: info.version,
+        build: info.build,
+        releasedAt: info.releasedAt,
+        notes: info.notes,
+        mandatory: info.mandatory,
+        downloads: const {
+          'windows': selfReleases,
+          'android': selfReleases,
+          'macos': selfReleases,
+          'linux': selfReleases,
+          'ios': selfReleases,
+        },
+      );
+
       final pkg = await PackageInfo.fromPlatform();
       final currentVer = pkg.version; // e.g., 1.0.0
 
       // Compare by version only; ignore build numbers
       final hasNew = _isRemoteNewer(
-        remoteVersion: info.version,
+        remoteVersion: selfInfo.version,
         currentVersion: currentVer,
       );
-      _available = hasNew ? info : null;
+      _available = hasNew ? selfInfo : null;
     } catch (e) {
       _error = e.toString();
     } finally {
