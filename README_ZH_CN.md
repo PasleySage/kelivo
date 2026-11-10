@@ -1,3 +1,5 @@
+> **说明**：本文件是**上游 Kelivo** 的中文文档，随上游同步更新。KelivoMeow 的定制说明、下载与安装请见 [README.md](README.md)。
+
 <div align="center">
 
 <img src="assets/app_icon.png" alt="Kelivo" width="112" />
