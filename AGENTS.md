@@ -1,4 +1,4 @@
-# AFENTS.md
+# AGENTS.md
 
 ## Project overview
 
@@ -10,7 +10,7 @@ Kelivo is a cross-platform LLM chat client built with Flutter, targeting iOS, An
 - **Desktop / mobile split**: most UI pages have separate desktop and mobile layouts (e.g. `home_desktop_layout.dart` / `home_mobile_layout.dart`). Desktop-only code lives in `lib/desktop/`. Use `ResponsiveHelper` from `lib/shared/responsive/` to branch by screen type.
 - **State management**: Provider (`lib/core/providers/`).
 - **Database**: Drift (`lib/core/database/`). Schema versions tracked in `drift_schemas/`.
-- **Localization**: edit `lib/l10n/app_en.arb` and `app_zh.arb` for product changes. Give every English key an `@key.description` explaining its UI location, meaning, and placeholders; update that description when the meaning changes. Keep both source key sets identical. Run `python3 tool/l10n/translate.py sync`, then `python3 tool/l10n/translate.py check`; commit the translated ARBs, translation state, and generated Dart output. The tool synchronizes `app_zh_Hans.arb` and translates the other languages from both sources plus the descriptions. For credentials, adding languages, or translation corrections, read [the localization workflow](tool/l10n/README.md). Inspect affected keys and tool summaries instead of loading every language file into the agent context.
+- **Localization**: edit `lib/l10n/app_en.arb` and `app_zh.arb` for product changes. Give every English key an `@key.description` explaining its UI location, meaning, and placeholders; update that description when the meaning changes. Keep both source key sets identical. Run `tool/l10n/translate.py sync`, then `check`, using a real Python 3 interpreter; commit the translated ARBs, translation state, and generated Dart output. On this Windows setup `python` / `python3` / `py` are not on PATH — resolve an absolute interpreter path first instead of assuming a bare `python3` works. The tool synchronizes `app_zh_Hans.arb` and translates the other languages from both sources plus the descriptions. For credentials, adding languages, or translation corrections, read [the localization workflow](tool/l10n/README.md). Inspect affected keys and tool summaries instead of loading every language file into the agent context.
 
 ## Pre-commit checklist
 
@@ -28,6 +28,9 @@ dart analyze --fatal-infos lib test integration_test tool
 Then sweep for leftovers from this round of work — debug prints, temporary
 scripts or mocks, hardcoded placeholder data, temporary flags, and any code
 kept only for debugging. Delete what is clearly scratch; keep real business
+code, regression tests, fixtures, and logs you are still relying on. List
+anything ambiguous (path, purpose, risk) instead of deciding for the user.
+
 For ordinary changes, run only the test files or directories covering the
 changed behavior and affected callers, using `flutter test <test paths>`.
 If `markstream` is affected, also run its relevant tests from
@@ -42,12 +45,11 @@ flutter test
 ```
 
 All required checks must pass. Documentation-only changes do not require Dart
-analysis or Flutter tests. CI (`pr-check.yml`) still runs static analysis and
-the full test suites for both packages on every PR.
-code, regression tests, fixtures, and logs you are still relying on. List
-anything ambiguous (path, purpose, risk) instead of deciding for the user.
+analysis or Flutter tests.
 
-CI (`pr-check.yml`) enforces the same gates on every PR.
+`pr-check.yml` only triggers on PRs into `Chevey339/kelivo`. This fork pushes
+to a branch and opens no PR upstream, so **nothing runs in CI here** — the
+local pre-push gate is the only automated guardrail.
 
 ## Fixed boxes must scale
 
@@ -66,7 +68,16 @@ grep -nE 'SizedBox\((width|height):\s*\d|\b(width|height):\s*\d+,|\bsize:\s*\d+,
 ```
 
 The pre-push gate (`deploy/pre_push_check.ps1`, check `[5]`) audits added lines
-for this and blocks the push.
+for this and blocks the push. `deploy/` is **untracked**, so a fresh clone has
+neither the script nor the hook — run `deploy/install_hooks.ps1` first. When the
+gate must audit a checkout other than the one the script lives in, pass
+`-Repo <path>`; without it the script refuses to run from a different repo.
+
+To restore a generated file to its committed state, use
+`git checkout -- <file>`. `git show HEAD:<file> > <file>` writes LF into a
+CRLF working tree, so `git status` keeps showing `M` while `git diff` is empty —
+it looks like the restore silently failed. `tools/check-tools.ps1` flags that
+state.
 
 ## Benchmarks are not tests
 
@@ -121,3 +132,20 @@ The five canonical roles, label strings identical to the role names. See `docs/a
 ### Domain docs
 
 Single-context: root `CONTEXT.md` plus `docs/adr/` — neither exists yet, proceed silently if absent. See `docs/agents/domain.md`.
+
+## Guardrails
+
+| Rule | Enforced by |
+|---|---|
+| Static analysis clean before pushing | `deploy/pre_push_check.ps1` check `[1]` (git pre-push hook) |
+| Commit author emails are noreply addresses | gate check `[2]` |
+| No keys / build junk among net-new files | gate check `[3]` |
+| No absolute local paths in added lines | gate check `[4]` |
+| Fixed boxes must scale (`scaledDim`) | gate check `[5]` |
+| The gate must not silently audit a different repo | `pre_push_check.ps1` exits `2` when cwd is another git repo |
+| `.ps1` tooling is UTF-8 BOM + parses clean | `deploy/check-tools.ps1` (run after editing any script) |
+| No EOL-only `M` files left in the tree | `deploy/check-tools.ps1` |
+
+`deploy/` is untracked, so every guardrail above travels with this machine, not
+with the repo. On a fresh clone: `deploy/install_hooks.ps1` for the hook, then
+`deploy/check-tools.ps1` for the script hygiene checks.
