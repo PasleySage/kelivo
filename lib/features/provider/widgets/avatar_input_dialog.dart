@@ -6,6 +6,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/ios_form_text_field.dart';
 import '../../../shared/widgets/segmented_tabs.dart';
 import '../../../utils/brand_assets.dart';
+import '../../../utils/ui_scale.dart';
 
 Future<AvatarConfig?> showAvatarInputDialog(
   BuildContext context, {
@@ -124,7 +125,7 @@ class _AvatarInputDialogState extends State<_AvatarInputDialog> {
                         ),
                       ),
                     if (_lobehub) ...[
-                      const SizedBox(height: 12),
+                      SizedBox(height: scaledDim(context, 12)),
                       SegmentedTabs(
                         tabs: [
                           SegmentedTab(label: l10n.avatarColor),

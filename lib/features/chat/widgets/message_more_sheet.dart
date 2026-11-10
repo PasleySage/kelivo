@@ -22,6 +22,7 @@ import 'dart:convert';
 import 'package:Kelivo/theme/app_font_weights.dart';
 import 'package:Kelivo/theme/app_semantic_colors.dart';
 import '../../../shared/widgets/section_card.dart';
+import '../../../utils/ui_scale.dart';
 
 enum MessageMoreAction {
   edit,
@@ -224,13 +225,13 @@ class _MessageMoreSheetState extends State<_MessageMoreSheet> {
         onTap();
       },
       child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 44),
+        constraints: BoxConstraints(minHeight: scaledDim(context, 44)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
             children: [
-              Icon(icon, size: 20, color: fg),
-              const SizedBox(width: 12),
+              Icon(icon, size: scaledDim(context, 20), color: fg),
+              SizedBox(width: scaledDim(context, 12)),
               Expanded(
                 child: Text(
                   label,
@@ -252,7 +253,7 @@ class _MessageMoreSheetState extends State<_MessageMoreSheet> {
   Widget _groupDivider() => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12),
     child: Divider(
-      height: 9,
+      height: scaledDim(context, 9),
       thickness: 0.5,
       color: context.appColors.hairline,
     ),
@@ -279,8 +280,8 @@ class _MessageMoreSheetState extends State<_MessageMoreSheet> {
               Padding(
                 padding: const EdgeInsets.only(top: 6, bottom: 6),
                 child: Container(
-                  width: 40,
-                  height: 4,
+                  width: scaledDim(context, 40),
+                  height: scaledDim(context, 4),
                   decoration: BoxDecoration(
                     color: cs.onSurface.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(999),

@@ -7,6 +7,7 @@ import '../../../desktop/widgets/desktop_form_dialog.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/ios_form_text_field.dart';
 import '../../../shared/widgets/ios_settings_rows.dart';
+import '../../../utils/ui_scale.dart';
 
 class ProviderRequestBudgetRow extends StatelessWidget {
   const ProviderRequestBudgetRow({super.key, required this.providerId});
@@ -159,7 +160,10 @@ class _RequestBudgetEditorState extends State<RequestBudgetEditor> {
       child: Padding(
         padding: MediaQuery.viewInsetsOf(context),
         child: DesktopFormDialog(
-          constraints: const BoxConstraints(maxWidth: 520, maxHeight: 680),
+          constraints: BoxConstraints(
+            maxWidth: scaledDim(context, 520),
+            maxHeight: scaledDim(context, 680),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

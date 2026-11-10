@@ -17,6 +17,7 @@ import '../../../theme/app_font_weights.dart';
 import 'context_dialog.dart';
 import '../../../shared/responsive/screen_type_helper.dart';
 import '../../../utils/platform_utils.dart';
+import '../../../utils/ui_scale.dart';
 
 Future<T?> showCompressionSheetOrDialog<T>(
   BuildContext context, {
@@ -74,8 +75,8 @@ class CompressionPanel extends StatelessWidget {
           if (sheet)
             Center(
               child: Container(
-                width: 36,
-                height: 4,
+                width: scaledDim(context, 36),
+                height: scaledDim(context, 4),
                 margin: const EdgeInsets.only(top: 8, bottom: 12),
                 decoration: BoxDecoration(
                   color: Theme.of(
@@ -167,7 +168,7 @@ Future<void> showCompressionPromptPreview(
   builder: (sheet) => CompressionPanel(
     title: AppLocalizations.of(context)!.compressionLocalPreview,
     sheet: sheet,
-    maxWidth: 760,
+    maxWidth: scaledDim(context, 760),
     child: SingleChildScrollView(
       child: SelectableText(
         prompt,
@@ -255,8 +256,8 @@ class CompressionPanelHeader extends StatelessWidget {
               MaterialLocalizations.of(context).backButtonTooltip,
             )
           else if (!desktop)
-            const SizedBox(width: 36),
-          if (desktop && onBack != null) const SizedBox(width: 8),
+            SizedBox(width: scaledDim(context, 36)),
+          if (desktop && onBack != null) SizedBox(width: scaledDim(context, 8)),
           Expanded(
             child: Text(
               title,
@@ -333,7 +334,7 @@ class _CompressionNumberRowState extends State<CompressionNumberRow> {
         suffix: widget.unit == null
             ? null
             : SizedBox(
-                width: 32,
+                width: scaledDim(context, 32),
                 child: Center(
                   child: Text(
                     widget.unit!,
@@ -343,9 +344,9 @@ class _CompressionNumberRowState extends State<CompressionNumberRow> {
                   ),
                 ),
               ),
-        suffixIconConstraints: const BoxConstraints.tightFor(
-          width: 32,
-          height: 44,
+        suffixIconConstraints: BoxConstraints.tightFor(
+          width: scaledDim(context, 32),
+          height: scaledDim(context, 44),
         ),
         onChanged: widget.onChanged,
       ),
@@ -466,7 +467,10 @@ class CompressionSettingRow extends StatelessWidget {
       haptics: false,
       child: Row(
         children: [
-          if (leading != null) ...[leading!, const SizedBox(width: 12)],
+          if (leading != null) ...[
+            leading!,
+            SizedBox(width: scaledDim(context, 12)),
+          ],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,7 +484,7 @@ class CompressionSettingRow extends StatelessWidget {
                   ),
                 ),
                 if (subtitle != null) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: scaledDim(context, 4)),
                   Text(
                     subtitle!,
                     style: TextStyle(
@@ -494,10 +498,10 @@ class CompressionSettingRow extends StatelessWidget {
             ),
           ),
           if (trailing != null) ...[
-            const SizedBox(width: 12),
+            SizedBox(width: scaledDim(context, 12)),
             trailing!,
           ] else if (onTap != null) ...[
-            const SizedBox(width: 12),
+            SizedBox(width: scaledDim(context, 12)),
             Icon(
               LucideIcons.chevronRight,
               size: 17,

@@ -252,9 +252,9 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                                           ),
                                         ),
                                         padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(
-                                          minWidth: 40,
-                                          minHeight: 36,
+                                        constraints: BoxConstraints(
+                                          minWidth: scaledDim(context, 40),
+                                          minHeight: scaledDim(context, 36),
                                         ),
                                         onPressed: () async {
                                           final settings = context
@@ -324,9 +324,9 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                                         ),
                                       ),
                                       padding: EdgeInsets.zero,
-                                      constraints: const BoxConstraints(
-                                        minWidth: 40,
-                                        minHeight: 36,
+                                      constraints: BoxConstraints(
+                                        minWidth: scaledDim(context, 40),
+                                        minHeight: scaledDim(context, 36),
                                       ),
                                       onPressed: () async {
                                         final settings = context
@@ -481,7 +481,7 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 28,
+                          width: scaledDim(context, 28),
                           child: Center(
                             child: AnimatedRotation(
                               turns: (_collapsed[g] == true) ? 0.0 : 0.25,
@@ -495,7 +495,7 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: scaledDim(context, 12)),
                         Expanded(
                           child: Text(
                             g,
@@ -507,7 +507,7 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: scaledDim(context, 8)),
                         IconButton(
                           tooltip: allAdded
                               ? AppLocalizations.of(
@@ -517,9 +517,9 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
                                   context,
                                 )!.providerDetailPageAddGroupTooltip,
                           padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 40,
-                            minHeight: 36,
+                          constraints: BoxConstraints(
+                            minWidth: scaledDim(context, 40),
+                            minHeight: scaledDim(context, 36),
                           ),
                           icon: Icon(
                             allAdded ? lucide.Lucide.Minus : lucide.Lucide.Plus,
@@ -609,26 +609,26 @@ class _ModelFetchDialogBodyState extends State<_ModelFetchDialogBody> {
             child: Row(
               children: [
                 SizedBox(
-                  width: 28,
+                  width: scaledDim(context, 28),
                   child: Center(child: _BrandAvatar(name: m.id, size: 24)),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: scaledDim(context, 10)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(m.displayName, style: TextStyle(fontSize: 13.5)),
-                      const SizedBox(height: 4),
+                      SizedBox(height: scaledDim(context, 4)),
                       ModelCapsulesRow(model: m),
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: scaledDim(context, 8)),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(
-                    minWidth: 40,
-                    minHeight: 36,
+                  constraints: BoxConstraints(
+                    minWidth: scaledDim(context, 40),
+                    minHeight: scaledDim(context, 36),
                   ),
                   onPressed: () async {
                     final old = context

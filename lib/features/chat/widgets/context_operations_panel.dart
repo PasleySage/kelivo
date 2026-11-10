@@ -15,6 +15,7 @@ import '../../../theme/app_font_weights.dart';
 import '../../../utils/platform_utils.dart';
 import '../../../utils/utf16_safe_cut.dart';
 import 'context_compression_status.dart';
+import '../../../utils/ui_scale.dart';
 
 /// Stays outside the locked composer and the loaded history window.
 class ContextTaskBar extends StatelessWidget {
@@ -87,7 +88,7 @@ class ContextTaskBar extends StatelessWidget {
                     size: 14,
                     color: color,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: scaledDim(context, 8)),
                   Flexible(
                     child: ThinkingSheen(
                       enabled: running,
@@ -102,8 +103,12 @@ class ContextTaskBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  Icon(LucideIcons.chevronRight, size: 14, color: color),
+                  SizedBox(width: scaledDim(context, 4)),
+                  Icon(
+                    LucideIcons.chevronRight,
+                    size: scaledDim(context, 14),
+                    color: color,
+                  ),
                 ],
               ),
             ),
@@ -222,7 +227,7 @@ class _ContextOperationsPanelState extends State<ContextOperationsPanel> {
           if (task.unknownUsageAttempts > 0)
             Text(l10n.compressionUsageUnknown(task.unknownUsageAttempts)),
           if (task.error != null) ...[
-            const SizedBox(height: 6),
+            SizedBox(height: scaledDim(context, 6)),
             Text(
               compressionErrorLabel(l10n, task.error!),
               maxLines: 3,
@@ -427,7 +432,7 @@ class _ContextOperationsPanelState extends State<ContextOperationsPanel> {
                           ),
                           if (operation.isCompression &&
                               !operation.isNative) ...[
-                            const SizedBox(height: 6),
+                            SizedBox(height: scaledDim(context, 6)),
                             Text(
                               truncateHeadUtf16Safe(operation.summary, 240),
                               maxLines: 2,

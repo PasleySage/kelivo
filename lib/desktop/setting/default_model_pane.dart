@@ -57,7 +57,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
 
                   _ModelCard(
                     icon: lucide.Lucide.MessageCircle,
@@ -85,13 +85,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     },
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _PerChatModelCard(
                     value: settings.perChatModelEnabled,
                     onChanged: settings.setPerChatModelEnabled,
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.NotebookTabs,
                     title: l10n.defaultModelPageTitleModelTitle,
@@ -131,7 +131,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     configAction: () => _showTitlePromptDialog(context),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.FileText,
                     title: l10n.defaultModelPageSummaryModelTitle,
@@ -164,7 +164,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     configAction: () => _showSummaryPromptDialog(context),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.MessagesSquare,
                     title: l10n.defaultModelPageSuggestionModelTitle,
@@ -207,7 +207,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     configAction: () => _showSuggestionPromptDialog(context),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.package2,
                     title: l10n.defaultModelPageCompressModelTitle,
@@ -247,7 +247,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.Languages,
                     title: l10n.defaultModelPageTranslateModelTitle,
@@ -276,7 +276,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     },
                     configAction: () => _showTranslatePromptDialog(context),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: scaledDim(context, 16)),
                   _ModelCard(
                     icon: lucide.Lucide.Eye,
                     title: l10n.defaultModelPageOcrModelTitle,
@@ -360,7 +360,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                           onTap: () => Navigator.of(ctx).maybePop(),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: scaledDim(context, 16)),
                       Text(
                         l10n.defaultModelPagePromptLabel,
                         style: TextStyle(
@@ -368,13 +368,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                           fontWeight: AppFontWeights.semibold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: scaledDim(context, 8)),
                       _promptEditor(
                         ctx,
                         controller: ctrl,
                         hintText: l10n.defaultModelPageTitlePromptHint,
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: scaledDim(context, 6)),
                       Text(
                         l10n.defaultModelPageTitleVars('{content}', '{locale}'),
                         style: TextStyle(
@@ -382,7 +382,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: scaledDim(context, 8)),
                       Row(
                         children: [
                           _DeskIosButton(
@@ -448,7 +448,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     task: _BackgroundModelTask.translate,
                     trailing: SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: scaledDim(context, 12)),
                   Row(
                     children: [
                       Expanded(
@@ -466,13 +466,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: scaledDim(context, 10)),
                   _promptEditor(
                     ctx,
                     controller: ctrl,
                     hintText: l10n.defaultModelPageTranslatePromptHint,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   Row(
                     children: [
                       _DeskIosButton(
@@ -497,7 +497,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: scaledDim(context, 6)),
                   Text(
                     l10n.defaultModelPageTranslateVars(
                       '{source_text}',
@@ -546,7 +546,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     task: _BackgroundModelTask.ocr,
                     trailing: SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: scaledDim(context, 12)),
                   Row(
                     children: [
                       Expanded(
@@ -564,13 +564,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: scaledDim(context, 10)),
                   _promptEditor(
                     ctx,
                     controller: ctrl,
                     hintText: l10n.defaultModelPageOcrPromptHint,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   Row(
                     children: [
                       _DeskIosButton(
@@ -634,7 +634,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     task: _BackgroundModelTask.summary,
                     trailing: SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: scaledDim(context, 12)),
                   Row(
                     children: [
                       Expanded(
@@ -652,13 +652,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: scaledDim(context, 10)),
                   _promptEditor(
                     ctx,
                     controller: ctrl,
                     hintText: l10n.defaultModelPageSummaryPromptHint,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   Row(
                     children: [
                       _DeskIosButton(
@@ -683,7 +683,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: scaledDim(context, 6)),
                   Text(
                     l10n.defaultModelPageSummaryVars(
                       '{previous_summary}',
@@ -737,7 +737,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                     task: _BackgroundModelTask.suggestion,
                     trailing: SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: scaledDim(context, 12)),
                   Row(
                     children: [
                       Expanded(
@@ -755,13 +755,13 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: scaledDim(context, 10)),
                   _promptEditor(
                     ctx,
                     controller: ctrl,
                     hintText: l10n.defaultModelPageSuggestionPromptHint,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   Row(
                     children: [
                       _DeskIosButton(
@@ -786,7 +786,7 @@ class DesktopDefaultModelPane extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: scaledDim(context, 6)),
                   Text(
                     l10n.defaultModelPageSuggestionVars(
                       '{content}',
@@ -908,8 +908,12 @@ class _ModelCardState extends State<_ModelCard> {
           children: [
             Row(
               children: [
-                Icon(widget.icon, size: 18, color: cs.onSurface),
-                const SizedBox(width: 8),
+                Icon(
+                  widget.icon,
+                  size: scaledDim(context, 18),
+                  color: cs.onSurface,
+                ),
+                SizedBox(width: scaledDim(context, 8)),
                 Expanded(
                   child: Text(
                     widget.title,
@@ -947,7 +951,7 @@ class _ModelCardState extends State<_ModelCard> {
                   ),
               ],
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: scaledDim(context, 6)),
             Text(
               widget.subtitle,
               style: TextStyle(
@@ -955,7 +959,7 @@ class _ModelCardState extends State<_ModelCard> {
                 color: cs.onSurface.withValues(alpha: 0.7),
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: scaledDim(context, 8)),
 
             MouseRegion(
               cursor: SystemMouseCursors.click,
@@ -984,7 +988,7 @@ class _ModelCardState extends State<_ModelCard> {
                         size: 24,
                         iconScale: .62,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: scaledDim(context, 8)),
                       Expanded(
                         child: Text(
                           modelDisplay ?? (providerName ?? '-'),
@@ -1000,7 +1004,7 @@ class _ModelCardState extends State<_ModelCard> {
               ),
             ),
             if (widget.footer != null) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: scaledDim(context, 12)),
               widget.footer!,
             ],
           ],
@@ -1048,7 +1052,7 @@ class _PerChatModelCard extends StatelessWidget {
                   size: 18,
                   color: cs.onSurface,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: scaledDim(context, 8)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1060,7 +1064,7 @@ class _PerChatModelCard extends StatelessWidget {
                           fontWeight: AppFontWeights.semibold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: scaledDim(context, 4)),
                       Text(
                         l10n.defaultModelPagePerChatModelSubtitle,
                         style: TextStyle(
@@ -1071,7 +1075,7 @@ class _PerChatModelCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: scaledDim(context, 14)),
                 IosSwitch(
                   value: value,
                   semanticLabel: l10n.defaultModelPagePerChatModelTitle,
@@ -1159,7 +1163,7 @@ class _ThinkingSwitchRow extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        SizedBox(width: scaledDim(context, 14)),
                         IosSwitch(
                           value: value,
                           hitTestSize: 36,
@@ -1172,7 +1176,7 @@ class _ThinkingSwitchRow extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: scaledDim(context, 8)),
             trailing,
           ],
         );
@@ -1279,14 +1283,18 @@ class _SmallIconBtnState extends State<_SmallIconBtn> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
-          width: 28,
-          height: 28,
+          width: scaledDim(context, 28),
+          height: scaledDim(context, 28),
           decoration: BoxDecoration(
             color: bg,
             borderRadius: BorderRadius.circular(8),
           ),
           alignment: Alignment.center,
-          child: Icon(widget.icon, size: 18, color: cs.onSurface),
+          child: Icon(
+            widget.icon,
+            size: scaledDim(context, 18),
+            color: cs.onSurface,
+          ),
         ),
       ),
     );

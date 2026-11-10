@@ -13,6 +13,7 @@ import '../../../../utils/brand_assets.dart';
 import '../../../provider/widgets/avatar_input_dialog.dart';
 import '../../../provider/widgets/provider_icon_picker.dart';
 import 'model_spec_form_controller.dart';
+import '../../../../utils/ui_scale.dart';
 
 class ModelAvatarField extends StatefulWidget {
   const ModelAvatarField({
@@ -138,7 +139,7 @@ class _ModelAvatarFieldState extends State<ModelAvatarField> {
                     BrandAssets.assetForName(config.id),
                 size: 36,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: scaledDim(context, 12)),
               Expanded(child: Text(l10n.modelAvatarTitle)),
               Icon(
                 Lucide.ChevronRight,

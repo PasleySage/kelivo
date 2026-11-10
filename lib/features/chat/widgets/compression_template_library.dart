@@ -26,6 +26,7 @@ import '../../../shared/widgets/section_card.dart';
 import '../../../shared/widgets/segmented_tabs.dart';
 import '../../../theme/app_font_weights.dart';
 import '../../../theme/app_semantic_colors.dart';
+import '../../../utils/ui_scale.dart';
 
 Future<Object?> showCompressionTemplateLibrary(
   BuildContext context, {
@@ -156,13 +157,13 @@ class _CompressionTemplateLibraryState
                   recipes.where((r) => r.template.id == template.id).length,
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: scaledDim(context, 12)),
               CompressionSectionTitle(
                 title: l10n.compressionReplacementTemplate,
               ),
               DesktopSelectDropdown<String>(
                 value: replacement,
-                minHeight: 44,
+                minHeight: scaledDim(context, 44),
                 semanticLabel: l10n.compressionReplacementTemplate,
                 options: [
                   for (final item in _templates.where(
@@ -175,7 +176,7 @@ class _CompressionTemplateLibraryState
                 ],
                 onSelected: (value) => update(() => replacement = value),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: scaledDim(context, 16)),
               FormSheetActions(
                 cancelLabel: l10n.homePageCancel,
                 confirmLabel: l10n.homePageDelete,
@@ -328,12 +329,13 @@ class _CompressionTemplateLibraryState
             padding: const EdgeInsets.all(5),
             sliver: SliverList.separated(
               itemCount: templates.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 2),
+              separatorBuilder: (_, _) =>
+                  SizedBox(height: scaledDim(context, 2)),
               itemBuilder: (_, i) => _templateTile(templates[i], defaultId),
             ),
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 18)),
+        SliverToBoxAdapter(child: SizedBox(height: scaledDim(context, 18))),
       ],
     );
   }
@@ -369,7 +371,7 @@ class _CompressionTemplateLibraryState
                   ? cs.primary
                   : cs.onSurface.withValues(alpha: .55),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: scaledDim(context, 12)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,7 +390,11 @@ class _CompressionTemplateLibraryState
                         ),
                       ),
                       if (selected)
-                        Icon(LucideIcons.check, size: 14, color: cs.primary),
+                        Icon(
+                          LucideIcons.check,
+                          size: scaledDim(context, 14),
+                          color: cs.primary,
+                        ),
                       if (defaultId == template.id)
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -409,7 +415,7 @@ class _CompressionTemplateLibraryState
                         ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: scaledDim(context, 5)),
                   Text(
                     compressionTemplateDescription(l10n, template),
                     maxLines: 2,
@@ -536,11 +542,11 @@ class _CompressionTemplateLibraryState
             color: cs.onSurface.withValues(alpha: .7),
             padding: EdgeInsets.zero,
           ),
-          const Spacer(),
+          Spacer(),
           if (!_showRecipes)
             Flexible(
               child: SizedBox(
-                width: 170,
+                width: scaledDim(context, 170),
                 child: ContextDialogActionButton(
                   label: l10n.compressionNewTemplate,
                   primary: true,
@@ -610,7 +616,7 @@ class _CompressionTemplateLibraryState
                           size: 30,
                           color: cs.onSurface.withValues(alpha: .3),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: scaledDim(context, 12)),
                         Text(
                           _showRecipes
                               ? l10n.compressionNoRecipes
@@ -621,7 +627,7 @@ class _CompressionTemplateLibraryState
                           ),
                         ),
                         if (_showRecipes && query.isEmpty) ...[
-                          const SizedBox(height: 8),
+                          SizedBox(height: scaledDim(context, 8)),
                           Text(
                             l10n.compressionRecipeCreateHint,
                             textAlign: TextAlign.center,
@@ -763,8 +769,8 @@ class _TemplateEditorState extends State<_TemplateEditor> {
           ? l10n.compressionNewTemplate
           : l10n.compressionEditTemplate,
       sheet: widget.sheet,
-      maxWidth: 720,
-      height: 680,
+      maxWidth: scaledDim(context, 720),
+      height: scaledDim(context, 680),
       actions: FormSheetActions(
         cancelLabel: l10n.homePageCancel,
         confirmLabel: l10n.multiKeyPageSave,
@@ -797,7 +803,7 @@ class _TemplateEditorState extends State<_TemplateEditor> {
                   label: l10n.compressionLanguage,
                   trailing: DesktopSelectDropdown<String>(
                     value: _customLanguage ? 'custom' : _language.text,
-                    minHeight: 40,
+                    minHeight: scaledDim(context, 40),
                     maxLabelWidth: 170,
                     semanticLabel: l10n.compressionLanguage,
                     options: [
@@ -839,7 +845,7 @@ class _TemplateEditorState extends State<_TemplateEditor> {
                   ),
               ],
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: scaledDim(context, 18)),
             IosFormTextField(
               label: l10n.compressionPrompt,
               controller: _prompt,
@@ -856,7 +862,7 @@ class _TemplateEditorState extends State<_TemplateEditor> {
               ),
               onChanged: (_) => setState(() {}),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: scaledDim(context, 12)),
             Text(
               l10n.compressionVariables,
               style: TextStyle(
@@ -865,7 +871,7 @@ class _TemplateEditorState extends State<_TemplateEditor> {
                 color: cs.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: scaledDim(context, 6)),
             SelectableText(
               '{content} · {previous_summary} · {background} · {focus} · {target_tokens} · {locale}',
               style: TextStyle(

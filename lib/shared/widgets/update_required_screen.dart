@@ -97,24 +97,24 @@ class UpdateRequiredScreen extends StatelessWidget {
                           height: 1.45,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: scaledDim(context, 16)),
                       _NumberedStep(
                         number: 1,
                         text: l10n.startupDatabaseUpdateRequiredDowngradeStep1,
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: scaledDim(context, 12)),
                       _NumberedStep(
                         number: 2,
                         text: l10n.startupDatabaseUpdateRequiredDowngradeStep2(
                           conversionToolUrl,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: scaledDim(context, 12)),
                       _NumberedStep(
                         number: 3,
                         text: l10n.startupDatabaseUpdateRequiredDowngradeStep3,
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: scaledDim(context, 16)),
                       SizedBox(
                         width: double.infinity,
                         height: scaledDim(context, 44),

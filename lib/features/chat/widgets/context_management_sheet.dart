@@ -64,7 +64,7 @@ class ContextManagementSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(999),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: scaledDim(context, 10)),
           Flexible(
             child: SingleChildScrollView(
               child: Column(
@@ -74,7 +74,7 @@ class ContextManagementSheet extends StatelessWidget {
                     conversationId: conversationId,
                     draftText: draftText,
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: scaledDim(context, 6)),
                   if (conversationId != null)
                     AutoCompressionControl(conversationId: conversationId!),
                   ContextActionRow(

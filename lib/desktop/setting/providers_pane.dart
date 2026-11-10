@@ -757,7 +757,7 @@ class _DesktopProvidersBodyState extends State<_DesktopProvidersBody> {
                             },
                           ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: scaledDim(context, 8)),
                   // Bottom add button
                   _AddFullWidthButton(
                     height: scaledDim(context, 36),
@@ -1809,13 +1809,13 @@ class _DesktopProviderDetailPaneState extends State<DesktopProviderDetailPane> {
                   padding: const EdgeInsets.only(left: 2, top: 5),
                   child: ProviderRequestUrlPreview(config: cfg),
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: scaledDim(context, 14)),
                 _sectionLabel(
                   context,
                   l10n.providerDetailPageServiceAccountJsonLabel,
                   bold: true,
                 ),
-                SizedBox(height: 6),
+                SizedBox(height: scaledDim(context, 6)),
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: scaledDim(context, 120),
@@ -2282,7 +2282,7 @@ class _DesktopProviderDetailPaneState extends State<DesktopProviderDetailPane> {
                     ),
                     if (kind == ProviderKind.openai &&
                         cfg.balanceEnabled == true) ...[
-                      SizedBox(width: 8),
+                      SizedBox(width: scaledDim(context, 8)),
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxWidth: scaledDim(context, 120),
@@ -3317,14 +3317,13 @@ class _DesktopProviderDetailPaneState extends State<DesktopProviderDetailPane> {
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: ConstrainedBox(
-                                                    constraints:
-                                                        BoxConstraints(
-                                                          minWidth: 72,
-                                                          maxWidth: scaledDim(
-                                                            context,
-                                                            120,
-                                                          ),
-                                                        ),
+                                                    constraints: BoxConstraints(
+                                                      minWidth: 72,
+                                                      maxWidth: scaledDim(
+                                                        context,
+                                                        120,
+                                                      ),
+                                                    ),
                                                     child: ProviderBalanceBadge(
                                                       providerKey:
                                                           widget.providerKey,

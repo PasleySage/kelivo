@@ -413,7 +413,10 @@ class _LegendRow extends StatelessWidget {
             color: color,
             borderRadius: BorderRadius.circular(3),
           ),
-          child: const SizedBox(width: 10, height: 10),
+          child: SizedBox(
+            width: scaledDim(context, 10),
+            height: scaledDim(context, 10),
+          ),
         ),
         SizedBox(width: scaledDim(context, 10)),
         Expanded(
