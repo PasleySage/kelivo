@@ -1581,7 +1581,7 @@
   "aboutPageEasterEggButton": "Harika!",
   "aboutPageKelivoSearchUnlocked": "İsimsiz bir kapı aralandı. Ayarlar'da bulabilirsiniz.",
   "aboutPageKelivoSearchAlreadyUnlocked": "Bu kapıdan zaten geçtiniz.",
-  "aboutPageAppName": "Kelivo",
+  "aboutPageAppName": "KelivoMeow",
   "aboutPageAppDescription": "Açık kaynaklı AI asistanı",
   "aboutPageNoQQGroup": "Henüz QQ grubu yok",
   "aboutPageVersion": "Sürüm",
@@ -4886,5 +4886,8 @@
   "workspaceEnvNativeShellInvalid": "Bu kabuk başlatılamadı. Mutlak yolunu ve desteklenen komut sözdizimini kontrol edin.",
   "workspaceEnvNativeShellUnavailable": "Kabuk kullanılamıyor",
   "workspaceEnvNativeShellDetect": "Yeniden algıla",
-  "workspaceEnvNativeShellSave": "Kaydet"
+  "workspaceEnvNativeShellSave": "Kaydet",
+  "modelDetailSheetOpenrouterWebFetchTool": "Web Getirme",
+  "displaySettingsPageUiFontSizeTitle": "Arayüz Yazı Boyutu",
+  "displaySettingsPageInputFontSizeTitle": "Giriş Kutusu Yazı Boyutu"
 }

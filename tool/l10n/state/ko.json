@@ -1581,7 +1581,7 @@
   "aboutPageEasterEggButton": "54b0407f0ad3089d3b160c73ad2a2b692b3c6a4efdc1a2c682a2fe98e2290075",
   "aboutPageKelivoSearchUnlocked": "39d1d516f0899fa27e33a932a71e7fb7aedcb7924b63fdb032979f277e6dd665",
   "aboutPageKelivoSearchAlreadyUnlocked": "0d49bc3edf4e27e8c48c7660d384680c5335fcc439ee620b32e90070259a05d6",
-  "aboutPageAppName": "29f201c8bb7e223ec92c221a92fef4619bd83641f6b729d5ea9e860cb985284b",
+  "aboutPageAppName": "5c019069521a10b00dd0b2c1fc128554edb0d0117beafbaeb2cd48cc9fcda7ec",
   "aboutPageAppDescription": "7146384a830ec8cf5b11e28be0308ef118e091e2bb7109be99e0b1deeb3c4efd",
   "aboutPageNoQQGroup": "f6331db0bbec39a6b6859d9bb76aba06eef4568f0fb00362da1fd562c0eebbae",
   "aboutPageVersion": "97e1f5ff29dd2e95697d364d1bf1f2de14a9d0da947189f72545eb7fabc914dc",
@@ -4886,5 +4886,8 @@
   "workspaceEnvNativeShellInvalid": "b60262884a8e6882312bee3a8960f7b388cb91df6d1cc26052ef3faccea27a29",
   "workspaceEnvNativeShellUnavailable": "27b2d084661c2cb09d5c588a1d5451bcdebe16b1a4011d3b8ac50f24de66cf74",
   "workspaceEnvNativeShellDetect": "5304a332350c49c6b9c1c3595efebdd375d8eadce9e056d4c80eb77595bb0be1",
-  "workspaceEnvNativeShellSave": "c63bda5d924d225c0fea8fae7edbcf2f609044d7318e7e55207dff936e4bbac1"
+  "workspaceEnvNativeShellSave": "c63bda5d924d225c0fea8fae7edbcf2f609044d7318e7e55207dff936e4bbac1",
+  "modelDetailSheetOpenrouterWebFetchTool": "8753c26ca7ee6e9e36edeb5a2f23f4b8c2f79f8e04c2ad97b580f54d71513eb9",
+  "displaySettingsPageUiFontSizeTitle": "41b6660fe960393745b9ee183162fa78510cb710f1b1cafc98ada2f83b37ede4",
+  "displaySettingsPageInputFontSizeTitle": "6121c1f52e673d65867d914c9a3015f7cf0f17beb50199dad42b1d79de06cb4a"
 }

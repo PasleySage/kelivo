@@ -1581,7 +1581,7 @@
   "aboutPageEasterEggButton": "Отлично!",
   "aboutPageKelivoSearchUnlocked": "Безымянная дверь приоткрылась. Возможно, вы найдёте её в настройках.",
   "aboutPageKelivoSearchAlreadyUnlocked": "Вы уже проходили через эту дверь.",
-  "aboutPageAppName": "Kelivo",
+  "aboutPageAppName": "KelivoMeow",
   "aboutPageAppDescription": "Открытый ИИ-ассистент",
   "aboutPageNoQQGroup": "Группы QQ пока нет",
   "aboutPageVersion": "Версия",
@@ -4886,5 +4886,8 @@
   "workspaceEnvNativeShellInvalid": "Не удалось запустить эту оболочку. Проверьте абсолютный путь и поддерживаемый синтаксис команд.",
   "workspaceEnvNativeShellUnavailable": "Оболочка недоступна",
   "workspaceEnvNativeShellDetect": "Определить снова",
-  "workspaceEnvNativeShellSave": "Сохранить"
+  "workspaceEnvNativeShellSave": "Сохранить",
+  "modelDetailSheetOpenrouterWebFetchTool": "Загрузка веб-страниц",
+  "displaySettingsPageUiFontSizeTitle": "Размер шрифта интерфейса",
+  "displaySettingsPageInputFontSizeTitle": "Размер шрифта поля ввода"
 }

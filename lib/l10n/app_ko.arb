@@ -1581,7 +1581,7 @@
   "aboutPageEasterEggButton": "좋아요!",
   "aboutPageKelivoSearchUnlocked": "이름 없는 문이 살짝 열렸습니다. 설정에서 찾아보세요.",
   "aboutPageKelivoSearchAlreadyUnlocked": "이미 이 문을 열어본 적이 있습니다.",
-  "aboutPageAppName": "Kelivo",
+  "aboutPageAppName": "KelivoMeow",
   "aboutPageAppDescription": "오픈소스 AI 어시스턴트",
   "aboutPageNoQQGroup": "아직 QQ 그룹이 없습니다",
   "aboutPageVersion": "버전",
@@ -4886,5 +4886,8 @@
   "workspaceEnvNativeShellInvalid": "이 셸을 시작할 수 없습니다. 절대 경로와 지원되는 명령 구문을 확인하세요.",
   "workspaceEnvNativeShellUnavailable": "셸을 사용할 수 없음",
   "workspaceEnvNativeShellDetect": "다시 감지",
-  "workspaceEnvNativeShellSave": "저장"
+  "workspaceEnvNativeShellSave": "저장",
+  "modelDetailSheetOpenrouterWebFetchTool": "웹 가져오기",
+  "displaySettingsPageUiFontSizeTitle": "UI 글꼴 크기",
+  "displaySettingsPageInputFontSizeTitle": "입력창 글꼴 크기"
 }
