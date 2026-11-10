@@ -4953,6 +4953,7 @@
       }
     }
   },
+  "skillsTriggersLine": "觸發關鍵字：{keywords}",
   "@skillsTriggersLine": {
     "placeholders": {
       "keywords": {

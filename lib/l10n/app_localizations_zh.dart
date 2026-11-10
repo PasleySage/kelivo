@@ -16028,7 +16028,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String skillsTriggersLine(String keywords) {
-    return 'Trigger keywords: $keywords';
+    return '触发关键词：$keywords';
   }
 }
 
@@ -32052,6 +32052,11 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   @override
   String skillsImportedCount(int count) {
     return '已导入 $count 个技能';
+  }
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '触发关键词：$keywords';
   }
 }
 
@@ -48082,5 +48087,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String skillsImportedCount(int count) {
     return '已匯入 $count 個技能';
+  }
+
+  @override
+  String skillsTriggersLine(String keywords) {
+    return '觸發關鍵字：$keywords';
   }
 }

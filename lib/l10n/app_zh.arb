@@ -6185,6 +6185,7 @@
       }
     }
   },
+  "skillsTriggersLine": "触发关键词：{keywords}",
   "@skillsTriggersLine": {
     "placeholders": {
       "keywords": {
