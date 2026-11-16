@@ -346,6 +346,18 @@ abstract class AppLocalizations {
   /// **'Could not load files or check which images are in use. Please refresh and try again.'**
   String get storageSpaceLoadFailed;
 
+  /// Button on the Images and Files storage detail pages that copies the load error and its stack trace to the clipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy error details'**
+  String get storageSpaceCopyErrorDetails;
+
+  /// Error notification on the Images and Files storage detail pages when the clipboard cannot accept the diagnostic text. The user can tap the copy button again.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not copy the error details. Please try again.'**
+  String get storageSpaceCopyErrorFailed;
+
   /// Label for total used storage space, displayed with a formatted byte size.
   ///
   /// In en, this message translates to:
@@ -1515,6 +1527,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this version? This cannot be undone.'**
   String get homePageDeleteMessageConfirm;
+
+  /// Action in a chat message's More menu and its confirmation dialog title. Deletes the other versions of this message while keeping the version on screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Other Versions'**
+  String get homePageDeleteOtherVersions;
+
+  /// Confirmation dialog body for deleting the other versions of one chat message. The version on screen is kept. Count is the number of other versions being permanently deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this version of the message? {count, plural, one{{count} other version will be deleted.} other{{count} other versions will be deleted.}} This cannot be undone.'**
+  String homePageDeleteOtherVersionsConfirm(int count);
 
   /// Dialog title and option label for deleting all versions of a message.
   ///
@@ -3946,6 +3970,18 @@ abstract class AppLocalizations {
   /// **'Error copied'**
   String get backupProgressErrorCopied;
 
+  /// Completion heading in the backup progress dialog when unreadable asset files or directories were skipped; the archive was created successfully but does not include those items.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup completed with skipped items'**
+  String get backupProgressSkippedTitle;
+
+  /// Warning above the skipped path list in the backup completion dialog. {count} is the number of unreadable files or directories omitted; an unreadable directory counts once including all its descendants.
+  ///
+  /// In en, this message translates to:
+  /// **'Unreadable files or directories skipped: {count}. They are not included in this backup.'**
+  String backupProgressSkippedMessage(int count);
+
   /// Progress phase label for the initial preparation stage of a backup or restore task.
   ///
   /// In en, this message translates to:
@@ -4591,13 +4627,13 @@ abstract class AppLocalizations {
   /// Descriptive subtitle for the compress-context action, noting the summary can be reviewed and undone.
   ///
   /// In en, this message translates to:
-  /// **'Create a summary you can review and undo'**
+  /// **'Turn earlier chat into a summary. Originals stay in the chat and you can undo anytime.'**
   String get compressContextDesc;
 
-  /// Descriptive subtitle for the clear-context action, noting it marks a context boundary.
+  /// Subtitle for clearing context: earlier chat remains stored but is no longer sent to the model.
   ///
   /// In en, this message translates to:
-  /// **'Mark a context boundary'**
+  /// **'Start fresh from here: earlier messages stay in the chat but won’t be sent to the model.'**
   String get clearContextDesc;
 
   /// Label/tooltip for the context management entry that opens context actions like compress or clear.
@@ -4609,31 +4645,31 @@ abstract class AppLocalizations {
   /// Error message prefix shown when context compression fails; the raw error is appended after a colon.
   ///
   /// In en, this message translates to:
-  /// **'Failed to compress context'**
+  /// **'Compression didn’t finish'**
   String get compressContextFailed;
 
   /// Error shown when compression is attempted but there are no messages to compress.
   ///
   /// In en, this message translates to:
-  /// **'No messages to compress'**
+  /// **'There’s nothing in this chat to compress.'**
   String get compressContextNoMessages;
 
   /// Error shown when compression is attempted without an active conversation.
   ///
   /// In en, this message translates to:
-  /// **'No conversation to compress'**
+  /// **'There’s no conversation to compress.'**
   String get compressContextNoConversation;
 
-  /// Error message shown when context compression is attempted but no compression model is configured; mapped from a 'no_model' error code in the home page.
+  /// Compression error when no model is selected. Directs the user to select a compression model.
   ///
   /// In en, this message translates to:
-  /// **'No compression model configured'**
+  /// **'No model is set for compression. Choose a fast one in Settings.'**
   String get compressContextNoModel;
 
-  /// Error message shown when the compression model returns an empty summary; mapped from an 'empty_summary' error code in the home page.
+  /// Compression failure when the model returned no summary text; suggests changing the model or options, not filling in a blank summary editor.
   ///
   /// In en, this message translates to:
-  /// **'Compression returned an empty summary'**
+  /// **'The model didn’t produce a summary. Try a different model, or change the options and try again.'**
   String get compressContextEmptySummary;
 
   /// Title of the dialog for configuring context compression in a chat.
@@ -4645,7 +4681,7 @@ abstract class AppLocalizations {
   /// Description under the Compress Context title explaining the summary is editable and reversible while original messages are kept.
   ///
   /// In en, this message translates to:
-  /// **'Create an editable, reversible summary in this chat. Original messages are kept.'**
+  /// **'Turn earlier messages into a summary, which is what the model will see next time. The original chat is kept; you can edit or undo the summary.'**
   String get compressContextOptionsDesc;
 
   /// Label for a compression limit mode that compresses the earlier portion of history; used in the options dialog and operation summary.
@@ -4684,7 +4720,7 @@ abstract class AppLocalizations {
   /// **'Compress'**
   String get compressContextStartButton;
 
-  /// Section title labeling the model selector used for compression.
+  /// Compression model section heading and recovery action that opens the model selection section.
   ///
   /// In en, this message translates to:
   /// **'Model'**
@@ -4705,19 +4741,19 @@ abstract class AppLocalizations {
   /// Field label for the number of recent user messages to keep uncompressed.
   ///
   /// In en, this message translates to:
-  /// **'Recent user messages'**
+  /// **'Recent user messages to keep'**
   String get compressContextKeepCountLabel;
 
   /// Hint shown when the chosen keep count covers all messages, leaving nothing to compress.
   ///
   /// In en, this message translates to:
-  /// **'Keeping that many covers all messages — nothing to compress'**
+  /// **'That many recent messages already covers the whole chat, so there’s nothing left to compress.'**
   String get compressContextKeepAllMessages;
 
   /// Keep-recent compression preview: summarized/kept char counts and the estimated result token band
   ///
   /// In en, this message translates to:
-  /// **'Summarize {summarized} chars, keep {kept} chars verbatim → about {minTokens}–{maxTokens} tokens (original about {totalTokens} tokens)'**
+  /// **'Will summarize {summarized} characters and keep {kept} as-is. About {minTokens}–{maxTokens} tokens after compression (original about {totalTokens}).'**
   String compressContextEstimatePreview(
     int summarized,
     int kept,
@@ -6259,13 +6295,13 @@ abstract class AppLocalizations {
   /// Status text indicating token usage is exact, taken from the last model response.
   ///
   /// In en, this message translates to:
-  /// **'Exact (from last response)'**
+  /// **'Exact (from the last reply)'**
   String get contextUsageStateExact;
 
   /// Status text indicating usage is exact but the per-bucket breakdown is scaled from an estimate.
   ///
   /// In en, this message translates to:
-  /// **'Exact (breakdown scaled from estimate)'**
+  /// **'Total is exact; the breakdown is estimated in proportion'**
   String get contextUsageStateExactCalibrated;
 
   /// Status text indicating the token usage figure is an estimate.
@@ -6289,20 +6325,44 @@ abstract class AppLocalizations {
   /// Status text shown when token usage calculation failed and no prior result exists.
   ///
   /// In en, this message translates to:
-  /// **'Calculation failed'**
+  /// **'Couldn’t calculate usage. Please try again.'**
   String get contextUsageStateFailed;
 
   /// Status text shown when a usage update failed, so the previously shown result is now stale.
   ///
   /// In en, this message translates to:
-  /// **'Update failed · previous result is stale'**
+  /// **'Couldn’t refresh. Showing the previous result, which may be out of date.'**
   String get contextUsageStateFailedWithPrevious;
 
   /// Fallback text shown when no token usage data is available.
   ///
   /// In en, this message translates to:
-  /// **'Usage unavailable'**
+  /// **'Usage isn’t available right now.'**
   String get contextUsageUnavailable;
+
+  /// Summary in the context usage panel and input-bar tooltip when OpenAI native compaction is present. Only readable content has been estimated; the encrypted compaction block's input token count is unknown. tokens is the already-formatted subtotal, such as 42k, not the full context total.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated {tokens}, plus unknown server-side usage'**
+  String contextUsagePartialSummary(String tokens);
+
+  /// Context-usage breakdown label for the opaque server-side compaction data.
+  ///
+  /// In en, this message translates to:
+  /// **'Server-side compression'**
+  String get contextUsageBucketNativeCompaction;
+
+  /// Token value in the context usage panel for encrypted native compaction content that cannot be counted locally; unknown must not be interpreted as zero.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get contextUsageUnknownTokens;
+
+  /// Separate line below the native-compaction context usage breakdown showing input tokens reported by the last matching model request, not the current estimated window or the compaction operation's output usage. tokens is an already-formatted token count such as 42k.
+  ///
+  /// In en, this message translates to:
+  /// **'Last amount actually sent to the model: {tokens}'**
+  String contextUsageLastRequestInput(String tokens);
 
   /// Status text indicating no context usage data exists yet.
   ///
@@ -6403,7 +6463,7 @@ abstract class AppLocalizations {
   /// Text shown in the context usage ring when no context window size is configured.
   ///
   /// In en, this message translates to:
-  /// **'No context window'**
+  /// **'No context limit is set yet.'**
   String get contextUsageNoWindow;
 
   /// Button label/header prompting the user to configure a context window size.
@@ -6964,19 +7024,19 @@ abstract class AppLocalizations {
   /// Subtitle noting the compress model compresses conversation context and a fast model is recommended.
   ///
   /// In en, this message translates to:
-  /// **'Used for compressing conversation context; prefer fast models'**
+  /// **'The model used to summarize long chats. A fast model is usually enough.'**
   String get defaultModelPageCompressModelSubtitle;
 
   /// Placeholder hint for the context-compression prompt template text field; no caller supplied.
   ///
   /// In en, this message translates to:
-  /// **'Enter prompt template for context compression'**
+  /// **'Enter the prompt used when compressing.'**
   String get defaultModelPageCompressPromptHint;
 
   /// Hint listing template variables for the compression prompt; {contentVar} and {localeVar} are literal tokens like {content}.
   ///
   /// In en, this message translates to:
-  /// **'Variables: conversation: {contentVar}, language: {localeVar}'**
+  /// **'Variables: conversation {contentVar}, language {localeVar}'**
   String defaultModelPageCompressVars(String contentVar, String localeVar);
 
   /// Hint listing template variables for the translation prompt; {sourceVar} and {targetVar} are literal tokens like {source_text}.
@@ -9073,17 +9133,65 @@ abstract class AppLocalizations {
   /// **'Scroll to bottom'**
   String get miniMapScrollToBottomTooltip;
 
-  /// Label showing how many messages match the minimap search; {count} is the match number.
+  /// Placeholder in the search field of the current conversation’s find bar.
   ///
   /// In en, this message translates to:
-  /// **'{count}'**
-  String miniMapSearchMatchCount(int count);
+  /// **'Find'**
+  String get conversationFindHint;
 
-  /// Empty-state text in the minimap search showing no messages matched the query.
+  /// Tooltip for the find bar button that selects the previous occurrence in the current conversation.
   ///
   /// In en, this message translates to:
-  /// **'No matching messages'**
-  String get miniMapSearchNoResults;
+  /// **'Previous match'**
+  String get conversationFindPrevious;
+
+  /// Tooltip for the find bar button that selects the next occurrence in the current conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Next match'**
+  String get conversationFindNext;
+
+  /// Tooltip for the find bar button that opens the search options menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Find options'**
+  String get conversationFindOptions;
+
+  /// Match counter in the conversation find bar. current is the one-based occurrence index and total is the number of occurrences. Both are zero for no matches.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{total}'**
+  String conversationFindMatchPosition(int current, int total);
+
+  /// Toggle in the conversation find menu requiring the query to match uppercase and lowercase letters exactly.
+  ///
+  /// In en, this message translates to:
+  /// **'Match case'**
+  String get conversationFindCaseSensitive;
+
+  /// Toggle in the conversation find menu limiting matches to whole words.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole word'**
+  String get conversationFindWholeWord;
+
+  /// Tooltip beside the whole-word search option explaining word boundaries and how CJK queries behave.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches whole words for scripts with word boundaries (e.g. English). Queries that contain Chinese, Japanese, or Korean characters still use substring matching.'**
+  String get conversationFindWholeWordTooltip;
+
+  /// Toggle in the conversation find menu to also search the assistant’s reasoning steps.
+  ///
+  /// In en, this message translates to:
+  /// **'Include thinking'**
+  String get conversationFindIncludeThinking;
+
+  /// Tooltip for the message map button that opens the find bar in the current conversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Find in conversation'**
+  String get conversationFindOpenTooltip;
 
   /// Status label indicating a search service still needs an API key to be configured.
   ///
@@ -9610,7 +9718,7 @@ abstract class AppLocalizations {
   /// The app name 'Kelivo' displayed in the about page header and desktop home page.
   ///
   /// In en, this message translates to:
-  /// **'KelivoMeow'**
+  /// **'Kelivo'**
   String get aboutPageAppName;
 
   /// Short tagline under the app name on the about page describing Kelivo as an open-source AI assistant.
@@ -10693,6 +10801,12 @@ abstract class AppLocalizations {
   /// **'Low-latency streaming transcription'**
   String get asrServicesOpenAiSubtitle;
 
+  /// Subtitle in the speech recognition provider list for DeepSeek. It transcribes recorded audio segments and determines the spoken language from the audio.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcribes recordings and detects the language automatically'**
+  String get asrServicesDeepSeekSubtitle;
+
   /// Subtitle describing the Groq ASR service as Whisper-based segmented cloud transcription.
   ///
   /// In en, this message translates to:
@@ -11191,6 +11305,12 @@ abstract class AppLocalizations {
   /// **'Voice'**
   String get ttsServicesFieldVoiceLabel;
 
+  /// Name and gender of the selected DeepSeek voice in the mobile and desktop TTS service editor. The voiceId is the API identifier. Preserve the select keys stella and tide and display any other identifier as supplied.
+  ///
+  /// In en, this message translates to:
+  /// **'{voiceId, select, stella{Stella (female)} tide{Tide (male)} other{{voiceId}}}'**
+  String ttsServicesDeepSeekVoice(String voiceId);
+
   /// Label for the voice ID field, used for providers like MiniMax, xAI and ElevenLabs.
   ///
   /// In en, this message translates to:
@@ -11634,48 +11754,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next Image'**
   String get imageViewerPageNextButton;
-
-  /// Label of the button that zooms the image in.
-  ///
-  /// In en, this message translates to:
-  /// **'Zoom In'**
-  String get imageViewerPageZoomInButton;
-
-  /// Label of the button that zooms the image out.
-  ///
-  /// In en, this message translates to:
-  /// **'Zoom Out'**
-  String get imageViewerPageZoomOutButton;
-
-  /// Label of the button that resets the image zoom to its default level.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset Zoom'**
-  String get imageViewerPageResetZoomButton;
-
-  /// Label of the button that mirrors the image left-to-right.
-  ///
-  /// In en, this message translates to:
-  /// **'Flip Horizontal'**
-  String get imageViewerPageFlipHorizontalButton;
-
-  /// Label of the button that mirrors the image top-to-bottom.
-  ///
-  /// In en, this message translates to:
-  /// **'Flip Vertical'**
-  String get imageViewerPageFlipVerticalButton;
-
-  /// Label of the button that rotates the image counterclockwise.
-  ///
-  /// In en, this message translates to:
-  /// **'Rotate Left'**
-  String get imageViewerPageRotateLeftButton;
-
-  /// Label of the button that rotates the image clockwise.
-  ///
-  /// In en, this message translates to:
-  /// **'Rotate Right'**
-  String get imageViewerPageRotateRightButton;
 
   /// Compact position indicator in the image viewer showing current image number and total, e.g. 2/5.
   ///
@@ -13705,10 +13783,10 @@ abstract class AppLocalizations {
   /// **'Open Logs Folder'**
   String get logViewerOpenFolder;
 
-  /// Header count label showing how many requests are in the log; {count} is the integer total.
+  /// Summary in the request log viewer. The count is the number of request instances loaded so far, not a total for the entire file; it increases as earlier pages load.
   ///
   /// In en, this message translates to:
-  /// **'{count} requests'**
+  /// **'{count} loaded requests'**
   String logViewerRequestsCount(int count);
 
   /// Field label for the request's numeric ID in the log entry detail summary.
@@ -15289,10 +15367,10 @@ abstract class AppLocalizations {
   /// **'Global setting for all assistants'**
   String get legacyMemoryModeSubtitle;
 
-  /// Info banner warning that the default legacy template injects the current time via the given token placeholder, which hurts cache hit rate.
+  /// Banner in the legacy memory rule editor. {token} is the literal placeholder removed when sending the template. Directs users who want the model to see the current time to the assistant's Append current time setting.
   ///
   /// In en, this message translates to:
-  /// **'The default template injects the current time via {token}, which affects cache hit rate. Remove it if you do not need it.'**
+  /// **'If a template still contains {token}, it is stripped on inject and is no longer filled with the current time. If the model needs the current time, turn on \"Append current time\" in assistant settings.'**
   String legacyMemoryModeCacheWarning(String token);
 
   /// Label for a memory content field in the memory UI; no caller supplied, evidently names the content input.
@@ -15955,11 +16033,17 @@ abstract class AppLocalizations {
   /// **'{value}s'**
   String tokenDetailDuration(String value);
 
-  /// Row in the token detail popup showing time to first token in seconds; {value} is the formatted number.
+  /// Row in the token detail popup showing seconds from request preparation to the first client-received reasoning-start event or non-empty output, whichever arrives first. This is response activity, not the server's hidden reasoning-token time. {value} is the formatted duration in seconds.
   ///
   /// In en, this message translates to:
-  /// **'{value}s (first token)'**
-  String tokenDetailFirstToken(String value);
+  /// **'{value}s (first response)'**
+  String tokenDetailFirstResponse(String value);
+
+  /// Row in the token detail popup showing seconds from request preparation to the first non-empty content received, such as a public reasoning summary, answer text, tool input, image or file. A reasoning-start event alone does not count. {value} is the formatted duration in seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}s (first output)'**
+  String tokenDetailFirstOutput(String value);
 
   /// Label showing the total token count, used in the token display widget and stats usage chart; {count} is the number.
   ///
@@ -17035,6 +17119,18 @@ abstract class AppLocalizations {
   /// **'Follows the theme; not customizable'**
   String get messageStyleSettingsPageStyleDefaultSubtitle;
 
+  /// Switch label in Message Style settings for Frosted Glass and Solid styles. Controls the bubble around the main assistant reply, independently of user messages and cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Show assistant reply bubbles'**
+  String get messageStyleSettingsPageShowAssistantBodyBubble;
+
+  /// Subtitle below the assistant reply bubble switch explaining where the reply text appears when the switch is off.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to show reply text directly on the chat background'**
+  String get messageStyleSettingsPageShowAssistantBodyBubbleSubtitle;
+
   /// Switch label to make assistant bubbles shrink to their text width instead of filling the row.
   ///
   /// In en, this message translates to:
@@ -17520,6 +17616,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search'**
   String get toolSchemaSettingsGroupSearch;
+
+  /// Group heading in the mobile and desktop tool descriptions settings for the unified view_image tool, which can inspect conversation images or permitted workspace image files.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get toolSchemaSettingsGroupImages;
 
   /// Group heading for memory-related built-in tools in the tool schema settings.
   ///
@@ -18331,7 +18433,7 @@ abstract class AppLocalizations {
   /// **'Read file'**
   String get workspaceToolTitleReadFile;
 
-  /// Title for the view_image tool card.
+  /// Title for the view_image tool card and the image viewing entry in mobile and desktop chat tool menus.
   ///
   /// In en, this message translates to:
   /// **'View image'**
@@ -18708,6 +18810,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not finish setting up the sandbox.'**
   String get workspaceEnvErrorPatchFailed;
+
+  /// Error shown in the iOS workspace environment details after an interrupted or cancelled sandbox repair, including recovery on app startup. Explains that the existing filesystem was retained and the user can retry the in-place repair. No placeholders.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox repair was interrupted. The existing sandbox has been kept. Retry to finish the repair.'**
+  String get workspaceEnvErrorRepairInterrupted;
+
+  /// Error shown in the iOS workspace environment details when sandbox repair exceeds its time limit and the command has stopped. Explains that the existing filesystem was retained and suggests checking the network before retrying the in-place repair. No placeholders.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox repair timed out. Check your network connection and retry. The existing sandbox has been kept.'**
+  String get workspaceEnvErrorRepairTimeout;
+
+  /// Banner in iOS workspace environment details when a cancelled or timed-out repair command has not confirmed it stopped. Requires a full app restart before retrying so package transactions cannot overlap, and reassures that the existing filesystem was retained. No placeholders.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not confirm that sandbox repair stopped within the time limit. Fully close and reopen Kelivo before retrying. The existing sandbox has been kept.'**
+  String get workspaceEnvRepairRestartBanner;
 
   /// Message for the 'cancelled' code and cancelled dependency installs, stating installation was cancelled.
   ///
@@ -20379,10 +20499,10 @@ abstract class AppLocalizations {
   /// **'Conversation files'**
   String get storageSpaceCategorySessionFiles;
 
-  /// Description of the conversation files category: attachments and outputs per conversation.
+  /// Storage Conversation files category help. Distinguishes workspace session copies and outputs from original uploads shown in Images/Files.
   ///
   /// In en, this message translates to:
-  /// **'Per-conversation attachments and outputs.'**
+  /// **'Workspace conversation attachments and outputs. Ordinary chat uploads are listed in Images and Files.'**
   String get storageSpaceCategorySessionFilesHint;
 
   /// Button label opening the skills management screen, used in the skills popover and storage page.
@@ -20391,16 +20511,16 @@ abstract class AppLocalizations {
   /// **'Manage skills'**
   String get storageSpaceManageSkills;
 
-  /// Button label to delete session folders that no longer have an associated conversation.
+  /// Storage Conversation files action. Removes empty roots including metadata-only folders and unreferenced orphan directories; other conversation references are protected.
   ///
   /// In en, this message translates to:
-  /// **'Clean orphaned conversation files'**
+  /// **'Clean empty and orphaned folders'**
   String get storageSessionFilesCleanOrphans;
 
-  /// Confirmation message for cleaning orphaned session files; {size} is the reclaimable space.
+  /// Confirmation for cleaning empty and orphaned conversation directories. size is the measured disk use of orphan directories before final reference protection checks.
   ///
   /// In en, this message translates to:
-  /// **'Deletes session folders that no longer have a conversation. Reclaimable: {size}.'**
+  /// **'Remove empty conversation folders and folders with no conversation or remaining references. Orphaned files occupy {size}.'**
   String storageSessionFilesCleanOrphansHint(String size);
 
   /// Text field label for the folder path when creating a desktop workspace.
@@ -24144,10 +24264,10 @@ abstract class AppLocalizations {
   /// **'Backups are encrypted. Enter the password again after restarting the app.'**
   String get backupEncryptionOnHint;
 
-  /// Warning to keep the password safe since a lost password makes the backup unrestorable, kept only in memory.
+  /// Hint when setting an encryption password. A password remembered on this device is still needed to restore an encrypted backup on another device.
   ///
   /// In en, this message translates to:
-  /// **'Keep this password safe. If you lose it, the backup cannot be restored. It is kept in memory until you exit the app.'**
+  /// **'Keep this password safe. You will need it to restore backups on another device.'**
   String get backupEncryptionPasswordHint;
 
   /// Field label for the backup encryption password input.
@@ -26229,19 +26349,19 @@ abstract class AppLocalizations {
   /// Status reason shown in the chat input bar when queued sending stays paused because compression did not finish.
   ///
   /// In en, this message translates to:
-  /// **'Compression did not finish; sending stays paused'**
+  /// **'Compression is still running, so this won’t send automatically.'**
   String get chatInputBarQueuedPausedReason;
 
   /// Warning snackbar telling the user history changed and they should reopen the action to review its scope.
   ///
   /// In en, this message translates to:
-  /// **'History changed. Reopen this action to review its current scope.'**
+  /// **'The chat has changed. Open this again and confirm the range before continuing.'**
   String get contextChanged;
 
   /// Status label for a context operation whose content was folded into a later summary.
   ///
   /// In en, this message translates to:
-  /// **'Included in a later summary'**
+  /// **'Replaced by a later summary'**
   String get contextOperationSuperseded;
 
   /// Toggle label and detail text for including attachment text and tool results when compressing context.
@@ -26259,13 +26379,13 @@ abstract class AppLocalizations {
   /// Error message when a summary would exceed the context limit and was therefore not applied.
   ///
   /// In en, this message translates to:
-  /// **'The summary would exceed the context limit and was not applied.'**
+  /// **'The summary is still too long and would exceed the limit, so it wasn’t used. Compress again, or switch to a model with a larger context.'**
   String get compressOverSnack;
 
   /// Hint on the summary editor explaining the summary is used in later requests, saving doesn't rewrite replies, and attachments use only existing text.
   ///
   /// In en, this message translates to:
-  /// **'This is the summary used in subsequent requests. Saving changes does not rewrite existing replies. Attachments contribute only available text; images are not reinterpreted.'**
+  /// **'This is the summary the model will see next. Saving changes only the summary, not existing replies. Attachments contribute only text already extracted; images are not re-read.'**
   String get contextSummaryHint;
 
   /// Section label for advanced compression options.
@@ -26283,7 +26403,7 @@ abstract class AppLocalizations {
   /// Warning that the estimated context exceeds the model's limit, suggesting shortening the summary, recompressing, or a larger-context model.
   ///
   /// In en, this message translates to:
-  /// **'The estimated context exceeds this model’s limit. Shorten the summary, compress again, or choose a model with a larger context.'**
+  /// **'With this summary, the next message would exceed the model’s limit. Shorten the summary, compress again, or switch to a model with a larger context.'**
   String get contextBudgetExceeded;
 
   /// Option label to include manually edited summaries as supplements during compression.
@@ -26307,13 +26427,13 @@ abstract class AppLocalizations {
   /// Dialog title asking whether to modify the already-compressed originals.
   ///
   /// In en, this message translates to:
-  /// **'Change compressed originals?'**
+  /// **'Change original text that’s already in a summary?'**
   String get contextImpactSourceTitle;
 
   /// Status hint in the chat input bar shown when a queued message's compression task failed or was interrupted, explaining that sending stays paused.
   ///
   /// In en, this message translates to:
-  /// **'Compression failed; sending stays paused'**
+  /// **'Compression failed, so this message won’t send automatically.'**
   String get chatInputBarQueuedCompressionFailed;
 
   /// Label comparing token counts before and after summarization, with {before} and {after} as integer token counts.
@@ -26343,7 +26463,7 @@ abstract class AppLocalizations {
   /// Snackbar message shown when compression is attempted but there is no new content since the last summary.
   ///
   /// In en, this message translates to:
-  /// **'Nothing new to compress since the last summary'**
+  /// **'Nothing new to compress since last time.'**
   String get compressNothingNew;
 
   /// Label for the browser tool action that captures a screenshot of the page.
@@ -26397,7 +26517,7 @@ abstract class AppLocalizations {
   /// Primary confirm button in the context impact dialog that saves the edit and undoes {count} affected nodes.
   ///
   /// In en, this message translates to:
-  /// **'Save and undo {count} nodes'**
+  /// **'Save, and undo the next {count} related operations'**
   String contextImpactSaveConfirm(int count);
 
   /// Action label to restore a previous context budget, shown in an undo snackbar action.
@@ -26418,10 +26538,10 @@ abstract class AppLocalizations {
   /// **'Awaiting approval · {kind}'**
   String toolApprovalPendingKind(String kind);
 
-  /// Compression status text shown while the generated summary is being applied to the conversation.
+  /// Task status while the generated summary is being applied to the conversation.
   ///
   /// In en, this message translates to:
-  /// **'Applying summary'**
+  /// **'Using this summary'**
   String get contextTaskApplying;
 
   /// Hint on the storage page warning that deleting images affects chat images and tool results, while in-use avatars and backgrounds are protected.
@@ -26445,13 +26565,13 @@ abstract class AppLocalizations {
   /// Toggle label in compression options to re-read the original messages that were already compressed.
   ///
   /// In en, this message translates to:
-  /// **'Re-read compressed originals'**
+  /// **'Look back at the compressed originals'**
   String get compressReread;
 
   /// Input bar hint explaining queued input stays paused and the queue must be cancelled before editing or sending.
   ///
   /// In en, this message translates to:
-  /// **'Input remains paused; cancel the queue to edit or send'**
+  /// **'Sending is paused. Cancel the queue to edit or send now.'**
   String get chatInputBarQueuedPausedHold;
 
   /// Title for the context summary section, referring to the compression summary.
@@ -26472,34 +26592,28 @@ abstract class AppLocalizations {
   /// **'Dismiss'**
   String get compressTaskAbandon;
 
-  /// Browser agent status chip label shown when an operation timed out and the AI was paused.
-  ///
-  /// In en, this message translates to:
-  /// **'Operation timed out; AI paused'**
-  String get browserAgentTimedOut;
-
   /// Snackbar confirming compression was cancelled and the current context is unchanged.
   ///
   /// In en, this message translates to:
-  /// **'Compression cancelled. Current context is unchanged.'**
+  /// **'Cancelled. The context is unchanged.'**
   String get compressCancelledSnack;
 
   /// Dialog title asking whether to undo an earlier context clear operation.
   ///
   /// In en, this message translates to:
-  /// **'Undo earlier clear?'**
+  /// **'Undo the earlier clear?'**
   String get contextImpactClearTitle;
 
   /// Compression status text indicating the task is waiting for a tool approval to complete.
   ///
   /// In en, this message translates to:
-  /// **'Waiting for tool approval'**
+  /// **'Waiting for you to approve a tool'**
   String get compressTaskWaitingApproval;
 
   /// Compression status text indicating the compression failed.
   ///
   /// In en, this message translates to:
-  /// **'Compression failed'**
+  /// **'Compression didn’t finish'**
   String get contextTaskFailed;
 
   /// Workspace tool denial message stating the skills folder is read-only.
@@ -26523,7 +26637,7 @@ abstract class AppLocalizations {
   /// Snackbar shown when chat history changed during compression so the summary was not applied.
   ///
   /// In en, this message translates to:
-  /// **'Chat history changed; the summary was not applied.'**
+  /// **'The chat changed before compression finished, so this result wasn’t used. Compress again if you still want to.'**
   String get compressStaleSnack;
 
   /// Action label/tooltip to copy selected world book entries to another location.
@@ -26535,7 +26649,7 @@ abstract class AppLocalizations {
   /// Validation message when editing a context summary to empty, advising use of Clear context to discard all earlier history.
   ///
   /// In en, this message translates to:
-  /// **'Summary cannot be empty. Use Clear context to exclude all earlier history.'**
+  /// **'The summary can’t be empty. To leave earlier chat out, use Clear context.'**
   String get contextEditEmpty;
 
   /// Action label to deny a tool approval request while providing a reason.
@@ -26565,7 +26679,7 @@ abstract class AppLocalizations {
   /// Dialog title asking whether to undo an earlier compression.
   ///
   /// In en, this message translates to:
-  /// **'Undo earlier compression?'**
+  /// **'Undo the earlier compression?'**
   String get contextImpactUndoTitle;
 
   /// Label for viewing the original messages, used as a source label in a context comparison view.
@@ -26601,7 +26715,7 @@ abstract class AppLocalizations {
   /// Muted status chip noting a context operation was converted from a legacy clear position.
   ///
   /// In en, this message translates to:
-  /// **'Converted from legacy clear'**
+  /// **'Carried over from an older clear'**
   String get contextDetailLegacy;
 
   /// Detail row label showing the current context budget, used for non-compression operations.
@@ -26643,13 +26757,13 @@ abstract class AppLocalizations {
   /// Detail row showing how many segments the input was automatically split into; {count} is the segment count.
   ///
   /// In en, this message translates to:
-  /// **'{count} segments'**
+  /// **'Automatically split into {count} parts'**
   String contextDetailParts(int count);
 
   /// Snackbar confirming an edited summary was saved and will apply after the current reply finishes.
   ///
   /// In en, this message translates to:
-  /// **'Saved; applies after the current reply'**
+  /// **'Saved. It will be used after the current reply finishes.'**
   String get contextEditPending;
 
   /// Button label to retry a failed context compression task.
@@ -26709,13 +26823,13 @@ abstract class AppLocalizations {
   /// Subtitle/note warning that a new branch only inherits context nodes active before the fork point.
   ///
   /// In en, this message translates to:
-  /// **'Only inherits context nodes active before this point'**
+  /// **'The new branch only carries summaries and originals that were still in effect before this point.'**
   String get branchInheritNote;
 
   /// Status/error label for a compression that was interrupted, noting input was preserved.
   ///
   /// In en, this message translates to:
-  /// **'Compression interrupted; input is preserved'**
+  /// **'Compression was interrupted. What you typed is still there.'**
   String get contextTaskInterrupted;
 
   /// Filter option in storage space settings showing images of all types.
@@ -26757,7 +26871,7 @@ abstract class AppLocalizations {
   /// Snackbar noting context was cleared and any running compression was discarded.
   ///
   /// In en, this message translates to:
-  /// **'Context cleared; the running compression was discarded.'**
+  /// **'Context cleared. The compression in progress was cancelled and not used.'**
   String get compressDiscardedSnack;
 
   /// Label for a browser tool action that selects an option in a dropdown.
@@ -26775,7 +26889,7 @@ abstract class AppLocalizations {
   /// Detail row label showing token usage that will apply on the next request.
   ///
   /// In en, this message translates to:
-  /// **'Next request'**
+  /// **'Next send'**
   String get contextDetailNext;
 
   /// Action to cancel an in-progress compression task.
@@ -26793,7 +26907,7 @@ abstract class AppLocalizations {
   /// Status text noting compression was cancelled so the queued message will not auto-send.
   ///
   /// In en, this message translates to:
-  /// **'Compression cancelled; sending stays paused'**
+  /// **'Compression was cancelled, so this message won’t send automatically.'**
   String get chatInputBarQueuedCompressionCancelled;
 
   /// Snackbar noting the workspace changed and the conversation's tool permission reset to request approval.
@@ -26817,13 +26931,13 @@ abstract class AppLocalizations {
   /// Status hint that sending is paused and the queue must be cancelled to edit.
   ///
   /// In en, this message translates to:
-  /// **'Sending paused — cancel the queue to edit'**
+  /// **'Sending is paused. Cancel the queue to keep editing.'**
   String get contextTaskPaused;
 
-  /// Status prompting the user to review the generated summary before applying it.
+  /// Task status indicating that a generated summary needs the user to review and accept it before it is applied.
   ///
   /// In en, this message translates to:
-  /// **'Review the summary before applying'**
+  /// **'Please review the summary before using it.'**
   String get contextTaskReview;
 
   /// Detail row showing approximate token usage; {value} is a formatted token count.
@@ -26841,7 +26955,7 @@ abstract class AppLocalizations {
   /// Option to expand only the most recent compression layer when re-reading originals.
   ///
   /// In en, this message translates to:
-  /// **'Expand last layer'**
+  /// **'View the originals from before the last compression'**
   String get compressRereadLastLayer;
 
   /// Action label to restore a previously undone context operation.
@@ -26859,7 +26973,7 @@ abstract class AppLocalizations {
   /// Dialog title asking whether to save an earlier summary when editing.
   ///
   /// In en, this message translates to:
-  /// **'Save earlier summary?'**
+  /// **'Save this earlier summary?'**
   String get contextImpactEditTitle;
 
   /// Button/snackbar action opening the new conversation created by a compression task.
@@ -26877,7 +26991,7 @@ abstract class AppLocalizations {
   /// Hint shown when token usage can't be previewed; it will be rechecked before saving.
   ///
   /// In en, this message translates to:
-  /// **'Usage is unavailable; it will be checked again before saving.'**
+  /// **'Usage can’t be estimated right now. It will be checked again before saving.'**
   String get contextEditUnknownPreview;
 
   /// Error text shown when compression is blocked because a reply or tools are still running.
@@ -26895,13 +27009,13 @@ abstract class AppLocalizations {
   /// Workspace approval error meaning the conversation context changed, so the request expired.
   ///
   /// In en, this message translates to:
-  /// **'Conversation context changed. Request expired.'**
+  /// **'The conversation changed, so this request was cancelled.'**
   String get wsContextChanged;
 
   /// Confirmation text warning an edit will also undo {count} affected context operations while keeping originals.
   ///
   /// In en, this message translates to:
-  /// **'This change will also undo {count} affected context operations. Original messages are kept. Continue?'**
+  /// **'This will also undo the next {count} related compressions or clears. The original chat is kept. Continue?'**
   String contextChangeImpact(int count);
 
   /// Confirm button in the impact dialog to save the change.
@@ -26919,7 +27033,7 @@ abstract class AppLocalizations {
   /// Error message shown when a generated summary is not shorter than its input, asking the user to review before applying; triggered by the summary_not_smaller error code.
   ///
   /// In en, this message translates to:
-  /// **'The summary is not shorter than its input. Review it before applying.'**
+  /// **'The summary isn’t shorter than the original. Review it before deciding to use it.'**
   String get contextSummaryNotSmaller;
 
   /// Filter option in the storage space page's image type selector, showing images used by tools.
@@ -26931,13 +27045,13 @@ abstract class AppLocalizations {
   /// Action label to re-read the original text of the most recent compression layer.
   ///
   /// In en, this message translates to:
-  /// **'Re-read the last compression layer'**
+  /// **'Re-read the originals from before the last compression'**
   String get contextPreviousHistory;
 
   /// Row label in a context operation detail view showing the actual read mode or amount.
   ///
   /// In en, this message translates to:
-  /// **'Read'**
+  /// **'What will actually be read'**
   String get contextDetailRead;
 
   /// Button or dialog title to view an already generated compression summary; also used as a desktop text header.
@@ -26949,7 +27063,7 @@ abstract class AppLocalizations {
   /// Explanation in the context impact dialog for deleting compressed originals, noting related summaries are undone so removed content is not resent.
   ///
   /// In en, this message translates to:
-  /// **'Delete the originals and undo related summaries so removed content is not sent again. Other messages and independent nodes are unchanged.'**
+  /// **'Deleting these originals will also undo related summaries and later compressions that depend on them, so deleted content isn’t sent again. Other messages are unaffected.'**
   String get contextImpactDeleteDescription;
 
   /// Filter option in the storage space image type selector for avatar and background images.
@@ -26967,7 +27081,7 @@ abstract class AppLocalizations {
   /// Action label to undo a specific context operation.
   ///
   /// In en, this message translates to:
-  /// **'Undo this context operation'**
+  /// **'Undo this operation'**
   String get contextOperationUndo;
 
   /// Note explaining that preserved history is still limited by the chat's maximum sending window of {count} messages.
@@ -26979,7 +27093,7 @@ abstract class AppLocalizations {
   /// Warning shown in context impact and operation dialogs that undoing may exceed the model context limit, advising recompression while still allowing undo.
   ///
   /// In en, this message translates to:
-  /// **'Undo may exceed the context limit. You can still undo and recompress; sending checks the limit again.'**
+  /// **'After undoing, the content may exceed the model’s limit. You can still undo — we’ll check again before sending. Compress again if needed.'**
   String get contextOverLimitWarning;
 
   /// Filter option in the storage space image type selector for chat images.
@@ -27009,7 +27123,7 @@ abstract class AppLocalizations {
   /// Status label for a context operation separated from active context by a later clear.
   ///
   /// In en, this message translates to:
-  /// **'Excluded by a later clear'**
+  /// **'A later clear already took effect, so this no longer applies.'**
   String get contextOperationHidden;
 
   /// Tooltip on the undo button for a clear operation, distinguishing it from undo compression.
@@ -27021,7 +27135,7 @@ abstract class AppLocalizations {
   /// Description of the keep-latest setting, explaining that the latest {count} user messages with replies and tools are kept while earlier history is summarized.
   ///
   /// In en, this message translates to:
-  /// **'Keep the latest {count} user messages with their replies and tools. Earlier history is summarized; attachment-only messages also count.'**
+  /// **'Keep the latest {count} user messages, with their replies and tool activity. Earlier history is replaced by a summary. Attachment-only messages count as one each.'**
   String compressKeepDescription(int count);
 
   /// Status label indicating a context operation has been undone.
@@ -27033,7 +27147,7 @@ abstract class AppLocalizations {
   /// Hint under the summary editor showing approximate tokens after saving ({value}) and that editing does not affect active context.
   ///
   /// In en, this message translates to:
-  /// **'Approx. {value} tokens after saving. Editing does not change active context.'**
+  /// **'About {value} tokens after saving. Editing doesn’t immediately change what’s currently in use.'**
   String contextEditPreview(String value);
 
   /// Detail label for history that is no longer sent because it was excluded by a clear operation.
@@ -27057,7 +27171,7 @@ abstract class AppLocalizations {
   /// Detail label for the range of history replaced by a compression summary.
   ///
   /// In en, this message translates to:
-  /// **'Replaced'**
+  /// **'Replaced by the summary'**
   String get contextDetailReplaced;
 
   /// Option label meaning 'On' for the auto-scroll setting in display settings.
@@ -27069,7 +27183,7 @@ abstract class AppLocalizations {
   /// Dialog title asking the user to review the affected context before confirming a change.
   ///
   /// In en, this message translates to:
-  /// **'Review affected context'**
+  /// **'Confirm what this change will affect'**
   String get contextChangeTitle;
 
   /// Title for the compression summary detail view, also used as a popover title.
@@ -27081,7 +27195,7 @@ abstract class AppLocalizations {
   /// Label noting the compression model comes from global settings and is fixed once started.
   ///
   /// In en, this message translates to:
-  /// **'Global setting · fixed when started'**
+  /// **'Uses the model from Settings, and won’t change it mid-session.'**
   String get compressModelGlobal;
 
   /// Workspace tool error message for a mount_readonly code, indicating the path is a read-only mount.
@@ -27093,7 +27207,7 @@ abstract class AppLocalizations {
   /// Hint describing the re-read option that recovers details lost across summaries at the cost of more tokens.
   ///
   /// In en, this message translates to:
-  /// **'Recover details lost across summaries. Uses more tokens.'**
+  /// **'If the chat has been compressed more than once, this looks back at the originals so fewer details are lost. Uses more tokens this time.'**
   String get compressRereadDesc;
 
   /// Warning text offering to switch tool permissions to full access.
@@ -27111,31 +27225,31 @@ abstract class AppLocalizations {
   /// Label noting the summary text is what is actually used in later requests.
   ///
   /// In en, this message translates to:
-  /// **'Summary used in later requests'**
+  /// **'The summary the model will see next'**
   String get contextDetailSummaryLabel;
 
   /// Title of the context impact dialog for deleting compressed originals.
   ///
   /// In en, this message translates to:
-  /// **'Delete compressed originals?'**
+  /// **'Delete originals that were already compressed?'**
   String get contextImpactDeleteTitle;
 
   /// Status label indicating the re-read originals advanced option is off.
   ///
   /// In en, this message translates to:
-  /// **'Re-read originals off'**
+  /// **'Look back at originals: off'**
   String get compressAdvancedOff;
 
   /// Status label indicating a context operation is currently applied; also used in exported message status.
   ///
   /// In en, this message translates to:
-  /// **'Currently applied'**
+  /// **'Currently in use'**
   String get contextOperationActive;
 
   /// Status label indicating the re-read originals advanced option is on.
   ///
   /// In en, this message translates to:
-  /// **'Re-read originals on'**
+  /// **'Look back at originals: on'**
   String get compressAdvancedOn;
 
   /// Progress label shown while compression summaries are being merged.
@@ -27159,7 +27273,7 @@ abstract class AppLocalizations {
   /// Explanation that earlier chat history is excluded from future requests while system instructions, memory and tool definitions still apply.
   ///
   /// In en, this message translates to:
-  /// **'Earlier chat history is excluded from future requests. System instructions, memory and tool definitions still apply.'**
+  /// **'Earlier chat won’t be sent to the model from here on. The assistant’s system instructions, memory, and tools still apply.'**
   String get contextClearDetails;
 
   /// Snackbar action label to copy the compression result summary.
@@ -27171,19 +27285,19 @@ abstract class AppLocalizations {
   /// Status label indicating a context operation is directly in use.
   ///
   /// In en, this message translates to:
-  /// **'In use'**
+  /// **'Currently in use'**
   String get contextDetailInUse;
 
   /// Explanation in the context impact dialog that related summaries are undone together while original messages and independent nodes are kept.
   ///
   /// In en, this message translates to:
-  /// **'Related summaries will be undone together. Original messages and independent nodes are kept; no model is called automatically.'**
+  /// **'Related summaries will be undone together. The original chat is kept, and the model won’t be called. Other unrelated summaries stay as they are.'**
   String get contextImpactDescription;
 
   /// Description of the option to include attachment text and tool records in original order without reinterpreting images.
   ///
   /// In en, this message translates to:
-  /// **'Include available attachment text and complete tool records in their original order. Images are not reinterpreted.'**
+  /// **'Includes already extracted attachment text and complete tool records, in their original order. Images are not re-read.'**
   String get compressIncludeAttachmentsDesc;
 
   /// Snackbar message reporting how many world book entries were moved, with plural handling for {count}.
@@ -27195,7 +27309,7 @@ abstract class AppLocalizations {
   /// Explanation in the context impact dialog for changing originals, noting dependent summaries and nodes are undone together.
   ///
   /// In en, this message translates to:
-  /// **'Change the originals and undo their summaries and dependent nodes together. Other messages and independent nodes are kept; no model is called.'**
+  /// **'This will change the original text, and undo summaries that used it, along with later compressions that depend on those summaries. Other messages are unaffected, and the model won’t be called.'**
   String get contextImpactSourceDescription;
 
   /// Title and hint text of the summary editor page.
@@ -27207,13 +27321,13 @@ abstract class AppLocalizations {
   /// Label for the token usage of the next request after compression takes effect.
   ///
   /// In en, this message translates to:
-  /// **'Next request'**
+  /// **'After applying, next send'**
   String get compressUsageNext;
 
   /// Error message shown when context compression fails because the generated summary is empty; suggests using Clear context to exclude history instead.
   ///
   /// In en, this message translates to:
-  /// **'The summary cannot be empty. Use Clear context to exclude history.'**
+  /// **'The summary can’t be empty. To leave earlier chat out, use Clear context.'**
   String get contextSummaryEmpty;
 
   /// Status label in the tool permission widget indicating a tool call was denied (approval_denied), contrasted with approval via full access.
@@ -27231,25 +27345,25 @@ abstract class AppLocalizations {
   /// Toggle label in the compression options dialog for including manual edits in compression; {count} is the number of manual supplements.
   ///
   /// In en, this message translates to:
-  /// **'Include manual edits · {count}'**
+  /// **'Includes {count} manual addition(s) of yours'**
   String compressIncludeManual(int count);
 
   /// Shows estimated tokens for the next request including output reserve, as {used} of {limit} tokens.
   ///
   /// In en, this message translates to:
-  /// **'Estimated next request (including output reserve): {used} / {limit} tokens'**
+  /// **'Next send is about {used} / {limit} tokens, including room for a reply.'**
   String contextBudgetInfo(int used, String limit);
 
   /// Button label to dismiss a finished/inactive context task status in the operations panel.
   ///
   /// In en, this message translates to:
-  /// **'Dismiss status'**
+  /// **'Dismiss'**
   String get contextTaskDismiss;
 
   /// Estimated token count after undoing a context operation, including output reserve.
   ///
   /// In en, this message translates to:
-  /// **'After undo: approximately {used} tokens including output reserve'**
+  /// **'After undo: about {used} tokens, including room for a reply'**
   String contextUndoBudgetInfo(int used);
 
   /// Small badge label in storage space settings marking an image as currently in use.
@@ -27267,7 +27381,7 @@ abstract class AppLocalizations {
   /// Label on the context divider when compression failed or was interrupted.
   ///
   /// In en, this message translates to:
-  /// **'Compression failed'**
+  /// **'Compression didn’t finish'**
   String get contextDividerFailed;
 
   /// Hint clarifying that without a bound workspace, file or shell tools are not enabled by this permission.
@@ -27279,7 +27393,7 @@ abstract class AppLocalizations {
   /// Snackbar message indicating a context change is queued until the current reply and tool execution finish.
   ///
   /// In en, this message translates to:
-  /// **'Waiting for the current reply and tools to finish before applying this change.'**
+  /// **'This change will take effect after the current reply and tools finish.'**
   String get contextChangeWaiting;
 
   /// Notification after deleting uploads when some were kept because they are in use or undeletable; {deleted} removed, {kept} retained.
@@ -27309,7 +27423,7 @@ abstract class AppLocalizations {
   /// Confirm button in the context impact dialog to undo {count} nodes.
   ///
   /// In en, this message translates to:
-  /// **'Undo {count} nodes'**
+  /// **'Also undo the next {count} related operations'**
   String contextImpactConfirm(int count);
 
   /// Suffix appended to a compression divider label indicating the operation was edited.
@@ -27339,7 +27453,7 @@ abstract class AppLocalizations {
   /// Status text in a context operation detail indicating the summary was replaced by a later one.
   ///
   /// In en, this message translates to:
-  /// **'Superseded by a later summary'**
+  /// **'Replaced by a later summary'**
   String get contextDetailSuperseded;
 
   /// Status label indicating a compression task is queued and waiting to run.
@@ -27360,10 +27474,10 @@ abstract class AppLocalizations {
   /// **'unknown limit'**
   String get contextUnknownLimit;
 
-  /// Error message when a browser action timed out with unknown outcome; asks the user to check the page before letting the AI continue.
+  /// Browser tool error summary for a timed-out command with an unconfirmed outcome. Browser control remains available for the assistant to inspect the page; this does not request manual permission to resume.
   ///
   /// In en, this message translates to:
-  /// **'Operation timed out; outcome unknown. Check the page before allowing AI to continue.'**
+  /// **'Operation timed out; outcome unknown. AI can inspect the page before continuing.'**
   String get browserErrActionTimeout;
 
   /// Description of the approval-required permission mode: tools accessing files outside the workspace or running desktop commands ask before executing.
@@ -28026,16 +28140,16 @@ abstract class AppLocalizations {
   /// **'Some copies were made by a newer version of Kelivo. Update Kelivo before restoring them. These copies have been kept.'**
   String get recoveryCopiesNeedUpdate;
 
-  /// Setting card label in the image context panel; toggles whether the model may recall historical images.
+  /// Label for the conversation image recall switch in the image context panel and mobile/desktop chat tool menus. Controls the historical-image capability of view_image.
   ///
   /// In en, this message translates to:
   /// **'Allow the model to recall images'**
   String get imageContextAllowRecall;
 
-  /// Description under the recall setting; explains the model can retrieve conversation images on demand, independent of automatic management.
+  /// Description under the conversation image recall switch. Explains that view_image can retrieve historical chat images; disabling this does not disable direct vision on message attachments, automatic image management, or separately controlled workspace file access. Keep the tool name view_image unchanged.
   ///
   /// In en, this message translates to:
-  /// **'Let the model retrieve images from this conversation when needed. Turning this off does not change automatic image management.'**
+  /// **'Let view_image retrieve historical images from this conversation when needed. Turning this off does not affect images sent directly with messages, automatic image management, or workspace file access.'**
   String get imageContextAllowRecallDescription;
 
   /// Title/label for the image context feature, used in the context usage popover and context management sheet.
@@ -28170,46 +28284,52 @@ abstract class AppLocalizations {
   /// **'Could not save your changes. Try again.'**
   String get imageContextUpdateFailed;
 
-  /// Title of the context operations entry/panel; opens the log of compression tasks, summaries and context boundaries.
+  /// Title of the panel listing compression and context-clearing records, including tasks that need attention.
   ///
   /// In en, this message translates to:
-  /// **'Context operations'**
+  /// **'Compression and clear history'**
   String get contextOperationsTitle;
 
-  /// Subtitle under the context operations entry describing what it manages: compression tasks, summaries and context boundaries.
+  /// Button below the context operation history list. Loads and appends the next ten older records; initially only the three most recent records are shown. Hidden when all records are loaded. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'Manage compression tasks, summaries and context boundaries'**
+  /// **'Show more'**
+  String get contextOperationsLoadMore;
+
+  /// Subtitle of the compression and clear history entry; users can inspect records and undo operations.
+  ///
+  /// In en, this message translates to:
+  /// **'Review compressions and clears, and undo them if needed.'**
   String get contextOperationsDescription;
 
   /// Empty-state text in the context operations panel when no operations have been recorded.
   ///
   /// In en, this message translates to:
-  /// **'No context operations yet.'**
+  /// **'No compressions or clears yet.'**
   String get contextOperationsEmpty;
 
   /// Overview line showing the saved history size; {count} is the number of stored messages.
   ///
   /// In en, this message translates to:
-  /// **'Saved history: {count} messages'**
+  /// **'Saved chat: {count} messages'**
   String contextOperationsStored(int count);
 
   /// Overview line describing the history sent in the next request: {summaries} summaries plus {messages} original messages.
   ///
   /// In en, this message translates to:
-  /// **'History for the next request: {summaries} summaries + {messages} original messages'**
+  /// **'The next send will include {summaries} summaries and {messages} original messages.'**
   String contextOperationsEffective(int summaries, int messages);
 
   /// Explanatory note in the context operations panel: the history limit applies, other context parts add on, and records can be opened to view or undo.
   ///
   /// In en, this message translates to:
-  /// **'Uses the current history limit. System prompts, memory, tools and unsent input add to this context. Open a record to view its summary, original range or undo it.'**
+  /// **'This uses the current history-length limit. System instructions, memory, tools, and unsent input are also added to the context. Open a record to view its summary, original range, or undo it.'**
   String get contextOperationsScope;
 
   /// Error text shown in the context operations panel when the context overview fails to load.
   ///
   /// In en, this message translates to:
-  /// **'Could not load the context overview. Please retry.'**
+  /// **'Couldn’t load these records. Please try again.'**
   String get contextOperationsLoadFailed;
 
   /// Setting label/toggle for compressing context into a new chat instead of in place.
@@ -28221,13 +28341,13 @@ abstract class AppLocalizations {
   /// Helper text explaining that a new chat gets the summary and retained messages while the original stays unchanged; off means compress in place.
   ///
   /// In en, this message translates to:
-  /// **'Create a new chat with the summary and retained messages. Keep the original chat unchanged. Turn off to compress in place.'**
+  /// **'When on, creates a new chat with the summary and kept messages, and leaves the original chat unchanged. When off, compresses in this chat.'**
   String get compressNewConversationDescription;
 
-  /// Action sheet item that jumps the chat view to the context boundary position.
+  /// Action that jumps to the position of a context operation in the chat timeline.
   ///
   /// In en, this message translates to:
-  /// **'Jump to boundary'**
+  /// **'Jump to where the context was cleared'**
   String get contextViewBoundary;
 
   /// Label for a context operation that marks a fixed context start point.
@@ -28383,7 +28503,7 @@ abstract class AppLocalizations {
   /// Field label for optional focus instructions to emphasize in this compression run.
   ///
   /// In en, this message translates to:
-  /// **'Focus for this run'**
+  /// **'What to keep in focus this time'**
   String get compressionFocus;
 
   /// Placeholder hint for the focus field, suggesting key decisions, progress or character details.
@@ -28413,7 +28533,7 @@ abstract class AppLocalizations {
   /// Helper text noting global changes affect conversations following defaults, while existing overrides stay unchanged.
   ///
   /// In en, this message translates to:
-  /// **'Affects conversations that follow global defaults. Conversation overrides stay unchanged.'**
+  /// **'Only affects conversations that follow the global defaults. Conversations with their own settings are unchanged.'**
   String get compressionGlobalDescription;
 
   /// Section/row label for the automatic compression settings, shown in the compression options dialog and as a tappable context action row.
@@ -28443,7 +28563,7 @@ abstract class AppLocalizations {
   /// Warning shown when context nears estimated capacity, telling the user they can keep chatting or compress manually.
   ///
   /// In en, this message translates to:
-  /// **'Context is near its estimated capacity. You can keep chatting or compress manually.'**
+  /// **'This chat is close to what the model can hold. You can keep sending, or compress first.'**
   String get compressionNearLimit;
 
   /// Number-field label for how many recent turns to keep verbatim during compression.
@@ -28455,67 +28575,67 @@ abstract class AppLocalizations {
   /// Hint text explaining that a turn includes a user message plus its replies and tool content.
   ///
   /// In en, this message translates to:
-  /// **'A turn includes a user message, its replies and tools.'**
+  /// **'A turn is one user message plus the replies and tool activity that follow it.'**
   String get compressionKeepHint;
 
-  /// Number-field label for the summary output token limit.
+  /// Compression summary settings: target maximum length of visible summary text in tokens, separate from the total generation limit including reasoning.
   ///
   /// In en, this message translates to:
-  /// **'Summary limit (tokens)'**
+  /// **'Summary length (tokens)'**
   String get compressionLength;
 
-  /// Number-field label for the context-usage percentage that starts automatic compression.
+  /// Percentage field in automatic compression settings: input usage at which compression starts.
   ///
   /// In en, this message translates to:
   /// **'Start at'**
   String get compressionTrigger;
 
-  /// Number-field label for the target context percentage after compression.
+  /// Percentage field in automatic compression settings: desired input usage after compression.
   ///
   /// In en, this message translates to:
   /// **'Compress to'**
   String get compressionTarget;
 
-  /// Number-field label for the planning window used in automatic compression.
+  /// Optional input-capacity override for the summary model in compression details, measured in tokens.
   ///
   /// In en, this message translates to:
-  /// **'Planning window'**
+  /// **'Summary model capacity'**
   String get compressionWindow;
 
-  /// Number-field label for the maximum number of model calls allowed.
+  /// Maximum number of model requests allowed for one compression task, including retries. Also labels the recovery action that opens this field.
   ///
   /// In en, this message translates to:
-  /// **'Maximum calls'**
+  /// **'Maximum requests'**
   String get compressionRequests;
 
-  /// Switch label for including active world books and memory as reference during summarization.
+  /// Compression option to include world books evaluated on the selected history and memory snapshots frozen in that history, rather than current live memory or retained messages.
   ///
   /// In en, this message translates to:
-  /// **'Reference active world books and memory'**
+  /// **'Reference world books and historical memory'**
   String get compressionReference;
 
-  /// Hint clarifying that reference material explains names/rules but is not evidence events occurred or characters know them.
+  /// Compression reference help: restrict dynamic reference sources to the selected historical range, and distinguish explanatory background from events or character knowledge. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'Reference explains names and rules; it is not evidence that events happened or characters know them.'**
+  /// **'World books are matched only against the history being compressed, using memory snapshots from that time. This is only to explain names and rules — it doesn’t mean those events happened, or that a character already knows them.'**
   String get compressionReferenceHint;
 
   /// Switch label for replacing already-consumed tool results with references.
   ///
   /// In en, this message translates to:
-  /// **'Reference consumed tool results'**
+  /// **'Keep only references to tool results already read'**
   String get compressionToolReferences;
 
   /// Hint noting this only applies with tool access, keeps latest unread results, and allows read-only recall.
   ///
   /// In en, this message translates to:
-  /// **'Only with tool access. Keeps the latest unread results and allows exact, read-only recall.'**
+  /// **'Only applies when tools are available. The latest unread results are kept in full. Results already read are kept as references — you can look them up, but not edit them.'**
   String get compressionToolReferencesHint;
 
   /// Switch label for including summaries in world book keyword matching.
   ///
   /// In en, this message translates to:
-  /// **'Include summaries in world book keyword matching'**
+  /// **'Also match world-book keywords against the summary'**
   String get compressionSummaryScan;
 
   /// Label/button meaning the compression model follows the current chat model; also shown as a subtitle.
@@ -28539,19 +28659,19 @@ abstract class AppLocalizations {
   /// Button label for generating a trial summary, noting it consumes model tokens.
   ///
   /// In en, this message translates to:
-  /// **'Try summary · uses model tokens'**
+  /// **'Try a summary · uses model tokens'**
   String get compressionTry;
 
   /// Notification text stating only a candidate was produced and can be reviewed and applied later.
   ///
   /// In en, this message translates to:
-  /// **'Candidate only. Review and apply when ready.'**
+  /// **'This only creates a preview. Use it after you’ve reviewed it.'**
   String get compressionPreviewOnly;
 
   /// Hint explaining a new template applies only to future summaries; existing summaries stay unchanged and can be rebuilt from originals.
   ///
   /// In en, this message translates to:
-  /// **'This template applies to future summaries. Existing summaries are unchanged; re-read originals to rebuild missing details.'**
+  /// **'The new template applies to future summaries only. Existing summaries stay as they are. To fill in details, regenerate from the originals.'**
   String get compressionTemplateChanged;
 
   /// Summary line showing how many messages will be compressed and how many user turns kept verbatim; {count} and {turns} are integers.
@@ -28563,7 +28683,7 @@ abstract class AppLocalizations {
   /// Detail value showing the number of model calls made; {count} is an integer.
   ///
   /// In en, this message translates to:
-  /// **'{count} model calls'**
+  /// **'{count} model request(s)'**
   String compressionCalls(int count);
 
   /// Detail-row label for the summary model's actual token usage.
@@ -28581,43 +28701,43 @@ abstract class AppLocalizations {
   /// Warning that some attempts returned no usage data and should not be treated as free; {count} is an integer.
   ///
   /// In en, this message translates to:
-  /// **'Usage not returned for {count} attempts; these calls are not counted as free.'**
+  /// **'{count} request(s) didn’t return usage data. That doesn’t mean they were free.'**
   String compressionUsageUnknown(int count);
 
-  /// Error message when planned work exceeds the call limit, advising a higher limit or larger model; no partial summary applied.
+  /// Compression failure when the estimated or actual request count exceeds the configured maximum. Refers to the setting named compressionRequests and confirms no result was applied.
   ///
   /// In en, this message translates to:
-  /// **'The planned work exceeds the call limit. Increase the limit or select a larger summary model. No partial summary was applied.'**
+  /// **'This would take more model requests than the current limit allows, so the context is unchanged. Raise Maximum requests, or switch to a model with a larger context.'**
   String get compressionBudgetError;
 
   /// Error message when the summary was truncated or refused and not applied, advising adjusting output limit or model.
   ///
   /// In en, this message translates to:
-  /// **'The summary was truncated or refused and was not applied. Adjust the output limit or model.'**
+  /// **'The summary was cut off or refused, and the context is unchanged. Raise the output limit, or try a different model.'**
   String get compressionIncomplete;
 
   /// Error message when template, reference, or working summary fills the model budget, advising fewer references or a larger model.
   ///
   /// In en, this message translates to:
-  /// **'The template, reference or working summary fills the summary model budget. Reduce references or choose a larger model.'**
+  /// **'Reference material already fills this model’s capacity, leaving no room for the summary. Use fewer references, or switch to a model with a larger context.'**
   String get compressionReferenceTooLarge;
 
   /// Error message when referenced background changed, advising reviewing the candidate or regenerating.
   ///
   /// In en, this message translates to:
-  /// **'Referenced background changed. Review the candidate or regenerate.'**
+  /// **'The referenced background has changed. Review this summary, or generate a new one.'**
   String get compressionReferenceChanged;
 
-  /// Error message when the candidate did not reduce the request below the auto trigger, so original context was kept.
+  /// Review notice when automatic compression did not reduce the full request below its trigger ratio. The original context remains active; suggests shortening the summary or adjusting compressionTrigger.
   ///
   /// In en, this message translates to:
-  /// **'The candidate did not reduce the full request below the automatic trigger. Original context was kept.'**
+  /// **'Even after compression, usage would still be above the automatic starting point, so the original context was kept. Shorten the summary, or raise Start at.'**
   String get compressionTargetNotReached;
 
   /// Error message when the selected template is unavailable, advising choosing another.
   ///
   /// In en, this message translates to:
-  /// **'The selected template is unavailable. Select another template.'**
+  /// **'The selected template isn’t available. Please choose another.'**
   String get compressionTemplateMissing;
 
   /// Segmented tab label for the templates list in the template library.
@@ -28683,31 +28803,31 @@ abstract class AppLocalizations {
   /// Dropdown option meaning keep the original template's language behavior.
   ///
   /// In en, this message translates to:
-  /// **'Keep original template language behavior'**
+  /// **'Keep the original template’s language setting'**
   String get compressionLanguageLegacy;
 
   /// Hint describing accepted language input: a language name/code, or conversation / legacy.
   ///
   /// In en, this message translates to:
-  /// **'Language code, or conversation / legacy'**
+  /// **'Enter a language name or code. You can also use conversation (follow the chat) or legacy (keep the original template).'**
   String get compressionLanguageHint;
 
   /// Hint listing supported template variables, noting history is appended automatically if omitted.
   ///
   /// In en, this message translates to:
-  /// **'Supported variables; history is appended automatically if omitted:'**
+  /// **'You can use these variables. If the prompt doesn’t include the history, it will be appended automatically:'**
   String get compressionVariables;
 
   /// Confirmation dialog title asking to pick a replacement and delete the template, noting accepted summaries and recipe snapshots remain readable.
   ///
   /// In en, this message translates to:
-  /// **'Choose a replacement and delete this template? Accepted summaries and recipe snapshots remain readable.'**
+  /// **'Choose a replacement and delete this template? Summaries already in use, and copies saved in recipes, are kept.'**
   String get compressionDeleteTemplate;
 
   /// Text showing how many conversation overrides reference this template; {count} is an integer.
   ///
   /// In en, this message translates to:
-  /// **'Used by {count} conversation overrides.'**
+  /// **'Used as a per-conversation override in {count} chat(s).'**
   String compressionTemplateReferences(int count);
 
   /// Panel title for saving the current compression settings as a recipe.
@@ -28719,13 +28839,13 @@ abstract class AppLocalizations {
   /// Switch label in the compression options dialog; when on, the selected summary model is bound to the compression config.
   ///
   /// In en, this message translates to:
-  /// **'Include the selected summary model'**
+  /// **'Also save the summary model currently selected'**
   String get compressionBindModel;
 
   /// Hint text in the compression options dialog and template library explaining that recipes don't enable auto-compression and import only adds to the library.
   ///
   /// In en, this message translates to:
-  /// **'Recipes do not enable automatic compression. Import adds to the library without applying.'**
+  /// **'Saving or importing a recipe doesn’t turn on automatic compression, and doesn’t apply it to the current chat. It only adds the recipe to your library.'**
   String get compressionRecipeHint;
 
   /// Button in the template library that imports templates/recipes from a JSON file.
@@ -28755,13 +28875,13 @@ abstract class AppLocalizations {
   /// Validation error shown in the compression options dialog when target is not below trigger or call/token limits are invalid.
   ///
   /// In en, this message translates to:
-  /// **'Check the values: target must be below trigger, and call and token limits must be positive.'**
+  /// **'Check these values: Compress to must be lower than Start at, and request and token limits must be greater than 0.'**
   String get compressionInvalidSettings;
 
   /// Notification action label offering to compress context once and retry the failed response after a context overflow.
   ///
   /// In en, this message translates to:
-  /// **'Compress once, then retry the failed response'**
+  /// **'Compress once, then retry the reply that failed'**
   String get compressionOverflowAction;
 
   /// Status line in the compression options dialog showing estimated request count and the per-run limit, including retries.
@@ -28779,7 +28899,7 @@ abstract class AppLocalizations {
   /// Note in the template library showing how many recipes keep independent snapshots of a template.
   ///
   /// In en, this message translates to:
-  /// **'{count} recipes keep independent template snapshots.'**
+  /// **'{count} recipe(s) keep their own copy of the template from that time.'**
   String compressionRecipeReferences(int count);
 
   /// Section title and dropdown label in the template library for choosing a template to replace the current one.
@@ -28932,6 +29052,36 @@ abstract class AppLocalizations {
   /// **'calls'**
   String get compressionCallUnit;
 
+  /// Timeout field for each compression request, in minutes. Also labels the recovery action that opens this field.
+  ///
+  /// In en, this message translates to:
+  /// **'Compression request timeout'**
+  String get compressionRequestTimeout;
+
+  /// Minute unit suffix beside the compression request timeout numeric input. Keep it short to fit a narrow field suffix.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get compressionMinuteUnit;
+
+  /// Placeholder for an empty compression request timeout input. Empty preserves the current behavior of each mode, including the native compression default of five minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get compressionRequestTimeoutDefault;
+
+  /// Help text below the compression request timeout input in More settings. The value may contain decimals and limits total wait per model invocation, not idle time or the whole multi-request task.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number of minutes greater than 0. Leave blank to keep the current default (5 minutes for server-side compression). When summarizing in parts, each part and the merge is timed separately.'**
+  String get compressionRequestTimeoutHint;
+
+  /// Compression task failure shown when the total deadline cancels a model request, distinct from user cancellation. minutes is the elapsed request limit in minutes, possibly fractional. Users can increase the timeout in More settings and retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Compression stopped after {minutes} minutes and the context is unchanged. Try again, or allow a longer timeout.'**
+  String compressionRequestTimedOut(num minutes);
+
   /// Disclosure title in compression options and context operation widgets for advanced compression details.
   ///
   /// In en, this message translates to:
@@ -28941,7 +29091,7 @@ abstract class AppLocalizations {
   /// Subtitle under the advanced options disclosure describing references, original-history rereading and request limits.
   ///
   /// In en, this message translates to:
-  /// **'References, original-history rereading and request limits'**
+  /// **'References, whether to look back at originals, and the request limit'**
   String get compressionAdvancedHint;
 
   /// Hint for the window field indicating automatic sizing.
@@ -28959,19 +29109,19 @@ abstract class AppLocalizations {
   /// Hint in compression options when auto mode is 'notify', explaining the user decides when to compress.
   ///
   /// In en, this message translates to:
-  /// **'Notify near the threshold; you decide when to compress.'**
+  /// **'You’ll be notified when usage is close to the limit, and you decide when to compress.'**
   String get compressionAutoNotifyHint;
 
   /// Hint in compression options when auto mode is on, warning that extra model usage occurs.
   ///
   /// In en, this message translates to:
-  /// **'Summarize older history at the threshold. Extra model usage applies.'**
+  /// **'When usage reaches the set percentage, earlier history is summarized automatically. This uses additional model tokens.'**
   String get compressionAutoOnHint;
 
   /// Hint in compression options clarifying that percentages are based on the available input budget.
   ///
   /// In en, this message translates to:
-  /// **'Percentages use the available input budget.'**
+  /// **'These percentages are based on the input capacity still available.'**
   String get compressionBudgetHint;
 
   /// Button in the compression options dialog that generates a local preview.
@@ -28995,31 +29145,31 @@ abstract class AppLocalizations {
   /// Hint describing the keep-recent scope: recent turns kept verbatim, older history summarized; turn count also used by auto-compression.
   ///
   /// In en, this message translates to:
-  /// **'Keep recent turns verbatim and summarize older history. This turn count is also used by automatic compression.'**
+  /// **'Keep the most recent turns as-is, and summarize earlier history. Automatic compression uses this same turn count.'**
   String get compressionScopeKeepHint;
 
   /// Hint describing the unlimited scope: all history summarized including recent turns, originals still viewable.
   ///
   /// In en, this message translates to:
-  /// **'Summarize all history in the current context, including recent turns. Original messages stay available.'**
+  /// **'Summarize all history currently in context, without keeping a separate recent original. The original messages can still be viewed.'**
   String get compressionScopeAllHint;
 
   /// Hint describing the start scope: earlier whole messages selected within a character budget, others kept as original.
   ///
   /// In en, this message translates to:
-  /// **'Select earlier whole messages within the character budget. Other messages keep their original text.'**
+  /// **'Within the character limit, compress earlier complete messages. Messages not selected stay as original text.'**
   String get compressionScopeStartHint;
 
   /// Hint describing the recent scope: recent whole messages selected within a character budget, others kept as original.
   ///
   /// In en, this message translates to:
-  /// **'Select recent whole messages within the character budget. Other messages keep their original text.'**
+  /// **'Within the character limit, compress more recent complete messages. Messages not selected stay as original text.'**
   String get compressionScopeRecentHint;
 
   /// Hint in the compression options dialog explaining that automatic compression always keeps recent turns regardless of the manual scope, and that this turn count is shared with manual compression.
   ///
   /// In en, this message translates to:
-  /// **'Automatic compression always keeps recent turns, regardless of the manual scope. This turn count is shared with manual compression.'**
+  /// **'Automatic compression always keeps recent originals, regardless of the range you pick for a manual run. The turn count is shared with manual compression.'**
   String get compressionAutoKeepHint;
 
   /// Title of the image and request budget settings row and desktop dialog header in provider settings.
@@ -29166,76 +29316,76 @@ abstract class AppLocalizations {
   /// **'at least {value}'**
   String requestBudgetAtLeast(String value);
 
-  /// Switch label in the compression options dialog to enable OpenAI native compaction.
+  /// Toggle label for OpenAI server-side compaction using the current chat model and Responses API.
   ///
   /// In en, this message translates to:
-  /// **'Use OpenAI native compaction'**
+  /// **'Use OpenAI server-side compression'**
   String get compressionNativeTitle;
 
   /// Hint under the native compaction switch explaining it uses the current chat model with Responses and that server support is required.
   ///
   /// In en, this message translates to:
-  /// **'Uses the current chat model with Responses. Automatic compression in this chat also uses native compaction when enabled. Your service decides whether it is supported.'**
+  /// **'Uses the current chat model, and compression happens on the server. If automatic compression is on in this chat, it will use this method too. Your provider needs to support OpenAI’s Responses API.'**
   String get compressionNativeHint;
 
   /// Hint for the keep-recent scope when native compaction is selected, noting the turn count also applies to native automatic compression.
   ///
   /// In en, this message translates to:
-  /// **'Keep recent turns unchanged and compact earlier history. Native automatic compression uses this count too; the text-summary count stays unchanged.'**
+  /// **'Keep the most recent turns as-is, and send earlier history to server-side compression. Automatic server-side compression uses this same count; the text-summary count is unchanged.'**
   String get compressionNativeScopeHint;
 
-  /// Label for a native compaction operation shown in the context divider and operation actions.
+  /// Short label for a server-side compaction result; this is opaque data, not an editable text summary.
   ///
   /// In en, this message translates to:
-  /// **'Native compaction'**
+  /// **'Server-side compression'**
   String get compressionNativeLabel;
 
   /// Description in the context operation view explaining that opaque native context is stored locally for later requests, cannot be viewed as text, and can be undone.
   ///
   /// In en, this message translates to:
-  /// **'The native context returned by the service is saved locally for subsequent requests. It cannot be read or edited as text. Original messages remain available and this compaction can be undone.'**
+  /// **'The server’s compressed result is saved locally and will be used on the next send. It can’t be viewed or edited as text. Original messages are kept, and you can undo this compression.'**
   String get compressionNativeDescription;
 
   /// Error message shown when the service returns an incomplete native compaction result and the original context is unchanged.
   ///
   /// In en, this message translates to:
-  /// **'The service did not return a complete native compaction result. The original context is unchanged.'**
+  /// **'The server didn’t return a complete compressed result. The original context is unchanged.'**
   String get compressionNativeIncomplete;
 
   /// Error when native context belongs to a different connection or account. Return to the original connection; undo or text-summary regeneration is only possible in a chat containing the originals, which may be the source chat of imported context. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'This native context belongs to another connection or account. Continue with the original connection, or undo the compaction or create a text summary in the chat that contains the originals.'**
+  /// **'This server-side result belongs to another connection or account. Switch back to the original connection to continue, or undo this compression in the chat that still has the originals and create a text summary.'**
   String get compressionNativeScopeChanged;
 
   /// Hint stating that token usage for opaque native context is determined by the service; also used as the opaque usage state label.
   ///
   /// In en, this message translates to:
-  /// **'Token usage for opaque native context is determined by the service.'**
+  /// **'Token usage for server-side compression is reported by the server.'**
   String get compressionNativeTokenHint;
 
   /// Hint in the compression dialog when native compaction and new chat are selected. Only the complete provider output and retained recent turns are copied; original history remains in the source chat and cannot be restored by undo in the new chat. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'The new chat keeps only the complete native compaction result and retained recent turns. Originals stay in the source chat and cannot be restored by undoing here.'**
+  /// **'The new chat only keeps the complete server-side result and the recent turns you kept. Originals stay in the original chat and can’t be restored by undoing here.'**
   String get compressionNativeCopyHint;
 
   /// Error shown when a custom input field would override native compression data, asking the user to remove the input override first.
   ///
   /// In en, this message translates to:
-  /// **'The custom input field would replace native compression data. Remove the input override in the provider, model, or assistant settings before continuing.'**
+  /// **'A custom input parameter in the model or assistant settings would overwrite the server-side result. Remove that parameter before continuing.'**
   String get compressionNativeInputOverride;
 
   /// Hint for the unlimited scope with native compaction: send all history without keeping a recent tail; originals remain available.
   ///
   /// In en, this message translates to:
-  /// **'Send all current history to native compaction without keeping a separate recent tail. Original messages remain available.'**
+  /// **'Send all current history to server-side compression, without keeping a separate recent original. Original messages can still be viewed.'**
   String get compressionNativeAllHint;
 
   /// Hint for automatic compression with native mode: compact at the threshold with the current model; failures keep the original context without falling back to text summarization.
   ///
   /// In en, this message translates to:
-  /// **'At the threshold, compact natively with the current chat model, then continue sending. A failed attempt keeps the original context and does not switch to text summarization.'**
+  /// **'When usage reaches the set percentage, the current chat model runs server-side compression, then sending continues. If it fails, the original context is kept and it won’t fall back to a text summary.'**
   String get compressionNativeAutoHint;
 
   /// Language name for the Russian translation target; the app-language selector uses its native name Русский.
@@ -29325,37 +29475,37 @@ abstract class AppLocalizations {
   /// Title for an imported native compaction at the start of a new chat, shown in the timeline, context operation list and details. It is opaque context carried over from another chat, not a locally undoable compression. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'Native context loaded'**
+  /// **'Server-side compression loaded'**
   String get compressionNativeImported;
 
   /// Description in imported native context details. Explains which data this chat owns, that the provider result is opaque, and that earlier originals must be viewed or restored in the source chat rather than through local undo. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'This chat starts with the complete native compaction result and retained recent turns. The result cannot be read or edited as text. Earlier originals remain in the source chat, so they cannot be restored by undoing here.'**
+  /// **'This chat starts with the server-side compressed result and the most recent turns. The result can’t be viewed or edited as text. Earlier originals remain in the original chat and can’t be restored by undoing here.'**
   String get compressionNativeImportedDescription;
 
   /// Action in imported native context details to open the source conversation containing the earlier originals. Source means the originating chat, not source code. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'Open source chat'**
+  /// **'Open original chat'**
   String get compressionNativeOpenSource;
 
   /// Message when undo or text-summary regeneration would require originals absent from an imported native context. Also shown in compression options when the selected range includes such context. Directs users to native compaction or the source chat. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'This chat has no originals for the imported native context. Continue with native compaction, or return to the source chat to view or summarize the originals.'**
+  /// **'This chat has no originals for the loaded server-side result. You can keep using server-side compression, or go back to the original chat to view the originals or create a text summary.'**
   String get compressionNativeOriginalsUnavailable;
 
   /// Warning in the compression dialog when native compaction creates a new temporary chat. The app discards the source temporary chat when switching away, so originals outside the retained tail are deleted and cannot be restored from the new chat. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'The new temporary chat keeps only the complete native compaction result and retained recent turns. Leaving the source temporary chat deletes it and the originals not carried over; they cannot be restored here.'**
+  /// **'The new temporary chat only keeps the complete server-side result and recent turns. When you leave the original temporary chat, it and any originals not carried over are deleted and can’t be restored here.'**
   String get compressionNativeTemporaryCopyHint;
 
   /// Description in imported native context details when the source conversation has been deleted or discarded. Explains that this chat still owns the complete opaque result and retained tail, but cannot restore absent originals. No placeholders.
   ///
   /// In en, this message translates to:
-  /// **'This chat keeps the complete native compaction result and retained recent turns. The source chat is no longer available. Originals not copied here cannot be restored, and the native result cannot be read or edited as text.'**
+  /// **'This chat has the complete server-side result and the recent turns you kept. The original chat is no longer available. Originals not copied here can’t be restored, and the result can’t be viewed or edited as text.'**
   String get compressionNativeSourceUnavailable;
 
   /// Label of the hosted image generation model picker in a chat model’s built-in tools settings.
@@ -29453,6 +29603,834 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get workspaceEnvNativeShellSave;
+
+  /// Desktop display settings, tray section: switch to register Kelivo to start when the user logs in to this device. Disabled by default.
+  ///
+  /// In en, this message translates to:
+  /// **'Launch at startup'**
+  String get desktopAutostartTitle;
+
+  /// Tooltip for the desktop launch-at-startup switch. This is a device-local operating system setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Kelivo when you sign in to this computer.'**
+  String get desktopAutostartDescription;
+
+  /// Desktop display settings, tray section: switch to keep the main window hidden only when the system starts Kelivo at login.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide to tray on automatic startup'**
+  String get desktopAutostartHiddenTitle;
+
+  /// Tooltip for hiding the desktop window on automatic startup. Explains prerequisites and that manual launches remain visible.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires launch at startup and the tray icon. Opening Kelivo manually still shows the window.'**
+  String get desktopAutostartHiddenDescription;
+
+  /// Desktop startup switch tooltip when the current macOS version does not support the system login-item API.
+  ///
+  /// In en, this message translates to:
+  /// **'Launch at startup requires macOS 13 or later.'**
+  String get desktopAutostartUnsupported;
+
+  /// Desktop startup setting failure tooltip and error notification, including when system approval is required. No placeholders.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not apply the startup setting. Check this app in your system startup or login-item settings and try again.'**
+  String get desktopAutostartError;
+
+  /// Total output token limit for summary generation, including reasoning and summary text. Also labels the recovery action that opens this field.
+  ///
+  /// In en, this message translates to:
+  /// **'Total output limit (tokens)'**
+  String get compressionOutputBudget;
+
+  /// Help below the compression total output limit field: reasoning consumes the same budget, an independent higher limit does not increase the desired summary length, blank follows the summary target, and model output limits still apply. No placeholders.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes thinking and the summary itself. Leave blank to use the summary length. If thinking is on, you can raise this limit without making the summary longer. The model’s own output limit still applies.'**
+  String get compressionOutputBudgetHint;
+
+  /// Persistent notice below an assistant reply stopped by max_output_tokens when the latest request is not known to be near the context window limit. Explains that reasoning also consumes the output allowance.
+  ///
+  /// In en, this message translates to:
+  /// **'Response truncated: the output limit includes reasoning. Increase the output limit or reduce reasoning before retrying.'**
+  String get responseOutputLimitReached;
+
+  /// Persistent notice below a truncated assistant reply when the final HTTP response input usage is at least 95 percent of the configured context window. Does not attribute the limit to images. inputTokens is that single request input usage; contextWindow is the model context capacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Response truncated: this request used {inputTokens} input tokens, close to the {contextWindow}-token context limit. Shorten the context before retrying.'**
+  String responseContextLimitReached(int inputTokens, int contextWindow);
+
+  /// Action below a truncated assistant reply whose final request contained images. Regenerates once with all image inputs omitted for that generation, including tool follow-ups, without deleting attachments or changing saved settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry without images (keep originals)'**
+  String get responseRetryWithoutImages;
+
+  /// Browser settings row and picker title for the maximum wait for an individual native browser command.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation timeout'**
+  String get browserOperationTimeout;
+
+  /// Explanatory text in the browser operation-timeout picker. Describes the command deadline and that the assistant can inspect the page after a timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum wait for a browser command. The assistant can check the page after a timeout.'**
+  String get browserOperationTimeoutDescription;
+
+  /// Selected value and picker option in browser operation-timeout settings. The integer seconds placeholder is the maximum command wait in seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} seconds'**
+  String browserOperationTimeoutSeconds(int seconds);
+
+  /// Browser tool error summary when a page-changing command was not sent because an earlier command timed out. The assistant must successfully read a snapshot or extract before further changes; no manual resume permission is needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspect the page before continuing; the previous operation is unconfirmed.'**
+  String get browserErrObservationRequired;
+
+  /// Settings button in the upper-right corner of the Storage Space overview, and its dialog title. Configures automatic deletion of unused chat images and files.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-clean attachments'**
+  String get storageAttachmentRetention;
+
+  /// Number field shown only when delayed automatic cleanup is selected. Enter a positive number of days to keep unused attachments before deleting them.
+  ///
+  /// In en, this message translates to:
+  /// **'Days before cleanup'**
+  String get storageAttachmentRetentionDays;
+
+  /// First option in the automatic attachment cleanup dialog. Selects zero-day retention without requiring the user to type zero.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean immediately'**
+  String get storageAttachmentRetentionImmediately;
+
+  /// Short introduction in the automatic attachment cleanup dialog. Explains the purpose in everyday language before the immediate/later choice.
+  ///
+  /// In en, this message translates to:
+  /// **'After you delete messages or chats, automatically remove images and files that are no longer used.'**
+  String get storageAttachmentRetentionHint;
+
+  /// Attachment badge when no conversation, draft or appearance reference remains and no automatic recycling deadline is recorded. Manual deletion is available.
+  ///
+  /// In en, this message translates to:
+  /// **'Unused'**
+  String get storageAttachmentUnused;
+
+  /// Attachment status showing the earliest scheduled cleanup date. date is a localized calendar date; cleanup may wait for the next maintenance run.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for cleanup · {date}'**
+  String storageAttachmentPending(String date);
+
+  /// Compact label below an attachment preview and in its information dialog. names lists every chat or branch using this file.
+  ///
+  /// In en, this message translates to:
+  /// **'Chats: {names}'**
+  String storageAttachmentConversations(String names);
+
+  /// Action in the Images/Files list. Opens a confirmation to delete files that are no longer used; active files remain protected.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean unused'**
+  String get storageAttachmentCleanUnused;
+
+  /// Brief explanation in the Images/Files list and automatic cleanup dialog, also used as the in-use badge tooltip. Avoid technical reference-count terminology.
+  ///
+  /// In en, this message translates to:
+  /// **'Files still in use will be kept.'**
+  String get storageAttachmentProtectedHint;
+
+  /// Confirmation for manual storage attachment cleanup. count is the selected number; references are checked again before deletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {count} unused files now? Files that are still in use will be kept.'**
+  String storageAttachmentDeleteConfirm(int count);
+
+  /// Second option in the automatic attachment cleanup dialog. Reveals a field for the number of days to wait before deleting unused attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean later'**
+  String get storageAttachmentRetentionDelayed;
+
+  /// Inline error below the delayed attachment cleanup number field. Only shown when the value is empty, zero, or above the maximum. Immediate cleanup has its own option.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 1–3650 days.'**
+  String get storageAttachmentRetentionInvalidDays;
+
+  /// Title of the information dialog opened by tapping an attachment status label. Shows its chats or cleanup status; this is not the automatic-cleanup settings dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'File info'**
+  String get storageAttachmentDetailsTitle;
+
+  /// Compression options panel: Also send your earlier messages as written Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Also send your earlier messages as written'**
+  String get compressionCarryTitle;
+
+  /// Compression options panel: From the part that becomes a summary, your own messages are sent to the model as you wrote them, not just as the summary retells them. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'From the part that becomes a summary, your own messages are sent to the model as you wrote them, not just as the summary retells them.'**
+  String get compressionCarryHint;
+
+  /// Compression options panel: Send the latest Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the latest'**
+  String get compressionCarryCountLabel;
+
+  /// Compression options panel: messages Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'messages'**
+  String get compressionCarryUnit;
+
+  /// Compression options panel: As many as fit Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'As many as fit'**
+  String get compressionCarryAll;
+
+  /// Compression options panel: No set number. Starts from the newest and goes back until it’s nearly full; if the oldest one is too long, only its start and end are sent. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'No set number. Starts from the newest and goes back until it’s nearly full; if the oldest one is too long, only its start and end are sent.'**
+  String get compressionCarryAllHint;
+
+  /// Compression options panel: Also bring back messages from earlier summaries Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Also bring back messages from earlier summaries'**
+  String get compressionCarryEarlier;
+
+  /// Compression options panel: Your messages from parts compressed earlier can be included too. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Your messages from parts compressed earlier can be included too.'**
+  String get compressionCarryEarlierHint;
+
+  /// Compression options panel: Will send {count} · about {tokens} tokens Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Will send {count} · about {tokens} tokens'**
+  String compressionCarryPreview(int count, String tokens);
+
+  /// Compression options panel: The part being summarized has no messages from you. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'The part being summarized has no messages from you.'**
+  String get compressionCarryNone;
+
+  /// Compression options panel: {count} older messages don’t fit and won’t be sent this time. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} older messages don’t fit and won’t be sent this time.'**
+  String compressionCarryNotFit(int count);
+
+  /// Compression options panel: {count} more Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more'**
+  String compressionCarryMoreRows(int count);
+
+  /// Compression options panel: These messages would likely be more than the current model can take. Send fewer, or switch to a model with a larger context. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'These messages would likely be more than the current model can take. Send fewer, or switch to a model with a larger context.'**
+  String get compressionCarryOverBudget;
+
+  /// Compression options panel: Change to {count} Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Change to {count}'**
+  String compressionCarryFitAction(int count);
+
+  /// Compression options panel: Too long; only the start and end are sent Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Too long; only the start and end are sent'**
+  String get compressionCarryTruncated;
+
+  /// Compression options panel: Automatic compression will do the same. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic compression will do the same.'**
+  String get compressionCarryAutoToo;
+
+  /// Compression options panel: Images and files aren’t carried to the new chat; only the text is. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Images and files aren’t carried to the new chat; only the text is.'**
+  String get compressionCarryNewChatText;
+
+  /// Compression options panel: This service keeps your earlier messages on its own when compressing. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'This service keeps your earlier messages on its own when compressing.'**
+  String get compressionCarryServerKeeps;
+
+  /// Context operation details and carried message editor: Sent as written Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent as written'**
+  String get contextDetailCarried;
+
+  /// Context operation details and carried message editor: {count} of your earlier messages Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of your earlier messages'**
+  String contextDetailCarriedCount(int count);
+
+  /// Context operation details and carried message editor: Kept by the service Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept by the service'**
+  String get contextDetailServerKept;
+
+  /// Context operation details and carried message editor: This only changes the text sent to the model. The original message in the chat stays the same. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'This only changes the text sent to the model. The original message in the chat stays the same.'**
+  String get contextCarriedEditHint;
+
+  /// Context operation details and carried message editor: This can’t be empty. To stop sending it, choose “Stop sending”. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'This can’t be empty. To stop sending it, choose “Stop sending”.'**
+  String get contextCarriedEmpty;
+
+  /// Context operation details and carried message editor: Stop sending Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop sending'**
+  String get contextCarriedRemove;
+
+  /// Context operation details and carried message editor: This won’t be sent to the model anymore. The original message in the chat isn’t affected. Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'This won’t be sent to the model anymore. The original message in the chat isn’t affected.'**
+  String get contextCarriedRemoveConfirm;
+
+  /// Context operation details and carried message editor: The original was deleted; only this text remains Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'The original was deleted; only this text remains'**
+  String get contextCarriedSourceDeleted;
+
+  /// Compression options panel: Include the reply too Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Include the reply too'**
+  String get compressionCarryReply;
+
+  /// Compression options panel: +about {tokens} Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'+about {tokens}'**
+  String compressionCarryReplyTokens(String tokens);
+
+  /// Compression options panel: The reply is already in the kept turns Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'The reply is already in the kept turns'**
+  String get compressionCarryReplyInKept;
+
+  /// Context operation details and carried message editor: The reply Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'The reply'**
+  String get contextCarriedReplyLabel;
+
+  /// Context operation details and carried message editor: Don’t send the reply Refers to original user messages additionally sent with a summary; replies are optional text-only copies.
+  ///
+  /// In en, this message translates to:
+  /// **'Don’t send the reply'**
+  String get contextCarriedRemoveReply;
+
+  /// In the full-screen draft image editor: Cancel control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get imageEditorCancel;
+
+  /// In the full-screen draft image editor: finish editing and return to the composer without sending.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get imageEditorDone;
+
+  /// In the full-screen draft image editor: Undo control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get imageEditorUndo;
+
+  /// In the full-screen draft image editor: Redo control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Redo'**
+  String get imageEditorRedo;
+
+  /// In the full-screen draft image editor: Crop control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop'**
+  String get imageEditorToolCrop;
+
+  /// In the full-screen draft image editor: Draw control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw'**
+  String get imageEditorToolDraw;
+
+  /// In the full-screen draft image editor: Text control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get imageEditorToolText;
+
+  /// In the full-screen draft image editor: Mosaic control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Mosaic'**
+  String get imageEditorToolMosaic;
+
+  /// In the full-screen draft image editor: Pen control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen'**
+  String get imageEditorPen;
+
+  /// In the full-screen draft image editor: Arrow control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrow'**
+  String get imageEditorArrow;
+
+  /// In the full-screen draft image editor: Eraser control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Eraser'**
+  String get imageEditorEraser;
+
+  /// In the full-screen draft image editor: Free control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get imageEditorAspectFree;
+
+  /// In the full-screen draft image editor: Original control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get imageEditorAspectOriginal;
+
+  /// In the full-screen draft image editor: Rotate left control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate left'**
+  String get imageEditorRotate;
+
+  /// In the full-screen draft image editor: Flip control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip'**
+  String get imageEditorFlip;
+
+  /// In the full-screen draft image editor: Plain control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain'**
+  String get imageEditorTextPlain;
+
+  /// In the full-screen draft image editor: Outline control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Outline'**
+  String get imageEditorTextOutline;
+
+  /// In the full-screen draft image editor: Fill control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill'**
+  String get imageEditorTextFill;
+
+  /// In the full-screen draft image editor: Align control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Align'**
+  String get imageEditorAlign;
+
+  /// In the full-screen draft image editor: Brush control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Brush'**
+  String get imageEditorMosaicBrush;
+
+  /// In the full-screen draft image editor: Box control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Box'**
+  String get imageEditorMosaicRect;
+
+  /// In the full-screen draft image editor: Discard changes? control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get imageEditorDiscardTitle;
+
+  /// In the full-screen draft image editor: Keep editing control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get imageEditorKeepEditing;
+
+  /// In the full-screen draft image editor: Discard control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get imageEditorDiscard;
+
+  /// In the full-screen draft image editor: Couldn't process image control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t process image'**
+  String get imageEditorProcessFailed;
+
+  /// In the full-screen draft image editor: Retry control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get imageEditorRetry;
+
+  /// In the full-screen draft image editor: Remove control or status for editing draft image pixels.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get imageEditorRemove;
+
+  /// In the full-screen draft image editor: revert the current image to its original imported pixels; this operation is undoable.
+  ///
+  /// In en, this message translates to:
+  /// **'Revert'**
+  String get imageEditorRestore;
+
+  /// In the full-screen draft image editor: accessible label of a color swatch; color is its six-digit hexadecimal RGB value.
+  ///
+  /// In en, this message translates to:
+  /// **'Color {color}'**
+  String imageEditorColor(String color);
+
+  /// Button in draft image preview that opens the image editor; absent for sent images.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get imageViewerPageEditButton;
+
+  /// Accessible label and tooltip of the draft image size chip that opens per-image compression quality controls.
+  ///
+  /// In en, this message translates to:
+  /// **'Image size'**
+  String get imageViewerPageFileSize;
+
+  /// Segment in the earlier-message settings that selects a fixed number of recent messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest messages'**
+  String get compressionCarryModeCount;
+
+  /// Heading above the list of messages the user can select in the compression settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Message preview'**
+  String get compressionCarryListTitle;
+
+  /// Preview title for a message containing only images. Count is the number of images.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 image} other{{count} images}}'**
+  String compressionCarryImageCount(int count);
+
+  /// Preview label for a message with multiple attachments or without known file names. Count is the number of attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 attachment} other{{count} attachments}}'**
+  String compressionCarryAttachmentCount(int count);
+
+  /// Shown in the compression preview when the selected message has neither readable text nor identifiable attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'No message text'**
+  String get compressionCarryNoText;
+
+  /// Validation message beside the number of earlier messages to send in compression settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number from 1 to 10,000.'**
+  String get compressionCarryInvalidCount;
+
+  /// Shown in external backup settings or completion notifications. Backup will continue in the background
+  ///
+  /// In en, this message translates to:
+  /// **'Backup will continue in the background'**
+  String get backupRunningInBackground;
+
+  /// Shown in external backup settings or completion notifications. Background backup failed: {error} The error is the localized reason for the failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Background backup failed: {error}'**
+  String backupBackgroundFailed(String error);
+
+  /// Shown in external backup settings or completion notifications. Back up automatically when due
+  ///
+  /// In en, this message translates to:
+  /// **'Back up automatically when due'**
+  String get backupAutoEnableTitle;
+
+  /// Shown in external backup settings or completion notifications. When the scheduled time arrives, Kelivo backs up while the app is in the foreground. If the app is closed or killed, the backup does not keep running and is not resumed; the next time you open the app, a single full backup runs if it is still due.
+  ///
+  /// In en, this message translates to:
+  /// **'When the scheduled time arrives, Kelivo backs up while the app is in the foreground. If the app is closed or killed, the backup does not keep running and is not resumed; the next time you open the app, a single full backup runs if it is still due.'**
+  String get backupAutoEnableHint;
+
+  /// Shown in external backup settings or completion notifications. Automatic backup destination
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup destination'**
+  String get backupAutoDestinationTitle;
+
+  /// Shown in external backup settings or completion notifications. WebDAV
+  ///
+  /// In en, this message translates to:
+  /// **'WebDAV'**
+  String get backupAutoDestinationWebDav;
+
+  /// Shown in external backup settings or completion notifications. S3
+  ///
+  /// In en, this message translates to:
+  /// **'S3'**
+  String get backupAutoDestinationS3;
+
+  /// Desktop automatic backup folder settings or write result. Local folder
+  ///
+  /// In en, this message translates to:
+  /// **'Local folder'**
+  String get backupAutoDestinationLocal;
+
+  /// Shown in external backup settings or completion notifications. Set up WebDAV or S3 first.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up WebDAV or S3 first.'**
+  String get backupAutoNeedRemoteHint;
+
+  /// Shown in external backup settings or completion notifications. Set up WebDAV or S3, or choose a local folder first.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up WebDAV or S3, or choose a local folder first.'**
+  String get backupAutoNeedDestinationHint;
+
+  /// Desktop automatic backup folder settings or write result. Choose a backup folder first.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a backup folder first.'**
+  String get backupAutoNeedFolderHint;
+
+  /// Desktop automatic backup folder settings or write result. Choose folder…
+  ///
+  /// In en, this message translates to:
+  /// **'Choose folder…'**
+  String get backupAutoLocalFolderChoose;
+
+  /// Desktop automatic backup folder settings or write result. Change folder
+  ///
+  /// In en, this message translates to:
+  /// **'Change folder'**
+  String get backupAutoLocalFolderChange;
+
+  /// Desktop automatic backup folder settings or write result. Choose a folder outside the app's own data directory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a folder outside the app\'s own data directory.'**
+  String get backupAutoLocalFolderInvalid;
+
+  /// Desktop automatic backup folder settings or write result. Keep at most
+  ///
+  /// In en, this message translates to:
+  /// **'Keep at most'**
+  String get backupAutoLocalRetentionTitle;
+
+  /// Desktop automatic backup folder settings or write result. {count} backups The count is the positive number of backups to keep.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} backups'**
+  String backupAutoLocalRetentionCount(int count);
+
+  /// Desktop automatic backup folder settings or write result. No limit
+  ///
+  /// In en, this message translates to:
+  /// **'No limit'**
+  String get backupAutoLocalRetentionUnlimited;
+
+  /// Desktop automatic backup folder settings or write result. Back up to this folder now
+  ///
+  /// In en, this message translates to:
+  /// **'Back up to this folder now'**
+  String get backupAutoLocalNow;
+
+  /// Desktop automatic backup folder settings or write result. Can't write to the chosen folder. Check that it is still available, or choose another one. Kelivo won't change the saved location on its own.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t write to the chosen folder. Check that it is still available, or choose another one. Kelivo won\'t change the saved location on its own.'**
+  String get backupAutoLocalDirUnavailable;
+
+  /// Desktop automatic backup folder settings or write result. You don't have permission to write to the chosen folder. Please choose the folder again. Kelivo won't change the saved location on its own.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to write to the chosen folder. Please choose the folder again. Kelivo won\'t change the saved location on its own.'**
+  String get backupAutoLocalDirPermission;
+
+  /// Desktop automatic backup folder settings or write result. There isn't enough disk space, so the backup didn't finish. Your earlier backups are still there.
+  ///
+  /// In en, this message translates to:
+  /// **'There isn\'t enough disk space, so the backup didn\'t finish. Your earlier backups are still there.'**
+  String get backupAutoLocalDirFull;
+
+  /// Desktop automatic backup folder settings or write result. Kelivo can't access the chosen folder. Please choose it again. The saved location won't be changed automatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Kelivo can\'t access the chosen folder. Please choose it again. The saved location won\'t be changed automatically.'**
+  String get backupAutoLocalBookmarkLost;
+
+  /// Shown in external backup settings or completion notifications. Next automatic backup
+  ///
+  /// In en, this message translates to:
+  /// **'Next automatic backup'**
+  String get backupAutoNextTitle;
+
+  /// Device-only password consent dialog when enabling encrypted automatic backups. Remember the password on this device?
+  ///
+  /// In en, this message translates to:
+  /// **'Remember the password on this device?'**
+  String get backupAutoRememberPasswordTitle;
+
+  /// Device-only password consent dialog when enabling encrypted automatic backups. Remember the password on this device so automatic backups can run. It stays on this device and is never uploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember the password on this device so automatic backups can run. It stays on this device and is never uploaded.'**
+  String get backupAutoRememberPasswordMessage;
+
+  /// Device-only password consent dialog when enabling encrypted automatic backups. Remember
+  ///
+  /// In en, this message translates to:
+  /// **'Remember'**
+  String get backupAutoRememberPasswordConfirm;
+
+  /// Device-only password consent dialog when enabling encrypted automatic backups. Not now
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get backupAutoRememberPasswordDecline;
+
+  /// Device-only password consent dialog when enabling encrypted automatic backups. Automatic backup was not turned on. You'll still get a reminder when it's due.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup was not turned on. You\'ll still get a reminder when it\'s due.'**
+  String get backupAutoRememberDeclined;
+
+  /// Backup settings or automatic backup failure when access to the device credential store is unavailable. Manual backups can still prompt for the password.
+  ///
+  /// In en, this message translates to:
+  /// **'Kelivo can’t access the system keychain for the backup password. You can still back up manually.'**
+  String get backupAutoKeychainUnavailable;
+
+  /// Shown in external backup settings or completion notifications. Automatic backup finished
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup finished'**
+  String get backupAutoSucceeded;
+
+  /// Shown in external backup settings or completion notifications. Automatic backup failed: {error} The error is the localized reason for the failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup failed: {error}'**
+  String backupAutoFailed(String error);
+
+  /// Shown in external backup settings or completion notifications. Automatic backup failed: the password is incorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup failed: the password is incorrect.'**
+  String get backupAutoFailedPassword;
+
+  /// Sidebar reminder after a due automatic external backup fails.
+  ///
+  /// In en, this message translates to:
+  /// **'The automatic backup didn\'t finish. Check the network or back up manually.'**
+  String get backupReminderSidebarSubtitleAutoFailed;
+
+  /// Subtitle for backup encryption when the device remembers the password for manual or automatic backups.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups are encrypted. The password is saved on this device.'**
+  String get backupEncryptionOnHintRemembered;
+
+  /// Backup encryption settings switch and optional password dialog checkbox. Saves the backup encryption password on this device for future backups, including manual backups.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember password on this device'**
+  String get backupRememberPasswordOnDevice;
+
+  /// Subtitle of the remember-password switch when encrypted automatic backups are on, explaining what forgetting the password will do.
+  ///
+  /// In en, this message translates to:
+  /// **'Turning this off also turns off automatic backups.'**
+  String get backupForgetDisablesAutomaticHint;
+
+  /// Hint when entering the current encryption password to make a backup or save it on this device.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the password you set for encrypted backups.'**
+  String get backupManualPasswordHint;
+
+  /// Notice when the user chose to remember the password during a manual backup but secure storage failed. The current backup still uses the password they entered.
+  ///
+  /// In en, this message translates to:
+  /// **'The password couldn’t be saved on this device. This backup will continue.'**
+  String get backupManualPasswordNotSaved;
+
+  /// Action in backup encryption settings to choose a new password for future external backups while keeping encryption enabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Change backup password'**
+  String get backupEncryptionChangePassword;
+
+  /// Shown after macOS denies authorization for the local backup password. Keychain Access is the name of the macOS utility. The user should unlock their login keychain there and retry.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS couldn’t unlock the login keychain. Open Keychain Access, unlock “login”, then try again in Kelivo.'**
+  String get backupMacKeychainNeedsUnlock;
+
+  /// Button on a backup-password authorization error that opens Apple’s Keychain Access app on macOS so the user can unlock their default keychain.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Keychain Access'**
+  String get backupMacOpenKeychainAccess;
+
+  /// Backup password error when macOS denied access even though the default keychain was reported unlocked. Covers access denied by item permissions or an unusable login keychain without assuming that the user cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS denied access to the backup password. If a system prompt appears, allow Kelivo to access it. You can also check the default keychain and the password item’s permissions in Keychain Access.'**
+  String get backupMacKeychainAccessDenied;
 
   /// Label for the built-in web fetch tool option in the model detail sheet.
   ///

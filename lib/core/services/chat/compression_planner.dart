@@ -14,18 +14,27 @@ typedef CompressionSegment = ({String prompt, int nextIndex, int nextOffset});
 class CompressionPlanner {
   CompressionPlanner({
     required CompressionRequest request,
+    int? summaryTokens,
     required this.materials,
     required this.previousSummary,
     required this.background,
-    this.continuation = '',
   }) : template = request.resolvedTemplate,
        focus = request.options.focus,
        locale = request.locale,
        outputTokens = math.min(
-         request.config.summaryTokens,
-         request.maxOutputTokens ?? request.config.summaryTokens,
+         request.config.maxOutputTokens ??
+             summaryTokens ??
+             request.config.summaryTokens,
+         request.maxOutputTokens ??
+             request.config.maxOutputTokens ??
+             summaryTokens ??
+             request.config.summaryTokens,
        ),
        maxRequestAttempts = request.config.maxRequestAttempts {
+    targetTokens = math.min(
+      summaryTokens ?? request.config.summaryTokens,
+      outputTokens,
+    );
     final window =
         request.contextWindowTokens ??
         CompressContextOptions.defaultContextWindowTokens;
@@ -41,9 +50,9 @@ class CompressionPlanner {
   final String focus;
   final String locale;
   final int outputTokens;
+  late final int targetTokens;
   final int maxRequestAttempts;
   final String background;
-  final String continuation;
   String previousSummary;
   late int inputLimit;
   int index = 0;
@@ -54,10 +63,9 @@ class CompressionPlanner {
     content: content,
     previousSummary: previousSummary,
     background: background,
-    continuation: continuation,
     focus: focus,
     locale: locale,
-    targetTokens: outputTokens,
+    targetTokens: targetTokens,
   );
 
   bool _fits(String prompt) =>
@@ -78,7 +86,7 @@ class CompressionPlanner {
         // Follow the same message boundaries and fragment headers as execution.
         // Reserve a full working summary in both budgets, using eight chars per
         // estimated token. Actual model output is still checked by next().
-        if (count == 1) previousSummary = 'summary ' * outputTokens;
+        if (count == 1) previousSummary = 'summary ' * targetTokens;
       } while (true);
     } finally {
       index = initialIndex;

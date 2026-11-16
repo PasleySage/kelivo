@@ -1,3 +1,5 @@
+import '../../../core/models/carried_original.dart';
+import 'carried_messages_section.dart';
 import '../../../core/models/token_usage.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import '../../../theme/app_font_weights.dart';
 import '../../../theme/app_semantic_colors.dart';
 import '../../../utils/platform_utils.dart';
 import '../pages/context_summary_editor_page.dart';
+import 'compression_error_notice.dart';
 import 'context_dialog.dart';
 export 'context_node_divider.dart';
 
@@ -27,6 +30,10 @@ class ContextOperationContent extends StatefulWidget {
     required this.operation,
     required this.onClose,
     this.onSave,
+    this.onSaveCarried,
+    this.onCarriedSource,
+    this.estimateCarried,
+    this.carriedSourceIds = const {},
     this.onUndo,
     this.onViewOriginal,
     this.onViewBoundary,
@@ -41,6 +48,10 @@ class ContextOperationContent extends StatefulWidget {
     this.showHeader = true,
     this.sourceConversationAvailable = true,
   });
+  final Future<bool> Function(CarriedOriginals)? onSaveCarried;
+  final ValueChanged<String>? onCarriedSource;
+  final Future<CompressionBudget?> Function(CarriedOriginals)? estimateCarried;
+  final Set<String> carriedSourceIds;
   final ContextOperation operation;
   final VoidCallback onClose;
   final Future<bool> Function(String summary)? onSave;
@@ -68,6 +79,7 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
     text: widget.operation.summary,
   );
   late bool _editing = widget.initiallyEditing && !widget.operation.isNative;
+  CarriedOriginals? _updatedCarried;
   bool _detailsExpanded = false;
   bool _saving = false;
   String? _error;
@@ -132,7 +144,9 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
       final saved = await widget.onSave?.call(_editor.text) ?? false;
       if (mounted && saved) widget.onClose();
     } catch (error) {
-      if (mounted) setState(() => _error = error.toString());
+      if (mounted) {
+        setState(() => _error = error.toString());
+      }
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -176,7 +190,9 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
         if (widget.onViewBoundary != null)
           ActionSheetItem(
             icon: LucideIcons.locate,
-            label: l10n.contextViewBoundary,
+            label: widget.operation.isClear
+                ? l10n.contextViewBoundary
+                : l10n.quoteJumpToSource,
             onTap: widget.onViewBoundary!,
           ),
         if (widget.onContinueNewChat != null)
@@ -192,7 +208,9 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final operation = widget.operation;
+    final operation = _updatedCarried == null
+        ? widget.operation
+        : widget.operation.withCarried(_updatedCarried);
     final cs = Theme.of(context).colorScheme;
     final desktop = PlatformUtils.isDesktopTarget;
     final status = operation.revoked
@@ -308,6 +326,13 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
             label: l10n.contextDetailKept,
             value: l10n.contextDetailKeptCount(operation.keepUserMessages),
           ),
+          if (operation.carried?.items.isNotEmpty == true)
+            ContextDetailRow(
+              label: l10n.contextDetailCarried,
+              value: l10n.contextDetailCarriedCount(
+                operation.carried!.items.length,
+              ),
+            ),
           ContextDetailRow(
             label: l10n.contextDetailModel,
             value: '${operation.model} · $timestamp',
@@ -502,13 +527,27 @@ class _ContextOperationContentState extends State<ContextOperationContent> {
             ),
           ),
         ],
+        CarriedMessagesSection(
+          operation: operation,
+          onSave: widget.onSaveCarried == null
+              ? null
+              : (value) async {
+                  final saved = await widget.onSaveCarried!(value);
+                  if (saved && mounted) setState(() => _updatedCarried = value);
+                  return saved;
+                },
+          onSource: widget.onCarriedSource,
+          estimate: widget.estimateCarried,
+          sourceIds: widget.carriedSourceIds,
+          imported:
+              operation.isImportedNative ||
+              operation.compressionDetails['carriedSourceConversationId'] !=
+                  null,
+        ),
         if (_error != null)
           Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              _error!,
-              style: TextStyle(fontSize: 12, color: cs.error),
-            ),
+            child: CompressionErrorNotice(error: _error!),
           ),
       ],
     );

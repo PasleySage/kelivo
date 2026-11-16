@@ -79,7 +79,6 @@ class ConfigurableAvatar extends StatelessWidget {
             : Colors.transparent,
         shape: BoxShape.circle,
       ),
-      clipBehavior: Clip.antiAlias,
       alignment: Alignment.center,
       child: content,
     );
@@ -149,6 +148,8 @@ class ConfigurableAvatar extends StatelessWidget {
       width: dimension,
       height: dimension,
       fit: brand ? BoxFit.contain : BoxFit.cover,
+      // Crop photo frames without clipping brand artwork or error fallbacks.
+      frameBuilder: brand ? null : (_, child, _, _) => ClipOval(child: child),
       errorBuilder: (_, __, ___) => fallback,
     );
   }

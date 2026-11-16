@@ -1122,7 +1122,8 @@ class _NetworkTtsEditorPageState extends State<_NetworkTtsEditorPage> {
                               ? 'https://<region>.tts.speech.microsoft.com'
                               : _defaultBaseUrl(_kind),
                         ),
-                        if (_kind != NetworkTtsKind.xai &&
+                        if (_kind != NetworkTtsKind.deepseek &&
+                            _kind != NetworkTtsKind.xai &&
                             _kind != NetworkTtsKind.azure)
                           _TtsEditorTextField(
                             label: l10n.ttsServicesFieldModelLabel,
@@ -1132,7 +1133,16 @@ class _NetworkTtsEditorPageState extends State<_NetworkTtsEditorPage> {
                                 ? (_) => setState(() {})
                                 : null,
                           ),
-                        if (!_isMimoVoiceDesign)
+                        if (_kind == NetworkTtsKind.deepseek)
+                          _TtsEditorSelectField(
+                            label: l10n.ttsServicesFieldVoiceLabel,
+                            value: _voiceCtl.text,
+                            options: DeepSeekTtsOptions.voiceIds,
+                            labelFor: l10n.ttsServicesDeepSeekVoice,
+                            onChanged: (value) =>
+                                setState(() => _voiceCtl.text = value),
+                          )
+                        else if (!_isMimoVoiceDesign)
                           _TtsEditorTextField(
                             label: _isMimoVoiceClone
                                 ? l10n.ttsServicesFieldReferenceAudioLabel
@@ -1544,6 +1554,15 @@ class _NetworkTtsEditorPageState extends State<_NetworkTtsEditorPage> {
           model: model,
           voice: voice,
         );
+      case NetworkTtsKind.deepseek:
+        return DeepSeekTtsOptions(
+          id: initial?.id,
+          enabled: true,
+          name: name,
+          apiKey: apiKey,
+          baseUrl: base,
+          voiceId: voice,
+        );
       case NetworkTtsKind.gemini:
         return GeminiTtsOptions(
           id: initial?.id,
@@ -1724,7 +1743,7 @@ class _ProviderKindWrap extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: [
-        for (final kind in _networkTtsKinds)
+        for (final kind in NetworkTtsKind.values)
           _ProviderKindChip(
             kind: kind,
             selected: kind == value,
@@ -2230,23 +2249,9 @@ Widget _sheetDivider(BuildContext context) {
   );
 }
 
-const List<NetworkTtsKind> _networkTtsKinds = [
-  NetworkTtsKind.openai,
-  NetworkTtsKind.gemini,
-  NetworkTtsKind.azure,
-  NetworkTtsKind.minimax,
-  NetworkTtsKind.qwen,
-  NetworkTtsKind.qwenAudio,
-  NetworkTtsKind.groq,
-  NetworkTtsKind.xai,
-  NetworkTtsKind.elevenlabs,
-  NetworkTtsKind.mimo,
-  NetworkTtsKind.step,
-  NetworkTtsKind.fishAudio,
-];
-
 String _apiKeyOf(TtsServiceOptions? option) {
   if (option is OpenAiTtsOptions) return option.apiKey;
+  if (option is DeepSeekTtsOptions) return option.apiKey;
   if (option is GeminiTtsOptions) return option.apiKey;
   if (option is AzureTtsOptions) return option.apiKey;
   if (option is MiniMaxTtsOptions) return option.apiKey;
@@ -2263,6 +2268,7 @@ String _apiKeyOf(TtsServiceOptions? option) {
 
 String _baseUrlOf(TtsServiceOptions? option) {
   if (option is OpenAiTtsOptions) return option.baseUrl;
+  if (option is DeepSeekTtsOptions) return option.baseUrl;
   if (option is GeminiTtsOptions) return option.baseUrl;
   if (option is AzureTtsOptions) return option.baseUrl;
   if (option is MiniMaxTtsOptions) return option.baseUrl;
@@ -2293,6 +2299,7 @@ String _modelOf(TtsServiceOptions? option) {
 
 String _voiceOf(TtsServiceOptions? option) {
   if (option is OpenAiTtsOptions) return option.voice;
+  if (option is DeepSeekTtsOptions) return option.voiceId;
   if (option is GeminiTtsOptions) return option.voiceName;
   if (option is AzureTtsOptions) return option.voice;
   if (option is MiniMaxTtsOptions) return option.voiceId;
@@ -2311,6 +2318,8 @@ String _defaultBaseUrl(NetworkTtsKind k) {
   switch (k) {
     case NetworkTtsKind.openai:
       return 'https://api.openai.com/v1';
+    case NetworkTtsKind.deepseek:
+      return DeepSeekTtsOptions.defaultBaseUrl;
     case NetworkTtsKind.gemini:
       return 'https://generativelanguage.googleapis.com/v1beta';
     case NetworkTtsKind.azure:
@@ -2342,6 +2351,7 @@ String _defaultModel(NetworkTtsKind k) {
       return 'gpt-4o-mini-tts';
     case NetworkTtsKind.gemini:
       return 'gemini-3.1-flash-tts-preview';
+    case NetworkTtsKind.deepseek:
     case NetworkTtsKind.azure:
       return '';
     case NetworkTtsKind.minimax:
@@ -2369,6 +2379,8 @@ String _defaultVoice(NetworkTtsKind k) {
   switch (k) {
     case NetworkTtsKind.openai:
       return 'alloy';
+    case NetworkTtsKind.deepseek:
+      return DeepSeekTtsOptions.defaultVoiceId;
     case NetworkTtsKind.gemini:
       return 'Kore';
     case NetworkTtsKind.azure:
@@ -2396,6 +2408,7 @@ String _defaultVoice(NetworkTtsKind k) {
 
 String _voiceLabelFor(NetworkTtsKind k, AppLocalizations l10n) {
   switch (k) {
+    case NetworkTtsKind.deepseek:
     case NetworkTtsKind.openai:
       return l10n.ttsServicesFieldVoiceLabel;
     case NetworkTtsKind.gemini:

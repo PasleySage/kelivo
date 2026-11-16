@@ -1,16 +1,21 @@
+import '../widgets/custom_theme_widgets.dart';
+import '../widgets/attachment_cleanup_button.dart';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:provider/provider.dart';
 
 import '../../../desktop/macos_window_drag_area.dart';
 import '../../../core/services/chat/chat_service.dart';
 import '../../../core/services/haptics.dart';
+import '../../../core/services/logging/flutter_logger.dart';
+import '../../../core/services/logging/log_redactor.dart';
 import '../../../core/services/native_file_save.dart';
 import '../../../core/services/storage/storage_usage_service.dart';
-import '../../../core/services/storage/storage_image_usage.dart';
+import '../../../core/services/storage/storage_attachment_usage.dart';
 import '../../../icons/lucide_adapter.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/ios_checkbox.dart';
@@ -20,6 +25,7 @@ import '../../../shared/widgets/selection_back_scope.dart';
 import '../../../shared/widgets/snackbar.dart';
 import '../../../theme/app_font_weights.dart';
 import '../../../utils/platform_utils.dart';
+import '../../../utils/safe_resize_image.dart';
 import '../../backup/pages/local_snapshots_page.dart';
 import '../../chat/pages/image_viewer_page.dart';
 import '../../workspace/pages/environment_page.dart';
@@ -279,7 +285,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -313,7 +319,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -347,7 +353,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -381,7 +387,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -415,7 +421,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearLegacyChatDataConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -449,7 +455,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearRestoreTracesConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -483,7 +489,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearDisplacedDatabasesConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -517,7 +523,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -551,7 +557,7 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -591,12 +597,19 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
       ),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
       await StorageUsageService.clearOrphanSessionFiles(
         conversationIds: conversationIds,
+        protectedPaths:
+            context
+                .read<ChatService?>()
+                ?.transientAttachmentReferences
+                .keys
+                .toSet() ??
+            const {},
       );
       if (!mounted) return;
       showAppSnackBar(
@@ -683,6 +696,11 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
         ),
         title: Text(l10n.storageSpacePageTitle),
         actions: [
+          AttachmentCleanupButton(
+            onChanged: () async {
+              await _refreshReport();
+            },
+          ),
           IosIconButton(
             icon: Lucide.RefreshCw,
             size: 20,
@@ -726,6 +744,13 @@ class _StorageSpacePageState extends State<StorageSpacePage> {
             ),
           ),
           const Spacer(),
+          AttachmentCleanupButton(
+            size: 18,
+            minSize: 32,
+            onChanged: () async {
+              await _refreshReport();
+            },
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 8, top: 2),
             child: IosIconButton(
@@ -1009,7 +1034,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1042,7 +1067,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1075,7 +1100,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1108,7 +1133,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1141,7 +1166,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearLegacyChatDataConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1181,7 +1206,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearDisplacedDatabasesConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1221,7 +1246,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearRestoreTracesConfirmMessage,
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1260,7 +1285,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1293,7 +1318,7 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       message: l10n.storageSpaceClearConfirmMessage(targetName),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
@@ -1332,12 +1357,19 @@ class _StorageCategoryPageState extends State<_StorageCategoryPage> {
       ),
       actionLabel: l10n.storageSpaceClearButton,
     );
-    if (!ok) return;
+    if (!ok || !mounted) return;
 
     setState(() => _clearing = true);
     try {
       await StorageUsageService.clearOrphanSessionFiles(
         conversationIds: conversationIds,
+        protectedPaths:
+            context
+                .read<ChatService?>()
+                ?.transientAttachmentReferences
+                .keys
+                .toSet() ??
+            const {},
       );
       if (!mounted) return;
       showAppSnackBar(
@@ -2059,7 +2091,7 @@ enum _StorageEntrySort { newest, oldest, largest, smallest }
 
 class _UploadManagerState extends State<_UploadManager> {
   bool _loading = false;
-  bool _loadFailed = false;
+  ({String summary, String details})? _loadFailure;
   bool _deleting = false;
   List<StorageFileEntry> _entries = const <StorageFileEntry>[];
   List<StorageFileEntry> _visibleEntries = const <StorageFileEntry>[];
@@ -2100,28 +2132,60 @@ class _UploadManagerState extends State<_UploadManager> {
     try {
       final list = await StorageUsageService.listUploadEntries(
         images: widget.images,
+        generationActive:
+            context.read<ChatService?>()?.hasTransientGeneration ?? false,
+        additionalReferences:
+            context.read<ChatService?>()?.transientAttachmentReferences ??
+            const {},
       );
       if (!mounted) return;
       setState(() {
         _entries = list;
         _visibleEntries = _buildVisibleEntries();
-        _loadFailed = false;
+        _loadFailure = null;
         final paths = _visibleEntries
             .where((e) => !e.isInUse)
             .map((e) => e.path)
             .toSet();
         _selected.removeWhere((p) => !paths.contains(p));
       });
-    } catch (_) {
+    } catch (error, stack) {
+      // A FormatException's source can contain the private message payload.
+      final message = error is FormatException
+          ? error.message
+          : error.toString();
+      final reason = LogRedactor.redactText(message.split('\n').first);
+      final type = error.runtimeType.toString();
+      final summary = reason.startsWith(type) ? reason : '$type: $reason';
+      final details = '$summary\n$stack';
+      FlutterLogger.log(details, tag: 'StorageAttachments');
       if (mounted) {
         setState(() {
-          _loadFailed = true;
+          _loadFailure = (summary: summary, details: details);
           _selected.clear();
         });
       }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  Future<void> _copyLoadFailure(String details) async {
+    var copied = true;
+    try {
+      await Clipboard.setData(ClipboardData(text: details));
+    } on Exception {
+      copied = false;
+    }
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    showAppSnackBar(
+      context,
+      message: copied
+          ? l10n.chatMessageWidgetCopiedToClipboard
+          : l10n.storageSpaceCopyErrorFailed,
+      type: copied ? NotificationType.success : NotificationType.error,
+    );
   }
 
   List<StorageFileEntry> _buildVisibleEntries() {
@@ -2198,28 +2262,38 @@ class _UploadManagerState extends State<_UploadManager> {
     // Keep the targets shown in this confirmation independent of that UI state.
     final pathsToDelete = _selected.toList(growable: false);
     final count = pathsToDelete.length;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: Text(l10n.storageSpaceDeleteConfirmTitle),
-          content: Text(
-            widget.images
-                ? l10n.storageSpaceDeleteImagesConfirmMessage(count)
-                : l10n.storageSpaceDeleteUploadsConfirmMessage(count),
+    final ok = await showAppDialog<bool>(
+      context,
+      maxWidth: 420,
+      child: Builder(
+        builder: (ctx) => Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(l10n.storageAttachmentDeleteConfirm(count)),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  IosTileButton(
+                    label: l10n.homePageCancel,
+                    icon: Lucide.X,
+                    onTap: () => Navigator.of(ctx).pop(false),
+                  ),
+                  IosTileButton(
+                    label: l10n.homePageDelete,
+                    icon: Lucide.Trash2,
+                    backgroundColor: Theme.of(ctx).colorScheme.error,
+                    onTap: () => Navigator.of(ctx).pop(true),
+                  ),
+                ],
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(l10n.homePageCancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(l10n.homePageDelete),
-            ),
-          ],
-        );
-      },
+        ),
+      ),
     );
     if (ok != true || !mounted) return;
     setState(() => _deleting = true);
@@ -2228,6 +2302,15 @@ class _UploadManagerState extends State<_UploadManager> {
       final deleted = await StorageUsageService.deleteUploadFiles(
         pathsToDelete,
         images: widget.images,
+        generationActive:
+            context.read<ChatService?>()?.hasTransientGeneration ?? false,
+        protectedPaths:
+            context
+                .read<ChatService?>()
+                ?.transientAttachmentReferences
+                .keys
+                .toSet() ??
+            const {},
       );
       if (!mounted) return;
       _clearSelection();
@@ -2308,8 +2391,31 @@ class _UploadManagerState extends State<_UploadManager> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_loadFailed) {
-      return Center(child: Text(l10n.storageSpaceLoadFailed));
+    if (_loadFailure case final failure?) {
+      return Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(l10n.storageSpaceLoadFailed, textAlign: TextAlign.center),
+              const SizedBox(height: 6),
+              Text(
+                failure.summary,
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12),
+              IosTileButton(
+                icon: Lucide.Copy,
+                label: l10n.storageSpaceCopyErrorDetails,
+                onTap: () => _copyLoadFailure(failure.details),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     final entries = _visibleEntries;
@@ -2317,6 +2423,15 @@ class _UploadManagerState extends State<_UploadManager> {
       spacing: 10,
       runSpacing: 10,
       children: [
+        IosTileButton(
+          label: l10n.storageAttachmentCleanUnused,
+          icon: Lucide.Trash2,
+          enabled: !_loading && !_deleting && entries.any((e) => !e.isInUse),
+          onTap: () {
+            _selectAll(entries);
+            _deleteSelected();
+          },
+        ),
         IosTileButton(
           label: _selectMode
               ? l10n.storageSpaceClearSelection
@@ -2336,134 +2451,130 @@ class _UploadManagerState extends State<_UploadManager> {
       ],
     );
 
-    final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.title,
-          style: TextStyle(fontSize: 16, fontWeight: AppFontWeights.emphasis),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          widget.fmtBytes(
-            entries.fold<int>(0, (sum, entry) => sum + entry.bytes),
-          ),
-          key: const ValueKey('storage-visible-bytes'),
-          style: TextStyle(
-            fontSize: 12.5,
-            color: cs.onSurface.withValues(alpha: 0.7),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.images
-              ? l10n.storageSpaceImagesHint
-              : l10n.storageSpaceNotSafeToClearHint,
-          style: TextStyle(
-            fontSize: 12.5,
-            color: cs.onSurface.withValues(alpha: 0.7),
-          ),
-        ),
-        const SizedBox(height: 12),
-        if (widget.images) ...[
-          _StorageImageOrganizer(
-            imageFilter: _imageFilter,
-            sort: _sort,
-            onImageChanged: _setImageFilter,
-            onSortChanged: _setSort,
-          ),
-          const SizedBox(height: 12),
-        ],
-        actions,
-        const SizedBox(height: 12),
-        Expanded(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    _selectMode
-                        ? l10n.storageSpaceSelectedCount(_selected.length)
-                        : l10n.storageSpaceUploadsCount(entries.length),
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      color: cs.onSurface.withValues(alpha: 0.65),
-                    ),
-                  ),
+    final content = CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: AppFontWeights.emphasis,
                 ),
               ),
-              if (entries.isEmpty)
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: Text(
-                      l10n.storageSpaceNoUploads,
-                      style: TextStyle(
-                        color: cs.onSurface.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ),
-                )
-              else if (widget.images)
-                SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  sliver: SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 140,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 1,
-                        ),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      final e = entries[index];
-                      final selected = _selected.contains(e.path);
-                      return _ImageTile(
-                        key: ValueKey('storage-image-${e.path}'),
-                        path: e.path,
-                        isInUse: e.isInUse,
-                        selected: selected,
-                        onToggle: () => _toggleSelect(e.path),
-                        onTap: () {
-                          if (_selectMode && !e.isInUse) {
-                            _toggleSelect(e.path);
-                          } else {
-                            _openImageViewer(entries, index);
-                          }
-                        },
-                        onLongPress: () => _toggleSelect(e.path),
-                      );
-                    }, childCount: entries.length),
-                  ),
-                )
-              else
-                SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    final e = entries[index];
-                    final selected = _selected.contains(e.path);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: _FileRow(
-                        entry: e,
-                        selected: selected,
-                        fmtBytes: widget.fmtBytes,
-                        onTap: () {
-                          if (_selectMode && !e.isInUse) {
-                            _toggleSelect(e.path);
-                          } else {
-                            _openFile(e.path);
-                          }
-                        },
-                        onLongPress: () => _toggleSelect(e.path),
-                        onToggle: () => _toggleSelect(e.path),
-                      ),
-                    );
-                  }, childCount: entries.length),
+              const SizedBox(height: 6),
+              Text(
+                widget.fmtBytes(
+                  entries.fold<int>(0, (sum, entry) => sum + entry.bytes),
                 ),
+                key: const ValueKey('storage-visible-bytes'),
+                style: TextStyle(
+                  fontSize: 12.5,
+                  color: cs.onSurface.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.storageAttachmentProtectedHint,
+                style: TextStyle(
+                  fontSize: 12.5,
+                  color: cs.onSurface.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: 12),
+              if (widget.images) ...[
+                _StorageImageOrganizer(
+                  imageFilter: _imageFilter,
+                  sort: _sort,
+                  onImageChanged: _setImageFilter,
+                  onSortChanged: _setSort,
+                ),
+                const SizedBox(height: 12),
+              ],
+              if (entries.isNotEmpty) ...[actions, const SizedBox(height: 12)],
             ],
           ),
         ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              _selectMode
+                  ? l10n.storageSpaceSelectedCount(_selected.length)
+                  : l10n.storageSpaceUploadsCount(entries.length),
+              style: TextStyle(
+                fontSize: 12.5,
+                color: cs.onSurface.withValues(alpha: 0.65),
+              ),
+            ),
+          ),
+        ),
+        if (entries.isEmpty)
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
+              child: Text(
+                l10n.storageSpaceNoUploads,
+                style: TextStyle(color: cs.onSurface.withValues(alpha: 0.7)),
+              ),
+            ),
+          )
+        else if (widget.images)
+          SliverPadding(
+            padding: const EdgeInsets.only(bottom: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 140,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 1,
+              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final e = entries[index];
+                final selected = _selected.contains(e.path);
+                return _ImageTile(
+                  key: ValueKey('storage-image-${e.path}'),
+                  entry: e,
+                  selected: selected,
+                  onToggle: () => _toggleSelect(e.path),
+                  onTap: () {
+                    if (_selectMode && !e.isInUse) {
+                      _toggleSelect(e.path);
+                    } else {
+                      _openImageViewer(entries, index);
+                    }
+                  },
+                  onLongPress: () => _toggleSelect(e.path),
+                );
+              }, childCount: entries.length),
+            ),
+          )
+        else
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final e = entries[index];
+              final selected = _selected.contains(e.path);
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _FileRow(
+                  entry: e,
+                  selected: selected,
+                  fmtBytes: widget.fmtBytes,
+                  onTap: () {
+                    if (_selectMode && !e.isInUse) {
+                      _toggleSelect(e.path);
+                    } else {
+                      _openFile(e.path);
+                    }
+                  },
+                  onLongPress: () => _toggleSelect(e.path),
+                  onToggle: () => _toggleSelect(e.path),
+                ),
+              );
+            }, childCount: entries.length),
+          ),
       ],
     );
     return SelectionBackScope(
@@ -2614,16 +2725,17 @@ class _StorageChoiceRow<T> extends StatelessWidget {
 class _ImageTile extends StatelessWidget {
   const _ImageTile({
     super.key,
-    required this.path,
-    required this.isInUse,
+    required this.entry,
     required this.selected,
     required this.onToggle,
     required this.onTap,
     required this.onLongPress,
   });
 
-  final String path;
-  final bool isInUse;
+  static const _maxTileEdge = 1024;
+  static const _maxDecodeEdge = 4096;
+
+  final StorageFileEntry entry;
   final bool selected;
   final VoidCallback onToggle;
   final VoidCallback onTap;
@@ -2639,7 +2751,7 @@ class _ImageTile extends StatelessWidget {
         final side = constraints.maxWidth.isFinite && constraints.maxWidth > 0
             ? constraints.maxWidth
             : 140.0;
-        final int cachePx = (side * dpr).clamp(64.0, 1024.0).round();
+        final cachePx = (side * dpr).clamp(64, _maxTileEdge).round();
 
         return Container(
           decoration: BoxDecoration(
@@ -2660,11 +2772,16 @@ class _ImageTile extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.file(
-                  File(path),
+                Image(
+                  image: SafeResizeImage.wrap(
+                    FileImage(File(entry.path)),
+                    width: cachePx,
+                    height: cachePx,
+                    fit: SafeResizeFit.cover,
+                    maxEdge: _maxDecodeEdge,
+                    maxPixels: _maxTileEdge * _maxTileEdge,
+                  ),
                   fit: BoxFit.cover,
-                  cacheWidth: cachePx,
-                  cacheHeight: cachePx,
                   filterQuality: FilterQuality.low,
                   errorBuilder: (_, __, ___) {
                     return Container(
@@ -2678,10 +2795,23 @@ class _ImageTile extends StatelessWidget {
                     );
                   },
                 ),
+                if (!entry.isInUse || entry.conversations.isNotEmpty)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: ColoredBox(
+                      color: cs.surface.withValues(alpha: 0.94),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: _AttachmentStatus(entry: entry),
+                      ),
+                    ),
+                  ),
                 Positioned(
                   top: 6,
                   right: 6,
-                  child: isInUse
+                  child: entry.isInUse
                       ? const _StorageInUseLabel()
                       : IosCheckbox(
                           value: selected,
@@ -2703,6 +2833,64 @@ class _ImageTile extends StatelessWidget {
   }
 }
 
+class _AttachmentStatus extends StatelessWidget {
+  const _AttachmentStatus({required this.entry});
+  final StorageFileEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final pending = entry.pendingDeletionAt;
+    final text = entry.conversations.isNotEmpty
+        ? l10n.storageAttachmentConversations(
+            entry.conversations.values.join(', '),
+          )
+        : entry.isInUse
+        ? l10n.storageSpaceImageInUse
+        : pending != null
+        ? l10n.storageAttachmentPending(
+            MaterialLocalizations.of(
+              context,
+            ).formatMediumDate(pending.toLocal()),
+          )
+        : l10n.storageAttachmentUnused;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => showAppDialog<void>(
+        context,
+        maxWidth: 420,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppDialogHeader(title: l10n.storageAttachmentDetailsTitle),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * .5,
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                child: Text(text),
+              ),
+            ),
+          ],
+        ),
+      ),
+      child: Tooltip(
+        message: text,
+        child: Text(
+          text,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 11,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _StorageInUseLabel extends StatelessWidget {
   const _StorageInUseLabel();
 
@@ -2710,7 +2898,7 @@ class _StorageInUseLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Tooltip(
-      message: AppLocalizations.of(context)!.storageSpaceImageInUseHint,
+      message: AppLocalizations.of(context)!.storageAttachmentProtectedHint,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
         decoration: BoxDecoration(
@@ -2806,6 +2994,9 @@ class _FileRow extends StatelessWidget {
                       color: cs.onSurface.withValues(alpha: 0.65),
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  if (!entry.isInUse || entry.conversations.isNotEmpty)
+                    _AttachmentStatus(entry: entry),
                 ],
               ),
             ),

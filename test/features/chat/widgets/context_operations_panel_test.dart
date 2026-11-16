@@ -1,3 +1,4 @@
+import 'package:Kelivo/features/chat/widgets/context_operation_widgets.dart';
 import 'package:Kelivo/core/models/message_part.dart';
 import 'package:Kelivo/core/services/api/generation/text_generation_result.dart';
 import 'dart:async';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite;
 // ignore: depend_on_referenced_packages
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:Kelivo/core/database/chat_database_repository.dart';
@@ -21,6 +23,7 @@ import 'package:Kelivo/core/providers/instruction_injection_provider.dart';
 import 'package:Kelivo/core/providers/mcp_provider.dart';
 import 'package:Kelivo/core/providers/quick_phrase_provider.dart';
 import 'package:Kelivo/core/services/chat/chat_service.dart';
+import 'package:Kelivo/core/models/carried_original.dart';
 import 'package:Kelivo/core/services/chat/context_compression_service.dart';
 import 'package:Kelivo/features/chat/widgets/context_operations_panel.dart';
 import 'package:Kelivo/features/chat/widgets/context_operation_actions.dart';
@@ -29,6 +32,7 @@ import 'package:Kelivo/features/home/widgets/chat_input_bar.dart';
 import 'package:Kelivo/l10n/app_localizations.dart';
 import 'package:Kelivo/l10n/app_localizations_en.dart';
 import 'package:Kelivo/shared/widgets/ios_tactile.dart';
+import 'package:Kelivo/shared/widgets/snackbar.dart';
 import 'package:Kelivo/theme/theme_factory.dart';
 import '../../../support/business_test_harness.dart';
 
@@ -51,6 +55,10 @@ void check(String name, WidgetTesterCallback body) {
     try {
       await body(tester);
     } finally {
+      // Actions reached via runAsync can leave a real-time toast timer.
+      // Finish its exit animation while this test still owns the navigator.
+      AppSnackBarManager().dismissAll();
+      await tester.pumpAndSettle();
       await tester.pumpWidget(const SizedBox.shrink());
       debugDefaultTargetPlatformOverride = null;
     }
@@ -183,7 +191,12 @@ void main() {
     );
     await pumpUntil(
       tester,
-      () => find.text('Saved history: 60 messages').evaluate().isNotEmpty,
+      () =>
+          find
+              .text(AppLocalizationsEn().contextOperationsStored(60))
+              .evaluate()
+              .isNotEmpty &&
+          find.text('Loading...').evaluate().isEmpty,
     );
   }
 
@@ -225,16 +238,478 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('context-task-bar')));
     await pumpUntil(
       tester,
-      () => find.text('Saved history: 60 messages').evaluate().isNotEmpty,
+      () =>
+          find
+              .text(AppLocalizationsEn().contextOperationsStored(60))
+              .evaluate()
+              .isNotEmpty &&
+          find.text('Loading...').evaluate().isEmpty,
     );
     await tester.pump(const Duration(seconds: 1));
   }
+
+  Future<List<ContextOperation>> seedHistory(int count) async {
+    final anchor = (await chat.loadRawSelectedContextMessages(
+      id,
+      limit: 1,
+    )).last.id;
+    final operations = [
+      for (var i = 0; i < count; i++)
+        ContextOperation(
+          id: 'history-$i',
+          kind: ContextOperationKind.compress,
+          anchorGroupId: anchor,
+          appliedAfterGroupId: anchor,
+          sourceGroups: [anchor],
+          dependencies: const [],
+          createdAt: DateTime.utc(2026, 1, 1, 0, i),
+          revoked: true,
+          summary: 'Record $i ${'details ' * 100}',
+        ),
+    ];
+    await repo.restoreContextOperations(
+      id,
+      operations,
+      expectedFingerprint: (await repo.readContextSnapshot(id)).fingerprint,
+    );
+    return operations;
+  }
+
+  Finder panelList() => find.descendant(
+    of: find.byType(ContextOperationsPanel),
+    matching: find.byType(ListView),
+  );
+
+  int loadedRows(WidgetTester tester) =>
+      tester
+          .widget<ListView>(panelList())
+          .childrenDelegate
+          .estimatedChildCount! -
+      3;
+
+  final more = find.byKey(const ValueKey('context-operations-load-more'));
+
+  Future<void> expandHistory(WidgetTester tester, int count) async {
+    await tester.scrollUntilVisible(
+      more,
+      400,
+      scrollable: find.descendant(
+        of: panelList(),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.tap(more);
+    await pumpUntil(tester, () => loadedRows(tester) == count);
+  }
+
+  for (final platform in [TargetPlatform.android, TargetPlatform.macOS]) {
+    check(
+      'history loads 3 then 10 at a time and resets on reopen on $platform',
+      (tester) async {
+        debugDefaultTargetPlatformOverride = platform;
+        await tester.runAsync(() => seedHistory(25));
+        ContextOperation? opened;
+        await pumpPanel(tester, onOpen: (operation) => opened = operation);
+        await pumpUntil(tester, () => loadedRows(tester) == 3);
+        expect(chat.contextOperationsFor(id), isEmpty);
+        expect(
+          find.byKey(const ValueKey('context-operation-history-24')),
+          findsOneWidget,
+        );
+        for (final count in [13, 23, 25]) {
+          await expandHistory(tester, count);
+          expect(chat.contextOperationsFor(id), isEmpty);
+        }
+        await tester.drag(panelList(), const Offset(0, -2000));
+        await tester.pumpAndSettle();
+        expect(more, findsNothing);
+        final oldest = find.byKey(
+          const ValueKey('context-operation-history-0'),
+        );
+        await tester.scrollUntilVisible(
+          oldest,
+          400,
+          scrollable: find.descendant(
+            of: panelList(),
+            matching: find.byType(Scrollable),
+          ),
+        );
+        await tester.tap(oldest);
+        await pumpUntil(tester, () => opened != null);
+        expect(opened!.id, 'history-0');
+        expect(opened!.summary.length, greaterThan(240));
+        expect(chat.contextOperationsFor(id), isEmpty);
+        await tester.pumpWidget(const SizedBox.shrink());
+        await pumpPanel(tester);
+        await pumpUntil(tester, () => loadedRows(tester) == 3);
+        expect(
+          find.byKey(const ValueKey('context-operation-history-24')),
+          findsOneWidget,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  check('history refresh preserves expanded count after append and undo', (
+    tester,
+  ) async {
+    await tester.runAsync(() => seedHistory(25));
+    await pumpPanel(tester);
+    await pumpUntil(tester, () => loadedRows(tester) == 3);
+    await expandHistory(tester, 13);
+    // A context mutation invalidates an in-flight request for the next page.
+    await tester.scrollUntilVisible(
+      more,
+      400,
+      scrollable: find.descendant(
+        of: panelList(),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.tap(more);
+    await tester.runAsync(() async {
+      final snapshot = await chat.loadContextSnapshot(id);
+      await chat.appendContextOperation(
+        id,
+        ContextOperation(
+          id: 'new',
+          kind: ContextOperationKind.compress,
+          anchorGroupId: snapshot.messages.first.id,
+          appliedAfterGroupId: snapshot.messages.last.id,
+          sourceGroups: [snapshot.messages.first.id],
+          dependencies: const [],
+          createdAt: DateTime.utc(2027),
+          summary: 'New summary',
+        ),
+        expectedFingerprint: snapshot.fingerprint,
+      );
+    });
+    await tester.drag(panelList(), const Offset(0, 5000));
+    await pumpUntil(
+      tester,
+      () => find.text('New summary').evaluate().isNotEmpty,
+    );
+    expect(loadedRows(tester), 13);
+    await tester.runAsync(
+      () => chat.changeContextOperation(
+        id,
+        'new',
+        includeDependents: true,
+        expectedState: ContextHistory.operationsFingerprint(
+          chat.contextOperationsFor(id),
+        ),
+      ),
+    );
+    await pumpUntil(
+      tester,
+      () => find
+          .descendant(
+            of: find.byKey(const ValueKey('context-operation-new')),
+            matching: find.textContaining('Undone'),
+          )
+          .evaluate()
+          .isNotEmpty,
+    );
+    expect(loadedRows(tester), 13);
+    await expandHistory(tester, 23);
+    await expandHistory(tester, 26);
+    expect(more, findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  check('expansion detects a committed write before the service notification', (
+    tester,
+  ) async {
+    late List<ContextOperation> operations;
+    await tester.runAsync(() async => operations = await seedHistory(25));
+    await pumpPanel(tester);
+    final revision = chat.contextRevision(id);
+    await tester.runAsync(() async {
+      // Reproduce the window after repository commit, before ChatService's
+      // subsequent reload completes and bumps its in-memory revision.
+      await repo.restoreContextOperations(id, [
+        ...operations,
+        ContextOperation(
+          id: 'new-before-notify',
+          kind: ContextOperationKind.compress,
+          anchorGroupId: operations.last.anchorGroupId,
+          appliedAfterGroupId: operations.last.appliedAfterGroupId,
+          sourceGroups: operations.last.sourceGroups,
+          dependencies: const [],
+          createdAt: DateTime.utc(2027),
+          revoked: true,
+          summary: 'Committed before notification',
+        ),
+      ], expectedFingerprint: (await repo.readContextSnapshot(id)).fingerprint);
+    });
+    expect(chat.contextRevision(id), revision);
+    await expandHistory(tester, 13);
+    await tester.drag(panelList(), const Offset(0, 5000));
+    await tester.pumpAndSettle();
+    expect(find.text('Committed before notification'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('context-operation-history-24')),
+      findsOneWidget,
+    );
+    await expandHistory(tester, 23);
+    await expandHistory(tester, 26);
+    expect(more, findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  check('failed expansion retains rows and retries the same page', (
+    tester,
+  ) async {
+    await tester.runAsync(() => seedHistory(25));
+    await pumpPanel(tester);
+    final database = sqlite.sqlite3.open('${directory.path}/chat.sqlite');
+    addTearDown(database.close);
+    final metadata =
+        database.select(
+              'SELECT metadata FROM context_operation_state WHERE conversation_id=?',
+              [id],
+            ).single['metadata']
+            as String;
+    database.execute(
+      'UPDATE context_operation_state SET metadata=? WHERE conversation_id=?',
+      ['{', id],
+    );
+    await tester.scrollUntilVisible(
+      more,
+      400,
+      scrollable: find.descendant(
+        of: panelList(),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.tap(more);
+    await pumpUntil(tester, () => find.text('Retry').evaluate().isNotEmpty);
+    expect(loadedRows(tester), 3);
+    database.execute(
+      'UPDATE context_operation_state SET metadata=? WHERE conversation_id=?',
+      [metadata, id],
+    );
+    await tester.tap(find.text('Retry'));
+    await pumpUntil(tester, () => loadedRows(tester) == 13);
+    expect(tester.takeException(), isNull);
+  });
+
+  check('temporary conversations page their in-memory operations', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      final temporary = await chat.createDraftConversation(
+        title: 'Temporary',
+        temporary: true,
+      );
+      final message = await chat.addMessage(
+        conversationId: temporary.id,
+        role: 'user',
+        content: 'Source',
+      );
+      final operations = [
+        for (var i = 0; i < 15; i++)
+          ContextOperation(
+            id: 'temporary-$i',
+            kind: ContextOperationKind.compress,
+            anchorGroupId: message.id,
+            appliedAfterGroupId: message.id,
+            sourceGroups: [message.id],
+            dependencies: const [],
+            createdAt: DateTime.utc(2026, 1, 1, 0, i),
+            revoked: true,
+            summary: 'Summary $i',
+          ),
+      ];
+      await chat.restoreContextOperations(
+        temporary.id,
+        operations,
+        expectedFingerprint: (await chat.loadContextSnapshot(
+          temporary.id,
+        )).fingerprint,
+      );
+      final first = await chat.loadContextOperationPage(
+        temporary.id,
+        offset: 0,
+        limit: 3,
+      );
+      final second = await chat.loadContextOperationPage(
+        temporary.id,
+        offset: 3,
+        limit: 10,
+      );
+      final last = await chat.loadContextOperationPage(
+        temporary.id,
+        offset: 13,
+        limit: 10,
+      );
+      expect(
+        [...first.items, ...second.items, ...last.items].map((item) => item.id),
+        operations.reversed.map((operation) => operation.id),
+      );
+      expect(
+        [first.hasMore, second.hasMore, last.hasMore],
+        [true, true, false],
+      );
+      expect(
+        (await chat.loadContextOperation(
+          temporary.id,
+          operations.first.id,
+        ))!.summary,
+        'Summary 0',
+      );
+    });
+  });
+
+  check('detail actions use the latest copy after editing without reopening', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      chat.contextCompression.estimateCandidate =
+          (_, _, {bool? fixedContextStart}) async =>
+              (usedTokens: 100, contextWindow: 20000);
+      await start(
+        (_, _) async => 'summary',
+        options: const CompressContextOptions(
+          mode: CompressContextLimitMode.keepRecent,
+          keepUserMessages: 2,
+          carry: CarrySetting(mode: CarryMode.count, count: 1),
+        ),
+      );
+      await until(
+        () =>
+            chat.contextCompression.taskFor(id)!.phase ==
+            CompressionPhase.completed,
+      );
+    });
+    final original = chat.contextOperationsFor(id).single;
+    late BuildContext page;
+    await tester.pumpWidget(
+      ChangeNotifierProvider.value(
+        value: settings,
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Builder(
+            builder: (context) {
+              page = context;
+              return const Scaffold();
+            },
+          ),
+        ),
+      ),
+    );
+    final closed = showContextOperationDetails(
+      page,
+      chat: chat,
+      conversationId: id,
+      operation: original,
+    );
+    await tester.pump();
+    final detail = find.byType(ContextOperationContent);
+    await pumpUntil(
+      tester,
+      () =>
+          detail.evaluate().isNotEmpty &&
+          tester.widget<ContextOperationContent>(detail).onSaveCarried != null,
+    );
+    final actions = tester.widget<ContextOperationContent>(detail);
+    final list = original.carried!;
+    expect(
+      await tester.runAsync(
+        () => actions.onSaveCarried!(
+          list.withItems([
+            list.items.single.copyWith(editedText: 'fixed copy'),
+          ]),
+        ),
+      ),
+      true,
+    );
+    expect(await tester.runAsync(() => actions.onUndo!()), true);
+    expect(chat.contextOperationsFor(id).single.revoked, true);
+    Navigator.of(tester.element(detail)).pop();
+    await tester.pumpAndSettle();
+    await closed;
+  });
+  check('operation details paint and close while budgets are pending', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      await start((_, _) async => 'Saved detail summary');
+      await until(
+        () =>
+            chat.contextCompression.taskFor(id)!.phase ==
+            CompressionPhase.completed,
+      );
+    });
+    final operation = chat.contextOperationsFor(id).single;
+    final budget = Completer<CompressionBudget>();
+    var started = 0;
+    chat.contextCompression.estimateCandidate =
+        (_, _, {bool? fixedContextStart}) {
+          started++;
+          return budget.future;
+        };
+    BuildContext? pageContext;
+    await tester.pumpWidget(
+      ChangeNotifierProvider.value(
+        value: settings,
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                pageContext = context;
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    final closed = showContextOperationDetails(
+      pageContext!,
+      chat: chat,
+      conversationId: id,
+      operation: operation,
+    );
+    await tester.pump();
+    expect(find.byType(ContextOperationContent), findsOneWidget);
+    expect(
+      tester
+          .widget<ContextOperationContent>(find.byType(ContextOperationContent))
+          .budget,
+      isNull,
+    );
+    final estimate = tester
+        .widget<ContextOperationContent>(find.byType(ContextOperationContent))
+        .estimateSummary;
+    expect(estimate, isNotNull);
+    final earlyEditBudget = estimate!('Edited before history was ready');
+    await pumpUntil(tester, () => started == 3);
+    final detailContext = tester.element(find.byType(ContextOperationContent));
+    Navigator.of(detailContext).pop();
+    await tester.pumpAndSettle();
+    await closed;
+    budget.complete((usedTokens: 100, contextWindow: 4000));
+    await tester.pump();
+    expect((await earlyEditBudget)?.usedTokens, 100);
+    expect(find.byType(ContextOperationContent), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 
   final closePanel = find.byWidgetPredicate(
     (widget) => widget is IosIconButton && widget.semanticLabel == 'Close',
   );
 
-  for (final platform in [TargetPlatform.iOS, TargetPlatform.macOS]) {
+  for (final platform in [
+    TargetPlatform.android,
+    TargetPlatform.iOS,
+    TargetPlatform.macOS,
+  ]) {
     for (final openResult in [false, true]) {
       check(
         'viewed completion clears its notice and preserves the result on $platform (open result: $openResult)',
@@ -258,9 +733,14 @@ void main() {
           final result = chat.contextCompression
               .taskFor(id)!
               .resultConversationId!;
+          final phases = <CompressionPhase?>[];
+          void observe() =>
+              phases.add(chat.contextCompression.taskFor(id)?.phase);
+          chat.contextCompression.addListener(observe);
+          addTearDown(() => chat.contextCompression.removeListener(observe));
           String? opened;
           await pumpTaskEntry(tester, onOpenConversation: (id) => opened = id);
-          expect(find.text('Dismiss status'), findsNothing);
+          expect(find.text('Dismiss'), findsNothing);
           expect(chat.contextCompression.taskFor(id), isNotNull);
           await tester.tap(
             openResult ? find.text('Open new chat') : closePanel,
@@ -272,6 +752,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(opened, openResult ? result : isNull);
           expect(find.byKey(const ValueKey('context-task-bar')), findsNothing);
+          expect(phases, isNot(contains(CompressionPhase.cancelled)));
           await tester.runAsync(() async {
             expect(chat.getConversation(result), isNotNull);
             expect(
@@ -470,15 +951,17 @@ void main() {
       ContextOperation? opened;
       await pumpPanel(tester, onOpen: (op) => opened = op);
       await tester.pumpAndSettle();
-      expect(find.text('Saved history: 60 messages'), findsOneWidget);
       expect(
-        find.text(
-          'History for the next request: 1 summaries + 50 original messages',
-        ),
+        find.text(AppLocalizationsEn().contextOperationsStored(60)),
+        findsOneWidget,
+      );
+      expect(
+        find.text(AppLocalizationsEn().contextOperationsEffective(1, 50)),
         findsOneWidget,
       );
       final record = find.byKey(ValueKey('context-operation-${operation.id}'));
       await tester.tap(record);
+      await pumpUntil(tester, () => opened != null);
       expect(opened!.id, operation.id);
       await tester.runAsync(
         () => chat.changeContextOperation(
@@ -493,17 +976,13 @@ void main() {
       await pumpUntil(
         tester,
         () => find
-            .text(
-              'History for the next request: 0 summaries + 60 original messages',
-            )
+            .text(AppLocalizationsEn().contextOperationsEffective(0, 60))
             .evaluate()
             .isNotEmpty,
       );
       await tester.pumpAndSettle();
       expect(
-        find.text(
-          'History for the next request: 0 summaries + 60 original messages',
-        ),
+        find.text(AppLocalizationsEn().contextOperationsEffective(0, 60)),
         findsOneWidget,
       );
       expect(find.textContaining('Undone'), findsOneWidget);
@@ -578,7 +1057,7 @@ void main() {
       );
       expect(find.text('Retry'), findsOneWidget);
       await tester.runAsync(() async {
-        await tester.tap(find.text('Dismiss status'));
+        await tester.tap(find.text('Dismiss'));
         await until(() => chat.contextCompression.taskFor(id) == null);
       });
       await tester.pumpAndSettle();

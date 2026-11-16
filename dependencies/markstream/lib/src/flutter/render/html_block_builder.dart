@@ -80,17 +80,25 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
           ),
         );
       } else if (node.tag == 'blockquote') {
-        child = Padding(
-          padding: theme.quote.margin,
-          child: CustomPaint(
-            painter: _QuoteBar(theme.quote, Directionality.of(context)),
-            child: Padding(
-              padding: theme.quote.padding,
-              child: htmlFlow(
-                context,
-                node.children,
-                style,
-                streaming: streaming,
+        final direction =
+            proseDirection(node.children) ?? Directionality.of(context);
+        child = directionalBlock(
+          context,
+          direction,
+          Padding(
+            padding: theme.quote.margin,
+            child: CustomPaint(
+              painter: _QuoteBar(theme.quote, direction),
+              child: Padding(
+                padding: theme.quote.padding,
+                child: Builder(
+                  builder: (context) => htmlFlow(
+                    context,
+                    node.children,
+                    style,
+                    streaming: streaming,
+                  ),
+                ),
               ),
             ),
           ),
@@ -146,10 +154,28 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
       } else {
         child = htmlFlow(context, node.children, style, streaming: streaming);
       }
-      if (node.tag == 'center' || node.attributes['align'] == 'center') {
-        child = Align(alignment: Alignment.topCenter, child: child);
-      } else if (node.attributes['align'] == 'right') {
-        child = Align(alignment: Alignment.topRight, child: child);
+      final alignment = node.tag == 'center'
+          ? 'center'
+          : node.attributes['align'];
+      if (alignment == 'center' ||
+          alignment == 'right' ||
+          alignment == 'left') {
+        final textAlign = switch (alignment) {
+          'center' => TextAlign.center,
+          'right' => TextAlign.right,
+          _ => TextAlign.left,
+        };
+        child = DefaultTextStyle.merge(
+          textAlign: textAlign,
+          child: Align(
+            alignment: switch (textAlign) {
+              TextAlign.center => Alignment.topCenter,
+              TextAlign.right => Alignment.topRight,
+              _ => Alignment.topLeft,
+            },
+            child: child,
+          ),
+        );
       }
       widgets.add(
         DocumentSelectionGroup(
@@ -160,9 +186,7 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
       );
     }
     flush();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    return proseColumn(
       children: [
         for (var i = 0; i < widgets.length; i++)
           Padding(
@@ -179,23 +203,31 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
     TextStyle style,
     bool streaming,
   ) {
-    final items = node.children
-        .whereType<HtmlElementNode>()
-        .where((n) => n.tag == 'li')
-        .toList();
-    if (items.isEmpty)
-      return htmlFlow(context, node.children, style, streaming: streaming);
-    final start = int.tryParse(node.attributes['start'] ?? '') ?? 1;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (var i = 0; i < items.length; i++)
-          DocumentSelectionGroup(
-            node: items[i],
-            prefix: node.tag == 'ol' ? '${start + i}. ' : '- ',
-            continuation: '  ',
-            child: Row(
+    final children = <Widget>[];
+    var run = <InlineNode>[];
+    var index = int.tryParse(node.attributes['start'] ?? '') ?? 1;
+    void flush() {
+      if (run.any((n) => n is! TextNode || n.text.trim().isNotEmpty)) {
+        children.add(htmlFlow(context, run, style, streaming: streaming));
+      }
+      run = [];
+    }
+
+    for (final item in node.children) {
+      if (item is! HtmlElementNode || item.tag != 'li') {
+        run.add(item);
+        continue;
+      }
+      flush();
+      children.add(
+        DocumentSelectionGroup(
+          node: item,
+          prefix: node.tag == 'ol' ? '$index. ' : '- ',
+          continuation: '  ',
+          child: directionalBlock(
+            context,
+            proseDirection(item.children),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
@@ -203,23 +235,34 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
                   padding: theme.listMarkerPadding,
                   child: SelectionContainer.disabled(
                     child: Text(
-                      node.tag == 'ol' ? '${start + i}.' : '•',
+                      node.tag == 'ol' ? '$index.' : '•',
                       style: style,
                     ),
                   ),
                 ),
                 Expanded(
-                  child: htmlFlow(
-                    context,
-                    items[i].children,
-                    style,
-                    streaming: streaming,
+                  child: Builder(
+                    builder: (context) => htmlFlow(
+                      context,
+                      item.children,
+                      style,
+                      streaming: streaming,
+                    ),
                   ),
                 ),
               ],
             ),
+            align: false,
           ),
-      ],
+        ),
+      );
+      index++;
+    }
+    flush();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
     );
   }
 
@@ -229,19 +272,57 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
     TextStyle style,
     bool streaming,
   ) {
-    final rows = <HtmlElementNode>[];
+    final children = <Widget>[];
+    var rows = <HtmlElementNode>[];
+    var run = <InlineNode>[];
+    void flushRows() {
+      if (rows.isNotEmpty) {
+        children.add(_htmlTableRows(context, rows, streaming));
+        rows = [];
+      }
+    }
+
+    void flushRun() {
+      if (run.isNotEmpty) {
+        children.add(htmlFlow(context, run, style, streaming: streaming));
+        run = [];
+      }
+    }
+
     void collect(HtmlElementNode element) {
-      for (final child in element.children.whereType<HtmlElementNode>()) {
-        if (child.tag == 'tr')
-          rows.add(child);
-        else if (const {'thead', 'tbody', 'tfoot'}.contains(child.tag))
+      for (final child in element.children) {
+        if (child is TextNode && child.text.trim().isEmpty) {
+          if (run.isNotEmpty) run.add(child);
+          continue;
+        }
+        if (child is HtmlElementNode &&
+            const {'thead', 'tbody', 'tfoot'}.contains(child.tag)) {
           collect(child);
+        } else if (isNativeHtmlTableRow(child)) {
+          flushRun();
+          rows.add(child as HtmlElementNode);
+        } else {
+          flushRows();
+          run.add(child);
+        }
       }
     }
 
     collect(node);
-    if (rows.isEmpty)
-      return htmlFlow(context, node.children, style, streaming: streaming);
+    flushRows();
+    flushRun();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    );
+  }
+
+  Widget _htmlTableRows(
+    BuildContext context,
+    List<HtmlElementNode> rows,
+    bool streaming,
+  ) {
     final cells = [
       for (final row in rows)
         row.children
@@ -257,8 +338,9 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
       for (final row in cells)
         for (final cell in row) cell.span: cell,
     };
+    final span = SourceSpan(rows.first.span.start, rows.last.span.end);
     final table = TableNode(
-      span: node.span,
+      span: span,
       alignments: List.filled(columns, TableAlignment.none),
       children: [
         for (var row = 0; row < rows.length; row++)
@@ -281,7 +363,7 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
     );
     return MarkstreamTableBlock(
       node: table,
-      source: node.span.slice(document.source),
+      source: span.slice(document.source),
       theme: theme,
       extensions: extensions,
       labels: labels,
@@ -295,6 +377,7 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
           cell.children,
           style,
           streaming: streaming,
+          align: false,
         );
         if (owner == null) return content;
         return DocumentSelectionGroup(
@@ -303,12 +386,14 @@ extension _HtmlBlockRenderer on MarkstreamRenderer {
             textAlign: switch (owner.attributes['align']) {
               'center' => TextAlign.center,
               'right' => TextAlign.right,
+              'left' => TextAlign.left,
               _ => TextAlign.start,
             },
             child: Align(
               alignment: switch (owner.attributes['align']) {
                 'center' => Alignment.center,
                 'right' => Alignment.centerRight,
+                'left' => Alignment.centerLeft,
                 _ => AlignmentDirectional.centerStart,
               },
               child: content,

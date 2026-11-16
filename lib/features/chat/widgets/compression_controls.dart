@@ -291,11 +291,15 @@ class CompressionNumberRow extends StatefulWidget {
     required this.onChanged,
     this.hint,
     this.unit,
+    this.allowDecimal = false,
+    this.enabled = true,
   });
   final String label;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final String? hint, unit;
+  final bool allowDecimal;
+  final bool enabled;
 
   @override
   State<CompressionNumberRow> createState() => _CompressionNumberRowState();
@@ -313,20 +317,26 @@ class _CompressionNumberRowState extends State<CompressionNumberRow> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final unitWidth = widget.unit == null
+        ? 32.0
+        : (widget.unit!.characters.length * 7.0 + 8).clamp(32.0, 88.0);
     return IosCardPress(
       baseColor: Colors.transparent,
       borderRadius: BorderRadius.zero,
       pressedScale: 1,
       pressedBlendStrength: 0,
       haptics: false,
-      onTap: _focusNode.requestFocus,
+      onTap: widget.enabled ? _focusNode.requestFocus : null,
       child: IosFormTextField(
+        enabled: widget.enabled,
         label: widget.label,
         controller: widget.controller,
         focusNode: _focusNode,
         hintText: widget.hint,
-        keyboardType: TextInputType.number,
-        fieldWidth: 120,
+        keyboardType: TextInputType.numberWithOptions(
+          decimal: widget.allowDecimal,
+        ),
+        fieldWidth: 120 + unitWidth - 32,
         textAlign: TextAlign.end,
         compact: true,
         selectAllOnFocus: true,
@@ -334,7 +344,7 @@ class _CompressionNumberRowState extends State<CompressionNumberRow> {
         suffix: widget.unit == null
             ? null
             : SizedBox(
-                width: scaledDim(context, 32),
+                width: unitWidth,
                 child: Center(
                   child: Text(
                     widget.unit!,
@@ -345,8 +355,8 @@ class _CompressionNumberRowState extends State<CompressionNumberRow> {
                 ),
               ),
         suffixIconConstraints: BoxConstraints.tightFor(
-          width: scaledDim(context, 32),
-          height: scaledDim(context, 44),
+          width: unitWidth,
+          height: 44,
         ),
         onChanged: widget.onChanged,
       ),

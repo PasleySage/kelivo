@@ -43,6 +43,7 @@ import 'package:Kelivo/core/services/backup/restore_receipt.dart';
 import 'package:Kelivo/core/services/backup/restore_startup_gate.dart';
 import 'package:Kelivo/core/services/chat/chat_service.dart';
 import 'package:Kelivo/core/services/storage/storage_usage_service.dart';
+import 'package:Kelivo/core/services/workspace/workspace_file_coordinator.dart';
 import 'package:Kelivo/core/services/instruction_injection_store.dart';
 
 const _withoutAssets = WebDavConfig(
@@ -1207,17 +1208,40 @@ void main() {
         final local = File(
           '${root.path}/sessions/fixture-conversation/outputs/report.txt',
         );
-        await local.parent.create(recursive: true);
-        await local.writeAsString('local output');
+        await WorkspaceFileCoordinator.run(local.path, () async {
+          await local.parent.create(recursive: true);
+          await local.writeAsString('local output');
+        });
         final sync = DataSync(
           businessRepository: businessRepository,
           chatService: chat,
         );
-        await sync.restoreFromLocalFile(
-          fixture,
-          const WebDavConfig(),
-          mode: RestoreMode.merge,
-        );
+        final sessions = Directory('${root.path}/sessions');
+        late Future<void> restoring;
+        // Hold a workspace writer while the database assigns the imported ID.
+        // The corresponding session output must not appear until it releases.
+        await WorkspaceFileCoordinator.run(sessions.path, () async {
+          restoring = sync.restoreFromLocalFile(
+            fixture,
+            const WebDavConfig(),
+            mode: RestoreMode.merge,
+          );
+          final deadline = Stopwatch()..start();
+          while (sync.lastMergeReport == null) {
+            if (deadline.elapsed > const Duration(seconds: 10)) {
+              fail('Chat merge did not publish its conversation mapping');
+            }
+            await Future<void>.delayed(const Duration(milliseconds: 10));
+          }
+          final imported = sync
+              .lastMergeReport!
+              .remappedConversationIds['fixture-conversation']!;
+          final importedFile = File(
+            p.join(sessions.path, imported, 'outputs', 'report.txt'),
+          );
+          expect(await importedFile.exists(), isFalse);
+        });
+        await restoring;
         final newId = sync
             .lastMergeReport!
             .remappedConversationIds['fixture-conversation'];
@@ -1430,9 +1454,9 @@ void main() {
                 ),
               ],
             );
-            if (automaticCleanup) {
-              await chat.deleteConversation(conversation.id);
-            }
+            // Both cleanup paths can remove only unreferenced attachments.
+            // Deleting the conversation leaves the file within its grace period.
+            await chat.deleteConversation(conversation.id);
             expect(await file.exists(), isTrue);
             final sync = DataSync(
               businessRepository: businessRepository,
@@ -1475,8 +1499,11 @@ void main() {
               input.closeSync();
             }
           } finally {
-            await maintenance;
-            await chat.close();
+            try {
+              await maintenance;
+            } finally {
+              await chat.close();
+            }
           }
         },
       );
@@ -1580,8 +1607,7 @@ void main() {
         await fontFile.writeAsBytes(List<int>.filled(256, 9));
 
         final tmpDir = Directory('${root.path}/tmp');
-        // Abandoned entries (older than the 6h reclaim threshold) carry their
-        // age in the name, matching prepareBackupFile's naming.
+        // Previous releases put these working files in the cache root.
         final staleWorkDir = Directory(
           '${tmpDir.path}/kelivo_backup_2000-01-01T00-00-00.000000',
         );
@@ -1594,13 +1620,13 @@ void main() {
         final staleLegacy = File('${tmpDir.path}/_bk_chats.json');
         await staleLegacy.writeAsString('{}');
         await staleLegacy.setLastModified(DateTime(2000));
-        // A fresh leftover looks like a backup another provider is running
-        // right now and must survive the sweep.
+        // Another live task owns this directory.
         final freshWorkDir = Directory(
           '${tmpDir.path}/kelivo_backup_'
           '${DateTime.now().toIso8601String().replaceAll(':', '-')}',
         );
         await freshWorkDir.create(recursive: true);
+        DataSync.registerLiveTempPath(freshWorkDir.path);
 
         final sync = DataSync(
           businessRepository: businessRepository,
@@ -1616,6 +1642,7 @@ void main() {
         expect(await staleZip.exists(), isFalse);
         expect(await staleLegacy.exists(), isFalse);
         expect(await freshWorkDir.exists(), isTrue);
+        DataSync.unregisterLiveTempPath(freshWorkDir.path);
         await freshWorkDir.delete(recursive: true);
 
         final input = InputFileStream(backupFile.path);
@@ -1799,7 +1826,7 @@ void main() {
       await File(
         '${uploadDir.path}/payload.bin',
       ).writeAsBytes(List<int>.filled(32 * 1024, 5), flush: true);
-      final tmpDir = Directory('${root.path}/tmp');
+      final tmpDir = Directory('${root.path}/tmp/kelivo_backup_staging');
       await tmpDir.create(recursive: true);
       final createdVerify = <String>[];
       final watch = tmpDir.watch(recursive: true).listen((event) {
@@ -1916,7 +1943,7 @@ void main() {
         throwsA(isA<BackupCancelledException>()),
       );
 
-      final tmp = Directory('${root.path}/tmp');
+      final tmp = Directory('${root.path}/tmp/kelivo_backup_staging');
       if (await tmp.exists()) {
         final leftovers = tmp
             .listSync(recursive: true, followLinks: false)
@@ -1977,7 +2004,7 @@ void main() {
         events.map((event) => event.phase),
         contains(BackupPhase.verifying),
       );
-      final tmp = Directory('${root.path}/tmp');
+      final tmp = Directory('${root.path}/tmp/kelivo_backup_staging');
       if (await tmp.exists()) {
         final leftovers = tmp
             .listSync(recursive: true, followLinks: false)
@@ -2127,7 +2154,7 @@ void main() {
         throwsA(isA<BackupCancelledException>()),
       );
 
-      final tmp = Directory('${root.path}/tmp');
+      final tmp = Directory('${root.path}/tmp/kelivo_backup_staging');
       if (await tmp.exists()) {
         final leftovers = tmp
             .listSync(followLinks: false)
@@ -2284,7 +2311,10 @@ void main() {
             ),
           ),
         );
-        expect(await Directory('${root.path}/tmp').exists(), isFalse);
+        expect(
+          await Directory('${root.path}/tmp/kelivo_backup_staging').exists(),
+          isFalse,
+        );
         expect(preferences.getBool('backup_encryption_enabled_v1'), isTrue);
       },
     );
@@ -2345,7 +2375,9 @@ void main() {
         );
         expect(await backup.readAsBytes(), original);
         expect(
-          (await Directory('${root.path}/tmp').list().toList()).where(
+          (await Directory(
+            '${root.path}/tmp/kelivo_backup_staging',
+          ).list().toList()).where(
             (e) => p.basename(e.path).startsWith('kelivo_decrypted_'),
           ),
           isEmpty,
@@ -2365,7 +2397,9 @@ void main() {
           'keep-on-cancel',
         );
         expect(
-          (await Directory('${root.path}/tmp').list().toList()).where(
+          (await Directory(
+            '${root.path}/tmp/kelivo_backup_staging',
+          ).list().toList()).where(
             (e) => p.basename(e.path).startsWith('kelivo_decrypted_'),
           ),
           isEmpty,
@@ -2455,10 +2489,64 @@ void main() {
           await RestoreStartupGate.inspect(appDataDirectory: root),
           isNull,
         );
-        expect(await Directory('${root.path}/tmp').list().toList(), isEmpty);
+        expect(
+          await Directory(
+            '${root.path}/tmp/kelivo_backup_staging',
+          ).list().toList(),
+          isEmpty,
+        );
       },
     );
 
+    test(
+      'WebDAV multistatus MOVE failures never publish a backup and remove only the partial',
+      () async {
+        HttpOverrides.global = null;
+        final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+        addTearDown(() => server.close(force: true));
+        final methods = <String>[];
+        server.listen((req) async {
+          await req.drain<void>();
+          switch (req.method) {
+            case 'PROPFIND':
+              req.response.statusCode = 207;
+              req.response.write('<d:multistatus xmlns:d="DAV:"/>');
+            case 'MKCOL':
+              req.response.statusCode = 201;
+            case 'PUT':
+              methods.add('put ${req.uri.path}');
+              req.response.statusCode = 201;
+            case 'MOVE':
+              methods.add('move ${req.uri.path}');
+              req.response.statusCode = 207;
+              req.response.write(
+                '<d:multistatus xmlns:d="DAV:"><d:response><d:status>HTTP/1.1 507 Insufficient Storage</d:status></d:response></d:multistatus>',
+              );
+            case 'DELETE':
+              methods.add('delete ${req.uri.path}');
+              req.response.statusCode = 204;
+          }
+          await req.response.close();
+        });
+        final cfg = WebDavConfig(
+          url: 'http://127.0.0.1:${server.port}',
+          scope: _withoutChatsOrAssets.scope,
+        );
+        await expectLater(
+          DataSync(
+            businessRepository: businessRepository,
+            chatService: ChatService(),
+          ).backupToWebDav(cfg),
+          throwsException,
+        );
+        expect(methods.map((m) => m.split(' ').first), [
+          'put',
+          'move',
+          'delete',
+        ]);
+        expect(methods.every((m) => m.endsWith('.zip.partial')), true);
+      },
+    );
     for (final useS3 in [false, true]) {
       test(
         '${useS3 ? 'S3' : 'WebDAV'} uploads, lists and restores encrypted backups',
@@ -2471,7 +2559,24 @@ void main() {
           var denyBucketListing = false;
           server.listen((request) async {
             final path = request.uri.path;
-            if (request.method == 'PUT') {
+            if (request.method == 'MOVE') {
+              final destination = Uri.parse(
+                request.headers.value('Destination')!,
+              ).path;
+              objects[destination] = objects.remove(path)!;
+              mimeTypes[destination] = mimeTypes.remove(path);
+              request.response.statusCode = 201;
+            } else if (request.method == 'DELETE') {
+              objects.remove(path);
+              request.response.statusCode = 204;
+            } else if (request.headers.value('x-amz-copy-source')
+                case final String source) {
+              objects[path] = objects[source]!;
+              mimeTypes[path] = mimeTypes[source];
+              request.response.write(
+                '<CopyObjectResult><ETag>ok</ETag></CopyObjectResult>',
+              );
+            } else if (request.method == 'PUT') {
               objects[path] = await request.fold<List<int>>(
                 [],
                 (all, chunk) => all..addAll(chunk),
@@ -2553,7 +2658,12 @@ void main() {
             'KELIVENC',
           );
           expect(mimeTypes[archivePath], 'application/octet-stream');
-          expect(await Directory('${root.path}/tmp').list().toList(), isEmpty);
+          expect(
+            await Directory(
+              '${root.path}/tmp/kelivo_backup_staging',
+            ).list().toList(),
+            isEmpty,
+          );
           final items = useS3 ? await s3.listRemote() : await dav.listRemote();
           expect(
             items.map((item) => item.displayName),
@@ -2587,7 +2697,12 @@ void main() {
             (await service.exportSettings())['global_proxy_password_v1'],
             'remote-secret',
           );
-          expect(await Directory('${root.path}/tmp').list().toList(), isEmpty);
+          expect(
+            await Directory(
+              '${root.path}/tmp/kelivo_backup_staging',
+            ).list().toList(),
+            isEmpty,
+          );
 
           // A compromised endpoint must not downgrade the selected .kbackup
           // to an ordinary ZIP when the downloaded file has a temporary name.
@@ -2620,7 +2735,12 @@ void main() {
             (await service.exportSettings())['global_proxy_password_v1'],
             'keep-secret',
           );
-          expect(await Directory('${root.path}/tmp').list().toList(), isEmpty);
+          expect(
+            await Directory(
+              '${root.path}/tmp/kelivo_backup_staging',
+            ).list().toList(),
+            isEmpty,
+          );
         },
       );
     }
@@ -3722,6 +3842,262 @@ void main() {
           input.closeSync();
         }
       },
+    );
+
+    for (final unreadable in [false, true]) {
+      test(
+        'excludes session scratch before traversal (unreadable=$unreadable)',
+        () async {
+          final retained = {
+            'sessions/conv1/attachments/input.docx': 'input document',
+            'sessions/conv1/outputs/report.docx': 'output document',
+            'sessions/conv1/.attachment-index.json': '{}',
+            'sessions/conv1/notes.txt': 'session notes',
+            'sessions/conv1/outputs/tmp/keep.txt': 'output named tmp',
+            'sessions/conv1/attachments/tmp/keep.txt': 'attachment named tmp',
+            'sessions/tmp/outputs/keep.txt': 'session named tmp',
+            'workspaces/ws1/files/tmp/keep.txt': 'workspace file',
+            'skills/demo/tmp/keep.txt': 'skill file',
+          };
+          final scratch = {
+            'sessions/conv1/tmp/readable.txt': 'scratch file',
+            'sessions/conv1/tmp/docx_x/word/_rels/document.xml.rels':
+                'temporary document relationships',
+          };
+          for (final entry in {...retained, ...scratch}.entries) {
+            final file = File(p.join(root.path, entry.key));
+            await file.parent.create(recursive: true);
+            await file.writeAsString(entry.value);
+          }
+          final locked = Directory(
+            p.join(root.path, 'sessions/conv1/tmp/docx_x/word/_rels'),
+          );
+          if (unreadable) {
+            addTearDown(() async {
+              await Process.run('chmod', ['700', locked.path]);
+            });
+            expect(
+              (await Process.run('chmod', ['000', locked.path])).exitCode,
+              0,
+            );
+            try {
+              locked.listSync();
+              markTestSkipped('Requires an unprivileged process');
+              return;
+            } on FileSystemException catch (error) {
+              expect(error.osError?.errorCode, 13);
+            }
+          }
+
+          final backup =
+              await DataSync(
+                businessRepository: businessRepository,
+                chatService: ChatService(),
+              ).prepareBackupFile(
+                const WebDavConfig(
+                  scope: BackupScope(excluded: {BackupCategory.chats}),
+                ),
+              );
+          addTearDown(() => DataSync.cleanupTemporaryBackupFile(backup));
+          final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
+          try {
+            final manifest =
+                jsonDecode(
+                      utf8.decode(
+                        archive.findFile('manifest.json')!.readBytes()!,
+                      ),
+                    )
+                    as Map<String, dynamic>;
+            final entries = manifest['entries'] as Map;
+            for (final entry in retained.entries) {
+              expect(
+                utf8.decode(archive.findFile(entry.key)!.readBytes()!),
+                entry.value,
+                reason: entry.key,
+              );
+              expect(entries, contains(entry.key));
+            }
+            for (final name in scratch.keys) {
+              expect(archive.findFile(name), isNull, reason: name);
+              expect(entries, isNot(contains(name)));
+            }
+            if (unreadable) {
+              expect(locked.statSync().mode & 0x1ff, 0);
+            }
+          } finally {
+            archive.clearSync();
+          }
+        },
+        skip: unreadable && Platform.isWindows,
+      );
+    }
+
+    for (final lockDirectory in [false, true]) {
+      test(
+        'skips unreadable assets and preserves readable siblings (directory=$lockDirectory)',
+        () async {
+          final output = File(
+            p.join(root.path, 'sessions/conv1/outputs/report.docx'),
+          );
+          await output.parent.create(recursive: true);
+          await output.writeAsString('unreadable document');
+          final locked = lockDirectory ? output.parent : output;
+          addTearDown(() async {
+            await Process.run('chmod', ['700', locked.path]);
+          });
+          expect(
+            (await Process.run('chmod', ['000', locked.path])).exitCode,
+            0,
+          );
+          try {
+            if (lockDirectory) {
+              output.parent.listSync();
+            } else {
+              output.readAsBytesSync();
+            }
+            markTestSkipped('Requires an unprivileged process');
+            return;
+          } on FileSystemException catch (error) {
+            expect(error.osError?.errorCode, 13);
+          }
+          final readable = File(
+            p.join(root.path, 'sessions/conv1/attachments/input.txt'),
+          );
+          await readable.parent.create(recursive: true);
+          await readable.writeAsString('readable attachment');
+          final events = <BackupProgress>[];
+          final backup =
+              await DataSync(
+                businessRepository: businessRepository,
+                chatService: ChatService(),
+              ).prepareBackupFile(
+                const WebDavConfig(
+                  scope: BackupScope(excluded: {BackupCategory.chats}),
+                ),
+                onProgress: events.add,
+              );
+          addTearDown(() => DataSync.cleanupTemporaryBackupFile(backup));
+          final skippedPath = p.relative(locked.path, from: root.path);
+          final archive = ZipDecoder().decodeBytes(await backup.readAsBytes());
+          try {
+            expect(archive.findFile('settings.json'), isNotNull);
+            expect(
+              archive.findFile('sessions/conv1/outputs/report.docx'),
+              isNull,
+            );
+            expect(
+              utf8.decode(
+                archive
+                    .findFile('sessions/conv1/attachments/input.txt')!
+                    .readBytes()!,
+              ),
+              'readable attachment',
+            );
+            final manifest =
+                jsonDecode(
+                      utf8.decode(
+                        archive.findFile('manifest.json')!.readBytes()!,
+                      ),
+                    )
+                    as Map;
+            expect(manifest['skippedEntries'], [skippedPath]);
+            expect(
+              (manifest['entries'] as Map).keys,
+              isNot(contains('sessions/conv1/outputs/report.docx')),
+            );
+            expect(events.expand((event) => event.skippedEntries), [
+              skippedPath,
+            ]);
+            final packed = events.lastWhere(
+              (event) => event.phase == BackupPhase.packing,
+            );
+            expect(packed.processed, packed.total);
+            expect(locked.statSync().mode & 0x1ff, 0);
+          } finally {
+            archive.clearSync();
+          }
+        },
+        skip: Platform.isWindows,
+      );
+    }
+
+    test(
+      'backup with skipped assets can overwrite restore chats and readable files',
+      () async {
+        await DatabaseInstallationGate.ensureReady(appDataDirectory: root);
+        final locked = File(p.join(root.path, 'upload', 'locked.txt'));
+        await locked.parent.create(recursive: true);
+        await locked.writeAsString('unreadable attachment');
+        addTearDown(() async {
+          if (await locked.exists()) {
+            await Process.run('chmod', ['600', locked.path]);
+          }
+        });
+        expect((await Process.run('chmod', ['000', locked.path])).exitCode, 0);
+        try {
+          locked.readAsBytesSync();
+          markTestSkipped('Requires an unprivileged process');
+          return;
+        } on FileSystemException catch (error) {
+          expect(error.osError?.errorCode, 13);
+        }
+        final readable = File(p.join(root.path, 'upload', 'readable.txt'));
+        await readable.writeAsString('backed up attachment');
+        final chat = ChatService();
+        await chat.init();
+        late File backup;
+        try {
+          await chat.restoreConversation(
+            Conversation(id: 'skipped-assets-chat', title: 'Kept conversation'),
+            [
+              ChatMessage(
+                id: 'skipped-assets-message',
+                conversationId: 'skipped-assets-chat',
+                role: 'user',
+                content: 'Kept message',
+              ),
+            ],
+          );
+          final events = <BackupProgress>[];
+          backup = await DataSync(
+            businessRepository: businessRepository,
+            chatService: chat,
+          ).prepareBackupFile(const WebDavConfig(), onProgress: events.add);
+          expect(events.expand((event) => event.skippedEntries), [
+            'upload/locked.txt',
+          ]);
+        } finally {
+          await chat.close();
+        }
+        addTearDown(() => DataSync.cleanupTemporaryBackupFile(backup));
+        // Restore into the same installation after source permissions recover.
+        expect((await Process.run('chmod', ['600', locked.path])).exitCode, 0);
+        await readable.writeAsString('changed after backup');
+        await DataSync(
+          businessRepository: businessRepository,
+          chatService: ChatService(),
+        ).restoreFromLocalFile(backup, const WebDavConfig());
+
+        final terminal = await _recoverAcrossColdRestart(
+          appDataDirectory: root,
+        );
+        expect(terminal?.state, RestoreReceiptState.committed);
+        expect(await readable.readAsString(), 'backed up attachment');
+        expect(await locked.exists(), isFalse);
+        final restored = ChatDatabaseRepository.open(
+          file: File(p.join(root.path, AppDatabase.databaseFileName)),
+        );
+        try {
+          expect(
+            (await restored.getConversation('skipped-assets-chat'))?.title,
+            'Kept conversation',
+          );
+          expect(await restored.getMessageCount('skipped-assets-chat'), 1);
+        } finally {
+          await restored.close();
+        }
+      },
+      skip: Platform.isWindows,
     );
 
     test(
@@ -5516,7 +5892,7 @@ void main() {
         encoder.addFileSync(untrustedCandidate, 'candidate.sqlite');
         encoder.closeSync();
         final chatService = _CandidateCleanupChatService(
-          Directory('${root.path}/tmp'),
+          Directory('${root.path}/tmp/kelivo_backup_staging'),
         );
 
         await DataSync(
@@ -6078,7 +6454,7 @@ void main() {
           businessRepository: businessRepository,
           chatService: ChatService(),
         );
-        final tmpDir = Directory('${root.path}/tmp');
+        final tmpDir = Directory('${root.path}/tmp/kelivo_backup_staging');
         final relativeSentinel = File('${root.path}/webdav_relative.zip');
         final absoluteSentinel = File('${root.path}/webdav_absolute.zip');
         await relativeSentinel.writeAsString('keep relative');

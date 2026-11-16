@@ -1,8 +1,11 @@
+import Security
+import ServiceManagement
 import Cocoa
 import FlutterMacOS
 import WebKit
 
 class MainFlutterWindow: NSWindow {
+  private var backupFolderAccess: BackupFolderAccessChannel?
   private let systemPower = DesktopSystemPowerState()
   private var powerChannel: FlutterMethodChannel?
   private var browserShortcutCommands: Set<String> = ["cmd+f", "cmd+l", "cmd+t", "cmd+w", "cmd+r"]
@@ -408,6 +411,98 @@ class MainFlutterWindow: NSWindow {
     // Place system traffic light buttons
     self.layoutTrafficLights()
 
+    FlutterMethodChannel(
+      name: "app.desktop_startup", binaryMessenger: flutterViewController.engine.binaryMessenger
+    ).setMethodCallHandler { call, result in
+      if call.method == "wasLaunchedAtLogin" {
+        guard let delegate = NSApp.delegate as? AppDelegate else {
+          result(false)
+          return
+        }
+        delegate.readLoginLaunch { result($0) }
+        return
+      }
+      guard #available(macOS 13.0, *) else {
+        if call.method == "getState" {
+          result(["supported": false, "enabled": false])
+        } else {
+          result(FlutterError(code: "startup_unsupported", message: "Requires macOS 13", details: nil))
+        }
+        return
+      }
+      switch call.method {
+      case "getState":
+        result(["supported": true, "enabled": SMAppService.mainApp.status == .enabled])
+      case "setEnabled":
+        guard let enabled = call.arguments as? Bool else {
+          result(FlutterError(code: "invalid_arguments", message: "Expected a boolean", details: nil))
+          return
+        }
+        do {
+          if enabled {
+            try SMAppService.mainApp.register()
+          } else {
+            try SMAppService.mainApp.unregister()
+          }
+          if enabled && SMAppService.mainApp.status == .requiresApproval {
+            SMAppService.openSystemSettingsLoginItems()
+          }
+          result(nil)
+        } catch {
+          result(FlutterError(code: "startup_write_failed", message: error.localizedDescription, details: nil))
+        }
+      default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    let keychainChannel = FlutterMethodChannel(name: "kelivo/backup_keychain", binaryMessenger: flutterViewController.engine.binaryMessenger)
+    let backupKeychain = MacBackupPasswordStore()
+    let keychainQueue = DispatchQueue(label: "kelivo.backup-keychain")
+    keychainChannel.setMethodCallHandler { call, result in
+      if call.method == "openKeychainAccess" {
+        guard let app = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.keychainaccess") else {
+          result(false)
+          return
+        }
+        NSWorkspace.shared.openApplication(at: app, configuration: NSWorkspace.OpenConfiguration()) { running, _ in
+          DispatchQueue.main.async { result(running != nil) }
+        }
+        return
+      }
+      guard let args = call.arguments as? [String: Any], let account = args["account"] as? String else {
+        result(FlutterError(code: "invalid_backup_account", message: nil, details: nil))
+        return
+      }
+      // A user-initiated write can wait for macOS authorization. Leave the
+      // Flutter UI responsive and serialize this keychain's read/write/delete.
+      keychainQueue.async {
+        let value: Any?
+        do {
+          switch call.method {
+          case "read":
+            value = try backupKeychain.read(account)
+          case "remember":
+            guard let password = args["password"] as? String, !password.isEmpty else {
+              throw BackupPasswordKeychain.Failure(status: errSecParam)
+            }
+            try backupKeychain.remember(password, account: account, newConsent: args["newConsent"] as? Bool == true,
+                                        previousRemovalPending: args["previousRemovalPending"] as? Bool == true)
+            value = nil
+          case "forget":
+            try backupKeychain.forget(account)
+            value = nil
+          default:
+            value = FlutterMethodNotImplemented
+          }
+        } catch let failure as BackupPasswordKeychain.Failure {
+          value = FlutterError(code: failure.code, message: nil, details: Int(failure.status))
+        } catch {
+          value = FlutterError(code: "backup_keychain_unavailable", message: nil, details: nil)
+        }
+        DispatchQueue.main.async { result(value) }
+      }
+    }
+    backupFolderAccess = BackupFolderAccessChannel(messenger: flutterViewController.engine.binaryMessenger)
     RegisterGeneratedPlugins(registry: flutterViewController)
     let glassRegistrar = flutterViewController.registrar(forPlugin: "BrowserGlass")
     glassRegistrar.register(
@@ -551,6 +646,65 @@ class MainFlutterWindow: NSWindow {
       }
     }
 
+    // The nib starts hidden. Dart decides whether to show the window or tray,
+    // so it must start before the view's first appearance.
+    flutterViewController.engine.run(withEntrypoint: nil)
     super.awakeFromNib()
   }
+}
+
+/// Scoped URLs are held only for the duration of a single Dart file operation.
+private final class BackupFolderAccessChannel {
+  private let channel: FlutterMethodChannel
+  private var leases: [String: URL] = [:]
+
+  init(messenger: FlutterBinaryMessenger) {
+    channel = FlutterMethodChannel(name: "kelivo/backup_folder", binaryMessenger: messenger)
+    channel.setMethodCallHandler { [weak self] call, reply in
+      guard let self = self else { reply(FlutterMethodNotImplemented); return }
+      do {
+        switch call.method {
+        case "choose":
+          let panel = NSOpenPanel()
+          panel.canChooseDirectories = true
+          panel.canChooseFiles = false
+          panel.canCreateDirectories = true
+          guard panel.runModal() == .OK, let url = panel.url else { reply(nil); return }
+          let scoped = url.startAccessingSecurityScopedResource()
+          defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+          reply(["path": url.path, "bookmark": try self.bookmark(url)])
+        case "start":
+          guard let raw = call.arguments as? String, let data = Data(base64Encoded: raw) else {
+            reply(self.lost); return
+          }
+          var stale = false
+          let url = try URL(resolvingBookmarkData: data, options: [.withSecurityScope, .withoutUI, .withoutMounting],
+                            relativeTo: nil, bookmarkDataIsStale: &stale)
+          guard url.startAccessingSecurityScopedResource() else { reply(self.lost); return }
+          let lease = UUID().uuidString
+          var value = ["path": url.path, "lease": lease]
+          do {
+            if stale { value["bookmark"] = try self.bookmark(url) }
+          } catch {
+            url.stopAccessingSecurityScopedResource()
+            throw error
+          }
+          self.leases[lease] = url
+          reply(value)
+        case "stop":
+          if let lease = call.arguments as? String {
+            self.leases.removeValue(forKey: lease)?.stopAccessingSecurityScopedResource()
+          }
+          reply(nil)
+        default: reply(FlutterMethodNotImplemented)
+        }
+      } catch { reply(self.lost) }
+    }
+  }
+
+  private var lost: FlutterError { FlutterError(code: "backup_bookmark_lost", message: nil, details: nil) }
+  private func bookmark(_ url: URL) throws -> String {
+    try url.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil).base64EncodedString()
+  }
+  deinit { for url in leases.values { url.stopAccessingSecurityScopedResource() } }
 }

@@ -7,13 +7,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/ast/nodes.dart';
+import '../../../core/ast/source_span.dart';
 import '../../../core/serialize/to_markdown.dart';
 import '../../../core/serialize/to_plain_text.dart';
 import '../../extensions/registry.dart';
 import '../../selection/table_selection.dart';
+import '../../selection/selection_controller.dart';
 import '../../theme/markstream_theme.dart';
 import '../block_list.dart';
 import '../chrome.dart';
+import '../prose_direction.dart';
 import '../../performance_limits.dart';
 
 class MarkstreamTableBlock extends StatefulWidget {
@@ -44,6 +47,7 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
   final _boundary = GlobalKey();
   final _scroll = ScrollController();
   int _visibleRows = PerformanceLimits.initialTableRows;
+  int _revealedRows = 0;
   bool _capturing = false;
   @override
   void didUpdateWidget(MarkstreamTableBlock oldWidget) {
@@ -51,8 +55,24 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
     if (widget.node.span.start != oldWidget.node.span.start ||
         !widget.source.startsWith(oldWidget.source)) {
       _visibleRows = PerformanceLimits.initialTableRows;
+      _revealedRows = 0;
       if (_scroll.hasClients) _scroll.jumpTo(0);
     }
+  }
+
+  bool _prepareRange(SourceSpan range) {
+    final rows = widget.node.children;
+    final index = rows.indexWhere((row) => row.span.contains(range.start));
+    final count = math.max(
+      _revealedRows,
+      widget.streaming ? PerformanceLimits.streamingTableRows : _visibleRows,
+    );
+    if (index < count) return true;
+    setState(() {
+      _revealedRows = index + 1;
+      _visibleRows = math.max(_visibleRows, index + 1);
+    });
+    return false;
   }
 
   @override
@@ -117,36 +137,46 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
   );
 
   Widget _cell(TableRowNode row, int column) {
+    final cell = column < row.children.length ? row.children[column] : null;
     final alignment = column < widget.node.alignments.length
         ? widget.node.alignments[column]
         : TableAlignment.none;
-    return Padding(
-      padding: widget.theme.table.cellPadding,
-      child: DefaultTextStyle.merge(
-        textAlign: switch (alignment) {
-          TableAlignment.center => TextAlign.center,
-          TableAlignment.right => TextAlign.right,
-          _ => TextAlign.left,
-        },
-        child: Align(
-          alignment: switch (alignment) {
-            TableAlignment.center => Alignment.center,
-            TableAlignment.right => Alignment.centerRight,
-            _ => Alignment.centerLeft,
+    return directionalBlock(
+      context,
+      cell == null
+          ? null
+          : widget.extensions.proseDirection.forNodes(cell.children),
+      Padding(
+        padding: widget.theme.table.cellPadding,
+        child: DefaultTextStyle.merge(
+          textAlign: switch (alignment) {
+            TableAlignment.center => TextAlign.center,
+            TableAlignment.right => TextAlign.right,
+            TableAlignment.left => TextAlign.left,
+            TableAlignment.none => TextAlign.start,
           },
-          child: column < row.children.length
-              ? Builder(
-                  builder: (context) => widget.buildCell(
-                    context,
-                    row.children[column],
-                    row.header
-                        ? widget.theme.table.heading
-                        : widget.theme.table.body,
-                  ),
-                )
-              : const SizedBox.shrink(),
+          child: Align(
+            alignment: switch (alignment) {
+              TableAlignment.center => Alignment.center,
+              TableAlignment.right => Alignment.centerRight,
+              TableAlignment.left => Alignment.centerLeft,
+              TableAlignment.none => AlignmentDirectional.centerStart,
+            },
+            child: cell != null
+                ? Builder(
+                    builder: (context) => widget.buildCell(
+                      context,
+                      cell,
+                      row.header
+                          ? widget.theme.table.heading
+                          : widget.theme.table.body,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
         ),
       ),
+      align: false,
     );
   }
 
@@ -162,9 +192,12 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
         ? rows.length
         : math.min(
             rows.length,
-            widget.streaming
-                ? PerformanceLimits.streamingTableRows
-                : _visibleRows,
+            math.max(
+              _revealedRows,
+              widget.streaming
+                  ? PerformanceLimits.streamingTableRows
+                  : _visibleRows,
+            ),
           );
     final content = LayoutBuilder(
       builder: (context, constraints) {
@@ -371,10 +404,10 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
                         MarkstreamActionKind.collapse,
                         widget.labels.collapse,
                         () async {
-                          setState(
-                            () => _visibleRows =
-                                PerformanceLimits.initialTableRows,
-                          );
+                          setState(() {
+                            _visibleRows = PerformanceLimits.initialTableRows;
+                            _revealedRows = 0;
+                          });
                         },
                       ),
                     if (count < rows.length)
@@ -425,9 +458,13 @@ class _MarkstreamTableBlockState extends State<MarkstreamTableBlock> {
         );
       },
     );
-    return SelectionContainer.maybeOf(context) == null
-        ? content
-        : SelectionContainer(delegate: _selection, child: content);
+    return SourceRangePreparer(
+      span: widget.node.span,
+      prepare: _prepareRange,
+      child: SelectionContainer.maybeOf(context) == null
+          ? content
+          : SelectionContainer(delegate: _selection, child: content),
+    );
   }
 }
 

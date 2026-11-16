@@ -1,5 +1,9 @@
+import '../../../support/compression_options_pump.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:Kelivo/shared/widgets/ios_checkbox.dart';
+import 'package:Kelivo/core/models/carried_original.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +18,7 @@ import 'package:Kelivo/core/services/chat/chat_service.dart';
 import 'package:Kelivo/desktop/widgets/desktop_select_dropdown.dart';
 import 'package:Kelivo/features/chat/widgets/compress_context_options_dialog.dart';
 import 'package:Kelivo/shared/widgets/ios_switch.dart';
+import 'package:Kelivo/shared/widgets/form_sheet.dart';
 import 'package:Kelivo/shared/widgets/ios_form_text_field.dart';
 import 'package:Kelivo/l10n/app_localizations.dart';
 import '../../../support/business_test_harness.dart';
@@ -60,6 +65,20 @@ void main() {
       late AssistantProvider assistants;
       late ChatService chat;
       late String conversationId;
+      var previewAttempts = 0;
+      final pendingCount = Completer<CarrySelection>();
+      const candidate = CarriedOriginal(
+        sourceMessageId: 'earlier',
+        sourceGroupId: 'earlier',
+        sourceVersion: 0,
+        contentHash: '',
+        text: 'Keep exactly this phrase.',
+      );
+      const preview = CarrySelection(
+        items: [candidate],
+        rows: [CarryRow(item: candidate, selected: true, tokens: 18)],
+        totalTokens: 18,
+      );
       await tester.runAsync(() async {
         final harness = await createBusinessTestHarness();
         settings = SettingsProvider(harness.preferences);
@@ -78,7 +97,11 @@ void main() {
             enabled: true,
             baseUrl: 'https://self-hosted.example/api',
             apiKey: 'test',
-            models: const ['unknown-model'],
+            models: const [
+              'unknown-model',
+              'other-chat-model',
+              'summary-model',
+            ],
             useResponseApi: false,
           ),
         );
@@ -88,7 +111,10 @@ void main() {
             mode: AutoCompressionMode.auto,
             keepRecentUserTurns: 2,
             templateId: 'code',
+            providerId: 'private',
+            modelId: 'summary-model',
             summaryTokens: 8192,
+            requestTimeoutMinutes: 7,
           ),
         );
       });
@@ -122,16 +148,25 @@ void main() {
                       builder: (sheet) => CompressContextOptionsDialog(
                         sheet: sheet,
                         conversationId: conversationId,
-                        messages: [
-                          for (var i = 0; i < 10; i++)
-                            ChatMessage(
-                              id: 'u$i',
-                              role: 'user',
-                              content: 'Turn $i',
-                              conversationId: conversationId,
-                            ),
-                        ],
-                        operations: const [],
+                        previewCarried: (options, _) async {
+                          if (++previewAttempts == 1) {
+                            throw StateError('preview unavailable');
+                          }
+                          if (options.carryExcluded.isNotEmpty) {
+                            return pendingCount.future;
+                          }
+                          return preview;
+                        },
+                        loadHistory: () async =>
+                            CompressionHistory.fromMessages([
+                              for (var i = 0; i < 10; i++)
+                                ChatMessage(
+                                  id: 'u$i',
+                                  role: 'user',
+                                  content: 'Turn $i',
+                                  conversationId: conversationId,
+                                ),
+                            ], const []),
                       ),
                     );
                   },
@@ -143,11 +178,11 @@ void main() {
       );
       Future<void> open() async {
         await tester.tap(find.text('Open'));
-        await tester.pumpAndSettle();
+        await settleCompressionOptions(tester);
         await tester.runAsync(
           () => Future<void>.delayed(const Duration(milliseconds: 50)),
         );
-        await tester.pumpAndSettle();
+        await settleCompressionOptions(tester);
       }
 
       await open();
@@ -162,13 +197,88 @@ void main() {
         matching: find.byType(TextField),
       );
       Future<void> flip() async {
+        FocusManager.instance.primaryFocus?.unfocus();
+        await settleCompressionOptions(tester);
         await tester.ensureVisible(toggle);
-        await tester.pumpAndSettle();
+        await settleCompressionOptions(tester);
         await tester.tap(toggle);
-        await tester.pumpAndSettle();
+        await settleCompressionOptions(tester);
       }
 
       expect(tester.widget<IosSwitch>(toggle).value, isFalse);
+      final carryToggle = find.byWidgetPredicate(
+        (w) => w is IosSwitch && w.semanticLabel == l10n.compressionCarryTitle,
+      );
+      expect(carryToggle, findsNothing);
+      await tester.ensureVisible(find.text(l10n.compressionMore));
+      await tester.tap(find.text(l10n.compressionMore));
+      await settleCompressionOptions(tester);
+      await tester.ensureVisible(carryToggle);
+      await tester.tap(carryToggle);
+      await settleCompressionOptions(tester);
+      expect(
+        tester
+            .widget<FormSheetActions>(find.byType(FormSheetActions))
+            .onConfirm,
+        isNull,
+      );
+      final retry = find.text(l10n.retry);
+      await tester.ensureVisible(retry);
+      await tester.tap(retry);
+      await settleCompressionOptions(tester);
+      expect(
+        tester
+            .widget<FormSheetActions>(find.byType(FormSheetActions))
+            .onConfirm,
+        isNotNull,
+      );
+      Finder candidateCheck() => find.byWidgetPredicate(
+        (w) => w is IosCheckbox && w.semanticLabel == candidate.text,
+      );
+      await tester.ensureVisible(candidateCheck());
+      await tester.tap(candidateCheck());
+      await settleCompressionOptions(tester);
+      expect(find.text(candidate.text), findsOneWidget);
+      expect(tester.widget<IosCheckbox>(candidateCheck()).value, false);
+      expect(find.text(l10n.compressionCarryPreview(0, '0')), findsOneWidget);
+      expect(
+        tester
+            .widget<FormSheetActions>(find.byType(FormSheetActions))
+            .onConfirm,
+        isNull,
+      );
+      // Returning to the previous selection while its replacement is pending
+      // must keep both the current check mark and the last completed preview.
+      await tester.ensureVisible(candidateCheck());
+      await settleCompressionOptions(tester);
+      await tester.tap(candidateCheck());
+      await settleCompressionOptions(tester);
+      pendingCount.complete(const CarrySelection());
+      await settleCompressionOptions(tester);
+      expect(find.text(candidate.text), findsOneWidget);
+      expect(tester.widget<IosCheckbox>(candidateCheck()).value, true);
+      expect(find.text(l10n.compressionCarryPreview(1, '18')), findsOneWidget);
+      final previousAttempts = previewAttempts;
+      await tester.runAsync(
+        () => settings.setCurrentModel('private', 'other-chat-model'),
+      );
+      await settleCompressionOptions(tester);
+      expect(previewAttempts, greaterThan(previousAttempts));
+      await tester.runAsync(
+        () => settings.setCurrentModel('private', 'unknown-model'),
+      );
+      await settleCompressionOptions(tester);
+      await tester.ensureVisible(carryToggle);
+      await tester.tap(carryToggle);
+      await settleCompressionOptions(tester);
+      await tester.tap(
+        find.byTooltip(
+          MaterialLocalizations.of(
+            tester.element(find.byType(CompressContextOptionsDialog)),
+          ).backButtonTooltip,
+        ),
+      );
+      await settleCompressionOptions(tester);
       await flip();
       expect(find.text(l10n.compressionManage), findsNothing);
       expect(find.text(l10n.compressionMore), findsOneWidget);
@@ -182,13 +292,29 @@ void main() {
       await tester.enterText(keep(), '3');
       await tester.ensureVisible(find.text(l10n.compressionMore));
       await tester.tap(find.text(l10n.compressionMore));
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       final trigger = find.descendant(
         of: find.widgetWithText(IosFormTextField, l10n.compressionTrigger),
         matching: find.byType(TextField),
       );
       await tester.ensureVisible(trigger);
       await tester.enterText(trigger, '50');
+      final timeout = find.descendant(
+        of: find.widgetWithText(
+          IosFormTextField,
+          l10n.compressionRequestTimeout,
+        ),
+        matching: find.byType(TextField),
+      );
+      expect(tester.widget<TextField>(timeout).controller!.text, '7');
+      expect(find.text(l10n.compressionAdvancedOptions), findsNothing);
+      await tester.ensureVisible(timeout);
+      await tester.enterText(timeout, '0');
+      await tester.tap(find.text(l10n.multiKeyPageSave));
+      await settleCompressionOptions(tester);
+      expect(find.text(l10n.compressionInvalidSettings), findsOneWidget);
+      await tester.ensureVisible(timeout);
+      await tester.enterText(timeout, '10.5');
       await tester.tap(find.text(l10n.multiKeyPageSave));
       for (var i = 0; i < 100 && trigger.evaluate().isNotEmpty; i++) {
         await tester.runAsync(
@@ -196,16 +322,16 @@ void main() {
         );
         await tester.pump();
       }
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       expect(find.text(l10n.compressionInvalidSettings), findsNothing);
       expect(trigger, findsNothing);
       final scope = find.byWidgetPredicate(
         (w) => w is DesktopSelectDropdown<CompressContextLimitMode>,
       );
       await tester.ensureVisible(scope);
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       await tester.tap(scope);
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       expect(find.text(l10n.compressionScopeKeepHint), findsNothing);
       expect(find.text(l10n.compressionNativeScopeHint), findsWidgets);
       expect(
@@ -213,7 +339,7 @@ void main() {
         findsNothing,
       );
       await tester.tap(find.text(l10n.compressContextUnlimited).last);
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       await tester.tap(find.text(l10n.compressContextStartButton));
       for (var i = 0; i < 100 && result == null; i++) {
         await tester.runAsync(
@@ -221,7 +347,7 @@ void main() {
         );
         await tester.pump();
       }
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       expect(result!.native, isTrue);
       expect(result!.mode, CompressContextLimitMode.unlimited);
       expect(settings.nativeCompression.enabled, isTrue);
@@ -236,6 +362,7 @@ void main() {
         expect(config.nativeEnabled, isTrue);
         expect(config.nativeKeepRecentUserTurns, 3);
         expect(config.nativeTriggerInputRatio, .5);
+        expect(config.requestTimeout, const Duration(minutes: 10, seconds: 30));
         expect(config.triggerInputRatio, .8);
         expect(config.targetInputRatio, .6);
         expect(config.keepRecentUserTurns, 2);
@@ -256,11 +383,36 @@ void main() {
       expect(find.text(l10n.compressionManage), findsOneWidget);
       await tester.ensureVisible(find.text(l10n.compressionMore));
       await tester.tap(find.text(l10n.compressionMore));
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       expect(tester.widget<TextField>(trigger).controller!.text, '80');
+      expect(tester.widget<TextField>(timeout).controller!.text, '10.5');
+      expect(find.text(l10n.compressionAdvancedOptions), findsOneWidget);
+      await tester.ensureVisible(timeout);
+      await tester.enterText(timeout, '');
+      await tester.tap(find.text(l10n.multiKeyPageSave));
+      await tester.runAsync(() async {
+        for (var i = 0; i < 100; i++) {
+          final values = await chat.compressionOverrides(conversationId);
+          if (values.containsKey('requestTimeoutMinutes') &&
+              values['requestTimeoutMinutes'] == null) {
+            return;
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+        }
+        fail('cleared timeout was not saved');
+      });
+      await settleCompressionOptions(tester);
+      await tester.runAsync(() async {
+        final config = await chat.compressionConfig(
+          conversationId,
+          settings.compressionDefaults,
+        );
+        expect(config.requestTimeout, isNull);
+        expect(settings.compressionDefaults.requestTimeoutMinutes, 7);
+      });
       expect(tester.takeException(), isNull);
       await tester.tap(find.text(l10n.homePageCancel));
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       conversationId = 'other';
       (chat as _NativeOptionsChat).temporary = true;
       await open();
@@ -272,7 +424,7 @@ void main() {
       );
       await tester.ensureVisible(newChat);
       await tester.tap(newChat);
-      await tester.pumpAndSettle();
+      await settleCompressionOptions(tester);
       expect(
         find.text(l10n.compressionNativeTemporaryCopyHint),
         findsOneWidget,

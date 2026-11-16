@@ -1,8 +1,21 @@
+import 'package:Kelivo/core/services/api/providers/openai/native_compaction.dart';
+import 'package:Kelivo/core/services/api/request_history_context.dart';
+import 'package:Kelivo/core/models/carried_original.dart';
 import 'package:Kelivo/core/models/context_operation.dart';
 import 'package:Kelivo/core/models/native_compaction.dart';
+import 'package:Kelivo/core/services/api/request_timeout.dart';
+import 'package:Kelivo/features/chat/widgets/context_compression_status.dart';
+import 'package:Kelivo/features/home/services/message_builder_service.dart';
+import 'package:Kelivo/core/models/assistant.dart';
+import 'package:flutter/widgets.dart';
+import '../../../support/business_test_harness.dart';
+import 'package:Kelivo/l10n/app_localizations_zh.dart';
 import 'package:Kelivo/core/models/chat_message.dart';
+import 'package:Kelivo/core/providers/settings_provider.dart';
 import 'package:Kelivo/core/services/api/generation/text_generation_result.dart';
+import 'package:Kelivo/core/services/api/native_compaction_context.dart';
 import 'package:Kelivo/core/services/api/providers/openai/responses_history.dart';
+import 'package:Kelivo/core/services/api/providers/openai/responses_request.dart';
 import 'package:Kelivo/l10n/app_localizations_en.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -19,6 +32,11 @@ import 'package:Kelivo/core/models/message_part.dart';
 import 'package:Kelivo/core/models/quote_ref.dart';
 import 'package:Kelivo/core/services/chat/chat_service.dart';
 import 'package:Kelivo/core/services/chat/context_compression_service.dart';
+
+class _TestContext implements BuildContext {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 class _Paths extends PathProviderPlatform {
   _Paths(this.path);
@@ -97,11 +115,502 @@ void main() {
     );
   }
 
+  test('carried preflight rejects before making a summary request', () async {
+    var calls = 0;
+    await compression.start(
+      id,
+      request(
+        (_, _) async {
+          calls++;
+          return 'summary';
+        },
+        options: const CompressContextOptions(
+          mode: CompressContextLimitMode.keepRecent,
+          keepUserMessages: 6,
+          carry: CarrySetting(mode: CarryMode.count, count: 2),
+        ),
+      ),
+    );
+    await until(
+      () => compression.taskFor(id)!.phase == CompressionPhase.failed,
+    );
+    expect(calls, 0);
+    expect(
+      compression.taskFor(id)!.error,
+      contains('compression_carry_over_budget'),
+    );
+  });
+
+  test(
+    'persisted carried copies edit, remove and undo without changing source',
+    () async {
+      compression.estimateCandidate = (_, _, {bool? fixedContextStart}) async =>
+          (usedTokens: 100, contextWindow: 20000);
+      final originals = (await chat.loadContextSnapshot(id)).messages;
+      final selected = originals[2];
+      await compression.start(
+        id,
+        request(
+          (_, _) async => 'summary',
+          options: CompressContextOptions(
+            mode: CompressContextLimitMode.keepRecent,
+            keepUserMessages: 6,
+            carry: const CarrySetting(mode: CarryMode.count, count: 1),
+            carryReplies: [selected.id],
+          ),
+        ),
+      );
+      await until(
+        () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+      );
+      var op = (await chat.loadContextOperations(id, refresh: true)).single;
+      expect(op.carried!.items.single.sourceMessageId, selected.id);
+      expect(op.carried!.items.single.reply!.text, originals[3].content);
+      final projected = await chat.loadSelectedContextMessages(id, limit: 100);
+      expect(projected.take(3).map((m) => m.content), [
+        selected.content,
+        originals[3].content,
+        op.contextText,
+      ]);
+      final builder = MessageBuilderService(
+        chatService: chat,
+        chatRepository: repo,
+        contextProvider: _TestContext(),
+      );
+      final conversation = chat.getConversation(id)!;
+      final assembled = builder.buildApiMessages(
+        messages: projected,
+        versionSelections: {},
+        currentConversation: conversation,
+      );
+      const assistant = Assistant(
+        id: 'a',
+        name: 'a',
+        limitContextMessages: true,
+        contextMessageSize: 2,
+        messageTemplate: 'TEMPLATE {{ message }}',
+      );
+      builder.applyContextLimit(assembled, assistant);
+      final settings = SettingsProvider(createBusinessTestPreferences());
+      addTearDown(settings.dispose);
+      await settings.loaded;
+      await builder.processUserMessagesForApi(
+        assembled,
+        settings,
+        assistant,
+        conversation: conversation,
+        sourceMessages: projected,
+      );
+      expect(assembled.take(3).map((m) => m['content']), [
+        selected.content,
+        originals[3].content,
+        op.contextText,
+      ]);
+      expect(
+        await repo.getMessagePrompts([projected[0].id, projected[1].id]),
+        isEmpty,
+      );
+      final edited = op.carried!.withItems([
+        op.carried!.items.single.copyWith(editedText: 'edited original'),
+      ]);
+      await chat.changeContextOperation(
+        id,
+        op.id,
+        carried: edited,
+        includeDependents: false,
+        expectedState: ContextHistory.operationsFingerprint([op]),
+      );
+      expect(compression.consumeAutomaticSkip(id), false);
+      expect(
+        (await chat.loadMessagesByIds([selected.id])).single.content,
+        selected.content,
+      );
+      expect(
+        (await chat.loadSelectedContextMessages(id, limit: 100)).first.content,
+        'edited original',
+      );
+      op = (await chat.loadContextOperations(id, refresh: true)).single;
+      await chat.changeContextOperation(
+        id,
+        op.id,
+        carried: op.carried!.withItems([]),
+        includeDependents: false,
+        expectedState: ContextHistory.operationsFingerprint([op]),
+      );
+      expect(
+        (await chat.loadSelectedContextMessages(id, limit: 100)).first.content,
+        op.contextText,
+      );
+      op = (await chat.loadContextOperations(id, refresh: true)).single;
+      await chat.changeContextOperation(
+        id,
+        op.id,
+        includeDependents: false,
+        expectedState: ContextHistory.operationsFingerprint([op]),
+      );
+      expect(
+        (await chat.loadSelectedContextMessages(
+          id,
+          limit: 100,
+        )).map((m) => m.content),
+        originals.map((m) => m.content),
+      );
+    },
+  );
+
+  test(
+    'automatic carry drops oldest and reserves at least 128 for summary',
+    () async {
+      final original = (await chat.loadContextSnapshot(id)).messages;
+      final one = countCarriedTokens(
+        carriedFromMessage(original[2]),
+        ProviderKind.openai,
+      );
+      var output = 0;
+      final task = await compression.runAtSafePoint(
+        id,
+        CompressionRequest(
+          options: const CompressContextOptions(
+            mode: CompressContextLimitMode.keepRecent,
+            keepUserMessages: 6,
+            carry: CarrySetting(mode: CarryMode.count, count: 2),
+          ),
+          automatic: true,
+          beforeMessageId: original[14].id,
+          model: 'test',
+          quoteMarker: (_) => '',
+          carryBudgetTokens: one,
+          generate: (_, _, max, _) async {
+            output = max;
+            return const TextGenerationResult(parts: [TextPart('summary')]);
+          },
+        ),
+      );
+      expect(task.phase, CompressionPhase.completed);
+      expect(task.candidate!.carried!.items, hasLength(1));
+      expect(task.candidate!.carried!.notFit, 1);
+      expect(output, 128);
+      expect(task.candidate!.carried!.items.single.reply, isNull);
+    },
+  );
+
+  test(
+    'preview checks actual reply bodies and shares one budget for all pages',
+    () async {
+      final source = (await chat.loadContextSnapshot(id)).messages;
+      await chat.updateMessage(
+        source[1].id,
+        content: '<think>private only</think>',
+      );
+      for (var i = 0; i < 52; i++) {
+        await chat.addMessage(
+          conversationId: id,
+          role: 'user',
+          content: 'extra $i',
+        );
+      }
+      var estimates = 0;
+      compression.estimateCandidate = (_, _, {bool? fixedContextStart}) async {
+        estimates++;
+        return (usedTokens: 100, contextWindow: 20000);
+      };
+      final r = request(
+        (_, _) async => 'summary',
+        options: const CompressContextOptions(
+          mode: CompressContextLimitMode.unlimited,
+          carry: CarrySetting(mode: CarryMode.all),
+        ),
+      );
+      final preview = await compression.previewCarried(id, r);
+      expect(preview.items.length, 60);
+      expect(preview.rows.last.availableReply, isNull);
+      expect(estimates, 1);
+      final expected = await compression.previewCarried(
+        id,
+        r,
+        snapshot: await chat.loadContextSnapshot(id),
+      );
+      expect(
+        preview.items.map((i) => i.toJson()),
+        expected.items.map((i) => i.toJson()),
+      );
+    },
+  );
+  test(
+    'file carry takes only extracted document text and original message',
+    () async {
+      final m = await chat.addMessage(
+        conversationId: id,
+        role: 'user',
+        parts: [
+          const TextPart('my words'),
+          const FilePart(uri: '/file.txt', name: 'file.txt'),
+        ],
+      );
+      const block =
+          '## user sent a file: file.txt\n<content>\n```\nexact file\n```\n</content>';
+      await repo.putMessagePrompt(
+        revisionId: m.id,
+        conversationId: id,
+        payload: 'TEMPLATE\n$block\n\ntransformed words and time',
+        carriesMemorySnapshot: false,
+      );
+      final texts = await chat.carriedUserTexts(
+        [m],
+        includeAttachments: true,
+        quoteMarker: (_) => '',
+      );
+      expect(texts[m.id], '$block\n\nmy words');
+    },
+  );
+
+  test(
+    'preview carries user-visible image references and file names without changing request data',
+    () async {
+      const uri = 'data:image/png;base64,YWJj';
+      final msg = await chat.addMessage(
+        conversationId: id,
+        role: 'user',
+        parts: [
+          const ImagePart(uri: uri),
+          const FilePart(
+            uri: '/tmp/notes.pdf',
+            name: 'Notes.pdf',
+            mime: 'application/pdf',
+          ),
+        ],
+      );
+      final r = request(
+        (_, _) async => 'summary',
+        options: const CompressContextOptions(
+          mode: CompressContextLimitMode.unlimited,
+          carry: CarrySetting(mode: CarryMode.count, count: 1),
+        ),
+      );
+      final result = await compression.previewCarried(id, r);
+      final row = result.rows.single;
+      expect(row.item.sourceMessageId, msg.id);
+      expect(row.messageText, '');
+      expect(row.imageUris, [uri]);
+      expect(row.fileNames, ['Notes.pdf']);
+      expect(row.attachmentCount, 2);
+      final stored = result.freeze(r.options.carry!).toJson().toString();
+      expect(stored, isNot(contains(uri)));
+      expect(stored, isNot(contains('Notes.pdf')));
+    },
+  );
+  test('paged preview matches execution including optional replies', () async {
+    compression.estimateCandidate = (_, _, {bool? fixedContextStart}) async =>
+        (usedTokens: 100, contextWindow: 20000);
+    final original = await chat.loadContextSnapshot(id);
+    for (final mode in [CarryMode.count, CarryMode.all]) {
+      final r = request(
+        (_, _) async => 'summary',
+        options: CompressContextOptions(
+          mode: CompressContextLimitMode.keepRecent,
+          keepUserMessages: 6,
+          carry: CarrySetting(mode: mode, count: 2),
+          carryReplies: [original.messages[2].id],
+        ),
+      );
+      final preview = await compression.previewCarried(id, r);
+      final execution = await compression.previewCarried(
+        id,
+        r,
+        snapshot: original,
+      );
+      expect(
+        preview.items.map((i) => i.toJson()),
+        execution.items.map((i) => i.toJson()),
+      );
+      expect(preview.totalTokens, execution.totalTokens);
+      expect(
+        preview.rows.first.availableReply?.text,
+        original.messages[3].content,
+      );
+    }
+  });
+
+  test(
+    'Codex unset freezes actual wire outside payload and remains editable',
+    () async {
+      final original = await chat.loadContextSnapshot(id);
+      Future<Map<String, dynamic>> prepare(
+        CompressionSelection selection,
+      ) async => {
+        'input': [
+          for (final m in selection.input)
+            {'role': m.role, 'content': m.content, historySourceKey: m.id},
+        ],
+      };
+      final r = CompressionRequest(
+        options: const CompressContextOptions(
+          mode: CompressContextLimitMode.keepRecent,
+          keepUserMessages: 6,
+          native: true,
+        ),
+        codex: true,
+        model: 'test',
+        quoteMarker: (_) => '',
+        prepareNative: prepare,
+        compactNative: (selection, _) async => NativeCompactionResult(
+          payload: NativeCompactionPayload(
+            protocol: NativeCompactionProtocol.codex,
+            scope: 'fixture',
+            modelId: 'test',
+            output: [
+              {'type': 'compaction', 'encrypted_content': 'state'},
+            ],
+          ),
+          retained: await retainCodexUsers(
+            (await prepare(selection))['input'] as List,
+          ),
+        ),
+      );
+      final preview = await compression.previewCarried(id, r);
+      await compression.start(id, r);
+      await until(
+        () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+      );
+      final op = (await chat.loadContextOperations(id, refresh: true)).single;
+      expect(op.nativePayload!.output, hasLength(1));
+      expect(op.carried!.origin, 'auto');
+      expect(op.carried!.setting.mode, CarryMode.unset);
+      expect(
+        op.carried!.items.map((i) => i.wire),
+        preview.items.map((i) => i.wire),
+      );
+      expect(op.carried!.items.map((i) => i.sourceMessageId), [
+        original.messages[0].id,
+        original.messages[2].id,
+      ]);
+      await chat.changeContextOperation(
+        id,
+        op.id,
+        includeDependents: false,
+        expectedState: ContextHistory.operationsFingerprint([op]),
+        carried: op.carried!.withItems([
+          op.carried!.items.last.copyWith(editedText: 'edited native user'),
+        ]),
+      );
+      final replay = await chat.loadSelectedContextMessages(id, limit: 100);
+      expect(replay.first.content, 'edited native user');
+      expect(
+        jsonDecode(
+          replay.first.providerArtifactSnapshot[carriedArtifactKind]!,
+        )['content'],
+        'edited native user',
+      );
+      expect(op.nativePayload!.output.single['encrypted_content'], 'state');
+    },
+  );
+
+  test(
+    'continuing past another carried summary copies its list without synthetic raw rows',
+    () async {
+      var snapshot = await chat.loadContextSnapshot(id);
+      final first = snapshot.messages.first;
+      final second = snapshot.messages[2];
+      for (final pair in [
+        (first, snapshot.messages[1]),
+        (second, snapshot.messages[3]),
+      ]) {
+        final op =
+            ContextOperation(
+              id: 'op-${pair.$1.id}',
+              kind: ContextOperationKind.compress,
+              anchorGroupId: pair.$2.id,
+              appliedAfterGroupId: snapshot.messages.last.id,
+              sourceGroups: [pair.$1.id, pair.$2.id],
+              dependencies: [],
+              createdAt: DateTime.now(),
+              summary: 'summary ${pair.$1.id}',
+              originalSummary: 'summary ${pair.$1.id}',
+              compressionDetails: const {'envelope': 'history-v1'},
+            ).withCarried(
+              CarriedOriginals(
+                setting: const CarrySetting(mode: CarryMode.count),
+                items: [carriedFromMessage(pair.$1)],
+              ),
+            );
+        await chat.appendContextOperation(
+          id,
+          op,
+          expectedFingerprint: snapshot.fingerprint,
+        );
+        snapshot = await chat.loadContextSnapshot(id);
+      }
+      final created = await chat.continueFromContextSummary(
+        id,
+        snapshot.operations.first.id,
+      );
+      final copied = await chat.loadContextSnapshot(created.id);
+      expect(copied.messages.any((m) => isCarriedMessageId(m.id)), false);
+      expect(copied.operations, hasLength(2));
+      expect(
+        copied.operations.every((op) => op.carried?.items.length == 1),
+        true,
+      );
+      final effective = await chat.loadSelectedContextMessages(
+        created.id,
+        limit: 100,
+      );
+      expect(
+        effective.where((m) => isCarriedMessageId(m.id)).map((m) => m.content),
+        [first.content, second.content],
+      );
+      expect(
+        effective.where(ContextOperation.isSummary).last.content,
+        snapshot.operations.last.contextText,
+      );
+    },
+  );
+
+  test(
+    'automatic live validation can drop carried copies without a second summary request',
+    () async {
+      final original = await chat.loadContextSnapshot(id);
+      var calls = 0;
+      final task = await compression.runAtSafePoint(
+        id,
+        CompressionRequest(
+          options: const CompressContextOptions(
+            mode: CompressContextLimitMode.keepRecent,
+            keepUserMessages: 6,
+            carry: CarrySetting(mode: CarryMode.count, count: 2),
+          ),
+          automatic: true,
+          beforeMessageId: original.messages[14].id,
+          model: 'test',
+          quoteMarker: (_) => '',
+          carryBudgetTokens: 10000,
+          generate: (_, _, _, _) async {
+            calls++;
+            return const TextGenerationResult(parts: [TextPart('summary')]);
+          },
+          acceptCandidate: (candidate) async =>
+              candidate.carried!.items.isEmpty,
+        ),
+      );
+      expect(task.phase, CompressionPhase.completed);
+      expect(task.candidate!.carried!.items, isEmpty);
+      expect(task.candidate!.carried!.notFit, 2);
+      expect(calls, 1);
+    },
+  );
+
   Future<void> rejectCancellationWrites() => database.customStatement('''
     CREATE TRIGGER reject_cancel BEFORE UPDATE ON extension_entity_rows
     WHEN NEW.kind = 'contextCompressionTask'
       AND json_extract(NEW.payload, '\$.phase') = 'cancelled'
     BEGIN SELECT RAISE(FAIL, 'cancel write failed'); END
+  ''');
+
+  Future<void> rejectDismissalWrites() => database.customStatement('''
+    CREATE TRIGGER reject_dismiss BEFORE UPDATE ON extension_entity_rows
+    WHEN NEW.kind = 'contextCompressionTask'
+      AND json_extract(NEW.payload, '\$.dismissed') = 1
+    BEGIN SELECT RAISE(FAIL, 'dismiss write failed'); END
   ''');
 
   NativeCompactionPayload nativePayload(String value) =>
@@ -129,10 +638,53 @@ void main() {
     ),
     model: 'private-provider/private-model',
     quoteMarker: AppLocalizationsEn().selectionQuoteMarker,
-    compactNative: compact,
+    compactNative: (selection, id) async =>
+        NativeCompactionResult(payload: await compact(selection, id)),
   );
 
   for (final native in [false, true]) {
+    test(
+      'timeout is a retryable failure and preserves history: native=$native',
+      () async {
+        final before = await chat.loadContextSnapshot(id);
+        const error = RequestTimeoutException(Duration(minutes: 10));
+        await compression.start(
+          id,
+          native
+              ? nativeRequest((_, _) async => throw error)
+              : request((_, _) async => throw error),
+        );
+        await until(
+          () => compression.taskFor(id)!.phase == CompressionPhase.failed,
+        );
+        final task = compression.taskFor(id)!;
+        expect(task.phase, CompressionPhase.failed);
+        expect(task.cancelRequested, isFalse);
+        expect(task.active, isFalse);
+        expect(task.error, error.toString());
+        expect(
+          compressionErrorLabel(AppLocalizationsZh(), task.error!),
+          AppLocalizationsZh().compressionRequestTimedOut(10),
+        );
+        final after = await chat.loadContextSnapshot(id);
+        expect(after.operations, isEmpty);
+        expect(
+          after.messages.map((m) => m.id),
+          before.messages.map((m) => m.id),
+        );
+        expect(task.candidate, isNull);
+        await compression.start(
+          id,
+          native
+              ? nativeRequest((_, _) async => nativePayload('retry'))
+              : request((_, _) async => 'short summary'),
+        );
+        await until(
+          () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+        );
+      },
+    );
+
     for (final fails in [false, true]) {
       test(
         'finished tasks release source callbacks: native=$native failed=$fails',
@@ -158,7 +710,9 @@ void main() {
                 ? null
                 : (_, _) async {
                     if (fails) throw StateError('model failed');
-                    return nativePayload('completed');
+                    return NativeCompactionResult(
+                      payload: nativePayload('completed'),
+                    );
                   },
           );
           await compression.start(id, request);
@@ -191,11 +745,10 @@ void main() {
           loadReference: (_) async => 'current reference',
         ),
       );
-      await until(
-        () => compression.taskFor(id)!.phase == CompressionPhase.review,
-      );
-      // Let the run finish its final status write before inspecting cleanup.
-      await Future<void>.delayed(const Duration(milliseconds: 20));
+      await until(() {
+        final task = compression.taskFor(id)!;
+        return task.phase == CompressionPhase.review && task.request == null;
+      });
       final task = compression.taskFor(id)!;
       expect(task.request, isNull);
       expect(task.validateReferences, isNull);
@@ -207,6 +760,239 @@ void main() {
       );
     },
   );
+
+  for (final phase in [
+    CompressionPhase.completed,
+    CompressionPhase.failed,
+    CompressionPhase.interrupted,
+  ]) {
+    test(
+      'dismissing $phase preserves its outcome without cancellation',
+      () async {
+        if (phase == CompressionPhase.interrupted) {
+          compression.isConversationBusy = (_) => true;
+        }
+        await compression.start(
+          id,
+          request((_, _) async {
+            if (phase == CompressionPhase.failed) {
+              throw StateError('model failed');
+            }
+            return 'saved summary';
+          }),
+        );
+        if (phase == CompressionPhase.interrupted) {
+          await compression.restore();
+        } else {
+          await until(() => compression.taskFor(id)!.phase == phase);
+        }
+        final task = compression.taskFor(id)!;
+        final before = await chat.loadContextSnapshot(id);
+        final observed = <CompressionPhase?>[];
+        void observe() => observed.add(compression.taskFor(id)?.phase);
+        compression.addListener(observe);
+        addTearDown(() => compression.removeListener(observe));
+
+        await compression.dismiss(id);
+
+        expect(task.phase, phase);
+        expect(observed, [null]);
+        expect(
+          (await chat.loadContextSnapshot(id)).fingerprint,
+          before.fingerprint,
+        );
+        final record = (await chat.readCompressionTaskRecords())[id]!;
+        expect(record['phase'], phase.name);
+        expect(record['dismissed'], isTrue);
+        await compression.restore();
+        expect(compression.taskFor(id), isNull);
+      },
+    );
+  }
+
+  test(
+    'failed dismissal keeps the original status available for retry',
+    () async {
+      await compression.start(id, request((_, _) async => 'saved summary'));
+      await until(
+        () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+      );
+      final task = compression.taskFor(id)!;
+      final observed = <CompressionPhase?>[];
+      void observe() => observed.add(compression.taskFor(id)?.phase);
+      compression.addListener(observe);
+      addTearDown(() => compression.removeListener(observe));
+      await rejectDismissalWrites();
+
+      await expectLater(
+        compression.dismiss(id),
+        throwsA(
+          predicate(
+            (Object error) => error.toString().contains('dismiss write failed'),
+          ),
+        ),
+      );
+
+      expect(compression.taskFor(id), same(task));
+      expect(task.phase, CompressionPhase.completed);
+      expect(observed, isEmpty);
+      expect(
+        (await chat.readCompressionTaskRecords())[id]!['dismissed'],
+        isNull,
+      );
+      await database.customStatement('DROP TRIGGER reject_dismiss');
+      await compression.dismiss(id);
+      expect(compression.taskFor(id), isNull);
+      expect(observed, [null]);
+      expect(
+        (await chat.loadContextOperations(id, refresh: true)).single.revoked,
+        isFalse,
+      );
+    },
+  );
+
+  test(
+    'dismissing an old result preserves a replacement task and its record',
+    () async {
+      await compression.start(id, request((_, _) async => 'saved summary'));
+      await until(
+        () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+      );
+      final old = compression.taskFor(id)!;
+      final dismiss = compression.dismiss(id);
+      compression.isConversationBusy = (_) => true;
+      await compression.start(id, request((_, _) async => 'next summary'));
+      final replacement = compression.taskFor(id)!;
+      await dismiss;
+      expect(replacement.id, isNot(old.id));
+      expect(compression.taskFor(id), same(replacement));
+      expect(replacement.phase, CompressionPhase.waiting);
+      final record = (await chat.readCompressionTaskRecords())[id]!;
+      expect(record['id'], replacement.id);
+      expect(record['dismissed'], isNull);
+      await compression.restore();
+      expect(compression.taskFor(id)!.id, replacement.id);
+    },
+  );
+
+  for (final temporary in [false, true]) {
+    test(
+      'native regeneration after a retained edit replays only compacted history and the target: temporary=$temporary',
+      () async {
+        final conversation = temporary
+            ? await chat.createDraftConversation(
+                title: 'Five turns',
+                temporary: true,
+              )
+            : await chat.createConversation(title: 'Five turns');
+        id = conversation.id;
+        chat.setCurrentConversation(id);
+        for (final turn in ['A', 'B', 'C', 'D', 'E']) {
+          for (final role in ['user', 'assistant']) {
+            await chat.addMessage(
+              conversationId: id,
+              role: role,
+              content: '$turn-1-$role',
+            );
+          }
+        }
+        final original = (await chat.loadContextSnapshot(id)).messages;
+        final config = nativeResponsesConfig(
+          ProviderConfig(
+            id: 'fixture',
+            name: 'Fixture',
+            enabled: true,
+            baseUrl: 'https://fixture.example/v1',
+            apiKey: 'test',
+          ),
+        );
+        final payload = NativeCompactionPayload(
+          protocol: NativeCompactionProtocol.compact,
+          scope: nativeCompactionScope(config),
+          modelId: 'private-model',
+          output: [
+            {
+              'type': 'compaction',
+              'id': 'AB',
+              'encrypted_content': 'opaque-AB',
+            },
+          ],
+        );
+        await compression.start(
+          id,
+          nativeRequest((selection, _) async {
+            expect(selection.input.map((m) => m.content), [
+              'A-1-user',
+              'A-1-assistant',
+              'B-1-user',
+              'B-1-assistant',
+            ]);
+            expect(
+              selection.retained.map((m) => m.id),
+              original.skip(4).map((m) => m.id),
+            );
+            return payload;
+          }, keep: 3),
+        );
+        await until(
+          () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+        );
+        final edited = await chat.appendMessageVersion(
+          messageId: original[4].id,
+          content: 'C-2-user',
+        );
+        final operation = (await chat.loadContextOperations(
+          id,
+          refresh: true,
+        )).single;
+        expect(operation.revoked, isFalse);
+        expect(operation.anchorGroupId, ContextHistory.group(original[3]));
+        expect(
+          operation.appliedAfterGroupId,
+          ContextHistory.group(original.last),
+        );
+        final history = await chat.loadEffectiveContextMessages(
+          id,
+          limit: 100,
+          throughRevisionId: edited!.id,
+        );
+        expect(history.map((m) => m.id), [
+          operation.summaryMessageId,
+          edited.id,
+        ]);
+        expect(
+          NativeCompactionPayload.forMessage(history.first)!.output,
+          payload.output,
+        );
+        final body = await buildOpenAIResponsesBody(config, 'private-model', [
+          for (final message in history)
+            {
+              'role': message.role,
+              'content': message.content,
+              if (NativeCompactionPayload.forMessage(message)
+                  case final native?)
+                nativeCompactionMessageKey: native.toJson(),
+            },
+        ]);
+        final input = (body['input'] as List).cast<Map>();
+        expect(
+          input.where((item) => item['type'] == 'compaction'),
+          hasLength(1),
+        );
+        final serialized = jsonEncode(input);
+        expect(serialized, contains('C-2-user'));
+        for (final excluded in [
+          'A-1-assistant',
+          'B-1-assistant',
+          'C-1-',
+          'D-1-',
+          'E-1-',
+        ]) {
+          expect(serialized, isNot(contains(excluded)));
+        }
+      },
+    );
+  }
 
   test(
     'native history stays opaque while subsequent text compression reads originals',
@@ -620,7 +1406,7 @@ void main() {
               loadReference: (_) async => reference,
               compactNative: (_, _) async {
                 if (!changeAtCommit) reference = 'changed rules';
-                return nativePayload('stale');
+                return NativeCompactionResult(payload: nativePayload('stale'));
               },
               acceptCandidate: (_) async {
                 if (changeAtCommit) reference = 'changed rules';
@@ -685,6 +1471,7 @@ void main() {
         reloaded.operations.single.id,
       );
       final copy = await chat.loadContextSnapshot(continued.id);
+      expect(continued.title, 'Original (1)');
       expect(copy.operations, hasLength(1));
       expect(
         copy.operations.single.nativePayload!.output,
@@ -705,6 +1492,7 @@ void main() {
         copy.operations.single.id,
       );
       final againSnapshot = await chat.loadContextSnapshot(again.id);
+      expect(again.title, 'Original (2)');
       expect(againSnapshot.messages, hasLength(3));
       expect(againSnapshot.operations.single.nativeSourceConversationId, id);
       await chat.changeContextOperation(
@@ -746,6 +1534,7 @@ void main() {
         title: 'private',
         temporary: true,
       );
+      await chat.createConversation(title: 'private (1)', activate: false);
       chat.setCurrentConversation(temporary.id);
       for (var i = 0; i < 3; i++) {
         await chat.addMessage(
@@ -768,6 +1557,7 @@ void main() {
       );
       final target = compression.taskFor(temporary.id)!.resultConversationId!;
       expect(chat.isTemporaryConversation(target), isTrue);
+      expect(chat.getConversation(target)!.title, 'private (2)');
       final copy = await chat.loadContextSnapshot(target);
       expect(await repo.getConversation(target), isNull);
       expect(await repo.readContextOperations(target), isEmpty);
@@ -983,9 +1773,17 @@ void main() {
     response.complete('late summary');
     await Future<void>.delayed(const Duration(milliseconds: 30));
     expect(await chat.loadContextOperations(id, refresh: true), isEmpty);
-    await expectLater(compression.dismiss(id), failedWrite);
+    await rejectDismissalWrites();
+    await expectLater(
+      compression.dismiss(id),
+      throwsA(
+        predicate(
+          (Object error) => error.toString().contains('dismiss write failed'),
+        ),
+      ),
+    );
     expect(compression.taskFor(id)!.phase, CompressionPhase.interrupted);
-    await database.customStatement('DROP TRIGGER reject_cancel');
+    await database.customStatement('DROP TRIGGER reject_dismiss');
     await compression.dismiss(id);
     expect(compression.taskFor(id), isNull);
     await chat.close();
@@ -1083,19 +1881,77 @@ void main() {
         () => compression.taskFor(id)!.phase == CompressionPhase.review,
       );
       expect(await chat.loadContextOperations(id, refresh: true), isEmpty);
+      await expectLater(
+        compression.applyReviewed(id, 'still too large'),
+        throwsA(
+          predicate(
+            (Object error) =>
+                error.toString().contains('context_budget_exceeded'),
+          ),
+        ),
+      );
+      expect(compression.taskFor(id)!.phase, CompressionPhase.review);
+      expect(compression.taskFor(id)!.summary, 'still too large');
+      expect(compression.taskFor(id)!.budget!.usedTokens, 9000);
+      expect(await chat.loadContextOperations(id, refresh: true), isEmpty);
       compression.estimateCandidate = (_, _, {bool? fixedContextStart}) async =>
-          (usedTokens: 500, contextWindow: 1000);
+          (usedTokens: 1000, contextWindow: 1000);
       await Future.wait([
         compression.applyReviewed(id, 'edited'),
         compression.applyReviewed(id, 'double click'),
       ]);
       expect(compression.taskFor(id)!.phase, CompressionPhase.completed);
+      expect(compression.taskFor(id)!.error, isNull);
       expect(
         (await chat.loadContextOperations(id, refresh: true)).single.summary,
         'edited',
       );
     },
   );
+
+  for (final restore in [false, true]) {
+    test(
+      'undo skips one turn unless its context is restored: restore=$restore',
+      () async {
+        await compression.start(id, request((_, _) async => 'summary'));
+        await until(
+          () => compression.taskFor(id)!.phase == CompressionPhase.completed,
+        );
+        final before = await chat.loadContextSnapshot(id);
+        await chat.changeContextOperation(
+          id,
+          before.operations.single.id,
+          includeDependents: true,
+          expectedState: ContextHistory.operationsFingerprint(
+            before.operations,
+          ),
+        );
+        final undone = await chat.loadContextSnapshot(id);
+        if (restore) {
+          await chat.restoreContextOperations(
+            id,
+            before.operations,
+            expectedFingerprint: undone.fingerprint,
+          );
+          expect(
+            (await chat.loadContextSnapshot(id)).fingerprint,
+            before.fingerprint,
+          );
+        } else {
+          await expectLater(
+            chat.restoreContextOperations(
+              id,
+              before.operations,
+              expectedFingerprint: 'stale',
+            ),
+            throwsStateError,
+          );
+        }
+        expect(compression.consumeAutomaticSkip(id), !restore);
+        expect(compression.consumeAutomaticSkip(id), isFalse);
+      },
+    );
+  }
 
   test(
     'clear requested during a reply blocks sends until the boundary is applied',
@@ -1499,6 +2355,7 @@ void main() {
         title: 'temporary',
         temporary: true,
       );
+      await chat.createConversation(title: 'temporary (1)', activate: false);
       for (var i = 0; i < 3; i++) {
         await chat.addMessage(
           conversationId: temporary.id,
@@ -1528,6 +2385,7 @@ void main() {
       );
       final target = compression.taskFor(temporary.id)!.resultConversationId!;
       expect(chat.isTemporaryConversation(target), isTrue);
+      expect(chat.getConversation(target)!.title, 'temporary (2)');
       expect(await repo.getConversation(target), isNull);
       expect(await repo.compression.overrides(temporary.id), isEmpty);
       expect(await repo.compression.overrides(target), isEmpty);

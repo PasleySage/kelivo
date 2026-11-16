@@ -1,3 +1,5 @@
+import '../../chat/controllers/conversation_find_controller.dart';
+import '../../chat/widgets/conversation_find_highlights.dart';
 import '../../intelligent_ui/host/ui_persistence_host.dart';
 import 'package:Kelivo/features/intelligent_ui/host/ui_runtime_registry.dart';
 import 'package:Kelivo/features/intelligent_ui/widgets/genui_control_region.dart';
@@ -47,15 +49,7 @@ typedef OnResendMessage = void Function(ChatMessage message);
 typedef OnTranslateMessage = void Function(ChatMessage message);
 typedef OnEditMessage = void Function(ChatMessage message);
 typedef OnDeleteMessage =
-    Future<void> Function(
-      ChatMessage message,
-      Map<String, List<ChatMessage>> byGroup,
-    );
-typedef OnDeleteAllVersions =
-    Future<void> Function(
-      ChatMessage message,
-      Map<String, List<ChatMessage>> byGroup,
-    );
+    Future<void> Function(ChatMessage message, MessageVersionDeleteScope scope);
 typedef OnForkConversation = Future<void> Function(ChatMessage message);
 typedef OnSelectMessages =
     void Function(int messageIndex, List<ChatMessage> messages);
@@ -133,17 +127,18 @@ class MessageListView extends StatefulWidget {
     this.isPinnedIndicatorActive = false,
     required this.processingFilesMessageId,
     this.streamingContentNotifier,
+    this.conversationFind,
     this.spotlightMessageId,
     this.spotlightToken = 0,
     this.removingSlotIds = const <String>{},
     this.onVersionChange,
     this.onRegenerateMessage,
+    this.onRetryWithoutImages,
     this.onSetContextStart,
     this.onResendMessage,
     this.onTranslateMessage,
     this.onEditMessage,
     this.onDeleteMessage,
-    this.onDeleteAllVersions,
     this.onForkConversation,
     this.onSelectMessages,
     this.onSpeakMessage,
@@ -228,6 +223,7 @@ class MessageListView extends StatefulWidget {
 
   /// When set, the message with this ID will receive a spotlight pulse animation.
   final String? spotlightMessageId;
+  final ConversationFindController? conversationFind;
 
   /// Incremented each time a new spotlight is triggered. Used as an animation key
   /// so re-selecting the same message re-triggers the pulse.
@@ -240,12 +236,12 @@ class MessageListView extends StatefulWidget {
   // Callbacks
   final OnVersionChange? onVersionChange;
   final OnRegenerateMessage? onRegenerateMessage;
+  final OnRegenerateMessage? onRetryWithoutImages;
   final ValueChanged<ChatMessage>? onSetContextStart;
   final OnResendMessage? onResendMessage;
   final OnTranslateMessage? onTranslateMessage;
   final OnEditMessage? onEditMessage;
   final OnDeleteMessage? onDeleteMessage;
-  final OnDeleteAllVersions? onDeleteAllVersions;
   final OnForkConversation? onForkConversation;
   final OnSelectMessages? onSelectMessages;
   final OnSpeakMessage? onSpeakMessage;
@@ -469,7 +465,10 @@ class _MessageListViewState extends State<MessageListView> {
     final previous = timelineImageAspects[imageKey];
     if (previous != null && (previous - aspectRatio).abs() < 0.001) return;
     timelineImageAspects[imageKey] = aspectRatio;
-    _invalidateToolExtentForMessage(messageId);
+    // The mounted image's relayout updates the list's measured extent. Only
+    // discard our estimate here: preserving distance from the end would fight
+    // the image's reading anchor when other images load below it in this frame.
+    _extentEstimateCache.remove(messageId);
   }
 
   void _invalidateToolExtentForMessage(String messageId) {
@@ -1679,6 +1678,7 @@ class _MessageListViewState extends State<MessageListView> {
         old.completionTokens != current.completionTokens ||
         old.cachedTokens != current.cachedTokens ||
         old.durationMs != current.durationMs ||
+        old.firstResponseMs != current.firstResponseMs ||
         old.firstTokenMs != current.firstTokenMs ||
         _partsIdentityChanged(old.parts, current.parts);
   }
@@ -2162,7 +2162,7 @@ class _MessageListViewState extends State<MessageListView> {
     final availableVersions = model.availableVersions;
     final selectedVersion = model.selectedVersion;
     final selectedIdx = model.selectedVersionIndex;
-    final total = availableVersions.length;
+    final hasMultipleVersions = model.versionCount > 1;
     final messageSuggestions =
         !widget.selecting &&
             model.isLatestCompleteAssistant &&
@@ -2245,7 +2245,7 @@ class _MessageListViewState extends State<MessageListView> {
                                 availableVersions: availableVersions,
                                 selectedVersion: selectedVersion,
                                 selectedIdx: selectedIdx,
-                                total: total,
+                                hasMultipleVersions: hasMultipleVersions,
                                 isProcessingFiles: isProcessingFiles,
                                 suggestions: messageSuggestions,
                                 presentation: presentation,
@@ -2263,7 +2263,7 @@ class _MessageListViewState extends State<MessageListView> {
                                 availableVersions: availableVersions,
                                 selectedVersion: selectedVersion,
                                 selectedIdx: selectedIdx,
-                                total: total,
+                                hasMultipleVersions: hasMultipleVersions,
                                 isProcessingFiles: isProcessingFiles,
                                 suggestions: messageSuggestions,
                                 presentation: presentation,
@@ -2362,40 +2362,48 @@ class _MessageListViewState extends State<MessageListView> {
           widget.footer!,
       ],
     );
-    final isSpotlight =
-        widget.spotlightMessageId != null &&
-        message.id == widget.spotlightMessageId;
-    final Widget item = isSpotlight
-        ? RepaintBoundary(
-            child: TweenAnimationBuilder<double>(
-              key: ValueKey('spotlight-${widget.spotlightToken}'),
-              tween: Tween<double>(begin: 1.0, end: 0.0),
-              duration: const Duration(milliseconds: 1200),
-              curve: Curves.easeOut,
-              builder: (context, opacity, child) {
-                return Stack(
-                  children: [
-                    child!,
-                    if (opacity > 0.0)
-                      Positioned.fill(
-                        child: IgnorePointer(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(
-                                0xFFFFA726,
-                              ).withValues(alpha: opacity * 0.30),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                );
-              },
-              child: messageColumn,
+    final find = widget.conversationFind;
+    Widget highlightedMessage() {
+      final current = find?.current;
+      return ConversationFindHighlights(
+        hits: find?.hitsFor(message.id) ?? const [],
+        current: current?.messageId == message.id ? current : null,
+        child: messageColumn,
+      );
+    }
+
+    final item = RepaintBoundary(
+      child: Stack(
+        children: [
+          if (find == null)
+            highlightedMessage()
+          else
+            ListenableBuilder(
+              listenable: find,
+              builder: (_, _) => highlightedMessage(),
             ),
-          )
-        : RepaintBoundary(child: messageColumn);
+          if (widget.spotlightMessageId == message.id)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: TweenAnimationBuilder<double>(
+                  key: ValueKey('spotlight-${widget.spotlightToken}'),
+                  tween: Tween<double>(begin: 1, end: 0),
+                  duration: const Duration(milliseconds: 1200),
+                  curve: Curves.easeOut,
+                  builder: (context, opacity, _) => DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: const Color(
+                        0xFFFFA726,
+                      ).withValues(alpha: opacity * .30),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
 
     // The animator wraps the item's RepaintBoundary so the fade only
     // re-composites the boundary's cached layer instead of repainting the
@@ -2424,7 +2432,7 @@ class _MessageListViewState extends State<MessageListView> {
     required List<int> availableVersions,
     required int selectedVersion,
     required int selectedIdx,
-    required int total,
+    required bool hasMultipleVersions,
     required bool isProcessingFiles,
     required List<String> suggestions,
     required _MessagePresentation presentation,
@@ -2489,7 +2497,7 @@ class _MessageListViewState extends State<MessageListView> {
             availableVersions: availableVersions,
             selectedVersion: selectedVersion,
             selectedIdx: selectedIdx,
-            total: total,
+            hasMultipleVersions: hasMultipleVersions,
             isProcessingFiles: isProcessingFiles,
             suggestions: suggestions,
             presentation: presentation,
@@ -2518,7 +2526,7 @@ class _MessageListViewState extends State<MessageListView> {
     required List<int> availableVersions,
     required int selectedVersion,
     required int selectedIdx,
-    required int total,
+    required bool hasMultipleVersions,
     required bool isProcessingFiles,
     required List<String> suggestions,
     required _MessagePresentation presentation,
@@ -2537,7 +2545,7 @@ class _MessageListViewState extends State<MessageListView> {
       message: message,
       enableStreamingTextMotion: enableStreamingTextMotion,
       versionIndex: currentIdx < 0 ? selectedIdx : currentIdx,
-      versionCount: total > 0 ? total : 1,
+      versionCount: availableVersions.length,
       onPrevVersion: (currentIdx > 0)
           ? () => widget.onVersionChange?.call(
               gid,
@@ -2601,6 +2609,9 @@ class _MessageListViewState extends State<MessageListView> {
       onRegenerate: message.role == 'assistant'
           ? () => widget.onRegenerateMessage?.call(message)
           : null,
+      onRetryWithoutImages: widget.onRetryWithoutImages == null
+          ? null
+          : () => widget.onRetryWithoutImages!(message),
       onResend: message.role == 'user'
           ? () => widget.onResendMessage?.call(message)
           : null,
@@ -2614,14 +2625,17 @@ class _MessageListViewState extends State<MessageListView> {
           ? () => widget.onEditMessage?.call(message)
           : null,
       onDelete: message.role == 'user'
-          ? () => widget.onDeleteMessage?.call(message, widget.byGroup)
+          ? () => widget.onDeleteMessage?.call(
+              message,
+              MessageVersionDeleteScope.current,
+            )
           : null,
       onMore: () async {
         final start = ContextHistory.fixedStart(widget.contextOperations);
         final action = await showMessageMoreSheet(
           context,
           message,
-          canDeleteAllVersions: total > 1,
+          hasMultipleVersions: hasMultipleVersions,
           canCreateBranch: widget.onForkConversation != null,
           canSetContextStart:
               widget.onSetContextStart != null && !message.isStreaming,
@@ -2631,10 +2645,8 @@ class _MessageListViewState extends State<MessageListView> {
           widget.onSetContextStart?.call(message);
         } else if (action == MessageMoreAction.cancelContextStart) {
           if (start != null) widget.onUndoContextOperation?.call(start);
-        } else if (action == MessageMoreAction.deleteCurrentVersion) {
-          await widget.onDeleteMessage?.call(message, widget.byGroup);
-        } else if (action == MessageMoreAction.deleteAllVersions) {
-          await widget.onDeleteAllVersions?.call(message, widget.byGroup);
+        } else if (action?.deleteScope case final scope?) {
+          await widget.onDeleteMessage?.call(message, scope);
         } else if (action == MessageMoreAction.edit) {
           widget.onEditMessage?.call(message);
         } else if (action == MessageMoreAction.fork) {

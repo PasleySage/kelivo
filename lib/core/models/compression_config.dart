@@ -1,3 +1,4 @@
+import 'carried_original.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
@@ -12,6 +13,8 @@ class CompressionConfig {
   const CompressionConfig({
     this.mode = AutoCompressionMode.off,
     this.nativeEnabled = false,
+    this.carryOriginals = const CarrySetting(),
+    this.nativeCarryOriginals = const CarrySetting(),
     this.nativeKeepRecentUserTurns = 6,
     this.nativeTriggerInputRatio = .8,
     this.templateId = 'general',
@@ -19,7 +22,9 @@ class CompressionConfig {
     this.triggerInputRatio = .8,
     this.targetInputRatio = .6,
     this.summaryTokens = 4096,
+    this.maxOutputTokens,
     this.maxRequestAttempts = 8,
+    this.requestTimeoutMinutes,
     this.planningWindow,
     this.includeReference = true,
     this.replaceConsumedTools = false,
@@ -31,6 +36,8 @@ class CompressionConfig {
   static const conversationKind = 'conversationCompression';
   final AutoCompressionMode mode;
   final bool nativeEnabled;
+  final CarrySetting carryOriginals;
+  final CarrySetting nativeCarryOriginals;
   final int nativeKeepRecentUserTurns;
   final double nativeTriggerInputRatio;
   final String templateId;
@@ -38,7 +45,19 @@ class CompressionConfig {
   final double triggerInputRatio;
   final double targetInputRatio;
   final int summaryTokens;
+
+  /// Total generation budget, including reasoning. Null uses the summary target.
+  final int? maxOutputTokens;
   final int maxRequestAttempts;
+
+  /// Per model invocation. Null preserves each compression mode's default.
+  final num? requestTimeoutMinutes;
+  Duration? get requestTimeout => requestTimeoutMinutes == null
+      ? null
+      : Duration(
+          microseconds:
+              (requestTimeoutMinutes! * Duration.microsecondsPerMinute).ceil(),
+        );
   final int? planningWindow;
   final bool includeReference;
   final bool replaceConsumedTools;
@@ -52,6 +71,8 @@ class CompressionConfig {
   Map<String, dynamic> toJson({bool includeMode = true}) => {
     if (includeMode) 'mode': mode.name,
     'nativeEnabled': nativeEnabled,
+    'carryOriginals': carryOriginals.toJson(),
+    'nativeCarryOriginals': nativeCarryOriginals.toJson(),
     'nativeKeepRecentUserTurns': nativeKeepRecentUserTurns,
     'nativeTriggerInputRatio': nativeTriggerInputRatio,
     'templateId': templateId,
@@ -59,7 +80,9 @@ class CompressionConfig {
     'triggerInputRatio': triggerInputRatio,
     'targetInputRatio': targetInputRatio,
     'summaryTokens': summaryTokens,
+    'maxOutputTokens': maxOutputTokens,
     'maxRequestAttempts': maxRequestAttempts,
+    'requestTimeoutMinutes': requestTimeoutMinutes,
     'planningWindow': planningWindow,
     'includeReference': includeReference,
     'replaceConsumedTools': replaceConsumedTools,
@@ -72,6 +95,8 @@ class CompressionConfig {
     final config = CompressionConfig(
       mode: AutoCompressionMode.values.byName(json['mode'] as String? ?? 'off'),
       nativeEnabled: json['nativeEnabled'] == true,
+      carryOriginals: CarrySetting.fromJson(json['carryOriginals']),
+      nativeCarryOriginals: CarrySetting.fromJson(json['nativeCarryOriginals']),
       nativeKeepRecentUserTurns: json['nativeKeepRecentUserTurns'] as int? ?? 6,
       nativeTriggerInputRatio: (json['nativeTriggerInputRatio'] as num? ?? .8)
           .toDouble(),
@@ -80,7 +105,9 @@ class CompressionConfig {
       triggerInputRatio: (json['triggerInputRatio'] as num? ?? .8).toDouble(),
       targetInputRatio: (json['targetInputRatio'] as num? ?? .6).toDouble(),
       summaryTokens: json['summaryTokens'] as int? ?? 4096,
+      maxOutputTokens: json['maxOutputTokens'] as int?,
       maxRequestAttempts: json['maxRequestAttempts'] as int? ?? 8,
+      requestTimeoutMinutes: json['requestTimeoutMinutes'] as num?,
       planningWindow: json['planningWindow'] as int?,
       includeReference: json['includeReference'] as bool? ?? true,
       replaceConsumedTools: json['replaceConsumedTools'] as bool? ?? false,
@@ -103,8 +130,17 @@ class CompressionConfig {
         config.targetInputRatio >= config.triggerInputRatio ||
         config.summaryTokens < 128 ||
         config.summaryTokens > 65536 ||
+        (config.maxOutputTokens != null &&
+            (config.maxOutputTokens! < config.summaryTokens ||
+                config.maxOutputTokens! > 1048576)) ||
         config.maxRequestAttempts < 1 ||
         config.maxRequestAttempts > 128 ||
+        (config.requestTimeoutMinutes != null &&
+            (!config.requestTimeoutMinutes!.isFinite ||
+                config.requestTimeoutMinutes! <= 0 ||
+                !(config.requestTimeoutMinutes! *
+                        Duration.microsecondsPerMinute)
+                    .isFinite)) ||
         (config.planningWindow != null && config.planningWindow! < 1024) ||
         (config.providerId == null) != (config.modelId == null)) {
       throw const FormatException('Invalid compression settings');

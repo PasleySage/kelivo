@@ -1,4 +1,5 @@
 import '../../../core/services/api/request_image_context.dart';
+import '../../../core/services/api/request_tool_declarations.dart';
 import 'package:Kelivo/core/services/conversation_tool_permissions.dart';
 import 'package:Kelivo/core/models/tool_permission_mode.dart';
 import 'package:Kelivo/utils/mcp_structured_image.dart';
@@ -8,7 +9,6 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import '../../../core/models/assistant.dart';
-import '../../../core/models/model_spec.dart';
 import '../../../core/models/reasoning_request.dart';
 import '../../../core/providers/assistant_provider.dart';
 import '../../../core/providers/environment_provider.dart';
@@ -30,6 +30,7 @@ import '../../../core/services/search/search_tool_service.dart';
 import '../../../core/services/search/web_fetch_service.dart';
 import '../../../core/services/search/web_fetch_tool_service.dart';
 import '../../../core/services/tools/tool_schema_overrides.dart';
+import '../../../core/services/tools/view_image_tool.dart';
 import '../../../core/services/skills/skills_service.dart';
 import '../../../core/services/workspace/tool_run_registry.dart';
 import '../../../core/services/workspace/workspace_runtime.dart';
@@ -270,39 +271,9 @@ class ToolHandlerService {
   }) {
     final List<Map<String, dynamic>> toolDefs = <Map<String, dynamic>>[];
     final supportsTools = isToolModel(providerKey, modelId);
-    // Keep this candidate for images returned later in the tool loop.
-    // RequestImageContext gates its declaration on every outgoing request.
-    if (supportsTools &&
-        conversationId != null &&
-        ModelSpecResolver.instance
-            .spec(settings.getProviderConfig(providerKey), modelId)
-            .supportsImageInput) {
-      toolDefs.add({
-        'type': 'function',
-        'function': {
-          'name': 'read_chat_image',
-          'description':
-              'Read an image from this conversation using its image_id. Omit image_id to list available images, then use next_offset to list more. Reading adds a fresh observation without rewriting earlier history.',
-          'parameters': {
-            'type': 'object',
-            'properties': {
-              'image_id': {
-                'type': 'string',
-                'description':
-                    'The img_ identifier from an image placeholder or listing.',
-              },
-              'offset': {
-                'type': 'integer',
-                'minimum': 0,
-                'description': 'Offset for listing images; default 0.',
-              },
-            },
-
-            'additionalProperties': false,
-          },
-        },
-      });
-    }
+    final canImageInput = ModelSpecResolver.instance
+        .spec(settings.getProviderConfig(providerKey), modelId)
+        .supportsImageInput;
 
     // Search tool (skip when Gemini built-in search is active)
     if (assistant?.searchEnabled == true &&
@@ -362,10 +333,6 @@ class ToolHandlerService {
     toolDefs.addAll(mcpTools);
 
     if (supportsTools && workspaceContext != null) {
-      final canImageInput = ModelSpecResolver.instance
-          .spec(settings.getProviderConfig(providerKey), modelId)
-          .input
-          .contains(Modality.image);
       toolDefs.addAll(
         _workspaceTools()
             .buildToolDefinitions(workspaceContext)
@@ -375,6 +342,19 @@ class ToolHandlerService {
                   (definition['function'] as Map)['name'] != 'view_image',
             ),
       );
+    }
+
+    // Keep one candidate for images returned later in the tool loop. Each
+    // outgoing request gates conversation lookup independently of file access.
+    if (supportsTools && canImageInput && conversationId != null) {
+      final index = toolDefs.indexWhere(
+        (tool) => (tool['function'] as Map?)?['name'] == ViewImageTool.name,
+      );
+      if (index < 0) {
+        toolDefs.add(ViewImageTool.withHistory());
+      } else {
+        toolDefs[index] = ViewImageTool.withHistory(toolDefs[index]);
+      }
     }
 
     final overrides = settings.toolSchemaOverrides;
@@ -561,12 +541,22 @@ class ToolHandlerService {
     }
 
     final workspaceTools = workspaceContext == null ? null : _workspaceTools();
+    final askUserEnabled =
+        assistant?.localToolIds.contains(LocalToolNames.askUser) ?? false;
 
     return (name, args, {toolCallId}) async {
       final permission = permissionFor(name, toolCallId);
       Future<Object?> execute() async {
         try {
-          if (name == 'read_chat_image') {
+          if (name == ViewImageTool.name &&
+              (args['image_id'] != null || args['path'] == null)) {
+            if (args['path'] != null && args['image_id'] != null) {
+              return _toolError(
+                error: 'invalid_arguments',
+                message: 'Supply either image_id or path, never both.',
+                tool: name,
+              );
+            }
             final imageContext = RequestImageContext.current;
             final chat = permissionChat;
             if (imageContext == null ||
@@ -591,6 +581,14 @@ class ToolHandlerService {
               (args['image_id'] ?? '').toString(),
               allowedMessages: allowed.map((m) => m.id).toSet(),
               offset: args['offset'] is int ? args['offset'] as int : 0,
+            );
+          }
+          if (name == ViewImageTool.name && workspaceContext == null) {
+            return _toolError(
+              error: 'tool_disabled',
+              message:
+                  'File viewing requires an enabled workspace image viewer.',
+              tool: name,
             );
           }
           if (name == BrowserToolsService.toolName) {
@@ -719,9 +717,7 @@ class ToolHandlerService {
             return localResult;
           }
 
-          if (name == LocalToolNames.askUser &&
-              assistant != null &&
-              assistant.localToolIds.contains(LocalToolNames.askUser)) {
+          if (name == LocalToolNames.askUser && askUserEnabled) {
             if (askUserService == null) {
               return _toolError(
                 error: 'ask_user_unavailable',
@@ -747,7 +743,26 @@ class ToolHandlerService {
             }
           }
 
-          return await approveAndExecuteMcp(name, args, permission);
+          if (BuiltInToolNames.functions.contains(name)) {
+            throw const ToolPermissionException(
+              'tool_disabled',
+              'This built-in tool is unavailable for this request.',
+            );
+          }
+
+          final retryName = name == 'ask_user_input' && askUserEnabled
+              ? RequestToolDeclarations.current?.advertisedName(
+                  LocalToolNames.askUser,
+                )
+              : null;
+          return _toolError(
+            error: 'unknown_tool',
+            message: 'Unknown tool name.',
+            tool: name,
+            instruction: retryName == null
+                ? null
+                : 'Retry using the full tool name `$retryName`.',
+          );
         } on ToolPermissionException catch (e) {
           permission.byFullAccess = false;
           return ClientToolResult(

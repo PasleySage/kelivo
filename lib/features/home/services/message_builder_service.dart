@@ -1,3 +1,4 @@
+import '../../../core/models/carried_original.dart';
 import '../../../core/models/native_compaction.dart';
 import '../../../core/services/api/request_image_context.dart';
 import '../../../l10n/app_localizations.dart';
@@ -407,6 +408,35 @@ class MessageBuilderService {
 
     final thinkingRecovery = ClaudeThinkingRecovery();
     for (final m in source) {
+      if (isCarriedMessageId(m.id)) {
+        final media = mediaRefsFromParts(m);
+        final message = <String, dynamic>{
+          'role': m.role,
+          'content': m.content,
+          '_contextSummary': true,
+          imageContextOwnerKey: m.id,
+          if (m.providerArtifactSnapshot[carriedArtifactKind]
+              case final frozen?)
+            carriedWireKey: jsonDecode(frozen),
+          if (media.isNotEmpty) internalMediaPathsKey: media,
+          if (m.providerArtifactSnapshot[carriedImageHandlesKey]
+              case final handles?)
+            carriedImageHandlesKey: jsonDecode(handles),
+          if (m.providerArtifactSnapshot.containsKey(
+            carriedTextOnlyArtifactKind,
+          )) ...{
+            carriedTextOnlyKey: true,
+            multimodalInternalLiteralTextKey: m.content,
+          },
+        };
+        ContextSegmentTags.replaceWithSingle(
+          message,
+          source: ContextSource.chatHistory,
+          length: m.content.length,
+        );
+        out.add(message);
+        continue;
+      }
       final native = NativeCompactionPayload.forMessage(m);
       if (native != null) {
         out.add({
@@ -415,6 +445,9 @@ class MessageBuilderService {
           '_contextSummary': true,
           imageContextOwnerKey: m.id,
           nativeCompactionMessageKey: native.toJson(),
+          if (m.providerArtifactSnapshot[nativeUserSourcesKey]
+              case final sources?)
+            nativeUserSourcesKey: jsonDecode(sources),
         });
         continue;
       }
@@ -2084,10 +2117,10 @@ class MessageBuilderService {
   ///
   /// Pure function of `(enableMemory, allowPastConversationRecall, lang,
   /// user template)` — must not vary with memory content or the clock (§11.1).
-  /// Relative order among remaining system injections is preserved by the
-  /// caller (`injectSystemPrompt` → this → `injectSearchPrompt` →
-  /// `injectInstructionPrompts` → `injectWorldBookPrompts` →
-  /// `injectWorkspacePrompt` → `injectSkillsPrompt`).
+  /// Generation assembles persona, memory, search, instructions, workspace and
+  /// skills in that order. World Book scans just after instructions, prepends
+  /// before-persona entries, and appends after-persona entries after skills.
+  /// Memory snapshots and optional timestamps remain on user messages.
   Future<void> injectMemoryAndRecentChats(
     List<Map<String, dynamic>> apiMessages,
     Assistant? assistant, {
@@ -2142,16 +2175,12 @@ class MessageBuilderService {
     if (assistant.enableMemory) {
       final resolved = settings ?? contextProvider.read<SettingsProvider>();
       final memory = await _legacyMemoryBlock(assistant.id);
-      final currentHour = _formatCurrentHour(DateTime.now());
       final buf = StringBuffer(memory);
       final template = resolved.resolvedMemoryPromptLang == MemoryPromptLang.zh
           ? resolved.legacyMemoryPromptZh
           : resolved.legacyMemoryPromptEn;
       buf.writeln(
-        template.replaceAll(
-          MemoryPrompts.legacyCurrentTimePlaceholder,
-          currentHour,
-        ),
+        template.replaceAll(MemoryPrompts.legacyCurrentTimePlaceholder, ''),
       );
       _appendToSystemMessage(
         apiMessages,
@@ -2193,10 +2222,6 @@ class MessageBuilderService {
         );
       }
     }
-  }
-
-  String _formatCurrentHour(DateTime now) {
-    return '${now.year}年${now.month}月${now.day}日的${now.hour}点';
   }
 
   /// Inject search tool usage prompt into apiMessages.
@@ -2244,8 +2269,8 @@ class MessageBuilderService {
     } catch (_) {}
   }
 
-  /// Inject the workspace path / tool prompt after other system injections.
-  Future<void> injectWorkspacePrompt(
+  /// Append workspace facts and report whether they added a system section.
+  Future<bool> injectWorkspacePrompt(
     List<Map<String, dynamic>> apiMessages,
     Assistant? assistant, {
     String? conversationId,
@@ -2262,23 +2287,26 @@ class MessageBuilderService {
             runtimeProvider: contextProvider.read<WorkspaceRuntimeProvider>(),
             chatService: chatService,
           );
-      if (ctx == null) return;
+      if (ctx == null) return false;
       final environment = await environmentProvider?.loadExecutionConfig();
       final fragment = WorkspaceToolsService.buildPromptFragment(
         ctx,
         environmentVariableNames: environment?.variables.keys ?? const [],
       );
-      if (fragment.trim().isEmpty) return;
+      if (fragment.trim().isEmpty) return false;
       _appendToSystemMessage(
         apiMessages,
         fragment,
         source: ContextSource.workspace,
       );
-    } catch (_) {}
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Inject the `<available_skills>` list after the workspace prompt.
-  Future<void> injectSkillsPrompt(
+  Future<bool> injectSkillsPrompt(
     List<Map<String, dynamic>> apiMessages,
     Assistant? assistant, {
     String? conversationId,
@@ -2298,7 +2326,7 @@ class MessageBuilderService {
         assistant,
         conversationOverride: override,
       );
-      if (skills.isEmpty) return;
+      if (skills.isEmpty) return false;
       final skillsModelRoot =
           workspaceContext?.paths.modelSkillsDir ?? '/skills';
       final fragment = buildAvailableSkillsFragment(
@@ -2306,23 +2334,32 @@ class MessageBuilderService {
         skillsModelRoot: skillsModelRoot,
         selectedSkillIds: override ?? assistant?.skillIds ?? const [],
       );
-      if (fragment.trim().isEmpty) return;
+      if (fragment.trim().isEmpty) return false;
       _appendToSystemMessage(
         apiMessages,
         fragment,
         source: ContextSource.skills,
       );
-    } catch (_) {}
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
-  /// Inject world book (lorebook) entries into apiMessages.
+  /// Scan once and inject the activated entries at their chosen positions.
+  /// Generation defers only the after-persona text until workspace and skills
+  /// are present. Detached and compression requests can place it immediately.
   Future<void> injectWorldBookPrompts(
     List<Map<String, dynamic>> apiMessages,
     String? assistantId, {
     Conversation? conversation,
     bool conversationScoped = false,
     List<ChatMessage>? sourceMessages,
+    // Historical summaries evaluate only their supplied range, without live
+    // activation timers or an expansion back into the current conversation.
+    bool restrictToSourceMessages = false,
     bool persistActivation = true,
+    void Function(String content)? deferAfterSystemPrompt,
     void Function(int before, int after)? onActivationPersisted,
   }) async {
     final compressionDefaults = contextProvider
@@ -2346,7 +2383,7 @@ class MessageBuilderService {
           ? null
           : chatService.getConversation(conversation.id) ?? conversation;
       final rawState = latest?.extras[WorldBookActivation.extrasKey];
-      final previous = rawState is Map
+      final previous = !restrictToSourceMessages && rawState is Map
           ? Map<String, dynamic>.from(rawState)
           : <String, dynamic>{};
       bool isChatMessage(ChatMessage message) =>
@@ -2366,6 +2403,7 @@ class MessageBuilderService {
       // selected conversation through this request's last message, including on
       // regeneration; future messages and the empty reply placeholder do not count.
       if (usesTiming &&
+          !restrictToSourceMessages &&
           conversation != null &&
           historyMessages != null &&
           chatService.initialized) {
@@ -2525,111 +2563,21 @@ class MessageBuilderService {
         byPosition.putIfAbsent(t.position, () => <WorldBookEntry>[]).add(t);
       }
 
-      // BEFORE/AFTER_SYSTEM_PROMPT: merge into system message.
-      final beforeContent = joinContents(
-        byPosition[WorldBookInjectionPosition.beforeSystemPrompt] ??
-            const <WorldBookEntry>[],
+      _mergeWorldBookSystemPrompt(
+        apiMessages,
+        joinContents(
+          byPosition[WorldBookInjectionPosition.beforeSystemPrompt] ?? const [],
+        ),
+        position: WorldBookInjectionPosition.beforeSystemPrompt,
       );
       final afterContent = joinContents(
-        byPosition[WorldBookInjectionPosition.afterSystemPrompt] ??
-            const <WorldBookEntry>[],
+        byPosition[WorldBookInjectionPosition.afterSystemPrompt] ?? const [],
       );
-
-      if (beforeContent.isNotEmpty || afterContent.isNotEmpty) {
-        final systemIndex = apiMessages.indexWhere(
-          (m) => (m['role'] ?? '').toString() == 'system',
-        );
-        if (systemIndex >= 0) {
-          final original = (apiMessages[systemIndex]['content'] ?? '')
-              .toString();
-          final sb = StringBuffer();
-          if (beforeContent.isNotEmpty) {
-            sb.write(beforeContent);
-            sb.write('\n');
-          }
-          sb.write(original);
-          if (afterContent.isNotEmpty) {
-            sb.write('\n');
-            sb.write(afterContent);
-          }
-          apiMessages[systemIndex]['content'] = sb.toString();
-          final sysMsg = apiMessages[systemIndex];
-          if (beforeContent.isNotEmpty) {
-            ContextSegmentTags.prepend(
-              sysMsg,
-              source: ContextSource.worldBook,
-              length: beforeContent.length + 1,
-              meta: {
-                'position': WorldBookInjectionPosition.beforeSystemPrompt
-                    .toJson(),
-              },
-            );
-          }
-          if (afterContent.isNotEmpty) {
-            ContextSegmentTags.append(
-              sysMsg,
-              source: ContextSource.worldBook,
-              length: 1 + afterContent.length,
-              meta: {
-                'position': WorldBookInjectionPosition.afterSystemPrompt
-                    .toJson(),
-              },
-            );
-          }
+      if (afterContent.isNotEmpty) {
+        if (deferAfterSystemPrompt != null) {
+          deferAfterSystemPrompt(afterContent);
         } else {
-          final sb = StringBuffer();
-          if (beforeContent.isNotEmpty) sb.write(beforeContent);
-          if (afterContent.isNotEmpty) {
-            if (sb.isNotEmpty) sb.write('\n');
-            sb.write(afterContent);
-          }
-          if (sb.isNotEmpty) {
-            final created = <String, dynamic>{
-              'role': 'system',
-              'content': sb.toString(),
-            };
-            if (beforeContent.isNotEmpty && afterContent.isNotEmpty) {
-              ContextSegmentTags.write(created, [
-                ContextSegmentTags.item(
-                  source: ContextSource.worldBook,
-                  length: beforeContent.length + 1,
-                  meta: {
-                    'position': WorldBookInjectionPosition.beforeSystemPrompt
-                        .toJson(),
-                  },
-                ),
-                ContextSegmentTags.item(
-                  source: ContextSource.worldBook,
-                  length: afterContent.length,
-                  meta: {
-                    'position': WorldBookInjectionPosition.afterSystemPrompt
-                        .toJson(),
-                  },
-                ),
-              ]);
-            } else if (beforeContent.isNotEmpty) {
-              ContextSegmentTags.replaceWithSingle(
-                created,
-                source: ContextSource.worldBook,
-                length: beforeContent.length,
-                meta: {
-                  'position': WorldBookInjectionPosition.beforeSystemPrompt
-                      .toJson(),
-                },
-              );
-            } else {
-              ContextSegmentTags.replaceWithSingle(
-                created,
-                source: ContextSource.worldBook,
-                length: afterContent.length,
-                meta: {
-                  'position': WorldBookInjectionPosition.afterSystemPrompt
-                      .toJson(),
-                },
-              );
-            }
-            apiMessages.insert(0, created);
-          }
+          appendWorldBookAfterPrompt(apiMessages, afterContent);
         }
       }
 
@@ -2650,11 +2598,19 @@ class MessageBuilderService {
         );
       }
 
-      // BOTTOM_OF_CHAT: insert before last message.
+      // World Book chat entries stay behind leading system messages, even in
+      // an empty conversation preview where there is no real last turn yet.
+      final historyStart = apiMessages
+          .takeWhile((message) => message['role'] == 'system')
+          .length;
+      // BOTTOM_OF_CHAT: insert before the last chat message.
       final bottomInjections =
           byPosition[WorldBookInjectionPosition.bottomOfChat];
       if (bottomInjections != null && bottomInjections.isNotEmpty) {
-        var insertIndex = apiMessages.isEmpty ? 0 : (apiMessages.length - 1);
+        var insertIndex = (apiMessages.length - 1).clamp(
+          historyStart,
+          apiMessages.length,
+        );
         insertIndex = findSafeInsertIndex(apiMessages, insertIndex);
         apiMessages.insertAll(
           insertIndex,
@@ -2677,9 +2633,6 @@ class MessageBuilderService {
         final depths = byDepth.keys.toList(growable: false)
           ..sort((a, b) => b.compareTo(a));
         final originalLength = apiMessages.length;
-        final historyStart = apiMessages
-            .takeWhile((message) => message['role'] == 'system')
-            .length;
         var insertedCount = 0;
 
         for (final depth in depths) {
@@ -2699,6 +2652,65 @@ class MessageBuilderService {
         }
       }
     } catch (_) {}
+  }
+
+  /// Keep the original single newline beside the persona when there is no
+  /// intervening workspace or skills section. New sections use a blank line.
+  void appendWorldBookAfterPrompt(
+    List<Map<String, dynamic>> apiMessages,
+    String content, {
+    bool afterNewSection = false,
+  }) {
+    _mergeWorldBookSystemPrompt(
+      apiMessages,
+      content,
+      position: WorldBookInjectionPosition.afterSystemPrompt,
+      separator: afterNewSection ? '\n\n' : '\n',
+    );
+  }
+
+  void _mergeWorldBookSystemPrompt(
+    List<Map<String, dynamic>> apiMessages,
+    String content, {
+    required WorldBookInjectionPosition position,
+    String separator = '\n',
+  }) {
+    if (content.isEmpty) return;
+    final meta = {'position': position.toJson()};
+    final index = apiMessages.indexWhere(
+      (message) => message['role'] == 'system',
+    );
+    if (index < 0) {
+      final message = <String, dynamic>{'role': 'system', 'content': content};
+      ContextSegmentTags.replaceWithSingle(
+        message,
+        source: ContextSource.worldBook,
+        length: content.length,
+        meta: meta,
+      );
+      apiMessages.insert(0, message);
+      return;
+    }
+    final message = apiMessages[index];
+    final original = message['content'] ?? '';
+    final length = content.length + separator.length;
+    if (position == WorldBookInjectionPosition.beforeSystemPrompt) {
+      message['content'] = '$content$separator$original';
+      ContextSegmentTags.prepend(
+        message,
+        source: ContextSource.worldBook,
+        length: length,
+        meta: meta,
+      );
+    } else {
+      message['content'] = '$original$separator$content';
+      ContextSegmentTags.append(
+        message,
+        source: ContextSource.worldBook,
+        length: length,
+        meta: meta,
+      );
+    }
   }
 
   /// Helper to append content to the system message (or create one if missing).

@@ -1,10 +1,14 @@
+import 'package:Kelivo/utils/utf16_safe_cut.dart';
+import '../models/carried_original.dart';
+import '../models/attachment_retention.dart';
 import 'compression_repository.dart';
 import 'extension_entity_store.dart';
 import '../models/compression_config.dart';
 import '../models/image_context.dart';
 import '../utils/chat_image_result.dart';
+import '../utils/conversation_fork_title.dart';
 import '../models/quote_ref.dart';
-import 'package:Kelivo/utils/utf16_safe_cut.dart';
+import '../../features/chat/models/conversation_find_candidate.dart';
 import 'package:Kelivo/features/search/utils/searchable_text.dart';
 import 'package:Kelivo/features/intelligent_ui/storage/ui_search_index.dart';
 import 'package:Kelivo/features/intelligent_ui/text/ui_search_text.dart';
@@ -34,6 +38,7 @@ import 'package:uuid/uuid.dart';
 
 import '../models/chat_message.dart';
 import '../models/context_operation.dart';
+import '../models/context_operation_summary.dart';
 import '../models/compress_context_options.dart';
 import '../models/token_usage.dart';
 import '../models/conversation.dart';
@@ -50,6 +55,7 @@ import 'app_database.dart';
 import 'empty_database_recovery_guard.dart';
 import 'empty_database_permission.dart';
 import 'message_timeline_index.dart';
+import 'context_operation_index.dart';
 import 'business_data.dart';
 import 'business_repository.dart';
 import 'chat_database_observer.dart';
@@ -194,6 +200,9 @@ class ChatDatabaseRepository {
   final AppDatabase _db;
   late final compression = CompressionRepository(ExtensionEntityStore(_db));
   late final _timelineIndex = MessageTimelineIndex(_db);
+  late final _contextIndex = ContextOperationIndex(_db);
+  ({String id, String revision, List<ContextOperation> operations})?
+  _contextOperationCache;
   final Zone _lifetimeZone = Zone.current;
   late final UiStateRepository genUiStates = UiStateRepository(
     _db,
@@ -338,6 +347,9 @@ class ChatDatabaseRepository {
       database.execute('BEGIN IMMEDIATE;');
       try {
         for (final sql in MessageTimelineIndex.discardStatements) {
+          database.execute(sql);
+        }
+        for (final sql in ContextOperationIndex.discardStatements) {
           database.execute(sql);
         }
         GenUiDerivedSchema.discard(database);
@@ -760,6 +772,9 @@ class ChatDatabaseRepository {
       database.execute('BEGIN IMMEDIATE;');
       try {
         for (final sql in MessageTimelineIndex.discardStatements) {
+          database.execute(sql);
+        }
+        for (final sql in ContextOperationIndex.discardStatements) {
           database.execute(sql);
         }
         database.execute(
@@ -2744,6 +2759,7 @@ class ChatDatabaseRepository {
             .get();
         return getMessagesByIds(
           rows.reversed.map((r) => r.read<String>('revision_id')).toList(),
+          background: true,
         );
       }),
       resultCount: (rows) => rows.length,
@@ -2866,192 +2882,121 @@ class ChatDatabaseRepository {
     ];
   }
 
-  /// Searches the selected visible revision of each message group.
-  ///
-  /// SQLite `LOWER` / `INSTR` only fold ASCII case. Non-ASCII case variants
-  /// (for example Greek or Cyrillic) are not matched; this path does not load
-  /// ICU.
-  Future<List<MiniMapSearchHit>> searchMiniMapMatches(
+  /// Locates regeneration's source mutations without reading message parts or
+  /// projecting the whole conversation. Only truncation needs the tail groups.
+  Future<({String? targetGroupId, Set<String> removedGroups})>
+  getRegenerationSourceGroups(
     String conversationId,
-    String query, {
-    int snippetRadius = 40,
-    int snippetLength = 120,
-  }) {
-    return _observer.measure(
-      ChatDatabaseOperation.querySearch,
-      () => _searchMiniMapMatches(
-        conversationId,
-        query,
-        snippetRadius: snippetRadius,
-        snippetLength: snippetLength,
-      ),
-      resultCount: (rows) => rows.length,
-    );
-  }
-
-  Future<List<MiniMapSearchHit>> _searchMiniMapMatches(
-    String conversationId,
-    String query, {
-    required int snippetRadius,
-    required int snippetLength,
-  }) async {
-    final needle = query.trim().toLowerCase();
-    if (needle.isEmpty) return const <MiniMapSearchHit>[];
-    await _genUiSearch.ensure();
-    return _db.transaction(() async {
-      final radius = snippetRadius < 0 ? 0 : snippetRadius;
-      final length = miniMapSnippetLength(
-        needleLength: needle.length,
-        snippetRadius: snippetRadius,
-        snippetLength: snippetLength,
-      );
-      final rows = await _db
+    String revisionId, {
+    required bool assistantAsNewReply,
+    required bool deleteTrailingMessages,
+  }) => _db.transaction(() async {
+    await _timelineIndex.ensureConversation(conversationId);
+    final anchor = await _db
+        .customSelect(
+          'SELECT g.group_id,g.anchor_order FROM timeline_revision_rows r '
+          'JOIN timeline_group_rows g ON g.conversation_id=r.conversation_id AND g.group_id=r.group_id '
+          'WHERE r.conversation_id=? AND r.revision_id=?',
+          variables: [
+            Variable<String>(conversationId),
+            Variable<String>(revisionId),
+          ],
+        )
+        .getSingleOrNull();
+    if (anchor == null) return (targetGroupId: null, removedGroups: <String>{});
+    final rows = await _db
+        .customSelect(
+          'SELECT g.group_id,g.anchor_order,m.id,m.role FROM timeline_group_rows g '
+          'LEFT JOIN timeline_selection_rows s ON s.conversation_id=g.conversation_id AND s.group_id=g.group_id '
+          'JOIN message_rows m ON m.id=${MessageTimelineIndex.selectedRevision('g')} '
+          'WHERE g.conversation_id=? AND (g.anchor_order,g.group_id)>=(?,?) '
+          'ORDER BY g.anchor_order,g.group_id LIMIT 2',
+          variables: [
+            Variable<String>(conversationId),
+            Variable<int>(anchor.read<int>('anchor_order')),
+            Variable<String>(anchor.read<String>('group_id')),
+          ],
+        )
+        .get();
+    if (rows.isEmpty || rows.first.read<String>('id') != revisionId) {
+      return (targetGroupId: null, removedGroups: <String>{});
+    }
+    var keep = rows.first;
+    String? target;
+    if (keep.read<String>('role') == 'assistant') {
+      if (!assistantAsNewReply) target = keep.read<String>('group_id');
+    } else if (rows.length > 1 && rows[1].read<String>('role') == 'assistant') {
+      keep = rows[1];
+      target = keep.read<String>('group_id');
+    }
+    final removed = <String>{};
+    if (deleteTrailingMessages) {
+      final tail = await _db
           .customSelect(
-            '''
-          WITH group_rows AS (
-            SELECT
-              COALESCE(m.group_id, m.id) AS group_id,
-              MIN(m.message_order) AS anchor_order,
-              MAX(m.version) AS latest_version
-            FROM message_rows m
-            WHERE m.conversation_id = ?
-            GROUP BY COALESCE(m.group_id, m.id)
-          ),
-          selections AS (
-            SELECT j.key AS group_id, CAST(j.value AS INTEGER) AS version
-            FROM conversation_rows c, json_each(c.version_selections_json) j
-            WHERE c.id = ?
-          ),
-          ranked AS (
-            SELECT
-              m.id,
-              m.role,
-              COALESCE(m.group_id, m.id) AS group_id,
-              g.anchor_order,
-              ROW_NUMBER() OVER (
-                PARTITION BY g.group_id
-                ORDER BY
-                  CASE
-                    WHEN m.version = COALESCE(s.version, g.latest_version)
-                    THEN 0 ELSE 1
-                  END,
-                  m.version DESC,
-                  m.message_order DESC,
-                  m.id DESC
-              ) AS version_rank
-            FROM group_rows g
-            JOIN message_rows m
-              ON m.conversation_id = ?
-             AND COALESCE(m.group_id, m.id) = g.group_id
-            LEFT JOIN selections s ON s.group_id = g.group_id
-          ),
-          text_bodies AS (
-            SELECT revision_id, GROUP_CONCAT(payload, '') AS txt
-            FROM (
-              SELECT p.revision_id AS revision_id, p.payload AS payload
-              FROM message_part_rows p
-              WHERE p.conversation_id = ?
-                AND p.kind = 'text'
-              ORDER BY p.revision_id, p.ordinal
-            )
-            GROUP BY revision_id
-          ),
-          params AS (
-            SELECT ? AS needle, ? AS radius, ? AS snippet_len
-          )
-          SELECT
-            ranked.id AS message_id,
-            CASE WHEN ranked.role='assistant' AND INSTR(t.txt, 'kelivo-ui') > 0 THEN t.txt END AS message_content,
-            (LENGTH(t.txt) - LENGTH(REPLACE(LOWER(t.txt), p.needle, '')))
-              / LENGTH(p.needle) AS match_count,
-            SUBSTR(
-              t.txt,
-              MAX(1, INSTR(LOWER(t.txt), p.needle) - p.radius),
-              p.snippet_len
-            ) AS snippet,
-            MAX(1, INSTR(LOWER(t.txt), p.needle) - p.radius) AS snippet_start
-          FROM ranked
-          JOIN text_bodies t ON t.revision_id = ranked.id
-          CROSS JOIN params p
-          WHERE ranked.version_rank = 1
-            AND ranked.role IN ('user', 'assistant')
-            AND (INSTR(LOWER(t.txt), p.needle) > 0 OR EXISTS (
-              SELECT 1 FROM gen_ui_surface_state_rows u WHERE u.revision_id=ranked.id
-                AND INSTR(LOWER(u.search_text), p.needle) > 0
-            ))
-          ORDER BY ranked.anchor_order, ranked.group_id;
-          ''',
+            'SELECT group_id FROM timeline_group_rows WHERE conversation_id=? '
+            'AND (anchor_order,group_id)>(?,?) ORDER BY anchor_order,group_id',
             variables: [
               Variable<String>(conversationId),
-              Variable<String>(conversationId),
-              Variable<String>(conversationId),
-              Variable<String>(conversationId),
-              Variable<String>(needle),
-              Variable<int>(radius),
-              Variable<int>(length),
+              Variable<int>(keep.read<int>('anchor_order')),
+              Variable<String>(keep.read<String>('group_id')),
             ],
-            readsFrom: {
-              _db.conversationRows,
-              _db.messageRows,
-              _db.messagePartRows,
-              _db.genUiSurfaceStateRows,
-            },
           )
           .get();
-      final projections = await _searchTextForCandidates({
-        for (final row in rows)
-          if (row.readNullable<String>('message_content') != null)
-            row.read<String>('message_id'),
-      });
-      final result = <MiniMapSearchHit>[];
-      for (final row in rows) {
-        final id = row.read<String>('message_id');
-        final projection = projections[id];
-        if (projection == null) {
-          result.add(
-            MiniMapSearchHit(
-              messageId: id,
-              matchCount: row.read<int>('match_count'),
-              snippet: row.readNullable<String>('snippet') ?? '',
-              snippetStart: row.read<int>('snippet_start') - 1,
+      removed.addAll(tail.map((row) => row.read<String>('group_id')));
+    }
+    return (targetGroupId: target, removedGroups: removed);
+  });
+
+  /// Read only this conversation's visible revisions, in timeline order.
+  /// Visual substitutions and Unicode folds make raw-text LIKE filters lossy.
+  Stream<List<ConversationFindCandidate>> conversationFindCandidates(
+    String conversationId,
+  ) async* {
+    await _timelineIndex.ensureConversation(conversationId);
+    await _genUiSearch.ensure();
+    const batchSize = 48;
+    (int, String)? cursor;
+    while (true) {
+      final after = cursor;
+      final batch = await _db.transaction(() async {
+        final rows = await _db
+            .customSelect(
+              'SELECT g.anchor_order,g.group_id,m.id FROM timeline_group_rows g '
+              'LEFT JOIN timeline_selection_rows s ON s.conversation_id=g.conversation_id AND s.group_id=g.group_id '
+              'JOIN message_rows m ON m.id=${MessageTimelineIndex.selectedRevision('g')} '
+              "WHERE g.conversation_id=? AND m.role IN ('user','assistant') "
+              "${after == null ? '' : 'AND (g.anchor_order,g.group_id)>(?,?) '} "
+              'ORDER BY g.anchor_order,g.group_id LIMIT ?',
+              variables: [
+                Variable<String>(conversationId),
+                if (after != null) ...[
+                  Variable<int>(after.$1),
+                  Variable<String>(after.$2),
+                ],
+                Variable<int>(batchSize),
+              ],
+            )
+            .get();
+        if (rows.isEmpty) return <ConversationFindCandidate>[];
+        cursor = (
+          rows.last.read<int>('anchor_order'),
+          rows.last.read<String>('group_id'),
+        );
+        final ids = rows.map((r) => r.read<String>('id')).toList();
+        final messages = await getMessagesByIds(ids);
+        final surfaces = await _genUiSearch.read(ids);
+        return [
+          for (final message in messages)
+            ConversationFindCandidate(
+              message,
+              surfaces: surfaces[message.id] ?? const {},
             ),
-          );
-          continue;
-        }
-        // Match SQLite's existing ASCII case-folding without changing UTF-16
-        // offsets (some Unicode lowercase mappings change string length).
-        final lower = projection.text.replaceAllMapped(
-          RegExp('[A-Z]'),
-          (m) => m[0]!.toLowerCase(),
-        );
-        final matches = RegExp(
-          RegExp.escape(needle),
-        ).allMatches(lower).toList();
-        if (matches.isEmpty) {
-          continue; // DSL-only candidates are not visible hits.
-        }
-        final offset = matches.first.start;
-        final from = utf16SafeTailStart(
-          projection.text,
-          (offset - radius).clamp(0, projection.text.length),
-        );
-        final to = utf16SafeHeadEnd(
-          projection.text,
-          (from + length).clamp(from, projection.text.length),
-        );
-        result.add(
-          MiniMapSearchHit(
-            messageId: id,
-            matchCount: matches.length,
-            snippet: projection.text.substring(from, to),
-            snippetStart: from,
-            searchableText: projection.text,
-            matchedSurfaceKey: projection.surfaceAt(offset),
-          ),
-        );
-      }
-      return result;
-    });
+        ];
+      });
+      if (batch.isEmpty) return;
+      yield batch;
+      if (batch.length < batchSize) return;
+    }
   }
 
   Future<Set<String>> getMessageIdsForGroups(
@@ -3226,7 +3171,10 @@ class ChatDatabaseRepository {
     });
   }
 
-  Future<List<ChatMessage>> getMessagesByIds(List<String> ids) async {
+  Future<List<ChatMessage>> getMessagesByIds(
+    List<String> ids, {
+    bool background = false,
+  }) async {
     if (ids.isEmpty) return const <ChatMessage>[];
     return _observer.measure(
       ChatDatabaseOperation.queryMessagesByIds,
@@ -3243,7 +3191,10 @@ class ChatDatabaseRepository {
           final rows = await (_db.select(
             _db.messageRows,
           )..where((t) => t.id.isIn(batch))).get();
-          for (final message in await _messagesFromRowsWithParts(rows)) {
+          for (final message in await _messagesFromRowsWithParts(
+            rows,
+            background: background,
+          )) {
             byId[message.id] = message;
           }
         }
@@ -3926,6 +3877,12 @@ class ChatDatabaseRepository {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(id) DO UPDATE SET
         content_hash = excluded.content_hash,
+        extras_json = CASE WHEN asset_rows.path != excluded.path THEN
+          json_set(asset_rows.extras_json, '\$.localPaths',
+            json((SELECT json_group_array(value) FROM (
+              SELECT DISTINCT value FROM json_each(
+                coalesce(json_extract(asset_rows.extras_json, '\$.localPaths'), '[]'))
+              UNION SELECT asset_rows.path)))) ELSE asset_rows.extras_json END,
         path = excluded.path,
         byte_size = excluded.byte_size,
         width = excluded.width,
@@ -3992,6 +3949,12 @@ class ChatDatabaseRepository {
             created_at, last_referenced_at
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           ON CONFLICT(id) DO UPDATE SET
+        extras_json = CASE WHEN asset_rows.path != excluded.path THEN
+          json_set(asset_rows.extras_json, '\$.localPaths',
+            json((SELECT json_group_array(value) FROM (
+              SELECT DISTINCT value FROM json_each(
+                coalesce(json_extract(asset_rows.extras_json, '\$.localPaths'), '[]'))
+              UNION SELECT asset_rows.path)))) ELSE asset_rows.extras_json END,
             path = excluded.path,
             byte_size = excluded.byte_size,
             width = excluded.width,
@@ -4044,6 +4007,34 @@ class ChatDatabaseRepository {
     );
   }
 
+  Future<int> getAttachmentRetentionDays() async => AttachmentRetention.days(
+    await BusinessRepository(
+      _db,
+    ).getPreference(AttachmentRetention.preferenceKey),
+  );
+
+  /// Shift queued deadlines by the policy change, preserving time already spent
+  /// waiting. Apply the policy atomically before scheduling new candidates.
+  Future<void> applyAttachmentRetention(int days) => _db.transaction(() async {
+    const key = 'asset_gc_retention_days';
+    final row = await (_db.select(
+      _db.chatStorageMetaRows,
+    )..where((row) => row.key.equals(key))).getSingleOrNull();
+    final previous = AttachmentRetention.days(int.tryParse(row?.value ?? ''));
+    if (previous != days) {
+      await _db.customStatement(
+        'UPDATE asset_gc_rows SET not_before = not_before + ?, '
+        'generation = generation + 1;',
+        [Duration(days: days - previous).inMicroseconds],
+      );
+    }
+    await _db
+        .into(_db.chatStorageMetaRows)
+        .insertOnConflictUpdate(
+          ChatStorageMetaRowsCompanion.insert(key: key, value: '$days'),
+        );
+  });
+
   Future<int> scheduleUnreferencedAssetGc({required DateTime notBefore}) async {
     await _db.customStatement(
       '''
@@ -4063,13 +4054,42 @@ class ChatDatabaseRepository {
     return row.read<int>('changed');
   }
 
+  Future<bool> hasActiveGenerations() async =>
+      await _db
+          .customSelect(
+            'SELECT 1 FROM message_rows WHERE is_streaming = 1 LIMIT 1;',
+          )
+          .getSingleOrNull() !=
+      null;
+
+  Future<bool> hasDueAssetGc() async =>
+      await _db
+          .customSelect(
+            'SELECT 1 FROM asset_gc_rows WHERE not_before <= ? LIMIT 1;',
+            variables: [
+              Variable<int>(DateTime.now().toUtc().microsecondsSinceEpoch),
+            ],
+          )
+          .getSingleOrNull() !=
+      null;
+
   Future<List<AssetGcCandidate>> claimAssetGc({
     required DateTime now,
     int limit = 50,
     @visibleForTesting int maxScan = 500,
+    bool generationActive = false,
+    Set<String> protectedPaths = const {},
   }) async {
     if (limit <= 0) return const <AssetGcCandidate>[];
     return _db.transaction(() async {
+      if (generationActive || await hasActiveGenerations()) {
+        return const <AssetGcCandidate>[];
+      }
+      final heldPaths = jsonEncode(protectedPaths.toList());
+      const heldFilter =
+          "AND NOT EXISTS (SELECT 1 FROM json_each(?) held "
+          "WHERE held.value = a.path OR held.value IN "
+          "(SELECT value FROM json_each(a.extras_json, '\$.localPaths')))";
       // Page candidates with keyset pagination, then ask SQLite once per page
       // whether any dirty text references those paths (set-based instr). Never
       // pull the full dirty payload corpus into Dart.
@@ -4089,6 +4109,7 @@ class ChatDatabaseRepository {
             SELECT g.asset_id, a.path, g.not_before FROM asset_gc_rows g
             JOIN asset_rows a ON a.id = g.asset_id
             WHERE g.not_before <= ?
+              $heldFilter
               AND NOT EXISTS (
                 SELECT 1 FROM message_asset_rows r
                 WHERE r.asset_id = g.asset_id
@@ -4098,6 +4119,7 @@ class ChatDatabaseRepository {
           ''',
                 variables: [
                   Variable<int>(now.microsecondsSinceEpoch),
+                  Variable<String>(heldPaths),
                   Variable<int>(pageSize),
                 ],
               )
@@ -4109,6 +4131,7 @@ class ChatDatabaseRepository {
             SELECT g.asset_id, a.path, g.not_before FROM asset_gc_rows g
             JOIN asset_rows a ON a.id = g.asset_id
             WHERE g.not_before <= ?
+              $heldFilter
               AND NOT EXISTS (
                 SELECT 1 FROM message_asset_rows r
                 WHERE r.asset_id = g.asset_id
@@ -4122,6 +4145,7 @@ class ChatDatabaseRepository {
           ''',
                 variables: [
                   Variable<int>(now.microsecondsSinceEpoch),
+                  Variable<String>(heldPaths),
                   Variable<int>(cursorNotBefore),
                   Variable<int>(cursorNotBefore),
                   Variable<String>(cursorAssetId!),
@@ -4179,7 +4203,7 @@ class ChatDatabaseRepository {
       }
       final rows = await _db.customSelect(
         '''
-            SELECT a.id, a.path, a.thumbnail_path, a.byte_size, g.generation
+            SELECT a.id, a.path, a.thumbnail_path, a.byte_size, a.extras_json, g.generation
             FROM asset_gc_rows g JOIN asset_rows a ON a.id = g.asset_id
             WHERE a.id IN (${List.filled(ids.length, '?').join(',')})
             ORDER BY g.not_before, a.id;
@@ -4194,6 +4218,7 @@ class ChatDatabaseRepository {
             thumbnailPath: row.readNullable<String>('thumbnail_path'),
             byteSize: row.read<int>('byte_size'),
             generation: row.read<int>('generation'),
+            additionalPaths: assetLocalPaths(row.read<String>('extras_json')),
           ),
       ];
     });
@@ -4260,6 +4285,13 @@ class ChatDatabaseRepository {
   );
 
   Future<bool> isAssetGcClaimStillValid(AssetGcCandidate candidate) async {
+    if (await hasActiveGenerations()) return false;
+    if ((await _dirtyPartProtectedAssetIds([
+      for (final path in candidate.additionalPaths)
+        (id: candidate.assetId, path: path, notBefore: 0),
+    ])).isNotEmpty) {
+      return false;
+    }
     final pathForm = candidate.path.isEmpty ? ' ' : candidate.path;
     final altForm = _alternateAssetPathForm(pathForm);
     final jsonPathForm = _jsonEscapedPathForm(pathForm);
@@ -4302,6 +4334,7 @@ class ChatDatabaseRepository {
     required int expectedGeneration,
     required String path,
     DateTime? completedAt,
+    List<String> additionalPaths = const [],
   }) async {
     // Dirty-part protection must match either stored form. Never pass '' —
     // instr(x, '') is always true and would stall GC forever.
@@ -4310,6 +4343,15 @@ class ChatDatabaseRepository {
     final jsonPathForm = _jsonEscapedPathForm(pathForm);
     final jsonAltForm = _jsonEscapedPathForm(altForm);
     return _db.transaction(() async {
+      if (await hasActiveGenerations()) return false;
+
+      if ((await _dirtyPartProtectedAssetIds([
+        for (final path in additionalPaths)
+          (id: assetId, path: path, notBefore: 0),
+      ])).isNotEmpty) {
+        return false;
+      }
+
       final claim = await _db
           .customSelect(
             '''
@@ -4656,6 +4698,26 @@ class ChatDatabaseRepository {
     await _replaceMcpServers(conversationId, serverIds ?? const []);
   });
 
+  // Call inside the transaction that inserts the fork so concurrent copies
+  // cannot claim the same suffix. Read titles only, including other assistants.
+  Future<String> _nextForkTitle(String sourceTitle) async {
+    final title = _db.conversationRows.title;
+    final rows = await (_db.selectOnly(
+      _db.conversationRows,
+    )..addColumns([title])).get();
+    return nextConversationForkTitle(
+      sourceTitle,
+      rows.map((row) => row.read(title)!),
+    );
+  }
+
+  /// Saves a newly constructed message-selection fork with an available title.
+  Future<void> putForkConversation(Conversation conversation) =>
+      _writeTransaction(() async {
+        conversation.title = await _nextForkTitle(conversation.title);
+        await putConversation(conversation);
+      });
+
   Future<Conversation?> duplicateConversation(String sourceId) async {
     await genUiStates.flush();
     return _writeTransaction(() async {
@@ -4690,6 +4752,7 @@ class ChatDatabaseRepository {
       );
       final duplicatedAt = DateTime.now();
       final duplicate = source.copyWith(
+        title: await _nextForkTitle(source.title),
         extras: ToolPermissionMode.withoutGrant(source.extras),
         id: targetId,
         createdAt: duplicatedAt,
@@ -4849,7 +4912,6 @@ class ChatDatabaseRepository {
   Future<Conversation?> forkConversationWithVersions({
     required String sourceId,
     required String targetRevisionId,
-    required String title,
     String? assistantId,
     bool preserveVersions = true,
   }) async {
@@ -4967,7 +5029,7 @@ class ChatDatabaseRepository {
             _conversationCompanion(
               Conversation(
                 id: targetId,
-                title: title,
+                title: await _nextForkTitle(source.title),
                 createdAt: now,
                 updatedAt: now,
                 assistantId: assistantId,
@@ -5735,13 +5797,15 @@ class ChatDatabaseRepository {
     }
     return _db.transaction(() async {
       await _assertContextState(conversationId, expectedContextState);
-      await readContextOperations(conversationId);
       final row =
           await (_db.select(_db.conversationRows)..where(
                 (conversation) => conversation.id.equals(conversationId),
               ))
               .getSingleOrNull();
       if (row == null) return null;
+      if (expectedContextState == null) {
+        await readContextMutationState(conversationId);
+      }
       final current = await _conversationFromRow(row, includeMessageIds: false);
       final selections = Map<String, int>.from(current.versionSelections);
       if (version == null) {
@@ -6824,6 +6888,7 @@ class ChatDatabaseRepository {
             reasoningTokens: message.reasoningTokens,
             cacheWriteTokens: message.cacheWriteTokens,
             finishUsage: message.finishUsage,
+            firstResponseMs: message.firstResponseMs,
             firstTokenMs: message.firstTokenMs,
             quotes: message.quotes,
           ),
@@ -7113,10 +7178,34 @@ class ChatDatabaseRepository {
     );
   }
 
+  Future<bool> canDeleteOtherVersions(
+    String conversationId,
+    String retainedMessageId,
+    Set<String> messageIds,
+  ) => _db.transaction(() async {
+    if (messageIds.isEmpty || messageIds.contains(retainedMessageId)) {
+      return false;
+    }
+    final window = await loadLinearMessageWindow(
+      conversationId: conversationId,
+      aroundRevisionId: retainedMessageId,
+      limit: 1,
+    );
+    final slot = window.slots.singleOrNull;
+    if (slot == null ||
+        slot.revisionId != retainedMessageId ||
+        slot.versionCount != messageIds.length + 1) {
+      return false;
+    }
+    final ids = await getMessageIdsForGroups(conversationId, {slot.groupId});
+    return ids.containsAll(messageIds);
+  });
+
   Future<DeletedMessagesResult?> deleteMessages({
     required String conversationId,
     required Set<String> messageIds,
     required Map<String, int?> versionSelectionChanges,
+    String? retainedMessageId,
     String? expectedContextState,
   }) {
     return _observer.measure(
@@ -7127,6 +7216,7 @@ class ChatDatabaseRepository {
           conversationId: conversationId,
           messageIds: messageIds,
           versionSelectionChanges: versionSelectionChanges,
+          retainedMessageId: retainedMessageId,
         );
       },
     );
@@ -7136,6 +7226,7 @@ class ChatDatabaseRepository {
     required String conversationId,
     required Set<String> messageIds,
     required Map<String, int?> versionSelectionChanges,
+    String? retainedMessageId,
     String? expectedContextState,
   }) async {
     if (messageIds.isEmpty) return null;
@@ -7163,6 +7254,16 @@ class ChatDatabaseRepository {
           .where((row) => messageIds.contains(row.id))
           .toList(growable: false);
       if (deletedRows.isEmpty) return null;
+      // Only inactive siblings may be removed without invalidating context.
+      // Recheck the confirmed set and selection inside the write transaction.
+      if (retainedMessageId != null &&
+          !await canDeleteOtherVersions(
+            conversationId,
+            retainedMessageId,
+            messageIds,
+          )) {
+        return null;
+      }
       if (deletedRows.length != messageIds.length) {
         throw StateError('delete_messages_not_found');
       }
@@ -7211,17 +7312,19 @@ class ChatDatabaseRepository {
       await _revokeContextForGroups(
         conversationId,
         {
-          for (final row in deletedRows) row.groupId ?? row.id,
+          if (retainedMessageId == null)
+            for (final row in deletedRows) row.groupId ?? row.id,
           ...versionSelectionChanges.keys,
         },
         removedGroups: {
-          for (final row in deletedRows)
-            if (!remainingRows.any(
-              (remaining) =>
-                  (remaining.groupId ?? remaining.id) ==
-                  (row.groupId ?? row.id),
-            ))
-              row.groupId ?? row.id,
+          if (retainedMessageId == null)
+            for (final row in deletedRows)
+              if (!remainingRows.any(
+                (remaining) =>
+                    (remaining.groupId ?? remaining.id) ==
+                    (row.groupId ?? row.id),
+              ))
+                row.groupId ?? row.id,
         },
       );
       final deletedIds = deletedRows
@@ -7286,7 +7389,9 @@ class ChatDatabaseRepository {
         truncateIndex: -1,
         messageIds: orderedIds,
         versionSelections: selections,
-        chatSuggestions: const <String>[],
+        chatSuggestions: retainedMessageId == null
+            ? const <String>[]
+            : currentConversation.chatSuggestions,
         updatedAt: DateTime.now(),
       );
       await (_db.update(_db.conversationRows)
@@ -7962,45 +8067,63 @@ class ChatDatabaseRepository {
     return (await _messagesFromRowsWithParts([row])).single;
   }
 
-  Future<List<ChatMessage>> _messagesFromRowsWithParts(List<MessageRow> rows) =>
-      _db.transaction(() async {
-        if (rows.isEmpty) return const [];
-        final ids = rows.map((row) => row.id).toSet();
-        final parts =
-            await (_db.select(_db.messagePartRows)
-                  ..where((part) => part.revisionId.isIn(ids))
-                  ..orderBy([(part) => OrderingTerm.asc(part.ordinal)]))
-                .get();
-        final byRevision = <String, List<MessagePartRow>>{};
-        for (final part in parts) {
-          byRevision.putIfAbsent(part.revisionId, () => []).add(part);
-        }
-        final runs =
-            await (_db.select(_db.generationRunRows)
-                  ..where((run) => run.targetRevisionId.isIn(ids))
-                  ..orderBy([
-                    (run) => OrderingTerm.desc(run.createdAt),
-                    (run) => OrderingTerm.desc(run.updatedAt),
-                    (run) => OrderingTerm.desc(run.id),
-                  ]))
-                .get();
-        final generationStates = <String, GenerationRunState>{};
-        for (final run in runs) {
-          generationStates.putIfAbsent(
-            run.targetRevisionId,
-            () => GenerationRunState.fromDatabase(run.state),
-          );
-        }
-        return [
-          for (final row in rows)
-            _messageFromRow(row, authoritativeParts: byRevision[row.id])
-              ..hydrateGenerationState(generationStates[row.id]),
-        ];
-      });
+  Future<List<ChatMessage>> _messagesFromRowsWithParts(
+    List<MessageRow> rows, {
+    bool background = false,
+  }) => _db.transaction(() async {
+    if (rows.isEmpty) return const [];
+    final ids = rows.map((row) => row.id).toSet();
+    final parts =
+        await (_db.select(_db.messagePartRows)
+              ..where((part) => part.revisionId.isIn(ids))
+              ..orderBy([(part) => OrderingTerm.asc(part.ordinal)]))
+            .get();
+    final runs =
+        await (_db.select(_db.generationRunRows)
+              ..where((run) => run.targetRevisionId.isIn(ids))
+              ..orderBy([
+                (run) => OrderingTerm.desc(run.createdAt),
+                (run) => OrderingTerm.desc(run.updatedAt),
+                (run) => OrderingTerm.desc(run.id),
+              ]))
+            .get();
+    return background
+        ? _hydrateMessagesInBackground(rows, parts, runs)
+        : _hydrateMessages(rows, parts, runs);
+  });
+
+  static Future<List<ChatMessage>> _hydrateMessagesInBackground(
+    List<MessageRow> rows,
+    List<MessagePartRow> parts,
+    List<GenerationRunRow> runs,
+  ) => Isolate.run(() => _hydrateMessages(rows, parts, runs));
+
+  static List<ChatMessage> _hydrateMessages(
+    List<MessageRow> rows,
+    List<MessagePartRow> parts,
+    List<GenerationRunRow> runs,
+  ) {
+    final byRevision = <String, List<MessagePartRow>>{};
+    for (final part in parts) {
+      byRevision.putIfAbsent(part.revisionId, () => []).add(part);
+    }
+    final generationStates = <String, GenerationRunState>{};
+    for (final run in runs) {
+      generationStates.putIfAbsent(
+        run.targetRevisionId,
+        () => GenerationRunState.fromDatabase(run.state),
+      );
+    }
+    return [
+      for (final row in rows)
+        _messageFromRow(row, authoritativeParts: byRevision[row.id])
+          ..hydrateGenerationState(generationStates[row.id]),
+    ];
+  }
 
   /// Parts come only from [authoritativeParts] in ordinal order. Missing or
   /// empty parts yield empty content via the derived [ChatMessage.content].
-  ChatMessage _messageFromRow(
+  static ChatMessage _messageFromRow(
     MessageRow row, {
     List<MessagePartRow>? authoritativeParts,
   }) {
@@ -8042,6 +8165,7 @@ class ChatDatabaseRepository {
       completionTokens: row.completionTokens,
       cachedTokens: row.cachedTokens,
       durationMs: row.durationMs,
+      firstResponseMs: _tokenExtraInt(extras, _firstResponseMsExtraKey),
       firstTokenMs: _tokenExtraInt(extras, _firstTokenMsExtraKey),
       reasoningTokens: _tokenExtraInt(extras, _reasoningTokensExtraKey),
       cacheWriteTokens: _tokenExtraInt(extras, _cacheWriteTokensExtraKey),
@@ -8310,7 +8434,7 @@ class ChatDatabaseRepository {
     return _toolPayloads[part] = const <String, dynamic>{};
   }
 
-  MessagePart _hydratePart({
+  static MessagePart _hydratePart({
     required String revisionId,
     required int ordinal,
     required String kind,
@@ -8371,6 +8495,7 @@ class ChatDatabaseRepository {
           reasoningTokens: message.reasoningTokens,
           cacheWriteTokens: message.cacheWriteTokens,
           finishUsage: message.finishUsage,
+          firstResponseMs: message.firstResponseMs,
           firstTokenMs: message.firstTokenMs,
           quotes: message.quotes,
         ),
@@ -8421,7 +8546,7 @@ class ChatDatabaseRepository {
     }
   }
 
-  Map<String, dynamic> _decodeExtrasJson(String raw) {
+  static Map<String, dynamic> _decodeExtrasJson(String raw) {
     return Conversation.decodeExtras(raw);
   }
 
@@ -8429,8 +8554,9 @@ class ChatDatabaseRepository {
   static const _cacheWriteTokensExtraKey = 'tokens.cacheWrite';
   static const _finishUsageExtraKey = 'tokens.finish';
   static const _firstTokenMsExtraKey = 'timing.firstTokenMs';
+  static const _firstResponseMsExtraKey = 'timing.firstResponseMs';
 
-  int? _tokenExtraInt(Map<String, dynamic> extras, String key) {
+  static int? _tokenExtraInt(Map<String, dynamic> extras, String key) {
     final value = extras[key];
     if (value is int) return value;
     if (value is num) return value.toInt();
@@ -8454,6 +8580,7 @@ class ChatDatabaseRepository {
     int? reasoningTokens,
     int? cacheWriteTokens,
     TokenUsage? finishUsage,
+    int? firstResponseMs,
     int? firstTokenMs,
     List<QuoteRef>? quotes,
   }) {
@@ -8466,6 +8593,9 @@ class ChatDatabaseRepository {
     }
     if (finishUsage != null) {
       extras[_finishUsageExtraKey] = finishUsage.toJson();
+    }
+    if (firstResponseMs != null) {
+      extras[_firstResponseMsExtraKey] = firstResponseMs;
     }
     if (firstTokenMs != null) {
       extras[_firstTokenMsExtraKey] = firstTokenMs;
@@ -9111,40 +9241,6 @@ class ConversationSearchMatch {
   final int? maxVersion;
 }
 
-class MiniMapSearchHit {
-  const MiniMapSearchHit({
-    required this.messageId,
-    required this.matchCount,
-    required this.snippet,
-    required this.snippetStart,
-    this.searchableText,
-    this.matchedSurfaceKey,
-  });
-
-  final String messageId;
-  final int matchCount;
-  final String snippet;
-
-  /// Offset into the independent searchable text, never a Markdown selection.
-  final int snippetStart;
-  final String? searchableText;
-  final String? matchedSurfaceKey;
-}
-
-/// Grows the snippet window so the first hit is not cut mid-keyword.
-///
-/// Default radius 40 + length 120 leaves only 80 characters for the needle.
-int miniMapSnippetLength({
-  required int needleLength,
-  int snippetRadius = 40,
-  int snippetLength = 120,
-}) {
-  final radius = snippetRadius < 0 ? 0 : snippetRadius;
-  final length = snippetLength < 0 ? 0 : snippetLength;
-  final needed = radius + needleLength;
-  return length < needed ? needed : length;
-}
-
 final class ChatStatsTotals {
   const ChatStatsTotals({
     required this.messages,
@@ -9224,6 +9320,11 @@ final class ChatStatsAggregate {
   final List<ChatStatsRank> topics;
 }
 
+List<String> assetLocalPaths(String extrasJson) {
+  final value = jsonDecode(extrasJson) as Map;
+  return (value['localPaths'] as List? ?? const []).cast<String>();
+}
+
 final class AssetGcCandidate {
   const AssetGcCandidate({
     required this.assetId,
@@ -9231,7 +9332,9 @@ final class AssetGcCandidate {
     required this.thumbnailPath,
     required this.byteSize,
     required this.generation,
+    this.additionalPaths = const [],
   });
+  final List<String> additionalPaths;
   final String assetId;
   final String path;
   final String? thumbnailPath;

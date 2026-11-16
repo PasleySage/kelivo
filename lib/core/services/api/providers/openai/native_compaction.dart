@@ -1,10 +1,13 @@
+import '../../../../models/carried_original.dart';
 import '../../../network/provider_http_exception.dart';
 import 'dart:convert';
+import 'dart:isolate';
 import 'package:http/http.dart' as http;
 
 import '../../../../models/native_compaction.dart';
 import '../../../../models/provider_oauth.dart';
 import '../../../../providers/settings_provider.dart';
+import '../../carried_truncation.dart';
 import '../../chat_api_helpers.dart';
 import '../../native_compaction_context.dart';
 import '../../request_history_context.dart';
@@ -16,13 +19,14 @@ import 'openai_request_shaping.dart';
 import 'responses_decoder.dart';
 
 /// Native support is an explicit user choice, never inferred from a model name.
-Future<NativeCompactionPayload> requestNativeCompaction(
+Future<NativeCompactionResult> requestNativeCompaction(
   http.Client client,
   ProviderConfig config,
   String modelId,
   Map<String, dynamic> prepared, {
   Map<String, String>? extraHeaders,
   String? conversationId,
+  NativeUserRetention retention = NativeUserRetention.auto,
 }) async {
   final codex = config.oauthProvider == OAuthProvider.chatgpt;
   final clean = RequestHistoryContext.stripSources(prepared);
@@ -74,15 +78,17 @@ Future<NativeCompactionPayload> requestNativeCompaction(
       jsonDecode(await response.stream.bytesToString()) as Map,
     );
     throwIfInBandStreamError(jsonEncode(data));
-    return NativeCompactionPayload(
-      protocol: NativeCompactionProtocol.compact,
-      scope: nativeCompactionScope(config),
-      modelId: modelId,
-      // The entire returned window is canonical, including unknown item types.
-      output: (data['output'] as List? ?? const [])
-          .map((item) => Map<String, dynamic>.from(item as Map))
-          .toList(),
-      usage: openaiUsageFromObj(data),
+    return NativeCompactionResult(
+      payload: NativeCompactionPayload(
+        protocol: NativeCompactionProtocol.compact,
+        scope: nativeCompactionScope(config),
+        modelId: modelId,
+        // The entire returned window is canonical, including unknown item types.
+        output: (data['output'] as List? ?? const [])
+            .map((item) => Map<String, dynamic>.from(item as Map))
+            .toList(),
+        usage: openaiUsageFromObj(data),
+      ),
     );
   }
   final decoder = ResponsesStreamDecoder();
@@ -114,32 +120,72 @@ Future<NativeCompactionPayload> requestNativeCompaction(
   if (!decoder.completed || items.length != 1) {
     throw StateError('native_compaction_incomplete');
   }
-  // Codex V2 returns a compaction item, not the V1 replacement array. Keep
-  // real user items from the covered prefix within its 64K retention budget.
-  // The user-selected recent tail never enters this request or this budget.
-  final retained = <Map<String, dynamic>>[];
-  var tokens = 0;
-  for (final item
-      in (prepared['input'] as List).whereType<Map>().toList().reversed) {
-    final source = item[historySourceKey];
-    if (item['role'] != 'user' ||
-        (source is String && source.startsWith('reference:'))) {
-      continue;
-    }
-    final count = estimateRequestInput({
-      'input': [item],
-    }, ProviderKind.openai);
-    if (tokens + count > 64000) break;
-    tokens += count;
-    retained.insert(0, Map<String, dynamic>.from(item));
-  }
-  final retainedWire =
-      RequestHistoryContext.stripSources({'input': retained})['input'] as List;
-  return NativeCompactionPayload(
-    protocol: NativeCompactionProtocol.codex,
-    scope: nativeCompactionScope(config),
-    modelId: modelId,
-    output: [...retainedWire.cast<Map<String, dynamic>>(), items.single],
-    usage: decoder.usage,
+  final retained = retention == NativeUserRetention.auto
+      ? await retainCodexUsers(prepared['input'] as List)
+      : <RetainedNativeUser>[];
+  return NativeCompactionResult(
+    retained: retained,
+    payload: NativeCompactionPayload(
+      protocol: NativeCompactionProtocol.codex,
+      scope: nativeCompactionScope(config),
+      modelId: modelId,
+      output: [items.single],
+      usage: decoder.usage,
+    ),
   );
 }
+
+// Boundary fitting can repeatedly scan large text. Pass only the input data
+// to the worker, without capturing the request's HTTP client or stream.
+Future<List<RetainedNativeUser>> retainCodexUsers(List input) => Isolate.run(
+  () {
+    // Codex V2 returns a compaction item, not the V1 replacement array. Keep
+    // real user items from the covered prefix within its 64K retention budget.
+    // The user-selected recent tail never enters this request or this budget.
+    final retained = <Map<String, dynamic>>[];
+    var tokens = 0;
+    final seen = <String>{};
+    for (final item in input.whereType<Map>().toList().reversed) {
+      final source = item[historySourceKey];
+      if (item['role'] != 'user' ||
+          (source is String &&
+              (source.startsWith('reference:') ||
+                  source.startsWith('context-note:') ||
+                  (source.startsWith('context-summary:') &&
+                      item[nativeCompactionWireKey] != true)))) {
+        continue;
+      }
+      final key = source is String ? carriedSourceId(source) : source;
+      if (source is String &&
+          !source.startsWith('context-summary:') &&
+          !seen.add('$key')) {
+        continue;
+      }
+      final count = _retainedUserTokens(item);
+      if (tokens + count > 64000) {
+        final truncated = truncateCarriedText(
+          Map<String, dynamic>.from(item),
+          64000 - tokens,
+        );
+        if (truncated != null) retained.add(truncated);
+        break;
+      }
+      tokens += count;
+      retained.add(Map<String, dynamic>.from(item));
+    }
+    final ordered = retained.reversed.toList();
+    final retainedWire =
+        RequestHistoryContext.stripSources({'input': ordered})['input'] as List;
+    return [
+      for (var i = 0; i < retainedWire.length; i++)
+        (
+          sourceKey: ordered[i][historySourceKey] as String? ?? '',
+          wire: Map<String, dynamic>.from(retainedWire[i] as Map),
+        ),
+    ];
+  },
+);
+
+int _retainedUserTokens(Map item) => estimateRequestInput({
+  'input': [item],
+}, ProviderKind.openai);

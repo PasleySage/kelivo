@@ -143,6 +143,13 @@ class AppLocalizationsTr extends AppLocalizations {
       'Dosyalar yüklenemedi veya hangi görsellerin kullanımda olduğu kontrol edilemedi. Lütfen yenileyip tekrar deneyin.';
 
   @override
+  String get storageSpaceCopyErrorDetails => 'Hata ayrıntılarını kopyala';
+
+  @override
+  String get storageSpaceCopyErrorFailed =>
+      'Hata ayrıntıları kopyalanamadı. Lütfen tekrar deneyin.';
+
+  @override
   String get storageSpaceTotalLabel => 'Kullanılan';
 
   @override
@@ -788,6 +795,20 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get homePageDeleteMessageConfirm =>
       'Bu sürümü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+
+  @override
+  String get homePageDeleteOtherVersions => 'Diğer Sürümleri Sil';
+
+  @override
+  String homePageDeleteOtherVersionsConfirm(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count diğer sürüm silinecek.',
+      one: '$count diğer sürüm silinecek.',
+    );
+    return 'Mesajın bu sürümü korunsun mu? $_temp0 Bu işlem geri alınamaz.';
+  }
 
   @override
   String get homePageDeleteAllVersions => 'Tüm Sürümleri Sil';
@@ -2129,6 +2150,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get backupProgressErrorCopied => 'Hata kopyalandı';
 
   @override
+  String get backupProgressSkippedTitle =>
+      'Yedekleme atlanan öğelerle tamamlandı';
+
+  @override
+  String backupProgressSkippedMessage(int count) {
+    return 'Okunamayan dosya veya dizinler atlandı: $count. Bu yedeğe dahil edilmediler.';
+  }
+
+  @override
   String get backupProgressPreparing => 'Hazırlanıyor';
 
   @override
@@ -2473,35 +2503,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressContextDesc =>
-      'İnceleyip geri alabileceğiniz bir özet oluşturun';
+      'Daha önceki sohbeti bir özete dönüştürün. Orijinaller sohbette kalır ve istediğiniz zaman geri alabilirsiniz.';
 
   @override
-  String get clearContextDesc => 'Bir bağlam sınırı işaretleyin';
+  String get clearContextDesc =>
+      'Buradan yeni bir başlangıç yapın: önceki mesajlar sohbette kalır ancak modele gönderilmez.';
 
   @override
   String get contextManagement => 'Bağlam Yönetimi';
 
   @override
-  String get compressContextFailed => 'Bağlam sıkıştırılamadı';
+  String get compressContextFailed => 'Sıkıştırma tamamlanmadı';
 
   @override
-  String get compressContextNoMessages => 'Sıkıştırılacak mesaj yok';
+  String get compressContextNoMessages =>
+      'Bu sohbette sıkıştırılacak bir şey yok.';
 
   @override
-  String get compressContextNoConversation => 'Sıkıştırılacak sohbet yok';
+  String get compressContextNoConversation => 'Sıkıştırılacak bir sohbet yok.';
 
   @override
-  String get compressContextNoModel => 'Sıkıştırma modeli yapılandırılmamış';
+  String get compressContextNoModel =>
+      'Sıkıştırma için model ayarlanmamış. Ayarlar\'dan hızlı bir model seçin.';
 
   @override
-  String get compressContextEmptySummary => 'Sıkıştırma boş bir özet döndürdü';
+  String get compressContextEmptySummary =>
+      'Model bir özet oluşturmadı. Farklı bir model deneyin veya seçenekleri değiştirip tekrar deneyin.';
 
   @override
   String get compressContextOptionsTitle => 'Bağlamı Sıkıştır';
 
   @override
   String get compressContextOptionsDesc =>
-      'Bu sohbette düzenlenebilir ve geri alınabilir bir özet oluşturun. Orijinal mesajlar korunur.';
+      'Daha önceki mesajları bir özete dönüştürün; model bir sonraki sefer bu özeti görecek. Orijinal sohbet korunur; özeti düzenleyebilir veya geri alabilirsiniz.';
 
   @override
   String get compressContextKeepStart => 'Daha eski geçmiş';
@@ -2531,11 +2565,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressContextKeepRecentMessages => 'Son turları koru';
 
   @override
-  String get compressContextKeepCountLabel => 'Son kullanıcı mesajları';
+  String get compressContextKeepCountLabel =>
+      'Korunacak son kullanıcı mesajı sayısı';
 
   @override
   String get compressContextKeepAllMessages =>
-      'Bu sayı tüm mesajları kapsıyor — sıkıştırılacak içerik yok';
+      'Korunacak bu sayı zaten tüm sohbeti kapsıyor, sıkıştırılacak bir şey kalmadı.';
 
   @override
   String compressContextEstimatePreview(
@@ -2545,7 +2580,7 @@ class AppLocalizationsTr extends AppLocalizations {
     int maxTokens,
     int totalTokens,
   ) {
-    return '$summarized karakter özetlenecek, $kept karakter olduğu gibi korunacak → yaklaşık $minTokens–$maxTokens token (orijinal yaklaşık $totalTokens token)';
+    return '$summarized karakter özetlenecek, $kept karakter olduğu gibi korunacak. Sıkıştırma sonrası yaklaşık $minTokens–$maxTokens token (orijinal yaklaşık $totalTokens).';
   }
 
   @override
@@ -3423,7 +3458,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextUsageStateExactCalibrated =>
-      'Kesin (döküm tahminden ölçeklendi)';
+      'Toplam kesin; döküm orantılı olarak tahmin edildi';
 
   @override
   String get contextUsageStateEstimated => 'Tahmini';
@@ -3435,14 +3470,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get contextUsageStateComputing => 'Hesaplanıyor…';
 
   @override
-  String get contextUsageStateFailed => 'Hesaplama başarısız';
+  String get contextUsageStateFailed =>
+      'Kullanım hesaplanamadı. Lütfen tekrar deneyin.';
 
   @override
   String get contextUsageStateFailedWithPrevious =>
-      'Güncelleme başarısız · önceki sonuç güncel değil';
+      'Yenilenemedi. Önceki sonuç gösteriliyor; güncel olmayabilir.';
 
   @override
-  String get contextUsageUnavailable => 'Kullanım bilgisi yok';
+  String get contextUsageUnavailable => 'Kullanım şu anda görüntülenemiyor.';
+
+  @override
+  String contextUsagePartialSummary(String tokens) {
+    return '$tokens tahmin edildi, ayrıca bilinmeyen sunucu tarafı kullanımı var';
+  }
+
+  @override
+  String get contextUsageBucketNativeCompaction => 'Sunucu tarafı sıkıştırma';
+
+  @override
+  String get contextUsageUnknownTokens => 'Bilinmiyor';
+
+  @override
+  String contextUsageLastRequestInput(String tokens) {
+    return 'Modele son gönderilen gerçek miktar: $tokens';
+  }
 
   @override
   String get contextUsageStateNone => 'Henüz veri yok';
@@ -3495,7 +3547,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get contextUsageNoWindow => 'Bağlam penceresi yok';
+  String get contextUsageNoWindow => 'Henüz bağlam sınırı ayarlanmamış.';
 
   @override
   String get contextUsageSetWindow => 'Bağlam penceresini ayarla';
@@ -3814,15 +3866,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get defaultModelPageCompressModelSubtitle =>
-      'Sohbet bağlamını sıkıştırmak için kullanılır; hızlı modeller tercih edilir';
+      'Uzun sohbetleri özetlemek için kullanılan model. Genellikle hızlı bir model yeterlidir.';
 
   @override
   String get defaultModelPageCompressPromptHint =>
-      'Bağlam sıkıştırma için istem şablonunu girin';
+      'Sıkıştırma sırasında kullanılacak istemi girin.';
 
   @override
   String defaultModelPageCompressVars(String contentVar, String localeVar) {
-    return 'Değişkenler: sohbet: $contentVar, dil: $localeVar';
+    return 'Değişkenler: sohbet $contentVar, dil $localeVar';
   }
 
   @override
@@ -4975,12 +5027,37 @@ class AppLocalizationsTr extends AppLocalizations {
   String get miniMapScrollToBottomTooltip => 'En alta kaydır';
 
   @override
-  String miniMapSearchMatchCount(int count) {
-    return '$count';
+  String get conversationFindHint => 'Bul';
+
+  @override
+  String get conversationFindPrevious => 'Önceki eşleşme';
+
+  @override
+  String get conversationFindNext => 'Sonraki eşleşme';
+
+  @override
+  String get conversationFindOptions => 'Bulma seçenekleri';
+
+  @override
+  String conversationFindMatchPosition(int current, int total) {
+    return '$current/$total';
   }
 
   @override
-  String get miniMapSearchNoResults => 'Eşleşen mesaj yok';
+  String get conversationFindCaseSensitive => 'Büyük/küçük harf eşleştir';
+
+  @override
+  String get conversationFindWholeWord => 'Tam kelime';
+
+  @override
+  String get conversationFindWholeWordTooltip =>
+      'Kelime sınırları olan yazı sistemlerinde (ör. İngilizce) tam kelimeleri eşleştirir. Çince, Japonca veya Korece karakter içeren sorgular yine alt dize eşleştirmesi kullanır.';
+
+  @override
+  String get conversationFindIncludeThinking => 'Akıl yürütmeyi dahil et';
+
+  @override
+  String get conversationFindOpenTooltip => 'Sohbette bul';
 
   @override
   String get searchServicesPageApiKeyRequiredStatus => 'API Anahtarı Gerekli';
@@ -5288,7 +5365,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu kapıdan zaten geçtiniz.';
 
   @override
-  String get aboutPageAppName => 'KelivoMeow';
+  String get aboutPageAppName => 'Kelivo';
 
   @override
   String get aboutPageAppDescription => 'Açık kaynaklı AI asistanı';
@@ -5923,6 +6000,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Düşük gecikmeli akışlı transkripsiyon';
 
   @override
+  String get asrServicesDeepSeekSubtitle =>
+      'Kayıtları yazıya döker ve dili otomatik olarak algılar';
+
+  @override
   String get asrServicesGroqSubtitle => 'Whisper segmentli transkripsiyon';
 
   @override
@@ -6192,6 +6273,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ttsServicesFieldVoiceLabel => 'Ses';
 
   @override
+  String ttsServicesDeepSeekVoice(String voiceId) {
+    String _temp0 = intl.Intl.selectLogic(voiceId, {
+      'stella': 'Stella (kadın)',
+      'tide': 'Tide (erkek)',
+      'other': '$voiceId',
+    });
+    return '$_temp0';
+  }
+
+  @override
   String get ttsServicesFieldVoiceIdLabel => 'Ses Kimliği';
 
   @override
@@ -6437,27 +6528,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get imageViewerPageNextButton => 'Sonraki Görsel';
-
-  @override
-  String get imageViewerPageZoomInButton => 'Yakınlaştır';
-
-  @override
-  String get imageViewerPageZoomOutButton => 'Uzaklaştır';
-
-  @override
-  String get imageViewerPageResetZoomButton => 'Yakınlaştırmayı Sıfırla';
-
-  @override
-  String get imageViewerPageFlipHorizontalButton => 'Yatay Çevir';
-
-  @override
-  String get imageViewerPageFlipVerticalButton => 'Dikey Çevir';
-
-  @override
-  String get imageViewerPageRotateLeftButton => 'Sola Döndür';
-
-  @override
-  String get imageViewerPageRotateRightButton => 'Sağa Döndür';
 
   @override
   String imageViewerPageCounter(int index, int total) {
@@ -7596,7 +7666,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String logViewerRequestsCount(int count) {
-    return '$count istek';
+    return '$count yüklenen istek';
   }
 
   @override
@@ -8500,7 +8570,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String legacyMemoryModeCacheWarning(String token) {
-    return 'Varsayılan şablon $token aracılığıyla geçerli saati ekler, bu da önbellek isabet oranını etkiler. İhtiyacınız yoksa kaldırın.';
+    return 'Şablon hâlâ $token içeriyorsa, enjekte edilirken çıkarılır ve artık geçerli zamanla doldurulmaz. Modelin geçerli zamanı bilmesi gerekiyorsa, asistan ayarlarında \"Geçerli saati ekle\" seçeneğini açın.';
   }
 
   @override
@@ -8889,8 +8959,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String tokenDetailFirstToken(String value) {
-    return '${value}s (ilk token)';
+  String tokenDetailFirstResponse(String value) {
+    return '${value}sn (ilk yanıt)';
+  }
+
+  @override
+  String tokenDetailFirstOutput(String value) {
+    return '${value}sn (ilk çıktı)';
   }
 
   @override
@@ -9508,6 +9583,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'Temayı izler; özelleştirilemez';
 
   @override
+  String get messageStyleSettingsPageShowAssistantBodyBubble =>
+      'Asistan yanıt balonlarını göster';
+
+  @override
+  String get messageStyleSettingsPageShowAssistantBodyBubbleSubtitle =>
+      'Yanıt metnini doğrudan sohbet arka planında göstermek için kapatın';
+
+  @override
   String get messageStyleSettingsPageAssistantFitContent =>
       'Asistan balonunu içeriğe sığdır';
 
@@ -9849,6 +9932,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get toolSchemaSettingsGroupSearch => 'Arama';
+
+  @override
+  String get toolSchemaSettingsGroupImages => 'Görseller';
 
   @override
   String get toolSchemaSettingsGroupMemory => 'Bellek';
@@ -10515,6 +10601,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get workspaceEnvErrorPatchFailed => 'Sandbox kurulumu tamamlanamadı.';
+
+  @override
+  String get workspaceEnvErrorRepairInterrupted =>
+      'Sandbox onarımı kesintiye uğradı. Mevcut sandbox korundu. Onarımı tamamlamak için yeniden deneyin.';
+
+  @override
+  String get workspaceEnvErrorRepairTimeout =>
+      'Sandbox onarımı zaman aşımına uğradı. Ağ bağlantınızı kontrol edip yeniden deneyin. Mevcut sandbox korundu.';
+
+  @override
+  String get workspaceEnvRepairRestartBanner =>
+      'Sandbox onarımının zaman sınırı içinde durduğu doğrulanamadı. Yeniden denemeden önce Kelivo\'yu tamamen kapatıp yeniden açın. Mevcut sandbox korundu.';
 
   @override
   String get workspaceEnvErrorCancelled => 'Yükleme iptal edildi.';
@@ -11456,18 +11554,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get storageSpaceCategorySessionFilesHint =>
-      'Sohbet başına ekler ve çıktılar.';
+      'Çalışma alanı sohbet ekleri ve çıktıları. Sıradan sohbet yüklemeleri Görseller ve Dosyalar bölümünde listelenir.';
 
   @override
   String get storageSpaceManageSkills => 'Becerileri yönet';
 
   @override
   String get storageSessionFilesCleanOrphans =>
-      'Sohbeti olmayan dosyaları temizle';
+      'Boş ve sahipsiz klasörleri temizle';
 
   @override
   String storageSessionFilesCleanOrphansHint(String size) {
-    return 'Artık bir sohbete bağlı olmayan oturum klasörlerini siler. Geri kazanılabilir: $size.';
+    return 'Boş sohbet klasörlerini ve hiçbir sohbeti veya kalan referansı olmayan klasörleri kaldır. Sahipsiz dosyalar $size yer kaplıyor.';
   }
 
   @override
@@ -13636,7 +13734,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get backupEncryptionPasswordHint =>
-      'Bu parolayı güvenli tutun. Kaybederseniz yedek geri yüklenemez. Uygulamadan çıkana kadar yalnızca bellekte tutulur.';
+      'Bu parolayı güvenli bir yerde saklayın. Yedekleri başka bir cihazda geri yüklemek için bu parolaya ihtiyacınız olacak.';
 
   @override
   String get backupEncryptionPassword => 'Parola';
@@ -14893,14 +14991,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatInputBarQueuedPausedReason =>
-      'Sıkıştırma tamamlanmadı; gönderme duraklatılmış durumda';
+      'Sıkıştırma hâlâ sürüyor, bu nedenle otomatik gönderilmeyecek.';
 
   @override
   String get contextChanged =>
-      'Geçmiş değişti. Kapsamını gözden geçirmek için bu işlemi yeniden açın.';
+      'Sohbet değişti. Bunu yeniden açın ve devam etmeden önce aralığı onaylayın.';
 
   @override
-  String get contextOperationSuperseded => 'Sonraki bir özete dahil edildi';
+  String get contextOperationSuperseded =>
+      'Daha sonraki bir özetle değiştirildi';
 
   @override
   String get compressIncludeAttachments => 'Ek metni ve araç sonuçları';
@@ -14912,11 +15011,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressOverSnack =>
-      'Özet bağlam sınırını aşacaktı ve uygulanmadı.';
+      'Özet hâlâ çok uzun ve sınırı aşacak, bu nedenle kullanılmadı. Tekrar sıkıştırın veya daha büyük bağlamı olan bir modele geçin.';
 
   @override
   String get contextSummaryHint =>
-      'Bu, sonraki isteklerde kullanılan özettir. Değişiklikleri kaydetmek mevcut yanıtları yeniden yazmaz. Ekler yalnızca mevcut metni katar; görseller yeniden yorumlanmaz.';
+      'Modelin bir sonraki sefer göreceği özet budur. Kaydetmek yalnızca özeti değiştirir, mevcut yanıtları değiştirmez. Ekler yalnızca zaten çıkarılmış metni katar; görseller yeniden okunmaz.';
 
   @override
   String get compressAdvanced => 'Gelişmiş';
@@ -14926,7 +15025,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextBudgetExceeded =>
-      'Tahmini bağlam bu modelin sınırını aşıyor. Özeti kısaltın, yeniden sıkıştırın veya daha büyük bağlamlı bir model seçin.';
+      'Bu özetle bir sonraki mesaj modelin sınırını aşacak. Özeti kısaltın, tekrar sıkıştırın veya daha büyük bağlamı olan bir modele geçin.';
 
   @override
   String get contextManualSupplement =>
@@ -14940,11 +15039,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextImpactSourceTitle =>
-      'Sıkıştırılmış orijinaller değiştirilsin mi?';
+      'Zaten bir özete dahil edilmiş orijinal metin değiştirilsin mi?';
 
   @override
   String get chatInputBarQueuedCompressionFailed =>
-      'Sıkıştırma başarısız oldu; gönderim duraklatılmış durumda';
+      'Sıkıştırma başarısız oldu, bu nedenle bu mesaj otomatik gönderilmeyecek.';
 
   @override
   String contextTokenInfo(int before, int after) {
@@ -14965,7 +15064,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressNothingNew =>
-      'Son özetten bu yana sıkıştırılacak yeni içerik yok';
+      'Son seferden bu yana sıkıştırılacak yeni bir şey yok.';
 
   @override
   String get browserActionScreenshot => 'Ekran görüntüsü al';
@@ -14997,7 +15096,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String contextImpactSaveConfirm(int count) {
-    return 'Kaydet ve $count düğümü geri al';
+    return 'Kaydet ve sonraki $count ilgili işlemi geri al';
   }
 
   @override
@@ -15014,7 +15113,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get contextTaskApplying => 'Özet uygulanıyor';
+  String get contextTaskApplying => 'Bu özet kullanılıyor';
 
   @override
   String get storageSpaceImagesHint =>
@@ -15028,11 +15127,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get worldBookMoveEntries => 'Şuraya taşı…';
 
   @override
-  String get compressReread => 'Sıkıştırılmış orijinalleri yeniden oku';
+  String get compressReread => 'Sıkıştırılmış orijinallere geri bak';
 
   @override
   String get chatInputBarQueuedPausedHold =>
-      'Giriş duraklatılmış durumda; düzenlemek veya göndermek için kuyruğu iptal edin';
+      'Gönderme duraklatıldı. Düzenlemek veya hemen göndermek için kuyruğu iptal edin.';
 
   @override
   String get contextSummaryTitle => 'Bağlam özeti';
@@ -15044,21 +15143,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressTaskAbandon => 'Vazgeç';
 
   @override
-  String get browserAgentTimedOut =>
-      'İşlem zaman aşımına uğradı; AI duraklatıldı';
-
-  @override
-  String get compressCancelledSnack =>
-      'Sıkıştırma iptal edildi. Mevcut bağlam değişmedi.';
+  String get compressCancelledSnack => 'İptal edildi. Bağlam değişmedi.';
 
   @override
   String get contextImpactClearTitle => 'Önceki temizleme geri alınsın mı?';
 
   @override
-  String get compressTaskWaitingApproval => 'Araç onayı bekleniyor';
+  String get compressTaskWaitingApproval => 'Bir aracı onaylamanız bekleniyor';
 
   @override
-  String get contextTaskFailed => 'Sıkıştırma başarısız oldu';
+  String get contextTaskFailed => 'Sıkıştırma tamamlanmadı';
 
   @override
   String get wsDeniedSkillsReadonly => 'Beceriler klasörü salt okunur.';
@@ -15071,14 +15165,15 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu sohbetin her seferinde sormadan bu cihazdaki dosyalara erişmesine, komut çalıştırmasına ve etkin çevrimiçi araçları kullanmasına izin verir.';
 
   @override
-  String get compressStaleSnack => 'Sohbet geçmişi değişti; özet uygulanmadı.';
+  String get compressStaleSnack =>
+      'Sıkıştırma tamamlanmadan sohbet değişti, bu yüzden bu sonuç kullanılmadı. Hâlâ istiyorsanız tekrar sıkıştırın.';
 
   @override
   String get worldBookCopyEntries => 'Şuraya kopyala…';
 
   @override
   String get contextEditEmpty =>
-      'Özet boş olamaz. Tüm önceki geçmişi hariç tutmak için Bağlamı temizle\'yi kullanın.';
+      'Özet boş olamaz. Önceki sohbeti dahil etmemek için Bağlamı temizle\'yi kullanın.';
 
   @override
   String get toolApprovalDenyWithReason => 'Gerekçeyle reddet…';
@@ -15115,7 +15210,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressTaskAdjustRetry => 'Seçenekleri ayarla ve yeniden dene';
 
   @override
-  String get contextDetailLegacy => 'Eski temizlemeden dönüştürüldü';
+  String get contextDetailLegacy => 'Eski bir temizlemeden devralındı';
 
   @override
   String get contextDetailCurrent => 'Mevcut bağlam';
@@ -15137,12 +15232,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String contextDetailParts(int count) {
-    return '$count bölüm';
+    return 'Otomatik olarak $count parçaya bölündü';
   }
 
   @override
   String get contextEditPending =>
-      'Kaydedildi; geçerli yanıt bittikten sonra uygulanacak';
+      'Kaydedildi. Geçerli yanıt bittikten sonra kullanılacak.';
 
   @override
   String get contextTaskRetry => 'Sıkıştırmayı yeniden dene';
@@ -15177,10 +15272,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get branchInheritNote =>
-      'Yalnızca bu noktadan önce etkin olan bağlam düğümlerini devralır';
+      'Yeni dal yalnızca bu noktadan önce hâlâ geçerli olan özetleri ve orijinalleri taşır.';
 
   @override
-  String get contextTaskInterrupted => 'Sıkıştırma kesildi; giriş korundu';
+  String get contextTaskInterrupted =>
+      'Sıkıştırma kesildi. Yazdıklarınız hâlâ duruyor.';
 
   @override
   String get storageSpaceImageTypeAll => 'Tümü';
@@ -15214,7 +15310,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressDiscardedSnack =>
-      'Bağlam temizlendi; çalışan sıkıştırma iptal edildi.';
+      'Bağlam temizlendi. Devam eden sıkıştırma iptal edildi ve kullanılmadı.';
 
   @override
   String get browserActionSelect => 'Seçenek seç';
@@ -15223,7 +15319,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get toolPermissionTitle => 'İzinler';
 
   @override
-  String get contextDetailNext => 'Sonraki istek';
+  String get contextDetailNext => 'Sonraki gönderim';
 
   @override
   String get contextTaskCancel => 'Sıkıştırmayı iptal et';
@@ -15233,7 +15329,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatInputBarQueuedCompressionCancelled =>
-      'Sıkıştırma iptal edildi; gönderim duraklatılmış kalıyor';
+      'Sıkıştırma iptal edildi, bu yüzden bu mesaj otomatik gönderilmeyecek.';
 
   @override
   String get toolPermissionResetSnack =>
@@ -15247,10 +15343,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextTaskPaused =>
-      'Gönderim duraklatıldı — düzenlemek için kuyruğu iptal edin';
+      'Gönderme duraklatıldı. Düzenlemeye devam etmek için kuyruğu iptal edin.';
 
   @override
-  String get contextTaskReview => 'Uygulamadan önce özeti inceleyin';
+  String get contextTaskReview => 'Kullanmadan önce lütfen özeti inceleyin.';
 
   @override
   String compressApproxTokens(String value) {
@@ -15262,7 +15358,8 @@ class AppLocalizationsTr extends AppLocalizations {
       'Silmek için önce ilgili ayarlardan bu avatarı, arka planı veya simgeyi değiştirin ya da kaldırın.';
 
   @override
-  String get compressRereadLastLayer => 'Son katmanı genişlet';
+  String get compressRereadLastLayer =>
+      'Son sıkıştırmadan önceki orijinalleri görüntüle';
 
   @override
   String get contextRestoreOperation => 'İşlemi geri yükle';
@@ -15272,7 +15369,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bu bölümdeki tüm orijinal mesajları yeniden oku';
 
   @override
-  String get contextImpactEditTitle => 'Önceki özet kaydedilsin mi?';
+  String get contextImpactEditTitle => 'Bu önceki özet kaydedilsin mi?';
 
   @override
   String get contextOpenNewChat => 'Yeni sohbeti aç';
@@ -15282,7 +15379,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextEditUnknownPreview =>
-      'Kullanım bilgisi mevcut değil; kaydetmeden önce yeniden kontrol edilecek.';
+      'Kullanım şu anda tahmin edilemiyor. Kaydetmeden önce tekrar kontrol edilecek.';
 
   @override
   String get contextTaskWait =>
@@ -15294,11 +15391,12 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get wsContextChanged => 'Sohbet bağlamı değişti. İstek süresi doldu.';
+  String get wsContextChanged =>
+      'Sohbet değişti, bu yüzden bu istek iptal edildi.';
 
   @override
   String contextChangeImpact(int count) {
-    return 'Bu değişiklik ayrıca etkilenen $count bağlam işlemini geri alacak. Orijinal mesajlar korunur. Devam edilsin mi?';
+    return 'Bu ayrıca sonraki $count ilgili sıkıştırmayı veya temizlemeyi geri alacak. Orijinal sohbet korunur. Devam edilsin mi?';
   }
 
   @override
@@ -15311,23 +15409,24 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextSummaryNotSmaller =>
-      'Özet, girdisinden daha kısa değil. Uygulamadan önce gözden geçirin.';
+      'Özet orijinalden daha kısa değil. Kullanmaya karar vermeden önce inceleyin.';
 
   @override
   String get storageSpaceImageTypeTool => 'Araç görselleri';
 
   @override
-  String get contextPreviousHistory => 'Son sıkıştırma katmanını yeniden oku';
+  String get contextPreviousHistory =>
+      'Son sıkıştırmadan önceki orijinalleri yeniden görüntüle';
 
   @override
-  String get contextDetailRead => 'Gerçek okuma';
+  String get contextDetailRead => 'Gerçekte okunacak içerik';
 
   @override
   String get contextViewGenerated => 'Oluşturulan özeti görüntüle';
 
   @override
   String get contextImpactDeleteDescription =>
-      'Orijinalleri silin ve kaldırılan içeriğin tekrar gönderilmemesi için ilgili özetleri geri alın. Diğer mesajlar ve bağımsız düğümler değişmez.';
+      'Bu orijinalleri silmek, ilgili özetleri ve bunlara bağlı sonraki sıkıştırmaları da geri alacak, böylece silinen içerik tekrar gönderilmeyecek. Diğer mesajlar etkilenmez.';
 
   @override
   String get storageSpaceImageTypeAvatar => 'Avatarlar ve arka planlar';
@@ -15336,7 +15435,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get contextDetailAfterUndo => 'Geri alma sonrası';
 
   @override
-  String get contextOperationUndo => 'Bu bağlam işlemini geri al';
+  String get contextOperationUndo => 'Bu işlemi geri al';
 
   @override
   String contextHistoryWindowNote(int count) {
@@ -15345,7 +15444,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextOverLimitWarning =>
-      'Geri alma bağlam sınırını aşabilir. Yine de geri alıp yeniden sıkıştırabilirsiniz; gönderme sırasında sınır tekrar kontrol edilir.';
+      'Geri aldıktan sonra içerik modelin sınırını aşabilir. Yine de geri alabilirsiniz — göndermeden önce tekrar kontrol edeceğiz. Gerekirse yeniden sıkıştırın.';
 
   @override
   String get storageSpaceImageTypeChat => 'Sohbet görselleri';
@@ -15363,14 +15462,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextOperationHidden =>
-      'Sonraki bir temizleme tarafından hariç tutuldu';
+      'Sonraki bir temizleme zaten etkili oldu, bu artık geçerli değil.';
 
   @override
   String get contextUndoClearTooltip => 'Bu temizlemeyi geri al';
 
   @override
   String compressKeepDescription(int count) {
-    return 'En son $count kullanıcı mesajını yanıtları ve araçlarıyla birlikte tut. Daha eski geçmiş özetlenir; yalnızca ek içeren mesajlar da sayılır.';
+    return 'Son $count kullanıcı mesajını, yanıtları ve araç etkinlikleriyle birlikte tut. Daha önceki geçmiş bir özetle değiştirilir. Yalnızca ek içeren mesajlar birer sayılır.';
   }
 
   @override
@@ -15378,7 +15477,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String contextEditPreview(String value) {
-    return 'Kaydettikten sonra yaklaşık $value token. Düzenleme etkin bağlamı değiştirmez.';
+    return 'Kaydettikten sonra yaklaşık $value token. Düzenleme, şu anda kullanılan içeriği hemen değiştirmez.';
   }
 
   @override
@@ -15394,26 +15493,28 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get contextDetailReplaced => 'Değiştirilen';
+  String get contextDetailReplaced => 'Özetle değiştirilen kısım';
 
   @override
   String get displaySettingsPageAutoScrollEnabledLabel => 'Açık';
 
   @override
-  String get contextChangeTitle => 'Etkilenen bağlamı gözden geçir';
+  String get contextChangeTitle =>
+      'Bu değişikliğin neleri etkileyeceğini onaylayın';
 
   @override
   String get contextDetailTitle => 'Özet';
 
   @override
-  String get compressModelGlobal => 'Genel ayar · başlatıldığında sabitlenir';
+  String get compressModelGlobal =>
+      'Ayarlar\'daki modeli kullanır ve oturum ortasında değiştirmez.';
 
   @override
   String get wsDeniedMountReadonly => 'Salt okunur bağlama noktası. Yazılamaz.';
 
   @override
   String get compressRereadDesc =>
-      'Özetler arasında kaybolan ayrıntıları kurtarır. Daha fazla token kullanır.';
+      'Sohbet birden fazla kez sıkıştırıldıysa bu, daha az ayrıntı kaybolsun diye orijinallere geri bakar. Bu sefer daha fazla token kullanır.';
 
   @override
   String get toolApprovalSwitchToFullAccess => 'Tam erişime geç';
@@ -15422,20 +15523,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressUsageInput => 'Özet girdisi';
 
   @override
-  String get contextDetailSummaryLabel => 'Sonraki isteklerde kullanılan özet';
+  String get contextDetailSummaryLabel => 'Modelin sonra göreceği özet';
 
   @override
   String get contextImpactDeleteTitle =>
-      'Sıkıştırılmış orijinaller silinsin mi?';
+      'Zaten sıkıştırılmış orijinaller silinsin mi?';
 
   @override
-  String get compressAdvancedOff => 'Orijinalleri yeniden okuma kapalı';
+  String get compressAdvancedOff => 'Orijinallere geri bak: kapalı';
 
   @override
-  String get contextOperationActive => 'Şu anda uygulanıyor';
+  String get contextOperationActive => 'Şu anda kullanımda';
 
   @override
-  String get compressAdvancedOn => 'Orijinalleri yeniden okuma açık';
+  String get compressAdvancedOn => 'Orijinallere geri bak: açık';
 
   @override
   String get contextTaskMerging => 'Özetler birleştiriliyor';
@@ -15450,21 +15551,21 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextClearDetails =>
-      'Önceki sohbet geçmişi gelecekteki isteklerden hariç tutulur. Sistem talimatları, bellek ve araç tanımları hâlâ geçerlidir.';
+      'Bundan sonra önceki sohbet modele gönderilmeyecek. Asistanın sistem talimatları, hafızası ve araçları hâlâ geçerlidir.';
 
   @override
   String get compressCopyResult => 'Sonucu kopyala';
 
   @override
-  String get contextDetailInUse => 'Kullanımda';
+  String get contextDetailInUse => 'Şu anda kullanımda';
 
   @override
   String get contextImpactDescription =>
-      'İlgili özetler birlikte geri alınacak. Orijinal mesajlar ve bağımsız düğümler korunur; hiçbir model otomatik olarak çağrılmaz.';
+      'İlgili özetler birlikte geri alınacak. Orijinal sohbet korunur ve model çağrılmaz. Diğer ilgisiz özetler olduğu gibi kalır.';
 
   @override
   String get compressIncludeAttachmentsDesc =>
-      'Kullanılabilir ek metnini ve tam araç kayıtlarını orijinal sıralarıyla dahil et. Görseller yeniden yorumlanmaz.';
+      'Önceden çıkarılmış ek metinlerini ve eksiksiz araç kayıtlarını özgün sıralarıyla dahil eder. Görseller yeniden okunmaz.';
 
   @override
   String worldBookEntriesMoved(int count) {
@@ -15479,17 +15580,17 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextImpactSourceDescription =>
-      'Orijinalleri değiştirin ve özetlerini bağımlı düğümlerle birlikte geri alın. Diğer mesajlar ve bağımsız düğümler korunur; hiçbir model çağrılmaz.';
+      'Bu, orijinal metni değiştirecek ve onu kullanan özetleri, ayrıca bu özetlere bağlı sonraki sıkıştırmaları geri alacak. Diğer mesajlar etkilenmez ve model çağrılmaz.';
 
   @override
   String get contextEditTitle => 'Özeti düzenle';
 
   @override
-  String get compressUsageNext => 'Sonraki istek';
+  String get compressUsageNext => 'Uygulandıktan sonra, sonraki gönderim';
 
   @override
   String get contextSummaryEmpty =>
-      'Özet boş olamaz. Geçmişi hariç tutmak için Bağlamı temizle\'yi kullanın.';
+      'Özet boş olamaz. Önceki sohbeti dahil etmemek için Bağlamı temizle seçeneğini kullanın.';
 
   @override
   String get toolApprovalDenied => 'Reddedildi';
@@ -15499,20 +15600,20 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String compressIncludeManual(int count) {
-    return 'Manuel düzenlemeleri dahil et · $count';
+    return 'Elle eklediğiniz $count içeriği dahil eder';
   }
 
   @override
   String contextBudgetInfo(int used, String limit) {
-    return 'Tahmini sonraki istek (çıktı rezervi dahil): $used / $limit token';
+    return 'Sonraki gönderim yaklaşık $used / $limit token tutacak, yanıt için yer dahil.';
   }
 
   @override
-  String get contextTaskDismiss => 'Durum bildirimini kapat';
+  String get contextTaskDismiss => 'Kapat';
 
   @override
   String contextUndoBudgetInfo(int used) {
-    return 'Geri alındıktan sonra: çıktı rezervi dahil yaklaşık $used token';
+    return 'Geri aldıktan sonra: yaklaşık $used token, yanıt için yer dahil';
   }
 
   @override
@@ -15522,7 +15623,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get worldBookSelectionDone => 'Bitti';
 
   @override
-  String get contextDividerFailed => 'Sıkıştırma başarısız';
+  String get contextDividerFailed => 'Sıkıştırma tamamlanmadı';
 
   @override
   String get toolPermissionUnboundHint =>
@@ -15530,7 +15631,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get contextChangeWaiting =>
-      'Bu değişikliğin uygulanması için mevcut yanıtın ve araçların bitmesi bekleniyor.';
+      'Bu değişiklik, mevcut yanıt ve araçlar bittikten sonra geçerli olacak.';
 
   @override
   String storageSpaceDeletedUploadsPartial(int deleted, int kept) {
@@ -15551,7 +15652,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String contextImpactConfirm(int count) {
-    return '$count düğümü geri al';
+    return 'Sonraki $count ilgili işlemi de geri al';
   }
 
   @override
@@ -15581,7 +15682,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get browserErrActionTimeout =>
-      'İşlem zaman aşımına uğradı; sonuç bilinmiyor. AI\'nın devam etmesine izin vermeden önce sayfayı kontrol edin.';
+      'İşlem zaman aşımına uğradı; sonuç bilinmiyor. Asistan devam etmeden önce sayfayı inceleyebilir.';
 
   @override
   String get toolPermissionRequestApprovalDesc =>
@@ -15972,11 +16073,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get imageContextAllowRecall =>
-      'Modelin görselleri hatırlamasına izin ver';
+      'Modelin görselleri geri çağırmasına izin ver';
 
   @override
   String get imageContextAllowRecallDescription =>
-      'Modelin gerektiğinde bu sohbetten görselleri almasına izin verin. Bunu kapatmak otomatik görsel yönetimini değiştirmez.';
+      'view_image aracının gerektiğinde bu sohbetten geçmiş görselleri almasına izin verir. Bunu kapatmak, mesajlarla doğrudan gönderilen görselleri, otomatik görsel yönetimini veya çalışma alanı dosya erişimini etkilemez.';
 
   @override
   String get imageContextTitle => 'Görsel bağlamı';
@@ -16056,42 +16157,45 @@ class AppLocalizationsTr extends AppLocalizations {
       'Değişiklikleriniz kaydedilemedi. Tekrar deneyin.';
 
   @override
-  String get contextOperationsTitle => 'Bağlam işlemleri';
+  String get contextOperationsTitle => 'Sıkıştırma ve temizleme geçmişi';
+
+  @override
+  String get contextOperationsLoadMore => 'Daha fazla göster';
 
   @override
   String get contextOperationsDescription =>
-      'Sıkıştırma görevlerini, özetleri ve bağlam sınırlarını yönetin';
+      'Sıkıştırmaları ve temizlemeleri inceleyin, gerekirse geri alın.';
 
   @override
-  String get contextOperationsEmpty => 'Henüz bağlam işlemi yok.';
+  String get contextOperationsEmpty => 'Henüz sıkıştırma veya temizleme yok.';
 
   @override
   String contextOperationsStored(int count) {
-    return 'Kaydedilen geçmiş: $count mesaj';
+    return 'Kayıtlı sohbet: $count mesaj';
   }
 
   @override
   String contextOperationsEffective(int summaries, int messages) {
-    return 'Sonraki istek için geçmiş: $summaries özet + $messages orijinal mesaj';
+    return 'Sonraki gönderim $summaries özet ve $messages orijinal mesaj içerecek.';
   }
 
   @override
   String get contextOperationsScope =>
-      'Geçerli geçmiş sınırı uygulanır. Sistem istemleri, bellek, araçlar ve gönderilmemiş girdiler bu bağlama eklenir. Özetini, orijinal aralığını görüntülemek veya geri almak için bir kaydı açın.';
+      'Bu, mevcut geçmiş uzunluğu sınırına göre hesaplanır. Sistem talimatları, bellek, araçlar ve gönderilmemiş girdiler de bağlama eklenir. Bir kaydı açarak özetini, orijinal aralığını görüntüleyebilir veya geri alabilirsiniz.';
 
   @override
   String get contextOperationsLoadFailed =>
-      'Bağlam özeti yüklenemedi. Lütfen tekrar deneyin.';
+      'Bu kayıtlar yüklenemedi. Lütfen tekrar deneyin.';
 
   @override
   String get compressNewConversation => 'Yeni sohbete sıkıştır';
 
   @override
   String get compressNewConversationDescription =>
-      'Özet ve korunan mesajlarla yeni bir sohbet oluşturun. Orijinal sohbet değişmeden kalır. Yerinde sıkıştırmak için kapatın.';
+      'Açıkken, özet ve korunan mesajlarla yeni bir sohbet oluşturur ve orijinal sohbeti değiştirmez. Kapalıyken bu sohbette sıkıştırır.';
 
   @override
-  String get contextViewBoundary => 'Sınıra git';
+  String get contextViewBoundary => 'Bağlamın temizlendiği yere git';
 
   @override
   String get contextFixedStart => 'Sabit bağlam başlangıcı';
@@ -16182,7 +16286,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressionMore => 'Daha fazla ayar';
 
   @override
-  String get compressionFocus => 'Bu çalıştırma için odak';
+  String get compressionFocus => 'Bu sefer odakta tutulacaklar';
 
   @override
   String get compressionFocusHint =>
@@ -16199,7 +16303,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressionGlobalDescription =>
-      'Genel varsayılanları izleyen sohbetleri etkiler. Sohbet geçersiz kılmaları değişmeden kalır.';
+      'Yalnızca genel varsayılanları izleyen sohbetleri etkiler. Kendi ayarları olan sohbetler değişmez.';
 
   @override
   String get compressionAutoTitle => 'Otomatik sıkıştırma';
@@ -16215,49 +16319,49 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressionNearLimit =>
-      'Bağlam tahmini kapasitesine yaklaşıyor. Sohbete devam edebilir veya elle sıkıştırabilirsiniz.';
+      'Bu sohbet, modelin tutabileceği sınıra yaklaşıyor. Göndermeye devam edebilir veya önce sıkıştırabilirsiniz.';
 
   @override
   String get compressionKeepTurns => 'Son turları koru';
 
   @override
   String get compressionKeepHint =>
-      'Bir tur, bir kullanıcı mesajını ve onun yanıtlarını ve araçlarını içerir.';
+      'Bir tur, bir kullanıcı mesajı ile onu izleyen yanıtlar ve araç etkinliklerinden oluşur.';
 
   @override
-  String get compressionLength => 'Özet sınırı (token)';
+  String get compressionLength => 'Özet uzunluğu (token)';
 
   @override
   String get compressionTrigger => 'Başlangıç';
 
   @override
-  String get compressionTarget => 'Hedefe sıkıştır';
+  String get compressionTarget => 'Sıkıştır';
 
   @override
-  String get compressionWindow => 'Planlama penceresi';
+  String get compressionWindow => 'Özet modeli kapasitesi';
 
   @override
-  String get compressionRequests => 'En fazla çağrı';
+  String get compressionRequests => 'Maksimum istek';
 
   @override
   String get compressionReference =>
-      'Etkin dünya kitaplarını ve belleği referans al';
+      'Dünya kitaplarına ve geçmiş belleğe başvur';
 
   @override
   String get compressionReferenceHint =>
-      'Referans, adları ve kuralları açıklar; olayların gerçekleştiğine veya karakterlerin bunları bildiğine dair kanıt değildir.';
+      'Dünya kitapları yalnızca sıkıştırılan geçmişe göre eşleştirilir ve o zamanki bellek anlık görüntüleri kullanılır. Bu yalnızca adları ve kuralları açıklamak içindir — bu olayların yaşandığı veya bir karakterin bunları zaten bildiği anlamına gelmez.';
 
   @override
   String get compressionToolReferences =>
-      'Tüketilen araç sonuçlarını referans olarak kullan';
+      'Yalnızca zaten okunmuş araç sonuçlarına referansları tut';
 
   @override
   String get compressionToolReferencesHint =>
-      'Yalnızca araç erişimi varken geçerlidir. En son okunmamış sonuçları korur ve tam, salt okunur geri çağırmaya izin verir.';
+      'Yalnızca araçlar kullanılabilir olduğunda geçerlidir. En son okunmamış sonuçlar tam olarak tutulur. Zaten okunmuş sonuçlar referans olarak tutulur — arayabilirsiniz, ancak düzenleyemezsiniz.';
 
   @override
   String get compressionSummaryScan =>
-      'Özetleri dünya kitabı anahtar kelime eşleştirmesine dahil et';
+      'Dünya kitabı anahtar sözcüklerini özetle de eşleştir';
 
   @override
   String get compressionChatModel => 'Geçerli sohbet modelini takip et';
@@ -16269,15 +16373,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressionLocalPreview => 'İsteği önizle · model çağrısı yok';
 
   @override
-  String get compressionTry => 'Özeti dene · model tokenları kullanır';
+  String get compressionTry => 'Özet dene · model tokenı kullanır';
 
   @override
   String get compressionPreviewOnly =>
-      'Yalnızca aday. Hazır olduğunda inceleyip uygulayın.';
+      'Bu yalnızca bir önizleme oluşturur. İnceledikten sonra kullanın.';
 
   @override
   String get compressionTemplateChanged =>
-      'Bu şablon gelecekteki özetlere uygulanır. Mevcut özetler değişmez; eksik ayrıntıları yeniden oluşturmak için orijinalleri yeniden okuyun.';
+      'Yeni şablon yalnızca bundan sonraki özetler için geçerlidir. Mevcut özetler olduğu gibi kalır. Ayrıntıları doldurmak için orijinallerden yeniden oluşturun.';
 
   @override
   String compressionRange(int count, int turns) {
@@ -16286,7 +16390,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String compressionCalls(int count) {
-    return '$count model çağrısı';
+    return '$count model isteği';
   }
 
   @override
@@ -16299,32 +16403,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String compressionUsageUnknown(int count) {
-    return '$count denemede kullanım bilgisi döndürülmedi; bu çağrılar ücretsiz sayılmaz.';
+    return '$count istek kullanım verisi döndürmedi. Bu, ücretsiz oldukları anlamına gelmez.';
   }
 
   @override
   String get compressionBudgetError =>
-      'Planlanan iş çağrı sınırını aşıyor. Sınırı artırın veya daha büyük bir özet modeli seçin. Kısmi özet uygulanmadı.';
+      'Bu işlem, mevcut sınırın izin verdiğinden daha fazla model isteği gerektirir, bu nedenle bağlam değişmedi. Maksimum istek sayısını artırın veya daha büyük bağlamı olan bir modele geçin.';
 
   @override
   String get compressionIncomplete =>
-      'Özet kesildi veya reddedildi ve uygulanmadı. Çıktı sınırını veya modeli ayarlayın.';
+      'Özet kesildi veya reddedildi ve bağlam değişmedi. Çıktı sınırını artırın veya farklı bir model deneyin.';
 
   @override
   String get compressionReferenceTooLarge =>
-      'Şablon, referans veya çalışma özeti özet modeli bütçesini dolduruyor. Referansları azaltın veya daha büyük bir model seçin.';
+      'Referans materyali bu modelin kapasitesini zaten dolduruyor ve özet için yer kalmıyor. Daha az referans kullanın veya daha büyük bağlamı olan bir modele geçin.';
 
   @override
   String get compressionReferenceChanged =>
-      'Referans alınan arka plan değişti. Adayı inceleyin veya yeniden oluşturun.';
+      'Başvurulan arka plan değişti. Bu özeti gözden geçirin veya yeni bir tane oluşturun.';
 
   @override
   String get compressionTargetNotReached =>
-      'Aday, tam isteği otomatik tetikleyicinin altına indirmedi. Orijinal bağlam korundu.';
+      'Sıkıştırmadan sonra bile kullanım otomatik başlangıç noktasının üzerinde kalacaktı, bu nedenle orijinal bağlam korundu. Özeti kısaltın veya Başlangıç değerini artırın.';
 
   @override
   String get compressionTemplateMissing =>
-      'Seçili şablon kullanılamıyor. Başka bir şablon seçin.';
+      'Seçilen şablon kullanılamıyor. Lütfen başka bir tane seçin.';
 
   @override
   String get compressionTemplates => 'Şablonlar';
@@ -16357,34 +16461,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressionLanguageConversation => 'Sohbeti takip et';
 
   @override
-  String get compressionLanguageLegacy =>
-      'Orijinal şablon dil davranışını koru';
+  String get compressionLanguageLegacy => 'Orijinal şablonun dil ayarını koru';
 
   @override
-  String get compressionLanguageHint => 'Dil kodu veya conversation / legacy';
+  String get compressionLanguageHint =>
+      'Bir dil adı veya kodu girin. conversation (sohbeti takip et) veya legacy (orijinal şablonu koru) da kullanabilirsiniz.';
 
   @override
   String get compressionVariables =>
-      'Desteklenen değişkenler; atlanırsa geçmiş otomatik olarak eklenir:';
+      'Bu değişkenleri kullanabilirsiniz. İstem geçmişi içermiyorsa otomatik olarak eklenecektir:';
 
   @override
   String get compressionDeleteTemplate =>
-      'Bir yedek seçip bu şablonu silmek istiyor musunuz? Kabul edilen özetler ve tarif anlık görüntüleri okunabilir kalır.';
+      'Bir yedek seçip bu şablonu silmek istiyor musunuz? Kullanımdaki özetler ve tariflerde kayıtlı kopyalar korunur.';
 
   @override
   String compressionTemplateReferences(int count) {
-    return '$count sohbet geçersiz kılması tarafından kullanılıyor.';
+    return '$count sohbette sohbet bazlı geçersiz kılma olarak kullanılıyor.';
   }
 
   @override
   String get compressionSaveRecipe => 'Bu ayarları tarif olarak kaydet';
 
   @override
-  String get compressionBindModel => 'Seçili özet modelini dahil et';
+  String get compressionBindModel => 'Şu anda seçili özet modelini de kaydet';
 
   @override
   String get compressionRecipeHint =>
-      'Tarifler otomatik sıkıştırmayı etkinleştirmez. İçe aktarma yalnızca kitaplığa ekler, uygulamaz.';
+      'Bir tarifi kaydetmek veya içe aktarmak otomatik sıkıştırmayı açmaz ve mevcut sohbete uygulamaz. Yalnızca tarifi kitaplığınıza ekler.';
 
   @override
   String get compressionImport => 'JSON içe aktar';
@@ -16400,11 +16504,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressionInvalidSettings =>
-      'Değerleri kontrol edin: hedef, tetikleyicinin altında olmalı; çağrı ve token sınırları geçerli olmalı.';
+      'Şu değerleri kontrol edin: Sıkıştır hedefi Başlangıç değerinden düşük olmalı ve istek ile token sınırları 0\'dan büyük olmalıdır.';
 
   @override
   String get compressionOverflowAction =>
-      'Bir kez sıkıştır, ardından başarısız yanıtı yeniden dene';
+      'Bir kez sıkıştır, sonra başarısız olan yanıtı yeniden dene';
 
   @override
   String compressionPlannedCalls(int count, int limit) {
@@ -16417,7 +16521,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String compressionRecipeReferences(int count) {
-    return '$count tarif bağımsız şablon anlık görüntülerini korur.';
+    return '$count tarif, o zamanki şablonun kendi kopyasını tutar.';
   }
 
   @override
@@ -16505,11 +16609,29 @@ class AppLocalizationsTr extends AppLocalizations {
   String get compressionCallUnit => 'çağrı';
 
   @override
+  String get compressionRequestTimeout => 'Sıkıştırma isteği zaman aşımı';
+
+  @override
+  String get compressionMinuteUnit => 'dk';
+
+  @override
+  String get compressionRequestTimeoutDefault => 'Varsayılan';
+
+  @override
+  String get compressionRequestTimeoutHint =>
+      '0\'dan büyük bir dakika sayısı girin. Geçerli varsayılanı korumak için boş bırakın (sunucu tarafı sıkıştırma için 5 dakika). Parçalar halinde özetlerken her parça ve birleştirme ayrı ayrı zamanlanır.';
+
+  @override
+  String compressionRequestTimedOut(num minutes) {
+    return 'Sıkıştırma $minutes dakika sonra durduruldu ve bağlam değişmedi. Tekrar deneyin veya daha uzun bir zaman aşımına izin verin.';
+  }
+
+  @override
   String get compressionAdvancedOptions => 'Sıkıştırma ayrıntıları';
 
   @override
   String get compressionAdvancedHint =>
-      'Referanslar, orijinal geçmişi yeniden okuma ve istek sınırları';
+      'Referanslar, orijinallere geri bakılıp bakılmayacağı ve istek sınırı';
 
   @override
   String get compressionAutomaticWindow => 'Otomatik';
@@ -16520,15 +16642,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressionAutoNotifyHint =>
-      'Eşiğe yaklaşınca bildir; ne zaman sıkıştıracağınıza siz karar verin.';
+      'Kullanım sınıra yaklaştığında bildirim alırsınız ve ne zaman sıkıştıracağınıza siz karar verirsiniz.';
 
   @override
   String get compressionAutoOnHint =>
-      'Eşikte daha eski geçmişi özetler. Ek model kullanımı oluşur.';
+      'Kullanım belirlenen yüzdeye ulaştığında önceki geçmiş otomatik olarak özetlenir. Bu, ek model tokenları kullanır.';
 
   @override
   String get compressionBudgetHint =>
-      'Yüzdeler mevcut giriş bütçesine göre hesaplanır.';
+      'Bu yüzdeler, hâlâ kullanılabilir olan giriş kapasitesine göre hesaplanır.';
 
   @override
   String get compressionPreviewAction => 'Yerel önizleme';
@@ -16541,23 +16663,23 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get compressionScopeKeepHint =>
-      'Son turları olduğu gibi koru ve daha eski geçmişi özetle; bu tur sayısı otomatik sıkıştırmada da kullanılır.';
+      'En son turları olduğu gibi tutun ve önceki geçmişi özetleyin. Otomatik sıkıştırma da aynı tur sayısını kullanır.';
 
   @override
   String get compressionScopeAllHint =>
-      'Mevcut bağlamdaki tüm geçmişi, son turlar dahil özetle; orijinal mesajlar görüntülenebilir kalır.';
+      'Bağlamdaki tüm geçmişi, ayrı bir son orijinal tutmadan özetleyin. Orijinal mesajlar yine de görüntülenebilir.';
 
   @override
   String get compressionScopeStartHint =>
-      'Karakter bütçesi dahilinde daha eski tam mesajları seç; seçilmeyen geçmiş orijinal metniyle kalır.';
+      'Karakter sınırı dahilinde önceki tam mesajları sıkıştırın. Seçilmeyen mesajlar orijinal metin olarak kalır.';
 
   @override
   String get compressionScopeRecentHint =>
-      'Karakter bütçesi dahilinde daha yeni tam mesajları seç; seçilmeyen geçmiş orijinal metniyle kalır.';
+      'Karakter sınırı dahilinde daha yeni tam mesajları sıkıştırın. Seçilmeyen mesajlar orijinal metin olarak kalır.';
 
   @override
   String get compressionAutoKeepHint =>
-      'Otomatik sıkıştırma, manuel kapsamdan bağımsız olarak her zaman son turları korur. Bu tur sayısı manuel sıkıştırmayla ortaktır.';
+      'Otomatik sıkıştırma, manuel çalıştırma için seçtiğiniz aralıktan bağımsız olarak her zaman son orijinalleri tutar. Tur sayısı manuel sıkıştırmayla paylaşılır.';
 
   @override
   String get requestBudgetTitle => 'Görsel ve istek bütçeleri';
@@ -16653,50 +16775,51 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get compressionNativeTitle => 'OpenAI yerel sıkıştırmayı kullan';
+  String get compressionNativeTitle =>
+      'OpenAI sunucu tarafı sıkıştırmayı kullan';
 
   @override
   String get compressionNativeHint =>
-      'Geçerli sohbet modelini Responses ile kullanır. Etkinleştirildiğinde bu sohbetteki otomatik sıkıştırma da yerel sıkıştırmayı kullanır. Desteklenip desteklenmediğine hizmetiniz karar verir.';
+      'Mevcut sohbet modelini kullanır ve sıkıştırma sunucuda gerçekleşir. Bu sohbette otomatik sıkıştırma açıksa o da bu yöntemi kullanır. Sağlayıcınızın OpenAI\'nin Responses API\'sini desteklemesi gerekir.';
 
   @override
   String get compressionNativeScopeHint =>
-      'Son turları değiştirmeden bırakın ve daha eski geçmişi sıkıştırın. Yerel otomatik sıkıştırma da bu sayıyı kullanır; metin özeti sayısı değişmez.';
+      'En son turları olduğu gibi tutun ve önceki geçmişi sunucu tarafı sıkıştırmaya gönderin. Otomatik sunucu tarafı sıkıştırma da aynı sayıyı kullanır; metin özeti sayısı değişmez.';
 
   @override
-  String get compressionNativeLabel => 'Yerel sıkıştırma';
+  String get compressionNativeLabel => 'Sunucu tarafı sıkıştırma';
 
   @override
   String get compressionNativeDescription =>
-      'Hizmet tarafından döndürülen yerel bağlam, sonraki istekler için yerel olarak kaydedildi. Metin olarak okunamaz veya düzenlenemez. Orijinal mesajlar kullanılabilir kalır ve bu sıkıştırma geri alınabilir.';
+      'Sunucunun sıkıştırılmış sonucu yerel olarak kaydedildi ve bir sonraki gönderimde kullanılacak. Metin olarak görüntülenemez veya düzenlenemez. Orijinal mesajlar korunur ve bu sıkıştırmayı geri alabilirsiniz.';
 
   @override
   String get compressionNativeIncomplete =>
-      'Hizmet tam bir yerel sıkıştırma sonucu döndürmedi. Orijinal bağlam değişmedi.';
+      'Sunucu tam bir sıkıştırılmış sonuç döndürmedi. Orijinal bağlam değişmedi.';
 
   @override
   String get compressionNativeScopeChanged =>
-      'Bu yerel bağlam başka bir bağlantıya veya hesaba ait. Özgün bağlantıyla devam edin ya da sıkıştırmayı geri alın veya özgün içeriği barındıran sohbette metin özeti oluşturun.';
+      'Bu sunucu tarafı sonuç başka bir bağlantıya veya hesaba ait. Devam etmek için orijinal bağlantıya geri dönün veya orijinalleri hâlâ içeren sohbette bu sıkıştırmayı geri alıp bir metin özeti oluşturun.';
 
   @override
   String get compressionNativeTokenHint =>
-      'Opak yerel bağlamın token kullanımı hizmet tarafından belirlenir.';
+      'Sunucu tarafı sıkıştırma için token kullanımı sunucu tarafından bildirilir.';
 
   @override
   String get compressionNativeCopyHint =>
-      'Yeni sohbet yalnızca tam yerel sıkıştırma sonucunu ve korunan son turları saklar. Özgün içerik kaynak sohbette kalır ve burada geri alınarak kurtarılamaz.';
+      'Yeni sohbet yalnızca tam sunucu tarafı sonucu ve tuttuğunuz son turları korur. Orijinaller orijinal sohbette kalır ve burada geri alınarak kurtarılamaz.';
 
   @override
   String get compressionNativeInputOverride =>
-      'Özel input alanı yerel sıkıştırma verilerinin yerine geçer. Devam etmeden önce sağlayıcı, model veya asistan ayarlarındaki input geçersiz kılmasını kaldırın.';
+      'Model veya asistan ayarlarındaki özel bir input parametresi sunucu tarafındaki sonucun üzerine yazacak. Devam etmeden önce bu parametreyi kaldırın.';
 
   @override
   String get compressionNativeAllHint =>
-      'Ayrı bir son kuyruk tutmadan geçerli geçmişin tamamını yerel sıkıştırmaya gönderin. Orijinal mesajlar kullanılabilir kalır.';
+      'Mevcut tüm geçmişi, ayrı bir son orijinal tutmadan sunucu tarafı sıkıştırmaya gönder. Orijinal mesajlar yine de görüntülenebilir.';
 
   @override
   String get compressionNativeAutoHint =>
-      'Eşikte, geçerli sohbet modeliyle yerel olarak sıkıştırın, ardından göndermeye devam edin. Başarısız bir deneme orijinal bağlamı korur ve metin özetlemeye geçmez.';
+      'Kullanım belirlenen yüzdeye ulaştığında, mevcut sohbet modeli sunucu tarafı sıkıştırmayı çalıştırır, ardından gönderme devam eder. Başarısız olursa orijinal bağlam korunur ve metin özetine geri dönülmez.';
 
   @override
   String get languageDisplayRussian => 'Rusça';
@@ -16744,26 +16867,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String get themePaletteCustom => 'Özel';
 
   @override
-  String get compressionNativeImported => 'Yerel bağlam yüklendi';
+  String get compressionNativeImported => 'Sunucu tarafı sıkıştırma yüklendi';
 
   @override
   String get compressionNativeImportedDescription =>
-      'Bu sohbet, tam yerel sıkıştırma sonucu ve korunan son turlarla başlar. Sonuç metin olarak görüntülenemez veya düzenlenemez. Önceki özgün içerik kaynak sohbette kalır, bu nedenle burada geri alınarak kurtarılamaz.';
+      'Bu sohbet, sunucu tarafı sıkıştırılmış sonuç ve en son turlarla başlar. Sonuç metin olarak görüntülenemez veya düzenlenemez. Daha önceki orijinaller orijinal sohbette kalır ve burada geri alınarak kurtarılamaz.';
 
   @override
-  String get compressionNativeOpenSource => 'Kaynak sohbeti aç';
+  String get compressionNativeOpenSource => 'Orijinal sohbeti aç';
 
   @override
   String get compressionNativeOriginalsUnavailable =>
-      'Bu sohbette içe aktarılan yerel bağlama ait özgün içerik yok. Yerel sıkıştırmayla devam edin veya özgün içeriği görüntülemek ya da özetlemek için kaynak sohbete dönün.';
+      'Bu sohbette yüklenen sunucu tarafı sonuca karşılık gelen orijinaller yok. Sunucu tarafı sıkıştırmayı kullanmaya devam edebilir veya orijinalleri görüntülemek ya da metin özeti oluşturmak için orijinal sohbete dönebilirsiniz.';
 
   @override
   String get compressionNativeTemporaryCopyHint =>
-      'Yeni geçici sohbet yalnızca tam yerel sıkıştırma sonucunu ve korunan son turları tutar. Kaynak geçici sohbetten ayrılmak, onu ve aktarılmayan orijinalleri siler; bunlar burada geri yüklenemez.';
+      'Yeni geçici sohbet yalnızca tam sunucu tarafı sonucu ve son turları tutar. Orijinal geçici sohbetten ayrıldığınızda, o sohbet ve taşınmayan orijinaller silinir ve burada kurtarılamaz.';
 
   @override
   String get compressionNativeSourceUnavailable =>
-      'Bu sohbet tam yerel sıkıştırma sonucunu ve korunan son turları tutar. Kaynak sohbet artık kullanılamıyor. Buraya kopyalanmayan orijinaller geri yüklenemez ve yerel sonuç metin olarak okunamaz veya düzenlenemez.';
+      'Bu sohbet, tam sunucu tarafı sonucu ve tuttuğunuz son turları içerir. Orijinal sohbet artık kullanılamıyor. Buraya kopyalanmayan orijinaller kurtarılamaz ve sonuç metin olarak görüntülenemez veya düzenlenemez.';
 
   @override
   String get modelDetailSheetImageGenerationModel => 'Görsel modeli';
@@ -16817,6 +16940,511 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get workspaceEnvNativeShellSave => 'Kaydet';
+
+  @override
+  String get desktopAutostartTitle => 'Başlangıçta başlat';
+
+  @override
+  String get desktopAutostartDescription =>
+      'Bu bilgisayarda oturum açtığınızda Kelivo\'yu başlat.';
+
+  @override
+  String get desktopAutostartHiddenTitle => 'Otomatik başlatmada tepsiye gizle';
+
+  @override
+  String get desktopAutostartHiddenDescription =>
+      'Başlangıçta başlatma ve tepsi simgesi gerektirir. Kelivo\'yu elle açtığınızda pencere yine görünür.';
+
+  @override
+  String get desktopAutostartUnsupported =>
+      'Başlangıçta başlatma için macOS 13 veya üstü gerekir.';
+
+  @override
+  String get desktopAutostartError =>
+      'Başlangıç ayarı uygulanamadı. Sistem başlangıç veya oturum açma öğeleri ayarlarında bu uygulamayı kontrol edip tekrar deneyin.';
+
+  @override
+  String get compressionOutputBudget => 'Toplam çıktı sınırı (token)';
+
+  @override
+  String get compressionOutputBudgetHint =>
+      'Düşünme ve özetin kendisini içerir. Özet uzunluğunu kullanmak için boş bırakın. Düşünme açıksa, özeti uzatmadan bu sınırı yükseltebilirsiniz. Modelin kendi çıktı sınırı yine geçerlidir.';
+
+  @override
+  String get responseOutputLimitReached =>
+      'Yanıt kesildi: çıktı sınırı akıl yürütmeyi de kapsar. Yeniden denemeden önce çıktı sınırını artırın veya akıl yürütmeyi azaltın.';
+
+  @override
+  String responseContextLimitReached(int inputTokens, int contextWindow) {
+    return 'Yanıt kesildi: bu istek $inputTokens giriş token\'ı kullandı ve $contextWindow token\'lık bağlam sınırına yaklaştı. Yeniden denemeden önce bağlamı kısaltın.';
+  }
+
+  @override
+  String get responseRetryWithoutImages =>
+      'Görseller olmadan yeniden dene (orijinalleri koru)';
+
+  @override
+  String get browserOperationTimeout => 'İşlem zaman aşımı';
+
+  @override
+  String get browserOperationTimeoutDescription =>
+      'Bir tarayıcı komutu için en uzun bekleme süresi. Zaman aşımından sonra asistan sayfa durumunu kontrol edebilir.';
+
+  @override
+  String browserOperationTimeoutSeconds(int seconds) {
+    return '$seconds saniye';
+  }
+
+  @override
+  String get browserErrObservationRequired =>
+      'Devam etmeden önce sayfayı inceleyin; önceki işlem doğrulanmadı.';
+
+  @override
+  String get storageAttachmentRetention => 'Ekleri otomatik temizle';
+
+  @override
+  String get storageAttachmentRetentionDays => 'Temizlemeden önceki gün sayısı';
+
+  @override
+  String get storageAttachmentRetentionImmediately => 'Hemen temizle';
+
+  @override
+  String get storageAttachmentRetentionHint =>
+      'Mesajları veya sohbetleri sildikten sonra artık kullanılmayan görselleri ve dosyaları otomatik olarak kaldır.';
+
+  @override
+  String get storageAttachmentUnused => 'Kullanılmıyor';
+
+  @override
+  String storageAttachmentPending(String date) {
+    return 'Temizlenmeyi bekliyor · $date';
+  }
+
+  @override
+  String storageAttachmentConversations(String names) {
+    return 'Sohbetler: $names';
+  }
+
+  @override
+  String get storageAttachmentCleanUnused => 'Kullanılmayanları temizle';
+
+  @override
+  String get storageAttachmentProtectedHint =>
+      'Hâlâ kullanımda olan dosyalar korunacak.';
+
+  @override
+  String storageAttachmentDeleteConfirm(int count) {
+    return '$count kullanılmayan dosya şimdi silinsin mi? Hâlâ kullanımda olan dosyalar korunacak.';
+  }
+
+  @override
+  String get storageAttachmentRetentionDelayed => 'Daha sonra temizle';
+
+  @override
+  String get storageAttachmentRetentionInvalidDays => '1–3650 gün girin.';
+
+  @override
+  String get storageAttachmentDetailsTitle => 'Dosya bilgisi';
+
+  @override
+  String get compressionCarryTitle =>
+      'Önceki mesajlarınızı da yazdığınız gibi gönder';
+
+  @override
+  String get compressionCarryHint =>
+      'Özete dönüşen kısımdaki kendi mesajlarınız, özetin aktardığı şekliyle değil, yazdığınız gibi modele gönderilir.';
+
+  @override
+  String get compressionCarryCountLabel => 'En son şunları gönder:';
+
+  @override
+  String get compressionCarryUnit => 'mesaj';
+
+  @override
+  String get compressionCarryAll => 'Sığabildiği kadar';
+
+  @override
+  String get compressionCarryAllHint =>
+      'Sabit sayı yok. En yeniden başlayıp neredeyse dolana kadar geriye gider; en eski mesaj çok uzunsa yalnızca başı ve sonu gönderilir.';
+
+  @override
+  String get compressionCarryEarlier =>
+      'Daha önceki özetlerdeki mesajları da geri getir';
+
+  @override
+  String get compressionCarryEarlierHint =>
+      'Daha önce sıkıştırılan kısımlardaki mesajlarınız da dahil edilebilir.';
+
+  @override
+  String compressionCarryPreview(int count, String tokens) {
+    return '$count mesaj gönderilecek · yaklaşık $tokens token';
+  }
+
+  @override
+  String get compressionCarryNone => 'Özetlenen kısımda size ait mesaj yok.';
+
+  @override
+  String compressionCarryNotFit(int count) {
+    return '$count eski mesaj sığmıyor ve bu sefer gönderilmeyecek.';
+  }
+
+  @override
+  String compressionCarryMoreRows(int count) {
+    return '$count tane daha';
+  }
+
+  @override
+  String get compressionCarryOverBudget =>
+      'Bu mesajlar büyük ihtimalle mevcut modelin kapasitesini aşar. Daha az gönderin veya daha büyük bağlamı olan bir modele geçin.';
+
+  @override
+  String compressionCarryFitAction(int count) {
+    return '$count olarak değiştir';
+  }
+
+  @override
+  String get compressionCarryTruncated =>
+      'Çok uzun; yalnızca başı ve sonu gönderilir';
+
+  @override
+  String get compressionCarryAutoToo =>
+      'Otomatik sıkıştırma da aynısını yapar.';
+
+  @override
+  String get compressionCarryNewChatText =>
+      'Görseller ve dosyalar yeni sohbete taşınmaz; yalnızca metin taşınır.';
+
+  @override
+  String get compressionCarryServerKeeps =>
+      'Bu hizmet, sıkıştırırken önceki mesajlarınızı kendisi saklar.';
+
+  @override
+  String get contextDetailCarried => 'Yazdığınız gibi gönderildi';
+
+  @override
+  String contextDetailCarriedCount(int count) {
+    return 'Önceki $count mesajınız';
+  }
+
+  @override
+  String get contextDetailServerKept => 'Hizmet tarafından saklandı';
+
+  @override
+  String get contextCarriedEditHint =>
+      'Bu yalnızca modele gönderilen metni değiştirir. Sohbetteki orijinal mesaj aynı kalır.';
+
+  @override
+  String get contextCarriedEmpty =>
+      'Bu boş olamaz. Göndermeyi durdurmak için “Göndermeyi durdur”u seçin.';
+
+  @override
+  String get contextCarriedRemove => 'Göndermeyi durdur';
+
+  @override
+  String get contextCarriedRemoveConfirm =>
+      'Bu artık modele gönderilmeyecek. Sohbetteki orijinal mesaj etkilenmez.';
+
+  @override
+  String get contextCarriedSourceDeleted =>
+      'Orijinal silindi; yalnızca bu metin kaldı';
+
+  @override
+  String get compressionCarryReply => 'Yanıtı da dahil et';
+
+  @override
+  String compressionCarryReplyTokens(String tokens) {
+    return '+yaklaşık $tokens';
+  }
+
+  @override
+  String get compressionCarryReplyInKept => 'Yanıt zaten saklanan turlarda';
+
+  @override
+  String get contextCarriedReplyLabel => 'Yanıt';
+
+  @override
+  String get contextCarriedRemoveReply => 'Yanıtı gönderme';
+
+  @override
+  String get imageEditorCancel => 'İptal';
+
+  @override
+  String get imageEditorDone => 'Bitti';
+
+  @override
+  String get imageEditorUndo => 'Geri al';
+
+  @override
+  String get imageEditorRedo => 'Yinele';
+
+  @override
+  String get imageEditorToolCrop => 'Kırp';
+
+  @override
+  String get imageEditorToolDraw => 'Çiz';
+
+  @override
+  String get imageEditorToolText => 'Metin';
+
+  @override
+  String get imageEditorToolMosaic => 'Mozaik';
+
+  @override
+  String get imageEditorPen => 'Kalem';
+
+  @override
+  String get imageEditorArrow => 'Ok';
+
+  @override
+  String get imageEditorEraser => 'Silgi';
+
+  @override
+  String get imageEditorAspectFree => 'Serbest';
+
+  @override
+  String get imageEditorAspectOriginal => 'Orijinal';
+
+  @override
+  String get imageEditorRotate => 'Sola döndür';
+
+  @override
+  String get imageEditorFlip => 'Çevir';
+
+  @override
+  String get imageEditorTextPlain => 'Düz';
+
+  @override
+  String get imageEditorTextOutline => 'Dış çizgi';
+
+  @override
+  String get imageEditorTextFill => 'Dolgu';
+
+  @override
+  String get imageEditorAlign => 'Hizala';
+
+  @override
+  String get imageEditorMosaicBrush => 'Fırça';
+
+  @override
+  String get imageEditorMosaicRect => 'Kutu';
+
+  @override
+  String get imageEditorDiscardTitle => 'Değişiklikler atılsın mı?';
+
+  @override
+  String get imageEditorKeepEditing => 'Düzenlemeye devam et';
+
+  @override
+  String get imageEditorDiscard => 'At';
+
+  @override
+  String get imageEditorProcessFailed => 'Görsel işlenemedi';
+
+  @override
+  String get imageEditorRetry => 'Yeniden dene';
+
+  @override
+  String get imageEditorRemove => 'Kaldır';
+
+  @override
+  String get imageEditorRestore => 'Geri yükle';
+
+  @override
+  String imageEditorColor(String color) {
+    return 'Renk $color';
+  }
+
+  @override
+  String get imageViewerPageEditButton => 'Düzenle';
+
+  @override
+  String get imageViewerPageFileSize => 'Görsel boyutu';
+
+  @override
+  String get compressionCarryModeCount => 'Son mesajlar';
+
+  @override
+  String get compressionCarryListTitle => 'Mesaj önizlemesi';
+
+  @override
+  String compressionCarryImageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count görsel',
+      one: '1 görsel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String compressionCarryAttachmentCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ek',
+      one: '1 ek',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get compressionCarryNoText => 'Mesaj metni yok';
+
+  @override
+  String get compressionCarryInvalidCount =>
+      '1 ile 10.000 arasında bir sayı girin.';
+
+  @override
+  String get backupRunningInBackground => 'Yedekleme arka planda devam edecek';
+
+  @override
+  String backupBackgroundFailed(String error) {
+    return 'Arka plan yedeklemesi başarısız oldu: $error';
+  }
+
+  @override
+  String get backupAutoEnableTitle => 'Zamanı geldiğinde otomatik yedekle';
+
+  @override
+  String get backupAutoEnableHint =>
+      'Planlanan saat geldiğinde Kelivo, uygulama ön plandayken yedekleme yapar. Uygulama kapatılır veya sonlandırılırsa yedekleme devam etmez ve kaldığı yerden sürdürülmez; uygulamayı bir sonraki açışınızda süre hâlâ dolmuşsa tek bir tam yedekleme çalışır.';
+
+  @override
+  String get backupAutoDestinationTitle => 'Otomatik yedekleme hedefi';
+
+  @override
+  String get backupAutoDestinationWebDav => 'WebDAV';
+
+  @override
+  String get backupAutoDestinationS3 => 'S3';
+
+  @override
+  String get backupAutoDestinationLocal => 'Yerel klasör';
+
+  @override
+  String get backupAutoNeedRemoteHint => 'Önce WebDAV veya S3 ayarlayın.';
+
+  @override
+  String get backupAutoNeedDestinationHint =>
+      'Önce WebDAV veya S3 ayarlayın ya da bir yerel klasör seçin.';
+
+  @override
+  String get backupAutoNeedFolderHint => 'Önce bir yedekleme klasörü seçin.';
+
+  @override
+  String get backupAutoLocalFolderChoose => 'Klasör seç…';
+
+  @override
+  String get backupAutoLocalFolderChange => 'Klasörü değiştir';
+
+  @override
+  String get backupAutoLocalFolderInvalid =>
+      'Uygulamanın kendi veri dizini dışında bir klasör seçin.';
+
+  @override
+  String get backupAutoLocalRetentionTitle => 'En fazla sakla';
+
+  @override
+  String backupAutoLocalRetentionCount(int count) {
+    return '$count yedek';
+  }
+
+  @override
+  String get backupAutoLocalRetentionUnlimited => 'Sınır yok';
+
+  @override
+  String get backupAutoLocalNow => 'Şimdi bu klasöre yedekle';
+
+  @override
+  String get backupAutoLocalDirUnavailable =>
+      'Seçilen klasöre yazılamıyor. Hâlâ kullanılabilir olduğunu kontrol edin veya başka bir klasör seçin. Kelivo kayıtlı konumu kendi başına değiştirmez.';
+
+  @override
+  String get backupAutoLocalDirPermission =>
+      'Seçilen klasöre yazma izniniz yok. Lütfen klasörü yeniden seçin. Kelivo kayıtlı konumu kendi başına değiştirmez.';
+
+  @override
+  String get backupAutoLocalDirFull =>
+      'Yeterli disk alanı yok, bu yüzden yedekleme tamamlanmadı. Önceki yedekleriniz hâlâ duruyor.';
+
+  @override
+  String get backupAutoLocalBookmarkLost =>
+      'Kelivo seçilen klasöre erişemiyor. Lütfen yeniden seçin. Kayıtlı konum otomatik olarak değiştirilmez.';
+
+  @override
+  String get backupAutoNextTitle => 'Sonraki otomatik yedekleme';
+
+  @override
+  String get backupAutoRememberPasswordTitle =>
+      'Parola bu cihazda hatırlansın mı?';
+
+  @override
+  String get backupAutoRememberPasswordMessage =>
+      'Otomatik yedeklemelerin çalışabilmesi için parolayı bu cihazda hatırla. Parola bu cihazda kalır ve hiçbir zaman yüklenmez.';
+
+  @override
+  String get backupAutoRememberPasswordConfirm => 'Hatırla';
+
+  @override
+  String get backupAutoRememberPasswordDecline => 'Şimdi değil';
+
+  @override
+  String get backupAutoRememberDeclined =>
+      'Otomatik yedekleme açılmadı. Zamanı geldiğinde yine hatırlatma alacaksınız.';
+
+  @override
+  String get backupAutoKeychainUnavailable =>
+      'Kelivo, yedekleme parolası için sistem anahtarlığına erişemiyor. Yine de manuel olarak yedekleme yapabilirsiniz.';
+
+  @override
+  String get backupAutoSucceeded => 'Otomatik yedekleme tamamlandı';
+
+  @override
+  String backupAutoFailed(String error) {
+    return 'Otomatik yedekleme başarısız oldu: $error';
+  }
+
+  @override
+  String get backupAutoFailedPassword =>
+      'Otomatik yedekleme başarısız oldu: parola yanlış.';
+
+  @override
+  String get backupReminderSidebarSubtitleAutoFailed =>
+      'Otomatik yedekleme tamamlanmadı. Ağı kontrol edin veya elle yedekleyin.';
+
+  @override
+  String get backupEncryptionOnHintRemembered =>
+      'Yedekler şifrelenir. Parola bu cihazda kayıtlı.';
+
+  @override
+  String get backupRememberPasswordOnDevice => 'Parolayı bu cihazda hatırla';
+
+  @override
+  String get backupForgetDisablesAutomaticHint =>
+      'Bunu kapatmak otomatik yedeklemeyi de kapatır.';
+
+  @override
+  String get backupManualPasswordHint =>
+      'Şifreli yedekler için belirlediğiniz parolayı girin.';
+
+  @override
+  String get backupManualPasswordNotSaved =>
+      'Parola bu cihazda kaydedilemedi. Bu yedekleme devam edecek.';
+
+  @override
+  String get backupEncryptionChangePassword => 'Yedek parolasını değiştir';
+
+  @override
+  String get backupMacKeychainNeedsUnlock =>
+      'macOS oturum açma anahtarlığının kilidini açamadı. Anahtar Zinciri Erişimi\'ni açın, “oturum açma” anahtarlığının kilidini açın ve ardından Kelivo\'da tekrar deneyin.';
+
+  @override
+  String get backupMacOpenKeychainAccess => 'Anahtar Zinciri Erişimi\'ni aç';
+
+  @override
+  String get backupMacKeychainAccessDenied =>
+      'macOS yedek parolasına erişimi reddetti. Bir sistem istemi görünürse Kelivo\'nun erişmesine izin verin. Ayrıca Anahtar Zinciri Erişimi\'nde varsayılan anahtar zincirini ve parola öğesinin izinlerini kontrol edebilirsiniz.';
 
   @override
   String get modelDetailSheetOpenrouterWebFetchTool => 'Web Getirme';

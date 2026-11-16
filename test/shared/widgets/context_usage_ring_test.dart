@@ -11,6 +11,7 @@ ContextUsageSnapshot usageSnap({
   int used = 400,
   int? window = 1000,
   bool hasUsage = true,
+  bool hasUnknownNativeTokens = false,
   ContextUsageBuckets buckets = const ContextUsageBuckets(),
 }) {
   return ContextUsageSnapshot(
@@ -24,6 +25,7 @@ ContextUsageSnapshot usageSnap({
     modelId: 'window-model',
     assistantId: null,
     computedAt: hasUsage ? DateTime.utc(2026, 1, 1) : null,
+    hasUnknownNativeTokens: hasUnknownNativeTokens,
   );
 }
 
@@ -54,6 +56,24 @@ ContextUsageRingPainter ringPainter(WidgetTester tester) {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  testWidgets('partial native context has no misleading window percentage', (
+    tester,
+  ) async {
+    await pumpRing(
+      tester,
+      snapshot: usageSnap(
+        state: ContextUsageState.opaque,
+        hasUnknownNativeTokens: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(ringPainter(tester).ratio, isNull);
+    expect(
+      find.byTooltip('Estimated 400, plus unknown server-side usage'),
+      findsOneWidget,
+    );
+  });
+
   final cs = ColorScheme.light();
   final warning = AppSemanticColors.light(cs).warning;
   final normal = cs.onSurface.withValues(alpha: 0.70);
@@ -72,7 +92,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(ringPainter(tester).ratio, isNull);
     expect(
-      find.byTooltip('Calculation failed\nUsage unavailable'),
+      find.byTooltip(
+        'Couldn’t calculate usage. Please try again.\nUsage isn’t available right now.',
+      ),
       findsOneWidget,
     );
   });
@@ -85,7 +107,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       find.byTooltip(
-        'Update failed · previous result is stale\n400 / 1k (40%)',
+        'Couldn’t refresh. Showing the previous result, which may be out of date.\n400 / 1k (40%)',
       ),
       findsOneWidget,
     );
