@@ -5,6 +5,43 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
+/// KelivoMeow publishes its own releases here. The Android entry is a direct
+/// APK download link so tapping the in-app update banner can hand a real
+/// installable file to the browser / package installer.
+const String selfReleasesUrl = 'https://github.com/PasleySage/kelivo/releases';
+
+/// update.json is shipped as a Release asset. `latest/download` always points
+/// at the newest release, so publishing a new release is the only step needed
+/// to roll out an update notice — no separate hosting.
+const String selfUpdateUrl =
+    'https://github.com/PasleySage/kelivo/releases/latest/download/update.json';
+
+/// Upstream feed is kept only as a fallback. Its downloads all point at the
+/// official Kelivo site, so we rewrite them to our own releases page.
+const String upstreamUpdateUrl = 'https://kelivo.psycheas.top/update.json';
+
+/// Compare only the semantic x.y.z part; internal build numbers are ignored.
+bool isRemoteNewer({
+  required String remoteVersion,
+  required String currentVersion,
+}) {
+  List<int> parseVer(String v) {
+    final parts = v.split('.');
+    final nums = <int>[];
+    for (int i = 0; i < 3; i++) {
+      nums.add(i < parts.length ? int.tryParse(parts[i]) ?? 0 : 0);
+    }
+    return nums;
+  }
+
+  final a = parseVer(remoteVersion);
+  final b = parseVer(currentVersion);
+  for (var i = 0; i < 3; i++) {
+    if (a[i] != b[i]) return a[i] > b[i];
+  }
+  return false;
+}
+
 class UpdateInfo {
   final String app;
   final String version;
@@ -72,15 +109,77 @@ class UpdateInfo {
       downloads: downloads,
     );
   }
+
+  /// Our own update.json carries direct asset links. Any platform the feed
+  /// forgot falls back to the releases landing page so the banner still works.
+  UpdateInfo withSelfDownloads() {
+    final merged = <String, String>{
+      'windows': selfReleasesUrl,
+      'android': selfReleasesUrl,
+      'macos': selfReleasesUrl,
+      'linux': selfReleasesUrl,
+      'ios': selfReleasesUrl,
+    };
+    for (final entry in downloads.entries) {
+      if (entry.value.trim().isNotEmpty) merged[entry.key] = entry.value;
+    }
+    return UpdateInfo(
+      app: 'KelivoMeow',
+      version: version,
+      build: build,
+      releasedAt: releasedAt,
+      notes: notes,
+      mandatory: mandatory,
+      downloads: merged,
+    );
+  }
+
+  /// Upstream feed downloads point at the official Kelivo site — never let a
+  /// KelivoMeow user land there. Rewrite every platform to our own releases.
+  UpdateInfo rewrittenToSelfReleases() => UpdateInfo(
+        app: 'KelivoMeow',
+        version: version,
+        build: build,
+        releasedAt: releasedAt,
+        notes: notes,
+        mandatory: mandatory,
+        downloads: const {
+          'windows': selfReleasesUrl,
+          'android': selfReleasesUrl,
+          'macos': selfReleasesUrl,
+          'linux': selfReleasesUrl,
+          'ios': selfReleasesUrl,
+        },
+      );
 }
 
 class UpdateProvider extends ChangeNotifier {
+  final http.Client _httpClient;
+  final Future<PackageInfo> Function() _packageInfoLoader;
+
+  UpdateProvider({
+    http.Client? httpClient,
+    Future<PackageInfo> Function()? packageInfoLoader,
+  })  : _httpClient = httpClient ?? http.Client(),
+        _packageInfoLoader = packageInfoLoader ?? PackageInfo.fromPlatform;
+
   UpdateInfo? _available;
   UpdateInfo? get available => _available;
   bool _checking = false;
   bool get checking => _checking;
   String? _error;
   String? get error => _error;
+
+  Future<UpdateInfo?> _fetch(Uri url) async {
+    final resp = await _httpClient.get(url);
+    if (resp.statusCode != 200) {
+      throw Exception('HTTP ${resp.statusCode}');
+    }
+    final data = jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
+    final info = UpdateInfo.fromJson(data);
+    if (info.version.isEmpty) throw const FormatException('missing version');
+    return info;
+  }
 
   Future<void> checkForUpdates() async {
     if (_checking) return;
@@ -89,74 +188,34 @@ class UpdateProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final ts = DateTime.now().millisecondsSinceEpoch;
-      final url = Uri.parse(
-        'https://kelivo.psycheas.top/update.json?kelivo=$ts',
-      );
-      final resp = await http.get(url);
-      if (resp.statusCode != 200) {
-        throw Exception('HTTP ${resp.statusCode}');
+      final pkg = await _packageInfoLoader();
+      final currentVer = pkg.version; // e.g., 1.3.5
+
+      final uri = Uri.parse('$selfUpdateUrl?ts=$ts');
+      bool fromSelf = true;
+      UpdateInfo raw;
+      try {
+        raw = (await _fetch(uri))!;
+      } catch (_) {
+        // Release asset missing (e.g. first-ever release) or offline CDN:
+        // fall back to upstream feed for the version notice only.
+        raw = (await _fetch(Uri.parse('$upstreamUpdateUrl?ts=$ts')))!;
+        fromSelf = false;
       }
-      final data =
-          jsonDecode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
-      final info = UpdateInfo.fromJson(data);
 
-      // KelivoMeow: 上游 update.json 的 downloads 各平台全部指向官方站点
-      // （kelivo.psycheas.top / App Store）。本 fork 只发布在
-      // github.com/PasleySage/kelivo/releases，这里统一改写落地页，
-      // 避免点「更新」把用户送去安装官方 Kelivo。版本提醒逻辑保持不变。
-      const selfReleases = 'https://github.com/PasleySage/kelivo/releases';
-      final selfInfo = UpdateInfo(
-        app: 'KelivoMeow',
-        version: info.version,
-        build: info.build,
-        releasedAt: info.releasedAt,
-        notes: info.notes,
-        mandatory: info.mandatory,
-        downloads: const {
-          'windows': selfReleases,
-          'android': selfReleases,
-          'macos': selfReleases,
-          'linux': selfReleases,
-          'ios': selfReleases,
-        },
-      );
+      final info = fromSelf
+          ? raw.withSelfDownloads()
+          : raw.rewrittenToSelfReleases();
 
-      final pkg = await PackageInfo.fromPlatform();
-      final currentVer = pkg.version; // e.g., 1.0.0
-
-      // Compare by version only; ignore build numbers
-      final hasNew = _isRemoteNewer(
-        remoteVersion: selfInfo.version,
-        currentVersion: currentVer,
-      );
-      _available = hasNew ? selfInfo : null;
+      _available = isRemoteNewer(
+              remoteVersion: info.version, currentVersion: currentVer)
+          ? info
+          : null;
     } catch (e) {
       _error = e.toString();
     } finally {
       _checking = false;
       notifyListeners();
     }
-  }
-
-  bool _isRemoteNewer({
-    required String remoteVersion,
-    required String currentVersion,
-  }) {
-    // Compare semantic versions only (ignore internal build numbers)
-    List<int> parseVer(String v) {
-      final parts = v.split('.');
-      final nums = <int>[];
-      for (int i = 0; i < 3; i++) {
-        nums.add(i < parts.length ? int.tryParse(parts[i]) ?? 0 : 0);
-      }
-      return nums;
-    }
-
-    final a = parseVer(remoteVersion);
-    final b = parseVer(currentVersion);
-    if (a[0] != b[0]) return a[0] > b[0];
-    if (a[1] != b[1]) return a[1] > b[1];
-    if (a[2] != b[2]) return a[2] > b[2];
-    return false;
   }
 }
